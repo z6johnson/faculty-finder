@@ -189,7 +189,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T02:56:48.462195+00:00",
+      "last_enriched": "2026-05-10T02:58:01.731640+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -573,7 +573,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dagnew",
       "orcid": "0000-0002-2360-7783",
-      "last_enriched": "2026-05-03T02:58:23.406673+00:00"
+      "last_enriched": "2026-05-10T02:59:36.456025+00:00"
     },
     {
       "first_name": "Matthew",
@@ -984,7 +984,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T02:59:58.321716+00:00",
+      "last_enriched": "2026-05-10T03:01:11.108754+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -1065,6 +1065,24 @@
         }
       ],
       "recent_publications": [
+        {
+          "title": "Microbial and small zooplankton communities predict density of baleen whales in the southern California Current Ecosystem.",
+          "year": 2026,
+          "journal": "PloS one",
+          "mesh_terms": [
+            "Animals",
+            "California",
+            "Ecosystem",
+            "Zooplankton",
+            "Balaenoptera",
+            "RNA, Ribosomal, 16S",
+            "Population Density",
+            "Whales",
+            "Microbiota",
+            "Population Dynamics"
+          ],
+          "abstract": "Understanding the distribution and abundance of marine mammals is important for assessing population dynamics and evaluating the impacts of human activities on these species. Here, we assessed the capability of microbial and small plankton communities to predict the density of Balaenopteridae whales in the Southern California Current Ecosystem in each season from 2014 to 2020 using data from the California Cooperative Oceanic Fisheries Investigations (CalCOFI). Densities of Balaenopteridae whale"
+        },
         {
           "title": "Molecular and physiological acclimation to low light and iron scarcity in a globally abundant oceanic pelagophyte.",
           "year": 2026,
@@ -1304,21 +1322,6 @@
             "Liver Diseases"
           ],
           "abstract": "Following the adoption of new nomenclature for steatotic liver disease, we aimed to build consensus on the use of International Classification of Diseases codes and recommendations for future research and advocacy. Through a two-stage Delphi process, a core group (n = 20) reviewed draft statements and recommendations (n = 6), indicating levels of agreement. Following revisions, this process was repeated with a large expert panel (n = 243) from 73 countries. Consensus ranged from 88.8% to 96.9% ("
-        },
-        {
-          "title": "Flexible B",
-          "year": 2024,
-          "journal": "Proceedings of the National Academy of Sciences of the United States of America",
-          "mesh_terms": [
-            "Haptophyta",
-            "5-Methyltetrahydrofolate-Homocysteine S-Methyltransferase",
-            "Ecosystem",
-            "Phytoplankton",
-            "Diatoms",
-            "Vitamins",
-            "Micronutrients"
-          ],
-          "abstract": "Coastal Antarctic marine ecosystems are significant in carbon cycling because of their intense seasonal phytoplankton blooms. Southern Ocean algae are primarily limited by light and iron (Fe) and can be co-limited by cobalamin (vitamin B"
         }
       ],
       "profile_url": "https://researcherprofiles.org/profile/180175",
@@ -1326,7 +1329,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T03:01:33.082821+00:00",
+      "last_enriched": "2026-05-10T03:02:45.433571+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -1576,6 +1579,12 @@
         }
       ],
       "recent_publications": [
+        {
+          "title": "Multicenter, Randomized, Phase II Trial of Olaparib Plus Radium-223 Versus Radium-223 in Men With Castration-Resistant Prostate Cancer With Bone Metastases (COMRADE).",
+          "year": 2026,
+          "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
+          "abstract": "Radium-223 is an α-emitting radiopharmaceutical that improves survival in metastatic castration-resistant prostate cancer (mCRPC). Preclinical data suggest synergy between poly(ADP-ribose) polymerase (PARP) inhibition and radiation. After phase I dose-finding, we conducted a randomized phase II trial to assess efficacy and safety of this combination versus radium-223. Men with mCRPC and ≥2 bone metastases (BM) were randomly assigned 1:1 to olaparib (200 mg twice daily) plus radium-223 (55 kBq/kg"
+        },
         {
           "title": "Red cell antibody and antigen patterns in patients with sickle cell disease: A multi-center analysis.",
           "year": 2026,
@@ -1855,26 +1864,6 @@
             "Heart Transplantation"
           ],
           "abstract": "Normothermic regional perfusion (NRP) and normothermic machine perfusion (NMP) are organ procurement and transport techniques that can improve organ quality, facilitate longer transport, and reduce postoperative complications, increasing organ availability and improving outcomes. NRP and NMP often require allogeneic red blood cells (RBCs). Our academic transfusion service began providing RBCs to support NRP and NMP for adult heart transplant (HT), orthotopic liver transplant (OLT), and multiorga"
-        },
-        {
-          "title": "The seasonal distribution of immune thrombotic thrombocytopenic purpura is influenced by geography: Epidemiologic findings from a multi-center analysis of 719 disease episodes.",
-          "year": 2024,
-          "journal": "American journal of hematology",
-          "mesh_terms": [
-            "Humans",
-            "Seasons",
-            "Female",
-            "Male",
-            "Retrospective Studies",
-            "Adult",
-            "Middle Aged",
-            "Purpura, Thrombotic Thrombocytopenic",
-            "Aged",
-            "Adolescent",
-            "Young Adult",
-            "Canada"
-          ],
-          "abstract": "Prior studies have suggested that immune thrombotic thrombocytopenic purpura (iTTP) may display seasonal variation; however, methodologic limitations and sample sizes have diminished the ability to perform a rigorous assessment. This 5-year retrospective study assessed the epidemiology of iTTP and determined whether it displays a seasonal pattern. Patients with both initial and relapsed iTTP (defined as a disintegrin and metalloprotease with thrombospondin type motifs 13 activity <10%) from 24 t"
         }
       ],
       "profile_url": "https://researcherprofiles.org/profile/197906",
@@ -1882,7 +1871,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T03:03:08.100849+00:00",
+      "last_enriched": "2026-05-10T03:04:19.795338+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -1914,94 +1903,77 @@
       "populations": [],
       "funded_grants": [
         {
-          "title": "Distribution, Provenance, and Human Health Implications of Marine Polybrominated",
-          "abstract": "Recently the distribution of polybrominated diphenyl ethers (PBDE analogs) - the methoxylated and hydroxylated derivatives (MeO-BDE and OH-BDE) and polybrominated dibenzo-p-dioxins (PBDDs)- as well as congeners of the halogenated methyl bipyrroles (MBP) and dimethyl bipyrroles (DMBP) have been examined in a variety of wildlife and humans, where they can often be present at higher concentrations than anthropogenic pollutants. Like anthropogenic pollutants they also bioaccumulate, seem to biomagni",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 108153,
-          "start_date": null,
-          "end_date": null,
-          "project_number": "5P01ES021921-02"
+          "title": "Collaborative Research: Characterizing microbial transformation of marine DOM at the molecular level using untargeted metabolomic",
+          "agency": "NSF",
+          "nsf_program": "Chemical Oceanography, BIOLOGICAL OCEANOGRAPHY",
+          "amount": "449100",
+          "start_date": "09/01/2020",
+          "end_date": "08/31/2023",
+          "nsf_award_id": "2023509",
+          "abstract": "Collaborative Research: Characterizing microbial transformation of marine dissolved organic matter at the molecular level using untargeted metabolomics\r\n\r\nDissolved organic matter is an important component of the global carbon cycle. Dissolved organic matter provides food and energy for microbes living in the ocean and influences microbial diversity. Microbes convert some dissolved organic matter to CO2 (respiration) whereas other forms of dissolved organic matter are altered by microbial proces",
+          "co_pis": [
+            "Pieter C Dorrestein pdorrestein@ucsd.edu"
+          ]
         },
         {
-          "title": "Distribution, Provenance, and Human Health Implications of Marine Polybrominated",
-          "abstract": "Recently the distribution of polybrominated diphenyl ethers (PBDE analogs) - the methoxylated and hydroxylated derivatives (MeO-BDE and OH-BDE) and polybrominated dibenzo-p-dioxins (PBDDs)- as well as congeners of the halogenated methyl bipyrroles (MBP) and dimethyl bipyrroles (DMBP) have been examined in a variety of wildlife and humans, where they can often be present at higher concentrations than anthropogenic pollutants. Like anthropogenic pollutants they also bioaccumulate, seem to biomagni",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 107117,
-          "start_date": null,
-          "end_date": null,
-          "project_number": "5P01ES021921-03"
+          "title": "Investigating the contribution of carotenoid degradation products to refractory dissolved organic matter (DOM)",
+          "agency": "NSF",
+          "nsf_program": "Chemical Oceanography",
+          "amount": "695127",
+          "start_date": "09/01/2017",
+          "end_date": "08/31/2021",
+          "nsf_award_id": "1736656",
+          "abstract": "This research project will identify biological sources and chemical structures that are responsible for the long-term storage of carbon in the ocean. Each year, microscopic marine plants remove about as much carbon dioxide from the atmosphere as do land plants. Respiration returns much of this carbon to the ocean as carbon dioxide, but some is locked in the remnants of living organisms. These remaining compounds are modified by pathways that involve bacteria, sunlight, chemical reactions, and ot"
         },
         {
-          "title": "Facility Core: Small Molecule Mass Spectrometry Facility for Analytical & Prep.",
-          "abstract": "Facility Core Summary \n \nThe Facility Core for Small Molecule Mass Spectrometry (SMMS) is integral to the Center's research mission by enabling high-resolution detection and isolation of halogenated organic compounds (HQCs). \nThis Core does not replicate any analytical services or facilities currently available at the Scripps Institution of Oceanography (SIO). The SMMS Facility Core will be directed by P3 Leader Aluwihare, and technical oversight for the facility will be provided Co-Director Dr.",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 31872,
-          "start_date": null,
-          "end_date": "2016-07-31T00:00:00",
-          "project_number": "5P01ES021921-04"
+          "title": "MRI: Acquisition of instrumentation to advance our understanding of environmental processes through characterization of the organic compounds in different environmental reservoirs",
+          "agency": "NSF",
+          "nsf_program": "OCE SPECIAL PROGRAMS",
+          "amount": "333108",
+          "start_date": "08/01/2015",
+          "end_date": "07/31/2016",
+          "nsf_award_id": "1531350",
+          "abstract": "This project will purchase an off-the-shelf instrument that has an unprecedented capability to separate individual molecules found in complex matrices and more precisely access their composition (through accurate measurement of mass). The environmental matrices that will be studied in this research and the innovative sample processing methods that will be employed to reduce the natural complexity of relevant samples represents a novel application of this instrument. Examples of new knowledge tha"
         },
         {
-          "title": "Facility Core: Small Molecule Mass Spectrometry Facility for Analytical & Prep.",
-          "abstract": "Facility Core Summary \n \nThe Facility Core for Small Molecule Mass Spectrometry (SMMS) is integral to the Center's research mission by enabling high-resolution detection and isolation of halogenated organic compounds (HQCs). \nThis Core does not replicate any analytical services or facilities currently available at the Scripps Institution of Oceanography (SIO). The SMMS Facility Core will be directed by P3 Leader Aluwihare, and technical oversight for the facility will be provided Co-Director Dr.",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 32003,
-          "start_date": null,
-          "end_date": null,
-          "project_number": "5P01ES021921-02"
+          "title": "Toward a better characterization of the aromatic and alicyclic components of marine dissolved  organic matter: development and application of a one-step reduction reaction",
+          "agency": "NSF",
+          "nsf_program": "Chemical Oceanography",
+          "amount": "289253",
+          "start_date": "02/15/2012",
+          "end_date": "06/30/2014",
+          "nsf_award_id": "1155269",
+          "abstract": "Identifying the chemical structure of compounds that constitute the refractory dissolved organic matter (RDOM) reservoir will yield new insights into the processes that control the accumulation and removal of organic matter from aquatic environments.  A scientist from Scripps Institute of Oceanography will be working to optimize an existing chemical reduction technique to render oxidized aliphatic and aromatic dissolved organic matter (DOM), two compounds which together comprise as much as 60% o"
         },
         {
-          "title": "Distribution, Provenance, and Human Health Implications of Marine Polybrominated",
-          "abstract": "Recently the distribution of polybrominated diphenyl ethers (PBDE analogs) - the methoxylated and hydroxylated derivatives (MeO-BDE and OH-BDE) and polybrominated dibenzo-p-dioxins (PBDDs)- as well as congeners of the halogenated methyl bipyrroles (MBP) and dimethyl bipyrroles (DMBP) have been examined in a variety of wildlife and humans, where they can often be present at higher concentrations than anthropogenic pollutants. Like anthropogenic pollutants they also bioaccumulate, seem to biomagni",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 114028,
-          "start_date": null,
-          "end_date": "2016-07-31T00:00:00",
-          "project_number": "5P01ES021921-04"
+          "title": "MRI: Acquisition of Instuments to Facilitate Molecular-Level Studies in Earth and Ocean Sciences",
+          "agency": "NSF",
+          "nsf_program": "Major Research Instrumentation",
+          "amount": "795887",
+          "start_date": "08/01/2007",
+          "end_date": "01/31/2009",
+          "nsf_award_id": "0723222",
+          "abstract": "The proposal requests funds for a gas-chromatograph time-of-flight mass spectrometer with a preparatory fraction collector and a liquid chromatograph-linear ion trap mass spectrometer with multiple sample ionization modes and an analytical fraction collector.  The instrumentation will be used by the PI and her students to characterize and purify biomolecules from complex environmental samples for chemical, biological and geological research efforts.  The facility will be used to support existing"
         },
         {
-          "title": "Facility Core: Small Molecule Mass Spectrometry Facility for Analytical & Prep.",
-          "abstract": "Facility Core Summary \n \nThe Facility Core for Small Molecule Mass Spectrometry (SMMS) is integral to the Center's research mission by enabling high-resolution detection and isolation of halogenated organic compounds (HQCs). \nThis Core does not replicate any analytical services or facilities currently available at the Scripps Institution of Oceanography (SIO). The SMMS Facility Core will be directed by P3 Leader Aluwihare, and technical oversight for the facility will be provided Co-Director Dr.",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 31904,
-          "start_date": null,
-          "end_date": null,
-          "project_number": "5P01ES021921-03"
+          "title": "CAREER: Organic Matter Cycling in the Upper Ocean: Insights from time-series measurements of d15N and D14C in the California Current System",
+          "agency": "NSF",
+          "nsf_program": "Chemical Oceanography, EDUCATION/HUMAN RESOURCES,OCE",
+          "amount": "846720",
+          "start_date": "03/01/2006",
+          "end_date": "02/29/2012",
+          "nsf_award_id": "0548275",
+          "abstract": "The marine dissolved organic matter (DOM) reservoir is often conceptualized as a \"capacitor\" for carbon because of its potential for storage and exchange with the other active reservoirs. Yet, despite its size and potential importance, the dynamics of DOM have not been fully assessed, and therefore the ultimate role of this reservoir for the global and marine carbon and nitrogen cycle remains to be established. To resolve the dynamics of the complex DOM reservoir, a young investigator from the U"
         },
         {
-          "title": "Distribution, Provenance, and Human Health Implications of Marine Polybrominated",
-          "abstract": "Recently the distribution of polybrominated diphenyl ethers (PBDE analogs) - the methoxylated and hydroxylated derivatives (MeO-BDE and OH-BDE) and polybrominated dibenzo-p-dioxins (PBDDs)- as well as congeners of the halogenated methyl bipyrroles (MBP) and dimethyl bipyrroles (DMBP) have been examined in a variety of wildlife and humans, where they can often be present at higher concentrations than anthropogenic pollutants. Like anthropogenic pollutants they also bioaccumulate, seem to biomagni",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 122087,
-          "start_date": null,
-          "end_date": null,
-          "project_number": "1P01ES021921-01"
-        },
-        {
-          "title": "Distribution, Provenance, and Human Health Implications of Marine Polybrominated",
-          "abstract": "Recently the distribution of polybrominated diphenyl ethers (PBDE analogs) - the methoxylated and hydroxylated derivatives (MeO-BDE and OH-BDE) and polybrominated dibenzo-p-dioxins (PBDDs)- as well as congeners of the halogenated methyl bipyrroles (MBP) and dimethyl bipyrroles (DMBP) have been examined in a variety of wildlife and humans, where they can often be present at higher concentrations than anthropogenic pollutants. Like anthropogenic pollutants they also bioaccumulate, seem to biomagni",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 102028,
-          "start_date": null,
-          "end_date": "2018-07-31T00:00:00",
-          "project_number": "4P01ES021921-05"
-        },
-        {
-          "title": "Facility Core: Small Molecule Mass Spectrometry Facility for Analytical & Prep.",
-          "abstract": "Facility Core Summary \n \nThe Facility Core for Small Molecule Mass Spectrometry (SMMS) is integral to the Center's research mission by enabling high-resolution detection and isolation of halogenated organic compounds (HQCs). \nThis Core does not replicate any analytical services or facilities currently available at the Scripps Institution of Oceanography (SIO). The SMMS Facility Core will be directed by P3 Leader Aluwihare, and technical oversight for the facility will be provided Co-Director Dr.",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 31891,
-          "start_date": null,
-          "end_date": "2018-07-31T00:00:00",
-          "project_number": "4P01ES021921-05"
-        },
-        {
-          "title": "Facility Core: Small Molecule Mass Spectrometry Facility for Analytical & Prep.",
-          "abstract": "Facility Core Summary \n \nThe Facility Core for Small Molecule Mass Spectrometry (SMMS) is integral to the Center's research mission by enabling high-resolution detection and isolation of halogenated organic compounds (HQCs). \nThis Core does not replicate any analytical services or facilities currently available at the Scripps Institution of Oceanography (SIO). The SMMS Facility Core will be directed by P3 Leader Aluwihare, and technical oversight for the facility will be provided Co-Director Dr.",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 32228,
-          "start_date": null,
-          "end_date": null,
-          "project_number": "1P01ES021921-01"
+          "title": "Collaborative Research:  Role of Meso- and Bathypelagic prokaryotic Organisms in the Marine Water Column: Insights from Compound-Specific Radiocarbon Analysis",
+          "agency": "NSF",
+          "nsf_program": "Chemical Oceanography",
+          "amount": "160793",
+          "start_date": "03/01/2003",
+          "end_date": "02/28/2006",
+          "nsf_award_id": "0242160",
+          "abstract": "ABSTRACT\r\n\r\nOCE-0242160\r\nOCE-0241363\r\n\r\nEven though the meso- and bathypelagic regions beneath the euphotic zone contain nearly all of the oceans volume, little is known about the biogeochemical processes that function in this region.  For this reason, a PI from Scripps Institute of Oceanography will collaborate with a PI from Harvard University to determine which carbon sources fuel prokaryotic production in the meso- and bathypelagic ocean.  Specifically, the PIs wish to address the following "
         }
       ],
       "recent_publications": [
@@ -2254,7 +2226,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T02:25:02.712682+00:00",
+      "last_enriched": "2026-05-10T02:28:17.568516+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -2541,7 +2513,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/aandersson",
       "orcid": "0000-0003-3234-7896",
-      "last_enriched": "2026-05-03T03:04:42.855747+00:00"
+      "last_enriched": "2026-05-10T03:05:54.158782+00:00"
     },
     {
       "first_name": "Dahiana",
@@ -2610,16 +2582,6 @@
           "abstract": "The world's oceans are changing rapidly, resulting in still poorly understood impacts on ocean ecosystems, fisheries yields, and carbon storage in the deep ocean. One obvious place to start investigating these impacts is on the most abundant vertebrates on earth, yet these taxa are so obscure that even most biologists are unaware of them. Lanternfishes and bristlemouths dominate the twilight zone in oceans around the world and make up nearly half of all vertebrate biomass on earth. They number i"
         },
         {
-          "title": "CSBR: Emergency Rescue of the Orphaned Fish Collection of the University of Puerto Rico and Capacity Expansion of the Ichthyology Collection at the Sam Noble Museum",
-          "agency": "NSF",
-          "nsf_program": "Capacity: Bio Collections",
-          "amount": "339625",
-          "start_date": "10/01/2023",
-          "end_date": "12/31/2026",
-          "nsf_award_id": "2350473",
-          "abstract": "Biological collections are a primary source of information to understand Earth’s biodiversity. They not only document existing diversity, but also provide the baseline to track changes across time and geography, as well as extinctions at local and global scales. This project aims to rescue the orphaned Fish Collection of the Department of Marine Sciences at the University of Puerto Rico, Mayaguez (UPR-M), improve access to specimens and associated information, and expand the shelving capacity of"
-        },
-        {
           "title": "CAREER: Integrating Genomic, Paleoclimatic, and Morphological Approaches to Unravel the Evolutionary History of Fossil and Extant Marine Fishes Over Time",
           "agency": "NSF",
           "nsf_program": "Systematics & Biodiversity Sci, Sedimentary Geo & Paleobiology, Cross-BIO Activities",
@@ -2628,6 +2590,16 @@
           "end_date": "07/31/2027",
           "nsf_award_id": "2401223",
           "abstract": "This award is funded in whole or in part under the American Rescue Plan Act of 2021 (Public Law 117-2). \r\n\r\nUnderstanding the evolutionary history of life on earth requires comprehensive documentation of both living and fossil species. For example, our understanding of the effects of ancient events on morphological diversity is stymied by the limited inclusion of fossils, paleoclimatic data layers, and understanding of genome size evolution over time. To address this knowledge gap, this project "
+        },
+        {
+          "title": "CSBR: Emergency Rescue of the Orphaned Fish Collection of the University of Puerto Rico and Capacity Expansion of the Ichthyology Collection at the Sam Noble Museum",
+          "agency": "NSF",
+          "nsf_program": "Capacity: Bio Collections",
+          "amount": "339625",
+          "start_date": "10/01/2023",
+          "end_date": "12/31/2026",
+          "nsf_award_id": "2350473",
+          "abstract": "Biological collections are a primary source of information to understand Earth’s biodiversity. They not only document existing diversity, but also provide the baseline to track changes across time and geography, as well as extinctions at local and global scales. This project aims to rescue the orphaned Fish Collection of the Department of Marine Sciences at the University of Puerto Rico, Mayaguez (UPR-M), improve access to specimens and associated information, and expand the shelving capacity of"
         },
         {
           "title": "CSBR: Emergency Rescue of the Orphaned Fish Collection of the University of Puerto Rico and Capacity Expansion of the Ichthyology Collection at the Sam Noble Museum",
@@ -2884,7 +2856,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "orcid": "0000-0002-5126-1345",
-      "last_enriched": "2026-05-03T03:06:18.419485+00:00"
+      "last_enriched": "2026-05-10T03:07:28.707714+00:00"
     },
     {
       "first_name": "Laurence",
@@ -2999,7 +2971,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/larmi",
-      "last_enriched": "2026-05-03T03:07:53.512151+00:00"
+      "last_enriched": "2026-05-10T03:09:03.173643+00:00"
     },
     {
       "first_name": "Farooq",
@@ -3659,7 +3631,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/fazam",
       "orcid": "0000-0002-6187-0021",
-      "last_enriched": "2026-05-03T03:09:28.401827+00:00"
+      "last_enriched": "2026-05-10T03:10:40.252791+00:00"
     },
     {
       "first_name": "George",
@@ -3806,7 +3778,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gbackus",
       "orcid": "0000-0002-0900-7642",
-      "last_enriched": "2026-05-03T03:11:03.064292+00:00"
+      "last_enriched": "2026-05-10T03:12:14.628938+00:00"
     },
     {
       "first_name": "Katherine",
@@ -4043,7 +4015,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T03:12:37.713221+00:00",
+      "last_enriched": "2026-05-10T03:13:48.965712+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -4114,7 +4086,7 @@
           "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
           "amount": "616887",
           "start_date": "07/01/2021",
-          "end_date": "06/30/2026",
+          "end_date": "06/30/2027",
           "nsf_award_id": "2048927",
           "abstract": "The globe-spanning realm of subseafloor sediment is Earth’s least-explored large biome.  This project addresses a fundamental question about the microbial communities that inhabit the subseafloor sedimentary environment – to what extent and in what ways are they adapted to the low temperature, high pressure conditions where they are found?  Or, alternatively, are they just accidentally introduced from the shallower and lower-pressure world where the organic matter that feeds them largely origina"
         },
@@ -4124,7 +4096,7 @@
           "nsf_program": "BIOLOGICAL OCEANOGRAPHY, Genetic Mechanisms",
           "amount": "462739",
           "start_date": "08/01/2020",
-          "end_date": "07/31/2026",
+          "end_date": "09/30/2026",
           "nsf_award_id": "2019455",
           "abstract": "The Earth’s deep oceans are home to an enormous amount and diversity of living creatures, including ~90% of the microbes, which can experience pressures as high as 1000 times that on the surface. The protein machines responsible for critical life processes, such as transcription of the genetic code, must be adapted to function under such extreme and inhospitable conditions. The mechanisms of this adaptation remain a mystery. This project is aimed at understanding molecular mechanisms underlying "
         },
@@ -4493,7 +4465,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dbartlett",
       "orcid": "0000-0002-8385-1139",
-      "last_enriched": "2026-05-03T03:14:12.432388+00:00"
+      "last_enriched": "2026-05-10T03:15:23.319935+00:00"
     },
     {
       "first_name": "Andrew",
@@ -4684,7 +4656,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0002-6480-4433",
-      "last_enriched": "2026-05-03T03:15:47.183921+00:00"
+      "last_enriched": "2026-05-10T03:16:57.702236+00:00"
     },
     {
       "first_name": "Simone",
@@ -4748,6 +4720,24 @@
         }
       ],
       "recent_publications": [
+        {
+          "title": "Microbial and small zooplankton communities predict density of baleen whales in the southern California Current Ecosystem.",
+          "year": 2026,
+          "journal": "PloS one",
+          "mesh_terms": [
+            "Animals",
+            "California",
+            "Ecosystem",
+            "Zooplankton",
+            "Balaenoptera",
+            "RNA, Ribosomal, 16S",
+            "Population Density",
+            "Whales",
+            "Microbiota",
+            "Population Dynamics"
+          ],
+          "abstract": "Understanding the distribution and abundance of marine mammals is important for assessing population dynamics and evaluating the impacts of human activities on these species. Here, we assessed the capability of microbial and small plankton communities to predict the density of Balaenopteridae whales in the Southern California Current Ecosystem in each season from 2014 to 2020 using data from the California Cooperative Oceanic Fisheries Investigations (CalCOFI). Densities of Balaenopteridae whale"
+        },
         {
           "title": "Physiological effects of anthropogenic sound on aquatic animals: where are we and what is next?",
           "year": 2026,
@@ -5008,21 +4998,6 @@
             "Skin"
           ],
           "abstract": "Understanding trophic relationships among marine predators in remote environments is challenging, but it is critical to understand community structure and dynamics. In this study, we used stable isotope analysis of skin biopsies to compare the isotopic, and thus, trophic niches of three sympatric delphinids in the waters surrounding Palmyra Atoll, in the Central Tropical Pacific: the melon-headed whale (Peponocephala electra), Gray's spinner dolphin (Stenella longirostris longirostris), and the "
-        },
-        {
-          "title": "Effects of duty-cycled passive acoustic recordings on detecting the presence of beaked whales in the northwest Atlantic.",
-          "year": 2016,
-          "journal": "The Journal of the Acoustical Society of America",
-          "mesh_terms": [
-            "Acoustics",
-            "Animals",
-            "Atlantic Ocean",
-            "Population Surveillance",
-            "Time Factors",
-            "Vocalization, Animal",
-            "Whales"
-          ],
-          "abstract": "This study investigated the effects of using duty-cycled passive acoustic recordings to monitor the daily presence of beaked whale species at three locations in the northwest Atlantic. Continuous acoustic records were subsampled to simulate duty cycles of 50%, 25%, and 10% and cycle period durations from 10 to 60 min. Short, frequent listening periods were most effective for assessing the daily presence of beaked whales. Furthermore, subsampling at low duty cycles led to consistently greater und"
         }
       ],
       "committee_service": [],
@@ -5043,7 +5018,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0002-3428-3577",
-      "last_enriched": "2026-05-03T03:17:22.319313+00:00"
+      "last_enriched": "2026-05-10T03:18:32.130711+00:00"
     },
     {
       "first_name": "Janet",
@@ -5255,7 +5230,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "orcid": "0000-0002-2486-4095",
-      "last_enriched": "2026-05-03T03:18:57.095787+00:00"
+      "last_enriched": "2026-05-10T03:20:06.395026+00:00"
     },
     {
       "first_name": "Tarik",
@@ -5658,7 +5633,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tbenmarhnia",
       "orcid": "0000-0002-4018-3089",
-      "last_enriched": "2026-05-03T03:20:31.904570+00:00"
+      "last_enriched": "2026-05-10T03:21:40.786010+00:00"
     },
     {
       "first_name": "Jonathan",
@@ -6192,7 +6167,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/jberger",
       "orcid": "0000-0002-8773-7878",
-      "last_enriched": "2026-05-03T03:22:06.908350+00:00"
+      "last_enriched": "2026-05-10T03:23:15.370837+00:00"
     },
     {
       "first_name": "Ricardo",
@@ -6517,7 +6492,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/rbetancur",
       "orcid": "0000-0002-9512-5011",
-      "last_enriched": "2026-05-03T03:23:41.787194+00:00"
+      "last_enriched": "2026-05-10T03:24:49.778858+00:00"
     },
     {
       "first_name": "Yehuda",
@@ -6871,7 +6846,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ybock",
       "orcid": "0000-0001-8296-6623",
-      "last_enriched": "2026-05-03T03:25:17.154580+00:00"
+      "last_enriched": "2026-05-10T03:26:24.199162+00:00"
     },
     {
       "first_name": "Julien",
@@ -6976,7 +6951,7 @@
       "department_code": "245",
       "eah_status": "Active",
       "orcid": "0000-0001-5142-3159",
-      "last_enriched": "2026-05-03T03:26:52.282316+00:00",
+      "last_enriched": "2026-05-10T03:27:58.598260+00:00",
       "profile_url": "https://researcherprofiles.org/profile/653887107"
     },
     {
@@ -7138,7 +7113,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/aborsa",
       "orcid": "0000-0002-9939-1480",
-      "last_enriched": "2026-05-03T03:28:27.372843+00:00"
+      "last_enriched": "2026-05-10T03:29:33.088368+00:00"
     },
     {
       "first_name": "Jeff",
@@ -7392,7 +7367,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T02:25:11.519345+00:00",
+      "last_enriched": "2026-05-10T02:28:26.031165+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1200",
       "job_code_description": "ASSOC PROF-AY",
@@ -7536,7 +7511,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/bbrahamsha",
       "orcid": "0000-0002-5316-5939",
-      "last_enriched": "2026-05-03T03:30:02.157838+00:00"
+      "last_enriched": "2026-05-10T03:31:07.687224+00:00"
     },
     {
       "first_name": "Peter",
@@ -7626,7 +7601,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pbromirski",
       "orcid": "0000-0002-5342-9252",
-      "last_enriched": "2026-05-03T03:31:36.985411+00:00"
+      "last_enriched": "2026-05-10T03:32:42.242863+00:00"
     },
     {
       "first_name": "Kevin",
@@ -8193,7 +8168,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0002-1944-3050",
-      "last_enriched": "2026-05-03T02:25:20.325004+00:00"
+      "last_enriched": "2026-05-10T02:28:34.515667+00:00"
     },
     {
       "first_name": "James",
@@ -8511,7 +8486,7 @@
       "department_code": "260",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/jbrune",
-      "last_enriched": "2026-05-03T03:33:12.024295+00:00"
+      "last_enriched": "2026-05-10T03:34:16.661279+00:00"
     },
     {
       "first_name": "Michael",
@@ -8627,7 +8602,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mbuckingham",
       "orcid": "0000-0001-6414-4714",
-      "last_enriched": "2026-05-03T03:34:46.746564+00:00"
+      "last_enriched": "2026-05-10T03:35:51.263253+00:00"
     },
     {
       "first_name": "Ronald",
@@ -9223,7 +9198,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/rburton",
       "orcid": "0000-0002-6995-5329",
-      "last_enriched": "2026-05-03T03:36:21.534796+00:00"
+      "last_enriched": "2026-05-10T03:37:25.743004+00:00"
     },
     {
       "first_name": "Steven",
@@ -9565,7 +9540,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/scande",
-      "last_enriched": "2026-05-03T03:37:56.409695+00:00"
+      "last_enriched": "2026-05-10T03:39:00.167834+00:00"
     },
     {
       "first_name": "Tomas",
@@ -9626,7 +9601,7 @@
           "nsf_program": "Tectonics",
           "amount": "366190",
           "start_date": "10/01/2023",
-          "end_date": "06/30/2026",
+          "end_date": "06/30/2027",
           "nsf_award_id": "2413966",
           "abstract": "The cities of Mendoza and San Juan, Argentina, have been repeatedly damaged or leveled by large-magnitude earthquakes generated by geological structures associated with Andean mountain building. Because active seismicity occurs along faults that can be expressed at or hidden below Earth’s surface, the nature and history of these enigmatic structures remains debated. Several competing geologic models have been proposed that link the seismicity at depth with faults and mountain ranges expressed at"
         },
@@ -9671,7 +9646,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tcapaldi",
       "orcid": "0000-0003-4894-736X",
-      "last_enriched": "2026-05-03T03:39:31.460343+00:00"
+      "last_enriched": "2026-05-10T03:40:34.583452+00:00"
     },
     {
       "first_name": "George",
@@ -9825,7 +9800,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gcarnevale",
-      "last_enriched": "2026-05-03T03:41:06.381117+00:00"
+      "last_enriched": "2026-05-10T03:42:08.920544+00:00"
     },
     {
       "first_name": "Paterno",
@@ -10004,16 +9979,6 @@
           "abstract": "9300275  Castillo             This is a cruise to dredge igneous rock samples from a 2200-km long  section of the Pacific-Antarctic East Pacific Rise between 35 and  56 degrees south. The work will provide a systematic petrologic  comparison between eruptive rocks along straight ridge segments and  those obtained both from adjoining overshot ridges constructed on  the floors of transform faults and from isolated intra-transform  spreading segments in the same transform domains. The work will  al"
         },
         {
-          "title": "SGER: Detailed Petrological Investigation of Cretaceous     Oceanic Basalts from the Western Pacific",
-          "agency": "NSF",
-          "nsf_program": "Marine Geology and Geophysics",
-          "amount": "50000",
-          "start_date": "07/01/1993",
-          "end_date": "12/31/1994",
-          "nsf_award_id": "9312446",
-          "abstract": "Cretaceous basalts were recovered during a number of DSDP Legs form             the western Pacific.  The age of this crust is clearly anomalous                and how such voluminous crust formed is a difficult problem.  So                far, researchers have not dealt with these samples because of their             high degree of alteration and difficulty in analyzing such altered              samples for their isotopic ratios.  The PI will develop a new                   technique to analyze"
-        },
-        {
           "title": "SGER:  Petrology and Sr, Nd and Pb Isotope Geochemistry of  Volcanic Rocks from Mt. Mayon and Mt. Pinatubo, Philippines",
           "agency": "NSF",
           "nsf_program": "Petrology and Geochemistry, EAST ASIA AND PACIFIC PROGRAM",
@@ -10022,6 +9987,16 @@
           "end_date": "01/31/1995",
           "nsf_award_id": "9313571",
           "abstract": "The concurrent volcanic activities of Mt. Mayon and Mt.                         Pinatubo in the island of Luzon, Philippines, offer a rare                      opportunity to compare and contrast the petrology and mantle                    source signature of the East and West Philippine volcanic                       arcs.  Mt. Mayon belongs to the East Arc wherein volcanism                      is associated with the subduction underneath Luzon of the                       Philippine Sea Plate"
+        },
+        {
+          "title": "SGER: Detailed Petrological Investigation of Cretaceous     Oceanic Basalts from the Western Pacific",
+          "agency": "NSF",
+          "nsf_program": "Marine Geology and Geophysics",
+          "amount": "50000",
+          "start_date": "07/01/1993",
+          "end_date": "12/31/1994",
+          "nsf_award_id": "9312446",
+          "abstract": "Cretaceous basalts were recovered during a number of DSDP Legs form             the western Pacific.  The age of this crust is clearly anomalous                and how such voluminous crust formed is a difficult problem.  So                far, researchers have not dealt with these samples because of their             high degree of alteration and difficulty in analyzing such altered              samples for their isotopic ratios.  The PI will develop a new                   technique to analyze"
         },
         {
           "title": "Geochemical Evolution of Samoan Shield Volcanoes",
@@ -10166,7 +10141,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pcastillo",
       "orcid": "0000-0001-6140-7929",
-      "last_enriched": "2026-05-03T03:42:41.058470+00:00"
+      "last_enriched": "2026-05-10T03:43:43.275203+00:00"
     },
     {
       "first_name": "Daniel",
@@ -10457,7 +10432,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T03:44:15.740921+00:00",
+      "last_enriched": "2026-05-10T03:45:17.643578+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1675",
       "job_code_description": "EDUCATOR (WOS)",
@@ -10587,7 +10562,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/lcenturioni",
       "orcid": "0000-0002-6248-8780",
-      "last_enriched": "2026-05-03T03:45:50.890523+00:00"
+      "last_enriched": "2026-05-10T03:46:52.220058+00:00"
     },
     {
       "first_name": "Ivana",
@@ -10700,7 +10675,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/icerovecki",
       "orcid": "0000-0001-8979-9952",
-      "last_enriched": "2026-05-03T03:47:25.741046+00:00"
+      "last_enriched": "2026-05-10T03:48:26.607358+00:00"
     },
     {
       "first_name": "Paola",
@@ -10825,7 +10800,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pcessi",
       "orcid": "0000-0002-8376-7391",
-      "last_enriched": "2026-05-03T03:49:00.577211+00:00"
+      "last_enriched": "2026-05-10T03:50:01.029920+00:00"
     },
     {
       "first_name": "Christopher",
@@ -11098,7 +11073,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ccharles",
       "orcid": "0000-0001-9107-0992",
-      "last_enriched": "2026-05-03T03:50:35.587746+00:00"
+      "last_enriched": "2026-05-10T03:51:35.380022+00:00"
     },
     {
       "first_name": "David",
@@ -11285,7 +11260,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dcheckley",
       "orcid": "0000-0003-1885-252X",
-      "last_enriched": "2026-05-03T03:52:10.498734+00:00"
+      "last_enriched": "2026-05-10T03:53:09.753259+00:00"
     },
     {
       "first_name": "Lanna",
@@ -11713,7 +11688,7 @@
       "profile_url": "https://scripps.ucsd.edu/profiles/lcheng",
       "orcid": "0000-0003-2375-991X",
       "h_index": 20,
-      "last_enriched": "2026-05-03T02:25:27.129020+00:00"
+      "last_enriched": "2026-05-10T02:29:40.937107+00:00"
     },
     {
       "first_name": "Teresa",
@@ -11962,7 +11937,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tchereskin",
       "orcid": "0000-0003-1214-0978",
-      "last_enriched": "2026-05-03T03:53:52.274451+00:00"
+      "last_enriched": "2026-05-10T03:54:44.190867+00:00"
     },
     {
       "first_name": "Emily",
@@ -12133,7 +12108,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0002-9351-6043",
-      "last_enriched": "2026-05-03T03:55:27.089504+00:00"
+      "last_enriched": "2026-05-10T03:56:18.551947+00:00"
     },
     {
       "first_name": "Anela",
@@ -12313,7 +12288,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-03T03:57:01.946138+00:00",
+      "last_enriched": "2026-05-10T03:57:53.013760+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1200",
       "job_code_description": "ASSOC PROF-AY",
@@ -12797,7 +12772,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/cconstable",
       "orcid": "0000-0003-4534-4977",
-      "last_enriched": "2026-05-03T03:58:36.707360+00:00"
+      "last_enriched": "2026-05-10T03:59:27.448584+00:00"
     },
     {
       "first_name": "Steven",
@@ -12862,7 +12837,7 @@
           "start_date": "07/01/2024",
           "end_date": "06/30/2027",
           "nsf_award_id": "2334542",
-          "abstract": "How magma flows from the Earth’s mantle to the surface is poorly understood. Does it flow slowly through the mantle, or quickly through melt-rich channels? Answering this question will help understand where seafloor volcanoes form and how frequently they erupt. The project will acquire new geophysical and geological data in the Galapagos islands. This region has volcanism all the way from the main archipelago to the mid-ocean ridge a few hundred km away. The investigators will combine the new da"
+          "abstract": "How magma flows from the Earth’s mantle to the surface is poorly understood. This project will acquire new data in the Galapagos islands to determine if melt flows slowly through the mantle, or quickly through melt-rich channels. The results will help in understanding where seafloor volcanoes form and how frequently they erupt. The project includes support and training of a graduate student and postdoctoral scholar, opportunities for early career scientists to participate in the research cruise,"
         },
         {
           "title": "Collaborative Research: Magnetotelluric Investigation of the Salton Trough",
@@ -13122,7 +13097,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/sconstable",
       "orcid": "0000-0001-6324-3470",
-      "last_enriched": "2026-05-03T04:00:11.553362+00:00"
+      "last_enriched": "2026-05-10T04:01:01.900787+00:00"
     },
     {
       "first_name": "Geoffrey",
@@ -13385,7 +13360,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0009-0008-4138-4924",
-      "last_enriched": "2026-05-03T04:01:46.504573+00:00"
+      "last_enriched": "2026-05-10T04:02:36.504724+00:00"
     },
     {
       "first_name": "Bruce",
@@ -13541,7 +13516,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/bcornuelle",
       "orcid": "0000-0003-2110-3319",
-      "last_enriched": "2026-05-03T04:01:50.084292+00:00"
+      "last_enriched": "2026-05-10T04:04:10.963951+00:00"
     },
     {
       "first_name": "James",
@@ -13877,7 +13852,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0001-7602-6934",
-      "last_enriched": "2026-05-03T04:03:24.965975+00:00"
+      "last_enriched": "2026-05-10T04:05:45.299385+00:00"
     },
     {
       "first_name": "Paul",
@@ -14158,7 +14133,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pdayton",
       "orcid": "0000-0001-6354-4812",
-      "last_enriched": "2026-05-03T04:04:59.736885+00:00"
+      "last_enriched": "2026-05-10T04:07:19.773197+00:00"
     },
     {
       "first_name": "Grant",
@@ -14493,7 +14468,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gdeane",
       "orcid": "0000-0002-4848-8637",
-      "last_enriched": "2026-05-03T04:06:34.516984+00:00"
+      "last_enriched": "2026-05-10T04:08:54.169367+00:00"
     },
     {
       "first_name": "Moira",
@@ -14576,7 +14551,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mdecima",
       "orcid": "0000-0003-0340-648X",
-      "last_enriched": "2026-05-03T04:08:09.376308+00:00"
+      "last_enriched": "2026-05-10T04:10:28.641069+00:00"
     },
     {
       "first_name": "Catherine",
@@ -14651,7 +14626,7 @@
       "department_code": "260",
       "eah_status": "Active",
       "orcid": "0000-0002-3063-2805",
-      "last_enriched": "2026-05-03T04:09:44.208163+00:00"
+      "last_enriched": "2026-05-10T04:12:03.100811+00:00"
     },
     {
       "first_name": "Dimitri",
@@ -15025,7 +15000,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ddeheyn",
       "orcid": "0000-0002-6496-9297",
-      "last_enriched": "2026-05-03T04:11:18.999005+00:00"
+      "last_enriched": "2026-05-10T04:13:37.507858+00:00"
     },
     {
       "first_name": "Valentina",
@@ -15094,7 +15069,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "orcid": "0000-0002-5419-3747",
-      "last_enriched": "2026-05-03T04:12:58.240281+00:00"
+      "last_enriched": "2026-05-10T04:15:38.024436+00:00"
     },
     {
       "first_name": "Julia",
@@ -15397,7 +15372,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0001-7246-3117",
-      "last_enriched": "2026-05-03T04:14:33.444565+00:00"
+      "last_enriched": "2026-05-10T04:17:38.540255+00:00"
     },
     {
       "first_name": "Andrew",
@@ -15718,7 +15693,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/adickson",
       "orcid": "0000-0002-2263-8828",
-      "last_enriched": "2026-05-03T04:16:08.577408+00:00"
+      "last_enriched": "2026-05-10T04:19:44.099019+00:00"
     },
     {
       "first_name": "Clive",
@@ -15798,7 +15773,7 @@
         {
           "title": "Improved Estimates of Oceanic Precipitation",
           "agency": "NSF",
-          "nsf_program": "Climate & Large-Scale Dynamics",
+          "nsf_program": "Coupled & Large-Scale Dynamics",
           "amount": "29700",
           "start_date": "10/01/1975",
           "end_date": "03/31/1980",
@@ -15843,7 +15818,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/cdorman",
       "orcid": "0000-0002-9866-3974",
-      "last_enriched": "2026-05-03T04:18:09.446880+00:00"
+      "last_enriched": "2026-05-10T04:21:18.587202+00:00"
     },
     {
       "first_name": "Neal",
@@ -16053,7 +16028,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ndriscoll",
-      "last_enriched": "2026-05-03T04:20:10.731640+00:00"
+      "last_enriched": "2026-05-10T04:22:52.961917+00:00"
     },
     {
       "first_name": "Matthew",
@@ -19780,7 +19755,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tgaasterland",
       "orcid": "0000-0003-4023-9342",
-      "last_enriched": "2026-05-03T02:27:01.891504+00:00"
+      "last_enriched": "2026-05-10T02:31:15.232892+00:00"
     },
     {
       "first_name": "Alice",
@@ -20217,7 +20192,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0002-9543-7744",
-      "last_enriched": "2026-05-03T02:28:36.548551+00:00",
+      "last_enriched": "2026-05-10T02:32:49.563356+00:00",
       "profile_url": "https://researcherprofiles.org/profile/184121"
     },
     {
@@ -25010,7 +24985,7 @@
       "profile_url": "https://scripps.ucsd.edu/profiles/jharris",
       "orcid": "0000-0002-2605-415X",
       "h_index": 5,
-      "last_enriched": "2026-05-03T02:30:14.803617+00:00"
+      "last_enriched": "2026-05-10T02:34:23.904142+00:00"
     },
     {
       "first_name": "Philip",
@@ -34525,7 +34500,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0001-8557-7308",
-      "last_enriched": "2026-05-03T02:32:30.885477+00:00",
+      "last_enriched": "2026-05-10T02:35:58.316033+00:00",
       "h_index": 6
     },
     {
@@ -39464,7 +39439,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0003-4719-4466",
-      "last_enriched": "2026-05-03T02:36:16.866729+00:00"
+      "last_enriched": "2026-05-10T02:39:06.892741+00:00"
     },
     {
       "first_name": "Tadeusz",
@@ -42844,7 +42819,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0003-3903-960X",
-      "last_enriched": "2026-05-03T02:39:26.550320+00:00"
+      "last_enriched": "2026-05-10T02:42:15.428914+00:00"
     },
     {
       "first_name": "Ed",
@@ -45842,7 +45817,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0003-3063-0559",
-      "last_enriched": "2026-05-03T02:41:01.442174+00:00"
+      "last_enriched": "2026-05-10T02:43:49.832532+00:00"
     },
     {
       "first_name": "Dean",
@@ -51103,7 +51078,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ksmith",
-      "last_enriched": "2026-05-03T02:42:36.243303+00:00"
+      "last_enriched": "2026-05-10T02:45:24.317292+00:00"
     },
     {
       "first_name": "George",
@@ -55696,7 +55671,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mtresguerres",
       "orcid": "0000-0002-7090-9266",
-      "last_enriched": "2026-05-03T02:45:45.259330+00:00"
+      "last_enriched": "2026-05-10T02:48:32.950418+00:00"
     },
     {
       "first_name": "Victor",
@@ -56397,7 +56372,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "profile_url": "https://researcherprofiles.org/profile/180797",
-      "last_enriched": "2026-03-25T18:59:30.653678+00:00"
+      "last_enriched": "2026-05-10T02:48:35.200876+00:00"
     },
     {
       "first_name": "Maria",
@@ -58138,7 +58113,7 @@
       "eah_status": "Active",
       "orcid": "0000-0001-9551-7739",
       "profile_url": "https://researcherprofiles.org/profile/180856",
-      "last_enriched": "2026-05-03T02:48:54.479231+00:00"
+      "last_enriched": "2026-05-10T02:50:09.613447+00:00"
     },
     {
       "first_name": "Bradley",
@@ -58546,7 +58521,7 @@
       "department_eah": "CLIMATE/ATMOS SCI/PHY OCEANOG",
       "department_code": "259",
       "eah_status": "Active",
-      "last_enriched": "2026-05-03T02:50:29.346372+00:00"
+      "last_enriched": "2026-05-10T02:51:44.055752+00:00"
     },
     {
       "first_name": "Clinton",
@@ -61018,7 +60993,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gzhang",
       "orcid": "0000-0002-9712-5226",
-      "last_enriched": "2026-05-03T02:53:38.600823+00:00"
+      "last_enriched": "2026-05-10T02:54:52.850997+00:00"
     },
     {
       "first_name": "Xin",
@@ -61663,7 +61638,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/xzhang",
-      "last_enriched": "2026-05-03T02:55:13.600150+00:00",
+      "last_enriched": "2026-05-10T02:56:27.395988+00:00",
       "h_index": 11
     },
     {

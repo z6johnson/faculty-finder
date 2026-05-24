@@ -461,7 +461,7 @@
         "older adults",
         "mothers and daughters with obesity"
       ],
-      "last_enriched": "2026-05-24T06:09:50.660497+00:00",
+      "last_enriched": "2026-05-24T06:59:57.472750+00:00",
       "profile_url": "https://profiles.ucsd.edu/tala.alrousan",
       "employee_class": "Academic: Faculty",
       "job_code": "1728",
@@ -601,6 +601,15 @@
           "title": "The Research Ethics Education Program in Jordan",
           "abstract": "﻿   \nDESCRIPTION (provided by applicant): Responsible conduct of research (RCR) is an essential requirement for research training in developed countries and most academic and funding institutions require researchers to obtain such training before starting a research project Jordan is one of the more academically established countries in the Middle East and North Africa (MENA) region with a high per-capita university education and progressive research agenda. It is also the hub for pharmaceutical",
           "agency": "National Human Genome Research Institute",
+          "amount": 244374,
+          "start_date": "2015-05-01T00:00:00",
+          "end_date": "2020-04-30T00:00:00",
+          "project_number": "5R25TW010026-02"
+        },
+        {
+          "title": "The Research Ethics Education Program in Jordan",
+          "abstract": "﻿   \nDESCRIPTION (provided by applicant): Responsible conduct of research (RCR) is an essential requirement for research training in developed countries and most academic and funding institutions require researchers to obtain such training before starting a research project Jordan is one of the more academically established countries in the Middle East and North Africa (MENA) region with a high per-capita university education and progressive research agenda. It is also the hub for pharmaceutical",
+          "agency": "National Human Genome Research Institute",
           "amount": 242776,
           "start_date": "2015-05-01T00:00:00",
           "end_date": "2020-04-30T00:00:00",
@@ -617,15 +626,6 @@
           "co_pis": [
             "Karem Al-Zoubi"
           ]
-        },
-        {
-          "title": "The Research Ethics Education Program in Jordan",
-          "abstract": "﻿   \nDESCRIPTION (provided by applicant): Responsible conduct of research (RCR) is an essential requirement for research training in developed countries and most academic and funding institutions require researchers to obtain such training before starting a research project Jordan is one of the more academically established countries in the Middle East and North Africa (MENA) region with a high per-capita university education and progressive research agenda. It is also the hub for pharmaceutical",
-          "agency": "National Human Genome Research Institute",
-          "amount": 244374,
-          "start_date": "2015-05-01T00:00:00",
-          "end_date": "2020-04-30T00:00:00",
-          "project_number": "5R25TW010026-02"
         },
         {
           "title": "The Research Ethics Education Program in Jordan",
@@ -714,8 +714,8 @@
           "agency": "National Cancer Institute",
           "amount": 77250,
           "start_date": "2009-07-16T00:00:00",
-          "end_date": "2012-06-30T00:00:00",
-          "project_number": "5R03CA139536-02"
+          "end_date": "2011-06-30T00:00:00",
+          "project_number": "1R03CA139536-01"
         },
         {
           "title": "Hair and toenail nicotine as biomarkers of actual population exposure to tobacco",
@@ -723,8 +723,8 @@
           "agency": "National Cancer Institute",
           "amount": 77250,
           "start_date": "2009-07-16T00:00:00",
-          "end_date": "2011-06-30T00:00:00",
-          "project_number": "1R03CA139536-01"
+          "end_date": "2012-06-30T00:00:00",
+          "project_number": "5R03CA139536-02"
         }
       ],
       "recent_publications": [
@@ -947,7 +947,7 @@
         }
       ],
       "orcid": "0000-0001-8292-0510",
-      "last_enriched": "2026-05-24T06:10:01.180948+00:00",
+      "last_enriched": "2026-05-24T07:00:08.785039+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -1454,7 +1454,7 @@
         "cancer patients (ovarian)",
         "populations experiencing health disparities"
       ],
-      "last_enriched": "2026-05-24T06:10:12.173064+00:00",
+      "last_enriched": "2026-05-24T07:00:19.691808+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Deans/Faculty Admin",
@@ -1604,11 +1604,11 @@
         {
           "title": "12/22 Limited Competition for the Continuation of the Diabetes Prevention Program Outcomes Study (DPPOS) - Clinical Center",
           "abstract": "Abnormal regulation of glycemia (“dysglycemia”) has a very long time course, from the earliest\nstage of pre-diabetes, to the onset of Type 2 diabetes (T2D), to the development of clinically\ndetectable microvascular changes and measurable atherosclerosis, to clinically manifest\ncomplications with attendant morbidity and mortality. The Diabetes Prevention Program (DPP)\nfocused on the pre-diabetes stage of dysglycemia and demonstrated powerful beneficial effects\nof lifestyle intervention (ILS) and ",
-          "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 126165,
+          "agency": "National Institute on Aging",
+          "amount": 490669,
           "start_date": "1994-09-10T00:00:00",
           "end_date": "2023-01-31T00:00:00",
-          "project_number": "3U01DK048339-28S2",
+          "project_number": "2U01DK048339-28",
           "co_pis": [
             "Sunder Mudaliar"
           ]
@@ -1616,11 +1616,11 @@
         {
           "title": "12/22 Limited Competition for the Continuation of the Diabetes Prevention Program Outcomes Study (DPPOS) - Clinical Center",
           "abstract": "Abnormal regulation of glycemia (“dysglycemia”) has a very long time course, from the earliest\nstage of pre-diabetes, to the onset of Type 2 diabetes (T2D), to the development of clinically\ndetectable microvascular changes and measurable atherosclerosis, to clinically manifest\ncomplications with attendant morbidity and mortality. The Diabetes Prevention Program (DPP)\nfocused on the pre-diabetes stage of dysglycemia and demonstrated powerful beneficial effects\nof lifestyle intervention (ILS) and ",
-          "agency": "National Institute on Aging",
-          "amount": 490669,
+          "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
+          "amount": 126165,
           "start_date": "1994-09-10T00:00:00",
           "end_date": "2023-01-31T00:00:00",
-          "project_number": "2U01DK048339-28",
+          "project_number": "3U01DK048339-28S2",
           "co_pis": [
             "Sunder Mudaliar"
           ]
@@ -2038,7 +2038,7 @@
       "department_eah": "School of Public Health",
       "department_code": "383",
       "eah_status": "Active",
-      "last_enriched": "2026-05-24T06:10:19.423592+00:00"
+      "last_enriched": "2026-05-24T07:00:26.959677+00:00"
     },
     {
       "first_name": "Holly",
@@ -2294,7 +2294,7 @@
       "department_code": "383",
       "eah_status": "Active",
       "orcid": "0000-0003-2618-3258",
-      "last_enriched": "2026-05-24T06:10:30.014591+00:00",
+      "last_enriched": "2026-05-24T07:00:37.435801+00:00",
       "profile_url": "https://profiles.ucsd.edu/holly.shakya"
     },
     {
@@ -2851,7 +2851,7 @@
         }
       ],
       "orcid": "0000-0003-2167-8921",
-      "last_enriched": "2026-05-24T06:08:44.094328+00:00",
+      "last_enriched": "2026-05-24T06:58:50.920637+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -3232,7 +3232,7 @@
         "community oncology practice patients",
         "cancer survivors in Southern California"
       ],
-      "last_enriched": "2026-05-24T06:10:39.131412+00:00",
+      "last_enriched": "2026-05-24T07:00:46.545896+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -3280,10 +3280,10 @@
           "title": "SAIA-PrEP: a systems analysis and improvement approach to optimize PrEP implementation in syringe service programs",
           "abstract": "ABSTRACT\nFor the first time in decades, HIV incidence is increasing among people who inject drugs (PWID). Pre-\nexposure prophylaxis (PrEP) is a safe, effective, evidence-based HIV prevention strategy recommended for at-\nrisk PWID. However, despite the acceptability of PrEP among PWID, access remains low, and uptake has\nlagged far behind that observed in other vulnerable populations. Our preliminary research demonstrates that\nsyringe service programs (SSPs) are uniquely poised to improve PrEP acc",
           "agency": "National Institute on Drug Abuse",
-          "amount": 858690,
+          "amount": 766032,
           "start_date": "2022-09-01T00:00:00",
-          "end_date": "2026-06-30T00:00:00",
-          "project_number": "1R01DA056883-01",
+          "end_date": "2027-06-30T00:00:00",
+          "project_number": "5R01DA056883-04",
           "co_pis": [
             "Barrot Lambdin",
             "Alexis Roth"
@@ -3293,10 +3293,10 @@
           "title": "SAIA-PrEP: a systems analysis and improvement approach to optimize PrEP implementation in syringe service programs",
           "abstract": "ABSTRACT\nFor the first time in decades, HIV incidence is increasing among people who inject drugs (PWID). Pre-\nexposure prophylaxis (PrEP) is a safe, effective, evidence-based HIV prevention strategy recommended for at-\nrisk PWID. However, despite the acceptability of PrEP among PWID, access remains low, and uptake has\nlagged far behind that observed in other vulnerable populations. Our preliminary research demonstrates that\nsyringe service programs (SSPs) are uniquely poised to improve PrEP acc",
           "agency": "National Institute on Drug Abuse",
-          "amount": 766032,
+          "amount": 858690,
           "start_date": "2022-09-01T00:00:00",
-          "end_date": "2027-06-30T00:00:00",
-          "project_number": "5R01DA056883-04",
+          "end_date": "2026-06-30T00:00:00",
+          "project_number": "1R01DA056883-01",
           "co_pis": [
             "Barrot Lambdin",
             "Alexis Roth"
@@ -3660,7 +3660,7 @@
         }
       ],
       "orcid": "0000-0001-6828-1919",
-      "last_enriched": "2026-05-24T06:10:49.979389+00:00",
+      "last_enriched": "2026-05-24T07:01:07.463826+00:00",
       "research_interests_enriched": "Dr. Angela Bazzi’s research centers on HIV prevention and substance‑use health among people who use or inject drugs, with a strong emphasis on implementation science to improve harm‑reduction services such as syringe‑service programs and pre‑exposure prophylaxis (PrEP). She employs qualitative and mixed‑methods approaches to examine program delivery, policy contexts, and behavioral interventions (e.g., motivational interviewing, drug checking) that reduce overdose, hepatitis C, and HIV transmission. Her work also explores sexual partnership concurrency in high‑risk couples and occupational stigma among professionals serving drug‑using populations.",
       "expertise_keywords": [
         "HIV prevention",
@@ -4199,7 +4199,7 @@
         }
       ],
       "orcid": "0009-0009-1463-1042",
-      "last_enriched": "2026-05-24T06:11:00.627739+00:00",
+      "last_enriched": "2026-05-24T07:01:26.849747+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Charles Berry focuses on the development and application of biostatistical and computational methods for the analysis of complex biomedical data, including statistical genomics of retroviral integration and quantitative modeling of clinical outcomes. His work bridges methodological innovation in statistical genetics, data management, and computational biology with applied research in cardiovascular disease, ophthalmology, HIV infection, substance‑use related injury, and sleep‑apnea/hypertension epidemiology.",
@@ -4393,7 +4393,7 @@
         }
       ],
       "orcid": "0000-0002-9125-5601",
-      "last_enriched": "2026-05-24T06:11:11.469149+00:00",
+      "last_enriched": "2026-05-24T07:01:51.974740+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Nancy Binkin’s research focuses on infectious disease epidemiology and health services, with an emphasis on COVID‑19 monoclonal antibody prophylaxis in solid organ transplant recipients and real‑world vaccine effectiveness. She also investigates public health workforce capacity in large U.S. health departments, and evaluates interventions to improve respectful maternity care and childhood vaccination coverage among specific populations such as military dependents.",
@@ -4817,7 +4817,7 @@
         }
       ],
       "orcid": "0000-0003-1315-8387",
-      "last_enriched": "2026-05-24T06:11:22.392049+00:00",
+      "last_enriched": "2026-05-24T07:02:02.845949+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Cinnamon Bloss investigates the intersection of digital technologies, genomics, and ethics to improve mental health outcomes and public health decision‑making. Her work focuses on school‑based social media surveillance and youth suicide prevention, the implementation and perceived utility of genomic sequencing, public engagement with emerging biotechnologies such as gene‑drive mosquito control, and the privacy implications of big‑data health information.",
@@ -4890,19 +4890,19 @@
           "title": "Addressing appetitive traits to promote weight management in children who overeat",
           "abstract": "ABSTRACT\nApproximately 35% of children in the U.S. have overweight or obesity (OW/OB). To date, the most successful\nweight loss program for children is Family-Based Treatment (FBT), which is delivered to both children and\nparents and includes nutrition and physical activity education, behavior therapy techniques, and parenting\nskills. Data suggest that 2/3 of children who participate in FBT do not respond. This lack of success suggests\nthat there are unaddressed mechanisms that could be impactin",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 685849,
+          "amount": 699890,
           "start_date": "2023-08-01T00:00:00",
           "end_date": "2028-05-31T00:00:00",
-          "project_number": "5R01DK135599-03"
+          "project_number": "1R01DK135599-01"
         },
         {
           "title": "Addressing appetitive traits to promote weight management in children who overeat",
           "abstract": "ABSTRACT\nApproximately 35% of children in the U.S. have overweight or obesity (OW/OB). To date, the most successful\nweight loss program for children is Family-Based Treatment (FBT), which is delivered to both children and\nparents and includes nutrition and physical activity education, behavior therapy techniques, and parenting\nskills. Data suggest that 2/3 of children who participate in FBT do not respond. This lack of success suggests\nthat there are unaddressed mechanisms that could be impactin",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 699890,
+          "amount": 685849,
           "start_date": "2023-08-01T00:00:00",
           "end_date": "2028-05-31T00:00:00",
-          "project_number": "1R01DK135599-01"
+          "project_number": "5R01DK135599-03"
         },
         {
           "title": "Addressing appetitive traits to promote weight management in children who overeat",
@@ -5467,7 +5467,7 @@
         }
       ],
       "orcid": "0000-0002-9573-4765",
-      "last_enriched": "2026-05-24T06:11:33.171685+00:00",
+      "last_enriched": "2026-05-24T07:02:13.504666+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Kerri Boutelle investigates the psychological and neurocognitive mechanisms underlying obesity and binge‑eating across the lifespan, with a focus on appetitive traits, food cue responsiveness, and reward‑inhibition processes. Her work develops and tests family‑based, telehealth, and emotion‑regulation interventions—including regulation‑of‑cues and cognitive‑behavioral therapy—to promote weight loss and healthy eating in children, adolescents, adults, and special populations such as youth with autism spectrum disorder and veterans.",
@@ -5862,7 +5862,7 @@
         }
       ],
       "orcid": "0000-0002-8073-3671",
-      "last_enriched": "2026-05-24T06:11:43.720016+00:00",
+      "last_enriched": "2026-05-24T07:02:24.028168+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Dr. Ryan Bradley’s research centers on complementary and integrative health, with a strong emphasis on nutrition, dietary supplements, and natural product interventions. He investigates the safety, efficacy, and health impacts of compounds such as xanthohumol, cannabis, psilocybin, and multinutrient formulations across a range of conditions including Crohn’s disease, hypertension, cardiovascular disease, depression, ADHD, and non‑alcoholic fatty liver disease. His work combines clinical trials, cohort and cross‑sectional epidemiology, and biomarker analyses to address whole‑person health and health disparities in diverse U.S. populations.",
@@ -6535,7 +6535,7 @@
         "health workers",
         "infant males (circumcision context)"
       ],
-      "last_enriched": "2026-05-24T06:11:54.866833+00:00",
+      "last_enriched": "2026-05-24T07:02:34.808747+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -6932,7 +6932,7 @@
         "geriatric men (clinical case reports)",
         "children with osteomyelitis"
       ],
-      "last_enriched": "2026-05-24T06:12:05.589694+00:00",
+      "last_enriched": "2026-05-24T07:02:45.421220+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1717",
       "job_code_description": "ASST PROF-HCOMP",
@@ -7290,7 +7290,7 @@
         "underserved/health‑disparity populations",
         "adult patients"
       ],
-      "last_enriched": "2026-05-24T06:12:13.521467+00:00",
+      "last_enriched": "2026-05-24T07:02:52.539611+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "profile_url": "https://vchs.ucsd.edu/about/leadership/index.html",
@@ -7419,10 +7419,10 @@
           "title": "MICROSATELLITE INSTABILITY & DNA MISMATCH REPAIR SYSTEM",
           "abstract": "DESCRIPTION (provided by applicant): Mismatch Repair (MMR) is an evolutionary conserved system that targets polymerase mistakes for repair on the newly synthesized DNA strand. Based on bacteria and yeast studies, there appears to be specific recognition patterns by components of DNA MMR, although data on human repair is lacking. In addition to single base pair mismatches that distort the DNA strand, DNA MMR can detect \"loops\" formed at repetitive sequences termed microsatellites, presumably caus",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 293745,
+          "amount": 12171,
           "start_date": "2005-09-01T00:00:00",
-          "end_date": "2010-08-31T00:00:00",
-          "project_number": "1R01DK067287-01A2"
+          "end_date": "2010-06-30T00:00:00",
+          "project_number": "5R01DK067287-05"
         },
         {
           "title": "MICROSATELLITE INSTABILITY & DNA MISMATCH REPAIR SYSTEM",
@@ -7437,10 +7437,10 @@
           "title": "MICROSATELLITE INSTABILITY & DNA MISMATCH REPAIR SYSTEM",
           "abstract": "DESCRIPTION (provided by applicant): Mismatch Repair (MMR) is an evolutionary conserved system that targets polymerase mistakes for repair on the newly synthesized DNA strand. Based on bacteria and yeast studies, there appears to be specific recognition patterns by components of DNA MMR, although data on human repair is lacking. In addition to single base pair mismatches that distort the DNA strand, DNA MMR can detect \"loops\" formed at repetitive sequences termed microsatellites, presumably caus",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 12171,
+          "amount": 293745,
           "start_date": "2005-09-01T00:00:00",
-          "end_date": "2010-06-30T00:00:00",
-          "project_number": "5R01DK067287-05"
+          "end_date": "2010-08-31T00:00:00",
+          "project_number": "1R01DK067287-01A2"
         },
         {
           "title": "CELL CYCLE REGULATION BY THE MISMATCH REPAIR GENES",
@@ -7668,7 +7668,7 @@
         "transgender/non‑binary adolescents",
         "LGBTQ+ patients"
       ],
-      "last_enriched": "2026-05-24T06:12:24.136902+00:00",
+      "last_enriched": "2026-05-24T07:03:03.102698+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -8315,7 +8315,7 @@
       ],
       "h_index": 0,
       "orcid": "0000-0003-4675-7722",
-      "last_enriched": "2026-05-24T06:12:35.314315+00:00",
+      "last_enriched": "2026-05-24T07:03:14.120143+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1721",
       "job_code_description": "PROF-HCOMP",
@@ -8398,6 +8398,15 @@
           "title": "Manganese-Related Motor and Cognitive System Toxicity Among Professional Welders.",
           "abstract": "ABSTRACT\nMillions of workers in the US and worldwide, including professional welders, experience prolonged, high-\ndose occupational exposures to manganese (Mn). Over-exposure to environmental manganese (Mn) has\nlong been established as a cause of adverse motor system effects that have clinical features similar to\nparkinsonism (PS), which is the most common clinical manifestation of Parkinson disease (PD). There is\nalso evidence that Mn exposure can induce dysfunction of cognitive control, mood, ",
           "agency": "National Institute for Occupational Safety and Health",
+          "amount": 504849,
+          "start_date": "2019-08-01T00:00:00",
+          "end_date": "2023-07-31T00:00:00",
+          "project_number": "5R01OH011661-04"
+        },
+        {
+          "title": "Manganese-Related Motor and Cognitive System Toxicity Among Professional Welders.",
+          "abstract": "ABSTRACT\nMillions of workers in the US and worldwide, including professional welders, experience prolonged, high-\ndose occupational exposures to manganese (Mn). Over-exposure to environmental manganese (Mn) has\nlong been established as a cause of adverse motor system effects that have clinical features similar to\nparkinsonism (PS), which is the most common clinical manifestation of Parkinson disease (PD). There is\nalso evidence that Mn exposure can induce dysfunction of cognitive control, mood, ",
+          "agency": "National Institute for Occupational Safety and Health",
           "amount": 501762,
           "start_date": "2019-08-01T00:00:00",
           "end_date": "2023-07-31T00:00:00",
@@ -8411,15 +8420,6 @@
           "start_date": "2019-08-01T00:00:00",
           "end_date": "2023-07-31T00:00:00",
           "project_number": "5R01OH011661-02"
-        },
-        {
-          "title": "Manganese-Related Motor and Cognitive System Toxicity Among Professional Welders.",
-          "abstract": "ABSTRACT\nMillions of workers in the US and worldwide, including professional welders, experience prolonged, high-\ndose occupational exposures to manganese (Mn). Over-exposure to environmental manganese (Mn) has\nlong been established as a cause of adverse motor system effects that have clinical features similar to\nparkinsonism (PS), which is the most common clinical manifestation of Parkinson disease (PD). There is\nalso evidence that Mn exposure can induce dysfunction of cognitive control, mood, ",
-          "agency": "National Institute for Occupational Safety and Health",
-          "amount": 504849,
-          "start_date": "2019-08-01T00:00:00",
-          "end_date": "2023-07-31T00:00:00",
-          "project_number": "5R01OH011661-04"
         },
         {
           "title": "Endotoxin Exposure and Risk of Parkinsonism",
@@ -8812,7 +8812,7 @@
         }
       ],
       "orcid": "0000-0001-7119-8542",
-      "last_enriched": "2026-05-24T06:12:46.149956+00:00",
+      "last_enriched": "2026-05-24T07:03:24.962000+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -9244,7 +9244,7 @@
         }
       ],
       "orcid": "0000-0001-9542-716X",
-      "last_enriched": "2026-05-24T06:12:53.867373+00:00",
+      "last_enriched": "2026-05-24T07:03:32.708453+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -9674,7 +9674,7 @@
         "patients with breast arterial calcification",
         "Kawasaki disease patients with coronary artery aneurysms"
       ],
-      "last_enriched": "2026-05-24T06:13:04.687548+00:00",
+      "last_enriched": "2026-05-24T07:03:43.399504+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -10317,7 +10317,7 @@
         "middle‑aged adults",
         "diverse undergraduate research trainees"
       ],
-      "last_enriched": "2026-05-24T06:13:15.473592+00:00",
+      "last_enriched": "2026-05-24T07:03:54.157430+00:00",
       "profile_url": "https://profiles.ucsd.edu/steven.edland",
       "employee_class": "Academic: Emeriti",
       "job_code": "3800",
@@ -10488,7 +10488,7 @@
         "general adult public health users",
         "county behavioral health system stakeholders"
       ],
-      "last_enriched": "2026-05-24T06:13:26.077112+00:00",
+      "last_enriched": "2026-05-24T07:04:04.668518+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -10906,7 +10906,7 @@
         "marginalized community members",
         "key populations for HIV"
       ],
-      "last_enriched": "2026-05-24T06:13:36.806005+00:00",
+      "last_enriched": "2026-05-24T07:04:15.361225+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1719",
       "job_code_description": "ASSOC PROF-HCOMP",
@@ -10997,7 +10997,7 @@
         "patients with Crohn's disease (all ages)",
         "North American populations (Canada, Mexico, USA)"
       ],
-      "last_enriched": "2026-05-24T06:13:52.569229+00:00",
+      "last_enriched": "2026-05-24T07:04:24.415455+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -11043,10 +11043,10 @@
           "title": "Rapid Detection of TB from Blood using Cell-Free DNA and CRISPR",
           "abstract": "Project Summary\nWhile >90% of TB cases are curable, treatment is dependent on diagnostics based exclusively on the detection\nof Mycobacterium tuberculosis (Mtb) in patient sputum, despite the limitations of sputum as a diagnostic\nsample. Sputum is difficult to process, almost impossible to obtain from patients with paucibacillary TB, such as\npeople living with HIV (PLWH) and children and is not diagnostic for patients with extrapulmonary TB. A low-\ncost, rapid test using blood instead of sputum ",
           "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 795192,
+          "amount": 739826,
           "start_date": "2023-07-17T00:00:00",
           "end_date": "2027-06-30T00:00:00",
-          "project_number": "1R01AI174964-01",
+          "project_number": "5R01AI174964-02",
           "co_pis": [
             "Timothy Rodwell"
           ]
@@ -11055,10 +11055,10 @@
           "title": "Rapid Detection of TB from Blood using Cell-Free DNA and CRISPR",
           "abstract": "Project Summary\nWhile >90% of TB cases are curable, treatment is dependent on diagnostics based exclusively on the detection\nof Mycobacterium tuberculosis (Mtb) in patient sputum, despite the limitations of sputum as a diagnostic\nsample. Sputum is difficult to process, almost impossible to obtain from patients with paucibacillary TB, such as\npeople living with HIV (PLWH) and children and is not diagnostic for patients with extrapulmonary TB. A low-\ncost, rapid test using blood instead of sputum ",
           "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 739826,
+          "amount": 795192,
           "start_date": "2023-07-17T00:00:00",
           "end_date": "2027-06-30T00:00:00",
-          "project_number": "5R01AI174964-02",
+          "project_number": "1R01AI174964-01",
           "co_pis": [
             "Timothy Rodwell"
           ]
@@ -11538,7 +11538,7 @@
         }
       ],
       "orcid": "0000-0003-3663-7153",
-      "last_enriched": "2026-05-24T06:08:54.970783+00:00",
+      "last_enriched": "2026-05-24T06:59:01.716259+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -11896,7 +11896,7 @@
         }
       ],
       "orcid": "0000-0002-8360-3522",
-      "last_enriched": "2026-05-24T06:14:03.543975+00:00",
+      "last_enriched": "2026-05-24T07:04:36.088631+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -12380,7 +12380,7 @@
       "department_code": "383",
       "eah_status": "Active",
       "orcid": "0000-0002-4852-6277",
-      "last_enriched": "2026-05-24T06:14:12.593741+00:00",
+      "last_enriched": "2026-05-24T07:04:45.072641+00:00",
       "profile_url": "https://researcherprofiles.org/profile/184149"
     },
     {
@@ -12614,7 +12614,7 @@
         "French population (heat wave studies)",
         "middle‑aged adults"
       ],
-      "last_enriched": "2026-05-24T06:14:23.114193+00:00",
+      "last_enriched": "2026-05-24T07:04:59.210638+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -12655,21 +12655,21 @@
         },
         {
           "title": "Mind/Body Interventions for Chronic Low Back and Neck Pain in Military Personnel",
-          "abstract": "﻿   \r\nDESCRIPTION (provided by applicant): Chronic low back pain (CLBP) and chronic neck pain (CNP) are prevalent conditions and military personnel and veterans have higher rates of chronic low back pain (CLBP) than the general US population. CLBP and CNP are leading causes of disability among active-duty military personnel and are often accompanied by co- morbid conditions that pose additional challenges and can interfere with treatment. Recommended treatments for CLBP and CNP begins with medic",
-          "agency": "National Center for Complementary and Integrative Health",
-          "amount": 166106,
-          "start_date": "2016-07-01T00:00:00",
-          "end_date": "2019-05-31T00:00:00",
-          "project_number": "1R34AT009073-01"
-        },
-        {
-          "title": "Mind/Body Interventions for Chronic Low Back and Neck Pain in Military Personnel",
           "abstract": "﻿   \nDESCRIPTION (provided by applicant): Chronic low back pain (CLBP) and chronic neck pain (CNP) are prevalent conditions and military personnel and veterans have higher rates of chronic low back pain (CLBP) than the general US population. CLBP and CNP are leading causes of disability among active-duty military personnel and are often accompanied by co- morbid conditions that pose additional challenges and can interfere with treatment. Recommended treatments for CLBP and CNP begins with medica",
           "agency": "National Center for Complementary and Integrative Health",
           "amount": 222844,
           "start_date": "2016-07-01T00:00:00",
           "end_date": "2019-05-31T00:00:00",
           "project_number": "5R34AT009073-02"
+        },
+        {
+          "title": "Mind/Body Interventions for Chronic Low Back and Neck Pain in Military Personnel",
+          "abstract": "﻿   \r\nDESCRIPTION (provided by applicant): Chronic low back pain (CLBP) and chronic neck pain (CNP) are prevalent conditions and military personnel and veterans have higher rates of chronic low back pain (CLBP) than the general US population. CLBP and CNP are leading causes of disability among active-duty military personnel and are often accompanied by co- morbid conditions that pose additional challenges and can interfere with treatment. Recommended treatments for CLBP and CNP begins with medic",
+          "agency": "National Center for Complementary and Integrative Health",
+          "amount": 166106,
+          "start_date": "2016-07-01T00:00:00",
+          "end_date": "2019-05-31T00:00:00",
+          "project_number": "1R34AT009073-01"
         }
       ],
       "recent_publications": [
@@ -12968,7 +12968,7 @@
         }
       ],
       "orcid": "0000-0001-6239-1965",
-      "last_enriched": "2026-05-24T06:14:34.144356+00:00",
+      "last_enriched": "2026-05-24T07:05:09.980412+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Erik Groessl’s research integrates mind‑body therapies such as yoga, meditation, and mantram with rigorous health‑economic evaluation to improve outcomes for chronic pain, PTSD, and metabolic disorders. He focuses on cost‑effectiveness and quality‑of‑life impacts of integrative interventions across diverse populations, including military personnel, veterans, older adults, and underserved ethnic groups. His work combines clinical trials, implementation science, and economic modeling to inform policy and clinical practice in integrative health.",
@@ -13061,19 +13061,19 @@
           "title": "A Randomized Trial of Physical Activity for Cognitive Functioning in Breast Cancer Survivors",
           "abstract": "ABSTRACT\nDifficulties with cognition are extremely common among breast cancer survivors treated with chemotherapy\nand can significantly impact quality of life, daily functioning, and ability to return to work. Unfortunately, there is\nlimited evidence to guide management of cancer survivors' cognition. One promising intervention is increasing\nphysical activity as it has been effective in improving cognition in non-cancer populations; however, few\nintervention trials have included cancer survivors",
           "agency": "National Cancer Institute",
-          "amount": 251097,
+          "amount": 749036,
           "start_date": "2019-02-01T00:00:00",
           "end_date": "2024-01-31T00:00:00",
-          "project_number": "5R01CA225746-03"
+          "project_number": "5R01CA225746-04"
         },
         {
           "title": "A Randomized Trial of Physical Activity for Cognitive Functioning in Breast Cancer Survivors",
           "abstract": "ABSTRACT\nDifficulties with cognition are extremely common among breast cancer survivors treated with chemotherapy\nand can significantly impact quality of life, daily functioning, and ability to return to work. Unfortunately, there is\nlimited evidence to guide management of cancer survivors' cognition. One promising intervention is increasing\nphysical activity as it has been effective in improving cognition in non-cancer populations; however, few\nintervention trials have included cancer survivors",
           "agency": "National Cancer Institute",
-          "amount": 749036,
+          "amount": 251097,
           "start_date": "2019-02-01T00:00:00",
           "end_date": "2024-01-31T00:00:00",
-          "project_number": "5R01CA225746-04"
+          "project_number": "5R01CA225746-03"
         },
         {
           "title": "A Randomized Trial of Physical Activity for Cognitive Functioning in Breast Cancer Survivors",
@@ -13482,7 +13482,7 @@
         }
       ],
       "orcid": "0000-0001-9858-1736",
-      "last_enriched": "2026-05-24T06:14:45.090071+00:00",
+      "last_enriched": "2026-05-24T07:05:20.792804+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Sheri Hartman's research centers on developing and testing behavior‑change interventions—particularly physical‑activity and sedentary‑behavior programs—to improve cognition, quality of life, and patient‑reported outcomes among cancer survivors and older adults. She integrates technology‑enhanced coaching, health‑coach models, and theory‑driven strategies across diverse populations, including breast cancer survivors, Latina women, postmenopausal women, and adolescent/young‑adult cancer survivors, with extensions into preconception health and aging‑related cardiovascular risk.",
@@ -13669,7 +13669,7 @@
         "middle‑aged adults",
         "communities exposed to dust and heat"
       ],
-      "last_enriched": "2026-05-24T06:14:55.617262+00:00",
+      "last_enriched": "2026-05-24T07:05:57.861535+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -13849,20 +13849,6 @@
           "title": "Advanced data analytics training for behavioral and social sciences research",
           "abstract": "Abstract\nObjectives: The Advanced Data Analytics Program To (ADAPT) will enhance behavioral and social sciences\nresearch, by training a diverse next generation of data scientists who will learn interdisciplinary skills needed for\nsuccessful careers in behavioral and social sciences health-related data science.\nRationale: San Diego is a hub for genomics, mobile technology, behavioral health research and data science in\nSouthern California, yet no data science curriculum for behavioral scientists ",
           "agency": "NIH Office of the Director",
-          "amount": 268781,
-          "start_date": "2020-07-01T00:00:00",
-          "end_date": "2025-06-30T00:00:00",
-          "project_number": "5T32MH122376-02",
-          "co_pis": [
-            "LUCILA OHNO-MACHADO",
-            "Dimitris                Politis",
-            "Kristen Wells"
-          ]
-        },
-        {
-          "title": "Advanced data analytics training for behavioral and social sciences research",
-          "abstract": "Abstract\nObjectives: The Advanced Data Analytics Program To (ADAPT) will enhance behavioral and social sciences\nresearch, by training a diverse next generation of data scientists who will learn interdisciplinary skills needed for\nsuccessful careers in behavioral and social sciences health-related data science.\nRationale: San Diego is a hub for genomics, mobile technology, behavioral health research and data science in\nSouthern California, yet no data science curriculum for behavioral scientists ",
-          "agency": "NIH Office of the Director",
           "amount": 219845,
           "start_date": "2020-07-01T00:00:00",
           "end_date": "2025-06-30T00:00:00",
@@ -13870,6 +13856,20 @@
           "co_pis": [
             "Dimitris                Politis",
             "Amy Sitapati",
+            "Kristen Wells"
+          ]
+        },
+        {
+          "title": "Advanced data analytics training for behavioral and social sciences research",
+          "abstract": "Abstract\nObjectives: The Advanced Data Analytics Program To (ADAPT) will enhance behavioral and social sciences\nresearch, by training a diverse next generation of data scientists who will learn interdisciplinary skills needed for\nsuccessful careers in behavioral and social sciences health-related data science.\nRationale: San Diego is a hub for genomics, mobile technology, behavioral health research and data science in\nSouthern California, yet no data science curriculum for behavioral scientists ",
+          "agency": "NIH Office of the Director",
+          "amount": 268781,
+          "start_date": "2020-07-01T00:00:00",
+          "end_date": "2025-06-30T00:00:00",
+          "project_number": "5T32MH122376-02",
+          "co_pis": [
+            "LUCILA OHNO-MACHADO",
+            "Dimitris                Politis",
             "Kristen Wells"
           ]
         },
@@ -14247,7 +14247,7 @@
         }
       ],
       "orcid": "0000-0002-7434-0775",
-      "last_enriched": "2026-05-24T06:15:06.350722+00:00",
+      "last_enriched": "2026-05-24T07:06:18.566368+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Eric Hekler focuses on the development, optimization, and implementation of adaptive digital health interventions that leverage control‑systems engineering, sensor‑based data, and human‑centered design to promote behavior change. His work spans self‑experimentation (N‑of‑1 trials), ecological momentary assessment, and implementation science to address health equity, informed‑consent processes, and chronic disease prevention such as obesity, type‑2 diabetes, and cancer‑related outcomes.",
@@ -14803,7 +14803,7 @@
         "general California residents",
         "displaced populations"
       ],
-      "last_enriched": "2026-05-24T06:15:17.230522+00:00",
+      "last_enriched": "2026-05-24T07:06:55.900639+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -15302,7 +15302,7 @@
         }
       ],
       "orcid": "0000-0003-0300-5950",
-      "last_enriched": "2026-05-24T06:15:28.165158+00:00",
+      "last_enriched": "2026-05-24T07:07:33.139302+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 33,
@@ -15481,7 +15481,7 @@
       "department_eah": "School of Public Health",
       "department_code": "383",
       "eah_status": "Active",
-      "last_enriched": "2026-05-24T06:15:44.696336+00:00"
+      "last_enriched": "2026-05-24T07:08:08.473831+00:00"
     },
     {
       "first_name": "Joachim",
@@ -15592,6 +15592,15 @@
           "title": "Mentored Patient Oriented Research in Kidney Disease",
           "abstract": "ABSTRACT\n Since first becoming an Assistant Professor in Nephrology in 2006, I have been deeply committed to\npatient oriented research (POR) in nephrology, and to mentorship. This has led to considerable successes. I\nam PI on multiple NIH R01 awards and contracts, and am leading clinical trials in nephrology. In regards to\nmentorship, I am currently primary mentor to two K awardees, secondary mentor to an additional K awardee,\nand am also mentoring a cadre of nephrology MD and PhD post-doctoral ",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
+          "amount": 173565,
+          "start_date": "2016-09-16T00:00:00",
+          "end_date": "2023-05-31T00:00:00",
+          "project_number": "5K24DK110427-05"
+        },
+        {
+          "title": "Mentored Patient Oriented Research in Kidney Disease",
+          "abstract": "ABSTRACT\n Since first becoming an Assistant Professor in Nephrology in 2006, I have been deeply committed to\npatient oriented research (POR) in nephrology, and to mentorship. This has led to considerable successes. I\nam PI on multiple NIH R01 awards and contracts, and am leading clinical trials in nephrology. In regards to\nmentorship, I am currently primary mentor to two K awardees, secondary mentor to an additional K awardee,\nand am also mentoring a cadre of nephrology MD and PhD post-doctoral ",
+          "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
           "amount": 175540,
           "start_date": "2016-09-16T00:00:00",
           "end_date": "2021-05-31T00:00:00",
@@ -15605,15 +15614,6 @@
           "start_date": "2016-09-16T00:00:00",
           "end_date": "2021-05-31T00:00:00",
           "project_number": "1K24DK110427-01"
-        },
-        {
-          "title": "Mentored Patient Oriented Research in Kidney Disease",
-          "abstract": "ABSTRACT\n Since first becoming an Assistant Professor in Nephrology in 2006, I have been deeply committed to\npatient oriented research (POR) in nephrology, and to mentorship. This has led to considerable successes. I\nam PI on multiple NIH R01 awards and contracts, and am leading clinical trials in nephrology. In regards to\nmentorship, I am currently primary mentor to two K awardees, secondary mentor to an additional K awardee,\nand am also mentoring a cadre of nephrology MD and PhD post-doctoral ",
-          "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 173565,
-          "start_date": "2016-09-16T00:00:00",
-          "end_date": "2023-05-31T00:00:00",
-          "project_number": "5K24DK110427-05"
         },
         {
           "title": "Adult and Pediatric Nephrology Clinical Investigation Training Program",
@@ -15959,7 +15959,7 @@
         }
       ],
       "orcid": "0000-0002-8084-9869",
-      "last_enriched": "2026-05-24T06:15:56.109154+00:00",
+      "last_enriched": "2026-05-24T07:08:17.744270+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Joachim Ix investigates the mechanisms and clinical consequences of kidney tubular dysfunction, focusing on biomarkers that predict acute kidney injury (AKI) and chronic kidney disease (CKD) progression. His work integrates studies of electrolyte handling, hemodialysis, and bone health in CKD, and explores intersections with cardiovascular and liver disease. He also leads patient‑oriented research and training programs in nephrology, urology, and hematology.",
@@ -16258,19 +16258,19 @@
           "title": "Core N: Biostatistics and Modeling",
           "abstract": "Project Summary/Abstract\nCore N - The mission of the San Diego Center for AIDS Research (SD CFAR) Biostatistics and Modeling\n(BAM) Core is to provide quantitative expertise, collaboration, and training in the areas of biostatistics and\ninfectious disease modeling related to HIV research. In accordance with NIH OAR priorities and our CFAR’s\nfocus, we prioritize research in optimizing HIV care, alleviating HIV health disparities, and advancing discovery\nin HIV cure and vaccines. The BAM Core’s ser",
           "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 507060,
+          "amount": 148396,
           "start_date": null,
           "end_date": null,
-          "project_number": "5P30AI036214-25"
+          "project_number": "2P30AI036214-24"
         },
         {
           "title": "Core N: Biostatistics and Modeling",
           "abstract": "Project Summary/Abstract\nCore N - The mission of the San Diego Center for AIDS Research (SD CFAR) Biostatistics and Modeling\n(BAM) Core is to provide quantitative expertise, collaboration, and training in the areas of biostatistics and\ninfectious disease modeling related to HIV research. In accordance with NIH OAR priorities and our CFAR’s\nfocus, we prioritize research in optimizing HIV care, alleviating HIV health disparities, and advancing discovery\nin HIV cure and vaccines. The BAM Core’s ser",
           "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 148396,
+          "amount": 507060,
           "start_date": null,
           "end_date": null,
-          "project_number": "2P30AI036214-24"
+          "project_number": "5P30AI036214-25"
         }
       ],
       "recent_publications": [
@@ -16547,7 +16547,7 @@
         }
       ],
       "orcid": "0000-0001-8408-1247",
-      "last_enriched": "2026-05-24T06:16:00.702356+00:00",
+      "last_enriched": "2026-05-24T07:08:26.853842+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "profile_url": "https://researcherprofiles.org/profile/179457",
@@ -16928,7 +16928,7 @@
         "preclinical mouse models",
         "general human populations"
       ],
-      "last_enriched": "2026-05-24T06:16:04.081553+00:00",
+      "last_enriched": "2026-05-24T07:09:03.690366+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -17128,7 +17128,7 @@
         }
       ],
       "orcid": "0000-0002-3273-184X",
-      "last_enriched": "2026-05-24T06:16:15.102195+00:00",
+      "last_enriched": "2026-05-24T07:09:12.438336+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -17360,7 +17360,7 @@
         "South African general population",
         "healthcare system stakeholders"
       ],
-      "last_enriched": "2026-05-24T06:16:25.904032+00:00",
+      "last_enriched": "2026-05-24T07:09:21.162061+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -17636,7 +17636,7 @@
         "young adults under ACA dependent coverage",
         "California residents"
       ],
-      "last_enriched": "2026-05-24T06:16:36.754648+00:00",
+      "last_enriched": "2026-05-24T07:09:40.540955+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 3,
@@ -17671,19 +17671,19 @@
           "title": "Treatment Effectiveness for Anxiety and Depression",
           "abstract": "\n DESCRIPTION (provided by applicant): This Mentored Patient-Oriented Research       \n Career Development Award will support the career development of the candidate      \n in the area of mental health service research under the primary mentorship of      \n Dr. Robert Kaplan at the University of California San Diego. This area is new      \n to the candidate, and this award will provide training and mentorship necessary    \n for her to develop into an independent mental health services researcher.",
           "agency": "National Institute of Mental Health",
-          "amount": 134157,
+          "amount": 144217,
           "start_date": "2002-02-01T00:00:00",
           "end_date": "2007-01-31T00:00:00",
-          "project_number": "1K23MH063152-01A1"
+          "project_number": "5K23MH063152-05"
         },
         {
           "title": "Treatment Effectiveness for Anxiety and Depression",
           "abstract": "\n DESCRIPTION (provided by applicant): This Mentored Patient-Oriented Research       \n Career Development Award will support the career development of the candidate      \n in the area of mental health service research under the primary mentorship of      \n Dr. Robert Kaplan at the University of California San Diego. This area is new      \n to the candidate, and this award will provide training and mentorship necessary    \n for her to develop into an independent mental health services researcher.",
           "agency": "National Institute of Mental Health",
-          "amount": 144217,
+          "amount": 134157,
           "start_date": "2002-02-01T00:00:00",
           "end_date": "2007-01-31T00:00:00",
-          "project_number": "5K23MH063152-05"
+          "project_number": "1K23MH063152-01A1"
         },
         {
           "title": "Treatment Effectiveness for Anxiety and Depression",
@@ -18001,7 +18001,7 @@
         }
       ],
       "orcid": "0000-0002-2468-115X",
-      "last_enriched": "2026-05-24T06:16:47.509410+00:00",
+      "last_enriched": "2026-05-24T07:09:57.458101+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "profile_url": "https://profiles.ucsd.edu/ariel.lang",
@@ -18172,7 +18172,7 @@
         }
       ],
       "orcid": "0000-0002-6088-5176",
-      "last_enriched": "2026-05-24T06:16:56.689884+00:00",
+      "last_enriched": "2026-05-24T07:10:10.247647+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -18558,7 +18558,7 @@
         }
       ],
       "orcid": "0000-0001-9221-0336",
-      "last_enriched": "2026-05-24T06:17:07.500834+00:00",
+      "last_enriched": "2026-05-24T07:10:20.634221+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Eric Leas focuses on the epidemiology of cannabis‑derived products (including CBD, delta‑8 THC, CBG, etc.) and tobacco use, with a particular emphasis on menthol cigarettes and e‑cigarette/vaping behaviors. He leverages data‑science techniques—such as large‑scale web scraping, natural‑language processing, and statistical modeling—to examine real‑world usage patterns, policy impacts, and associated health outcomes among U.S. adult populations.",
@@ -18889,7 +18889,7 @@
       "department_eah": "School of Public Health",
       "department_code": "383",
       "eah_status": "Active",
-      "last_enriched": "2026-05-24T06:17:18.696874+00:00",
+      "last_enriched": "2026-05-24T07:10:29.598545+00:00",
       "research_interests_enriched": "Henry Lee focuses on improving outcomes for high‑risk neonates, especially those born at the periviable threshold, by developing predictive tools and leveraging large‑scale clinical registries. His work integrates health‑services research on NICU utilization and costs with cutting‑edge metabolomic profiling and deep‑learning analytics to assess infant health. He also investigates antimicrobial resistance in culture‑proven sepsis among very preterm infants and examines health disparities affecting NICU populations in border communities.",
       "expertise_keywords": [
         "periviable birth",
@@ -19264,7 +19264,7 @@
         "preterm infants",
         "pediatric patients"
       ],
-      "last_enriched": "2026-05-24T06:17:29.379622+00:00",
+      "last_enriched": "2026-05-24T07:10:38.171673+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "profile_url": "https://profiles.ucsd.edu/sydney.leibel",
@@ -19630,7 +19630,7 @@
         "riverine watershed systems",
         "fusion plasma (tokamak) environments"
       ],
-      "last_enriched": "2026-05-24T06:17:42.226322+00:00",
+      "last_enriched": "2026-05-24T07:10:46.999450+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 8,
@@ -20199,7 +20199,7 @@
         "caregivers of children",
         "Middle East and North Africa refugees"
       ],
-      "last_enriched": "2026-05-24T06:17:53.196121+00:00",
+      "last_enriched": "2026-05-24T07:10:55.789920+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -20538,7 +20538,7 @@
       "department_code": "383",
       "eah_status": "Active",
       "orcid": "0000-0002-6728-1834",
-      "last_enriched": "2026-05-24T06:18:02.384068+00:00"
+      "last_enriched": "2026-05-24T07:11:04.797464+00:00"
     },
     {
       "first_name": "Linda",
@@ -20660,21 +20660,21 @@
         },
         {
           "title": "Association of Alcohol and Nutrition with Cognition and Brain Structure in Aging",
-          "abstract": "DESCRIPTION (provided by applicant):  With the rapidly growing elderly U.S. population, a better understanding of how alcohol and nutrition interact to protect against or accelerate cognitive decline and age-related brain changes could have profound implications for public health. A large proportion of the adult population regularly consumes alcohol but little is known about how mid and later life alcohol use impacts cognitive function and brain integrity in old age.\nEven less is known about whe",
-          "agency": "National Institute on Alcohol Abuse and Alcoholism",
-          "amount": 575038,
-          "start_date": "2013-09-15T00:00:00",
-          "end_date": "2016-06-30T00:00:00",
-          "project_number": "5R01AA021187-03"
-        },
-        {
-          "title": "Association of Alcohol and Nutrition with Cognition and Brain Structure in Aging",
           "abstract": "   \nDESCRIPTION (provided by applicant):  With the rapidly growing elderly U.S. population, a better understanding of how alcohol and nutrition interact to protect against or accelerate cognitive decline and age-related brain changes could have profound implications for public health. A large proportion of the adult population regularly consumes alcohol but little is known about how mid and later life alcohol use impacts cognitive function and brain integrity in old age.\nEven less is known about",
           "agency": "National Institute on Alcohol Abuse and Alcoholism",
           "amount": 570482,
           "start_date": "2013-09-15T00:00:00",
           "end_date": "2018-06-30T00:00:00",
           "project_number": "5R01AA021187-02"
+        },
+        {
+          "title": "Association of Alcohol and Nutrition with Cognition and Brain Structure in Aging",
+          "abstract": "DESCRIPTION (provided by applicant):  With the rapidly growing elderly U.S. population, a better understanding of how alcohol and nutrition interact to protect against or accelerate cognitive decline and age-related brain changes could have profound implications for public health. A large proportion of the adult population regularly consumes alcohol but little is known about how mid and later life alcohol use impacts cognitive function and brain integrity in old age.\nEven less is known about whe",
+          "agency": "National Institute on Alcohol Abuse and Alcoholism",
+          "amount": 575038,
+          "start_date": "2013-09-15T00:00:00",
+          "end_date": "2016-06-30T00:00:00",
+          "project_number": "5R01AA021187-03"
         },
         {
           "title": "Structure and Functional Imaging of Age-Related Changes in Working Memory",
@@ -21073,7 +21073,7 @@
         "participants in the Rancho Bernardo Study",
         "Women's Health Initiative cohort"
       ],
-      "last_enriched": "2026-05-24T06:18:16.883452+00:00",
+      "last_enriched": "2026-05-24T07:11:13.873145+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -21458,7 +21458,7 @@
         "Medicaid enrollees",
         "US general population"
       ],
-      "last_enriched": "2026-05-24T06:18:20.414691+00:00",
+      "last_enriched": "2026-05-24T07:11:22.557648+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -21597,7 +21597,7 @@
         "adolescents",
         "children receiving chemotherapy"
       ],
-      "last_enriched": "2026-05-24T06:18:30.988451+00:00",
+      "last_enriched": "2026-05-24T07:11:31.217070+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 9,
@@ -21769,7 +21769,7 @@
         "cancer patients across the care continuum",
         "international sarcoma cohort"
       ],
-      "last_enriched": "2026-05-24T06:18:40.095047+00:00",
+      "last_enriched": "2026-05-24T07:12:45.703284+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -21809,21 +21809,21 @@
         },
         {
           "title": "Population studies of cigarette smoking, other tobacco use, and lung cancer",
-          "abstract": "   \r\nDESCRIPTION (provided by applicant): Despite strong reductions in smoking prevalence, cigarette smoking remains the leading preventable cause of death in the US, and lung cancer is the leading cause of smoking-attributable deaths. Prior to 2009, marketing, manufacture and sale of tobacco products was not under the purview of the Food and Drug Administration (FDA). The 2009 Family Smoking Prevention and Control Act gave the FDA authority over tobacco products, under a new regulatory standard",
-          "agency": "National Cancer Institute",
-          "amount": 196207,
-          "start_date": "2013-04-01T00:00:00",
-          "end_date": "2016-03-31T00:00:00",
-          "project_number": "5R01CA172058-02"
-        },
-        {
-          "title": "Population studies of cigarette smoking, other tobacco use, and lung cancer",
           "abstract": "DESCRIPTION (provided by applicant): Despite strong reductions in smoking prevalence, cigarette smoking remains the leading preventable cause of death in the US, and lung cancer is the leading cause of smoking-attributable deaths. Prior to 2009, marketing, manufacture and sale of tobacco products was not under the purview of the Food and Drug Administration (FDA). The 2009 Family Smoking Prevention and Control Act gave the FDA authority over tobacco products, under a new regulatory standard of p",
           "agency": "National Cancer Institute",
           "amount": 202275,
           "start_date": "2013-04-01T00:00:00",
           "end_date": "2017-03-31T00:00:00",
           "project_number": "5R01CA172058-03"
+        },
+        {
+          "title": "Population studies of cigarette smoking, other tobacco use, and lung cancer",
+          "abstract": "   \r\nDESCRIPTION (provided by applicant): Despite strong reductions in smoking prevalence, cigarette smoking remains the leading preventable cause of death in the US, and lung cancer is the leading cause of smoking-attributable deaths. Prior to 2009, marketing, manufacture and sale of tobacco products was not under the purview of the Food and Drug Administration (FDA). The 2009 Family Smoking Prevention and Control Act gave the FDA authority over tobacco products, under a new regulatory standard",
+          "agency": "National Cancer Institute",
+          "amount": 196207,
+          "start_date": "2013-04-01T00:00:00",
+          "end_date": "2016-03-31T00:00:00",
+          "project_number": "5R01CA172058-02"
         },
         {
           "title": "Genomic, clinical and behavioral signature of long-term breast cancer survival",
@@ -21886,19 +21886,19 @@
           "title": "Biostatistics Shared Resource",
           "abstract": "BIOSTATISTICS SHARED RESOURCE ABSTRACT\nThe Biostatistics Shared Resource (BSR) provides comprehensive biostatistics support and collaboration for\ncancer research projects conducted by Moores Cancer Center (MCC) investigators. Established in 1995, the\nBSR has been led by Karen Messer since 2006, with additional leadership support from Loki Natarajan, both\nnationally recognized biostatisticians with distinguished track records in cancer research. The BSR has strong\nties to the academic resources o",
           "agency": "National Cancer Institute",
-          "amount": 377923,
+          "amount": 367474,
           "start_date": "1996-07-01T00:00:00",
           "end_date": "2026-04-30T00:00:00",
-          "project_number": "3P30CA023100-37S2"
+          "project_number": "5P30CA023100-37"
         },
         {
           "title": "Biostatistics Shared Resource",
           "abstract": "BIOSTATISTICS SHARED RESOURCE ABSTRACT\nThe Biostatistics Shared Resource (BSR) provides comprehensive biostatistics support and collaboration for\ncancer research projects conducted by Moores Cancer Center (MCC) investigators. Established in 1995, the\nBSR has been led by Karen Messer since 2006, with additional leadership support from Loki Natarajan, both\nnationally recognized biostatisticians with distinguished track records in cancer research. The BSR has strong\nties to the academic resources o",
           "agency": "National Cancer Institute",
-          "amount": 367474,
+          "amount": 377923,
           "start_date": "1996-07-01T00:00:00",
           "end_date": "2026-04-30T00:00:00",
-          "project_number": "5P30CA023100-37"
+          "project_number": "3P30CA023100-37S2"
         },
         {
           "title": "Biostatistics Shared Resource",
@@ -21910,15 +21910,6 @@
           "project_number": "5P30CA023100-35"
         },
         {
-          "title": "BIOSTATISTICS",
-          "abstract": "Biostatistics\r\n¿\r\nThe Cancer Center Biostatistics Shared Resource supports the statistical needs of the Moores UCSD\r\nCancer Center in study planning and design, data analysis and modeling, manuscript and grant preparation,\r\nand short and long term biomathematical and statistical collaboration with cancer researchers. The Cancer\r\nCenter Biostatistics Resource is a cohesive group of faculty and staff statisticians with dedicated percent\r\neffort to the Cancer Center and long-term interest in cancer",
-          "agency": "National Cancer Institute",
-          "amount": 354840,
-          "start_date": null,
-          "end_date": "2014-04-30T00:00:00",
-          "project_number": "3P30CA023100-27S6"
-        },
-        {
           "title": "Biostatistics Shared Resource",
           "abstract": "BIOSTATISTICS SHARED RESOURCE ABSTRACT\nThe Biostatistics Shared Resource (BSR) provides comprehensive biostatistics support and collaboration for\ncancer research projects conducted by Moores Cancer Center (MCC) investigators. Established in 1995, the\nBSR has been led by Karen Messer since 2006, with additional leadership support from Loki Natarajan, both\nnationally recognized biostatisticians with distinguished track records in cancer research. The BSR has strong\nties to the academic resources o",
           "agency": "National Cancer Institute",
@@ -21926,6 +21917,15 @@
           "start_date": null,
           "end_date": null,
           "project_number": "5P30CA023100-34"
+        },
+        {
+          "title": "BIOSTATISTICS",
+          "abstract": "Biostatistics\r\n¿\r\nThe Cancer Center Biostatistics Shared Resource supports the statistical needs of the Moores UCSD\r\nCancer Center in study planning and design, data analysis and modeling, manuscript and grant preparation,\r\nand short and long term biomathematical and statistical collaboration with cancer researchers. The Cancer\r\nCenter Biostatistics Resource is a cohesive group of faculty and staff statisticians with dedicated percent\r\neffort to the Cancer Center and long-term interest in cancer",
+          "agency": "National Cancer Institute",
+          "amount": 354840,
+          "start_date": null,
+          "end_date": "2014-04-30T00:00:00",
+          "project_number": "3P30CA023100-27S6"
         },
         {
           "title": "BIOSTATISTICS",
@@ -22335,7 +22335,7 @@
         "elderly/aged adults",
         "mouse models"
       ],
-      "last_enriched": "2026-05-24T06:18:51.222739+00:00",
+      "last_enriched": "2026-05-24T07:13:50.932450+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -22386,19 +22386,19 @@
           "title": "Leveraging Proteomics to Understand the Link Between Chronic Kidney Disease and Cognitive Impairment",
           "abstract": "PROJECT SUMMARY\nThis is the initial submission of a K01 application by Lindsay Miller Ph.D., under the mentorship of Joachim Ix\nM.D., at the University of California, San Diego (UCSD). This proposal will establish Dr. Miller as an\nindependent investigator and will leverage large-scale proteomics to understand the association and predictive\nability of the proteome with cognitive impairment (CI), a clinical symptom of Alzheimer’s Disease and Related\nDementias (ADRD) in older adults with chronic ki",
           "agency": "National Institute on Aging",
-          "amount": 124822,
+          "amount": 124825,
           "start_date": "2022-09-01T00:00:00",
           "end_date": "2027-05-31T00:00:00",
-          "project_number": "5K01AG078486-04"
+          "project_number": "5K01AG078486-03"
         },
         {
           "title": "Leveraging Proteomics to Understand the Link Between Chronic Kidney Disease and Cognitive Impairment",
           "abstract": "PROJECT SUMMARY\nThis is the initial submission of a K01 application by Lindsay Miller Ph.D., under the mentorship of Joachim Ix\nM.D., at the University of California, San Diego (UCSD). This proposal will establish Dr. Miller as an\nindependent investigator and will leverage large-scale proteomics to understand the association and predictive\nability of the proteome with cognitive impairment (CI), a clinical symptom of Alzheimer’s Disease and Related\nDementias (ADRD) in older adults with chronic ki",
           "agency": "National Institute on Aging",
-          "amount": 124825,
+          "amount": 124822,
           "start_date": "2022-09-01T00:00:00",
           "end_date": "2027-05-31T00:00:00",
-          "project_number": "5K01AG078486-03"
+          "project_number": "5K01AG078486-04"
         },
         {
           "title": "Beyond the Glomerulus: Kidney Tubule Dysfunction and Cognitive Impairments in the Elderly",
@@ -22747,7 +22747,7 @@
         "Middle Eastern and North African American populations",
         "patients with heart failure (cell‑therapy trial cohort)"
       ],
-      "last_enriched": "2026-05-24T06:19:01.805380+00:00",
+      "last_enriched": "2026-05-24T07:14:56.060529+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 22,
@@ -22957,6 +22957,15 @@
         },
         {
           "title": "BNP and Neuroimmune Characteristics of CHF & Depression",
+          "abstract": "  \nDESCRIPTION (provided by applicant): Congestive heart failure (CHF) is a major public health concern, affecting more than 4.5 million Americans with 550,000 cases being diagnosed each year. CHF is characterized by neuroimmune activation, including increased levels of proinflammatory cytokines and increased leukocyte activation and adhesion. Depression is the most robust behavioral predictor of premature mortality and morbidity among patients with CHF. A relatively large literature documents n",
+          "agency": "National Heart Lung and Blood Institute",
+          "amount": 562935,
+          "start_date": "2005-05-01T00:00:00",
+          "end_date": "2009-04-30T00:00:00",
+          "project_number": "1R01HL073355-01A2"
+        },
+        {
+          "title": "BNP and Neuroimmune Characteristics of CHF & Depression",
           "abstract": "\n7. PROJECT SUMMARY/ABSTRACT\nHeart failure (HF) is a major public health concern, affecting more than 5.5 million Americans, with over\n550,000 new cases diagnosed each year, and accounting for up to 10% of all hospital admissions. Depression\nis the most robust behavioral predictor of morbidity and premature mortality among patients with symptomatic\nHF, with an incidence ranging from 20% to 45%, depending on HF severity. Our ongoing project HL-073355 is\nexamining the pathophysiology associated wi",
           "agency": "National Heart Lung and Blood Institute",
           "amount": 645946,
@@ -22972,15 +22981,6 @@
           "start_date": "2005-05-01T00:00:00",
           "end_date": "2009-04-30T00:00:00",
           "project_number": "5R01HL073355-02"
-        },
-        {
-          "title": "BNP and Neuroimmune Characteristics of CHF & Depression",
-          "abstract": "  \nDESCRIPTION (provided by applicant): Congestive heart failure (CHF) is a major public health concern, affecting more than 4.5 million Americans with 550,000 cases being diagnosed each year. CHF is characterized by neuroimmune activation, including increased levels of proinflammatory cytokines and increased leukocyte activation and adhesion. Depression is the most robust behavioral predictor of premature mortality and morbidity among patients with CHF. A relatively large literature documents n",
-          "agency": "National Heart Lung and Blood Institute",
-          "amount": 562935,
-          "start_date": "2005-05-01T00:00:00",
-          "end_date": "2009-04-30T00:00:00",
-          "project_number": "1R01HL073355-01A2"
         },
         {
           "title": "BNP and Neuroimmune Characteristics of CHF & Depression",
@@ -23283,7 +23283,7 @@
         }
       ],
       "orcid": "0000-0002-9310-3011",
-      "last_enriched": "2026-05-24T06:09:06.157270+00:00",
+      "last_enriched": "2026-05-24T06:59:12.947368+00:00",
       "employee_class": "Academic: Emeriti",
       "job_code": "1132",
       "job_code_description": "PROF EMERITUS(WOS)",
@@ -23574,7 +23574,7 @@
         "older adults with mild cognitive impairment",
         "older adults with depression"
       ],
-      "last_enriched": "2026-05-24T06:19:05.088461+00:00",
+      "last_enriched": "2026-05-24T07:16:01.057663+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -24096,7 +24096,7 @@
         }
       ],
       "orcid": "0000-0001-5719-828X",
-      "last_enriched": "2026-05-24T06:19:16.098322+00:00",
+      "last_enriched": "2026-05-24T07:16:56.772530+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -24192,6 +24192,15 @@
           "title": "Comprehensive SDSU-UCSD Cancer Center Partnership (2 of 2)",
           "abstract": "San Diego State University (SDSU) and the University of California at San Diego (UCSD) share a long history of collaboration that includes research, joint graduate programs, and outreach programs designed to enhance the well-being of diverse communities. Located in one of the most ethnically diverse regions of the country, projects and programs have focused on a wide array of traditionally underserved communities. The collaborative Partnership planning process has built critical infrastructure t",
           "agency": "National Cancer Institute",
+          "amount": 1466347,
+          "start_date": "2008-09-26T00:00:00",
+          "end_date": "2013-08-31T00:00:00",
+          "project_number": "5U54CA132379-03"
+        },
+        {
+          "title": "Comprehensive SDSU-UCSD Cancer Center Partnership (2 of 2)",
+          "abstract": "San Diego State University (SDSU) and the University of California at San Diego (UCSD) share a long history of collaboration that includes research, joint graduate programs, and outreach programs designed to enhance the well-being of diverse communities. Located in one of the most ethnically diverse regions of the country, projects and programs have focused on a wide array of traditionally underserved communities. The collaborative Partnership planning process has built critical infrastructure t",
+          "agency": "National Cancer Institute",
           "amount": 25000,
           "start_date": "2008-09-26T00:00:00",
           "end_date": "2013-08-31T00:00:00",
@@ -24205,15 +24214,6 @@
           "start_date": "2008-09-26T00:00:00",
           "end_date": "2013-08-31T00:00:00",
           "project_number": "3U54CA132379-03S2"
-        },
-        {
-          "title": "Comprehensive SDSU-UCSD Cancer Center Partnership (2 of 2)",
-          "abstract": "San Diego State University (SDSU) and the University of California at San Diego (UCSD) share a long history of collaboration that includes research, joint graduate programs, and outreach programs designed to enhance the well-being of diverse communities. Located in one of the most ethnically diverse regions of the country, projects and programs have focused on a wide array of traditionally underserved communities. The collaborative Partnership planning process has built critical infrastructure t",
-          "agency": "National Cancer Institute",
-          "amount": 1466347,
-          "start_date": "2008-09-26T00:00:00",
-          "end_date": "2013-08-31T00:00:00",
-          "project_number": "5U54CA132379-03"
         },
         {
           "title": "Comprehensive SDSU-UCSD Cancer Center Partnership (2 of 2)",
@@ -24286,15 +24286,6 @@
           "title": "Cooperative Planning of the SDSU/UCSD Cancer Partnership",
           "abstract": "DESCRIPTION: (Applicant?s Description) San Diego State University (SDSU) and\nthe University of California at San Diego (UCSD) share a long history of\ncollaboration. Faculty from SDSU and UCSD have long worked together to:\nconduct research; develop joint doctoral programs; provide continuing\neducation to a range of professionals residing in the San Diego area; and\nimplement outreach programs designed to enhance the well-being of the diverse\ncommunity in San Diego. Currently there exists only limi",
           "agency": "National Cancer Institute",
-          "amount": 193125,
-          "start_date": "2002-08-01T00:00:00",
-          "end_date": "2009-06-30T00:00:00",
-          "project_number": "3U56CA092081-05S1"
-        },
-        {
-          "title": "Cooperative Planning of the SDSU/UCSD Cancer Partnership",
-          "abstract": "DESCRIPTION: (Applicant?s Description) San Diego State University (SDSU) and\nthe University of California at San Diego (UCSD) share a long history of\ncollaboration. Faculty from SDSU and UCSD have long worked together to:\nconduct research; develop joint doctoral programs; provide continuing\neducation to a range of professionals residing in the San Diego area; and\nimplement outreach programs designed to enhance the well-being of the diverse\ncommunity in San Diego. Currently there exists only limi",
-          "agency": "National Cancer Institute",
           "amount": 379520,
           "start_date": "2002-08-01T00:00:00",
           "end_date": "2007-06-30T00:00:00",
@@ -24308,6 +24299,15 @@
           "start_date": "2002-08-01T00:00:00",
           "end_date": "2007-06-30T00:00:00",
           "project_number": "5U56CA092081-04"
+        },
+        {
+          "title": "Cooperative Planning of the SDSU/UCSD Cancer Partnership",
+          "abstract": "DESCRIPTION: (Applicant?s Description) San Diego State University (SDSU) and\nthe University of California at San Diego (UCSD) share a long history of\ncollaboration. Faculty from SDSU and UCSD have long worked together to:\nconduct research; develop joint doctoral programs; provide continuing\neducation to a range of professionals residing in the San Diego area; and\nimplement outreach programs designed to enhance the well-being of the diverse\ncommunity in San Diego. Currently there exists only limi",
+          "agency": "National Cancer Institute",
+          "amount": 193125,
+          "start_date": "2002-08-01T00:00:00",
+          "end_date": "2009-06-30T00:00:00",
+          "project_number": "3U56CA092081-05S1"
         },
         {
           "title": "Cooperative Planning of the SDSU/UCSD Cancer Partnership",
@@ -24347,21 +24347,21 @@
         },
         {
           "title": "POR LA VIDA INTERVENTION MODEL IN CANCER EDUCATION",
-          "abstract": "",
-          "agency": "National Cancer Institute",
-          "amount": 8857,
-          "start_date": "1994-09-01T00:00:00",
-          "end_date": "2002-08-31T00:00:00",
-          "project_number": "3R25CA066942-04S1"
-        },
-        {
-          "title": "POR LA VIDA INTERVENTION MODEL IN CANCER EDUCATION",
           "abstract": "The potential for reducing cancer incidence and mortality through               \nprevention and early detection appears to be large.Research is                  \nshowing the important role of nutrition in preventing cancer.                   \nBecause many members of the Hispanic community have limited access              \nto health care services and are in need of health promotion                     \nservices, the Hispanic community is an appropriate target for                   \nspecialized ca",
           "agency": "National Cancer Institute",
           "amount": 27498,
           "start_date": "1994-09-01T00:00:00",
           "end_date": "2002-08-31T00:00:00",
           "project_number": "3R25CA066942-06S1"
+        },
+        {
+          "title": "POR LA VIDA INTERVENTION MODEL IN CANCER EDUCATION",
+          "abstract": "",
+          "agency": "National Cancer Institute",
+          "amount": 8857,
+          "start_date": "1994-09-01T00:00:00",
+          "end_date": "2002-08-31T00:00:00",
+          "project_number": "3R25CA066942-04S1"
         },
         {
           "title": "POR LA VIDA INTERVENTION MODEL IN CANCER EDUCATION",
@@ -24583,7 +24583,7 @@
         "placental mammals (comparative studies)",
         "laboratory animal models"
       ],
-      "last_enriched": "2026-05-24T06:19:28.976142+00:00",
+      "last_enriched": "2026-05-24T07:17:33.682892+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -24929,7 +24929,7 @@
         "general adult population",
         "patients with chronic diseases"
       ],
-      "last_enriched": "2026-05-24T06:19:39.985666+00:00",
+      "last_enriched": "2026-05-24T07:18:10.903843+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -25217,7 +25217,7 @@
         }
       ],
       "orcid": "0009-0007-0262-3147",
-      "last_enriched": "2026-05-24T06:19:50.723194+00:00",
+      "last_enriched": "2026-05-24T07:18:48.044775+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Annie Nguyen’s research centers on the psychosocial and behavioral determinants of health in older adults, with a particular emphasis on individuals aging with HIV. She investigates mental health, quality of life, and resilience, and explores how cannabis use and caregiving dynamics affect this population. Her work is community‑engaged and spans systematic reviews, qualitative interviews, cross‑sectional surveys, and emerging data‑science approaches to inform health services and policy.",
@@ -25596,7 +25596,7 @@
         }
       ],
       "orcid": "0000-0002-7206-7381",
-      "last_enriched": "2026-05-24T06:20:01.248043+00:00",
+      "last_enriched": "2026-05-24T07:19:25.136383+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Dr. Steve Nguyen investigates molecular biomarkers of aging, focusing on how physical activity influences plasma proteomic and epigenetic signatures linked to Alzheimer’s disease and related dementias. His work integrates longitudinal cohort data, advanced proteomics, DNA‑methylation age clocks, and neuroimaging biomarkers to elucidate mechanisms of neurodegeneration and related age‑associated conditions such as osteoporotic fractures.",
@@ -25977,7 +25977,7 @@
         }
       ],
       "orcid": "0000-0001-6455-3905",
-      "last_enriched": "2026-05-24T06:20:10.354899+00:00",
+      "last_enriched": "2026-05-24T07:20:00.560159+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Victoria Ojeda conducts community‑engaged research focused on reducing racial/ethnic and justice‑system related health disparities. Her work integrates health‑literacy interventions, service‑design, and peer‑support models to improve access to physical and mental health services for justice‑involved adults, transitional‑age youth with serious mental illness, and migrant populations. She employs mixed‑methods and randomized controlled trials to evaluate interventions that address substance use, HIV risk, and broader chronic health conditions.",
@@ -26165,7 +26165,7 @@
           "amount": 171612,
           "start_date": "2009-04-15T00:00:00",
           "end_date": "2014-03-31T00:00:00",
-          "project_number": "5K01DA025504-02"
+          "project_number": "5K01DA025504-03"
         },
         {
           "title": "Mexican Female Migration, Substance Use, Sex Work, and HIV Risks in Tijuana",
@@ -26174,7 +26174,7 @@
           "amount": 171612,
           "start_date": "2009-04-15T00:00:00",
           "end_date": "2014-03-31T00:00:00",
-          "project_number": "5K01DA025504-03"
+          "project_number": "5K01DA025504-02"
         }
       ]
     },
@@ -26192,19 +26192,19 @@
           "title": "DRUG ABUSE TREATMENT FOR PREGNANT AND NON-PREGNANT TEENS",
           "abstract": "The purpose of this five-year study is to evaluate the effectiveness of an\nexperimental drug treatment program for two groups of \"at-risk\"\nadolescents in outpatient medical programs - pregnant adolescents, and\ndrug using adolescent women who are at-risk for pregnancy.  This drug\ntreatment program will be integrated with the UCSD Medical Center's\nAdolescent Medicine Clinic and Teen O.B. Clinic.  In both the Adolescent\nClinic and the Teen O.B. Clinic, all teens will receive the basic\ntreatment pro",
           "agency": "National Institute on Drug Abuse",
-          "amount": 739944,
+          "amount": 965003,
           "start_date": "1990-09-30T00:00:00",
           "end_date": "1995-08-31T00:00:00",
-          "project_number": "5R18DA006911-04"
+          "project_number": "5R18DA006911-03"
         },
         {
           "title": "DRUG ABUSE TREATMENT FOR PREGNANT AND NON-PREGNANT TEENS",
           "abstract": "The purpose of this five-year study is to evaluate the effectiveness of an\nexperimental drug treatment program for two groups of \"at-risk\"\nadolescents in outpatient medical programs - pregnant adolescents, and\ndrug using adolescent women who are at-risk for pregnancy.  This drug\ntreatment program will be integrated with the UCSD Medical Center's\nAdolescent Medicine Clinic and Teen O.B. Clinic.  In both the Adolescent\nClinic and the Teen O.B. Clinic, all teens will receive the basic\ntreatment pro",
           "agency": "National Institute on Drug Abuse",
-          "amount": 965003,
+          "amount": 739944,
           "start_date": "1990-09-30T00:00:00",
           "end_date": "1995-08-31T00:00:00",
-          "project_number": "5R18DA006911-03"
+          "project_number": "5R18DA006911-04"
         }
       ],
       "recent_publications": [
@@ -26597,7 +26597,7 @@
         }
       ],
       "orcid": "0000-0003-0974-7330",
-      "last_enriched": "2026-05-24T06:20:21.179943+00:00",
+      "last_enriched": "2026-05-24T07:20:37.723445+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -27308,7 +27308,7 @@
         "physical therapists",
         "overweight/obese adults"
       ],
-      "last_enriched": "2026-05-24T06:20:32.065057+00:00",
+      "last_enriched": "2026-05-24T07:21:14.924101+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -27466,7 +27466,7 @@
         }
       ],
       "orcid": "0000-0001-9472-2538",
-      "last_enriched": "2026-05-24T06:20:43.008425+00:00",
+      "last_enriched": "2026-05-24T07:21:52.022567+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Corinne Peek‑Asa’s research centers on the development, implementation, and translation of evidence‑based injury and violence prevention programs and policies. She investigates traffic‑related injuries, workplace and campus sexual violence, child maltreatment, and traumatic head and eye injuries, with a strong emphasis on international capacity building to reduce the global burden of trauma. Her work integrates program evaluation, policy analysis, and optimization of preventive interventions across diverse settings such as emergency departments, schools, and rural roadways.",
@@ -28113,7 +28113,7 @@
         }
       ],
       "orcid": "0000-0002-0075-7471",
-      "last_enriched": "2026-05-24T06:20:54.033649+00:00",
+      "last_enriched": "2026-05-24T07:22:29.578079+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "John Pierce’s research centers on the epidemiology and control of tobacco use, with a particular emphasis on electronic nicotine delivery systems (e‑cigarettes), initiation and cessation among adolescents and young adults, and the impact of product packaging and advertising on smoking behavior. He integrates population‑based cohort analyses, randomized trials, and simulation modeling to inform FDA‑relevant tobacco‑control policies and public‑health interventions in the United States.",
@@ -28525,7 +28525,7 @@
         }
       ],
       "orcid": "0000-0002-7173-1981",
-      "last_enriched": "2026-05-24T06:21:04.715270+00:00",
+      "last_enriched": "2026-05-24T07:23:06.523150+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "3269",
       "job_code_description": "ASSOC ADJ PROF-FY",
@@ -28928,7 +28928,7 @@
         "Czech Republic population",
         "global population"
       ],
-      "last_enriched": "2026-05-24T06:21:15.698047+00:00",
+      "last_enriched": "2026-05-24T07:23:43.736917+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -29281,7 +29281,7 @@
         }
       ],
       "orcid": "0000-0001-9837-7866",
-      "last_enriched": "2026-05-24T06:21:19.182918+00:00",
+      "last_enriched": "2026-05-24T07:24:21.156265+00:00",
       "profile_url": "https://researcherprofiles.org/profile/180722",
       "employee_class": "Academic: Faculty",
       "job_code": "1721",
@@ -29457,7 +29457,7 @@
         "racial/ethnic minority groups",
         "individuals with Cornelia de Lange syndrome"
       ],
-      "last_enriched": "2026-05-24T06:21:29.774088+00:00",
+      "last_enriched": "2026-05-24T07:25:01.697905+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -29889,7 +29889,7 @@
         }
       ],
       "orcid": "0000-0002-9856-6728",
-      "last_enriched": "2026-05-24T06:09:13.341694+00:00",
+      "last_enriched": "2026-05-24T06:59:20.049363+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -30012,7 +30012,7 @@
         "families",
         "patients with Stickler syndrome"
       ],
-      "last_enriched": "2026-05-24T06:21:40.483779+00:00",
+      "last_enriched": "2026-05-24T07:25:38.534480+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -30183,7 +30183,7 @@
           "amount": 86653,
           "start_date": "1988-07-01T00:00:00",
           "end_date": "1993-06-30T00:00:00",
-          "project_number": "1K07HL002215-01"
+          "project_number": "5K07HL002215-03"
         },
         {
           "title": "PREVENTIVE PULMONARY ACADEMIC AWARD AT UCSD",
@@ -30192,7 +30192,7 @@
           "amount": 86653,
           "start_date": "1988-07-01T00:00:00",
           "end_date": "1993-06-30T00:00:00",
-          "project_number": "5K07HL002215-03"
+          "project_number": "1K07HL002215-01"
         },
         {
           "title": "PREVENTIVE PULMONARY ACADEMIC AWARD AT UCSD",
@@ -30540,7 +30540,7 @@
         }
       ],
       "orcid": "0000-0003-1429-9181",
-      "last_enriched": "2026-05-24T06:21:51.116200+00:00",
+      "last_enriched": "2026-05-24T07:25:57.374626+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Andrew Ries conducts clinical and translational research in respiratory medicine, with a primary focus on lung volume reduction surgery, pulmonary rehabilitation, and exercise interventions for lung cancer survivors and COPD patients. His programs combine multi‑center randomized clinical trials, prospective registries, and health‑economic modeling to assess functional capacity, quality of life, and cost‑effectiveness. He also leads epidemiologic investigations of asthma in Southeast Asian (Vietnamese) populations and validates patient‑reported outcome instruments for interstitial lung disease.",
@@ -31001,7 +31001,7 @@
         }
       ],
       "orcid": "0000-0001-8816-6862",
-      "last_enriched": "2026-05-24T06:22:02.001038+00:00",
+      "last_enriched": "2026-05-24T07:26:06.114812+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Dr. Rany Salem’s research integrates genetic epidemiology and advanced statistical genetics to dissect the architecture of complex, multivariate and longitudinal phenotypes, with a primary focus on cardiometabolic diseases such as type 2 diabetes, diabetic kidney and liver complications, hypertension, and coronary artery disease. He develops and applies gene‑environment interaction, causal inference (including Mendelian randomization), and machine‑learning methods to large multi‑ethnic cohort and biobank datasets, extending his work to related conditions including autoimmune disorders, PTSD, melanoma, Alzheimer’s disease, and polycystic ovary syndrome.",
@@ -31540,7 +31540,7 @@
         }
       ],
       "orcid": "0000-0001-9615-8221",
-      "last_enriched": "2026-05-24T06:22:13.405185+00:00",
+      "last_enriched": "2026-05-24T07:26:15.421053+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "James Sallis studies how the built environment, crime perception, and behavior‑change strategies shape physical activity and sedentary behavior across the lifespan. His work integrates urban design, walkability, and policy contexts with health outcomes such as cardiovascular risk, metabolic health, and psychological distress, aiming to inform interventions for adolescents, older adults, and other population groups.",
@@ -31722,7 +31722,7 @@
         "health professionals and trainees",
         "U.S. clinical populations"
       ],
-      "last_enriched": "2026-05-24T06:22:24.031793+00:00",
+      "last_enriched": "2026-05-24T07:26:23.964016+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 10,
@@ -31987,7 +31987,7 @@
         "general human population exposed to extreme heat events (California)",
         "broader human populations in environmental health studies"
       ],
-      "last_enriched": "2026-05-24T06:22:34.854326+00:00",
+      "last_enriched": "2026-05-24T07:26:32.729681+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -32356,7 +32356,7 @@
         "diverse ancestry groups",
         "general aging female population"
       ],
-      "last_enriched": "2026-05-24T06:22:43.875226+00:00",
+      "last_enriched": "2026-05-24T07:26:39.803107+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -32460,19 +32460,19 @@
           "title": "Using Behavioral Economics Approach to Examine Individual Preferences for Marijuana Products",
           "abstract": "ABSTRACT\n Despite a federal prohibition against marijuana, since 2012, recreational marijuana has been legalized\nin 11 states and Washington DC where over a quarter of US population live. Among these jurisdictions, ten\nstates further opened or planned to open retail markets in near future to adults aged 21 years or older. The\nefforts of protecting public health in the new policy regime, however, have been complicated by the lack of\nknowledge regarding how individuals make purchase decisions and ",
           "agency": "National Institute on Drug Abuse",
-          "amount": 690665,
+          "amount": 671438,
           "start_date": "2020-09-30T00:00:00",
           "end_date": "2025-06-30T00:00:00",
-          "project_number": "5R01DA049730-03"
+          "project_number": "5R01DA049730-04"
         },
         {
           "title": "Using Behavioral Economics Approach to Examine Individual Preferences for Marijuana Products",
           "abstract": "ABSTRACT\n Despite a federal prohibition against marijuana, since 2012, recreational marijuana has been legalized\nin 11 states and Washington DC where over a quarter of US population live. Among these jurisdictions, ten\nstates further opened or planned to open retail markets in near future to adults aged 21 years or older. The\nefforts of protecting public health in the new policy regime, however, have been complicated by the lack of\nknowledge regarding how individuals make purchase decisions and ",
           "agency": "National Institute on Drug Abuse",
-          "amount": 671438,
+          "amount": 690665,
           "start_date": "2020-09-30T00:00:00",
           "end_date": "2025-06-30T00:00:00",
-          "project_number": "5R01DA049730-04"
+          "project_number": "5R01DA049730-03"
         },
         {
           "title": "Using Behavioral Economics Approach to Examine Individual Preferences for Marijuana Products",
@@ -32893,7 +32893,7 @@
         "California residents",
         "neighborhood‑level populations"
       ],
-      "last_enriched": "2026-05-24T06:22:54.779331+00:00",
+      "last_enriched": "2026-05-24T07:26:48.560284+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -33133,7 +33133,7 @@
         "children/pediatric patients in emergency dental settings",
         "older adults undergoing joint arthroplasty"
       ],
-      "last_enriched": "2026-05-24T06:23:04.035806+00:00",
+      "last_enriched": "2026-05-24T07:26:55.559694+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -33274,6 +33274,20 @@
           "title": "Psychiatric Genomics Consortium for PTSD",
           "abstract": "Project Summary\nPsychiatric Genomics Consortium for PTSD\n Posttraumatic stress disorder (PTSD) occurs only in vulnerable individuals after exposure to severe\ntraumatic events. This risk is due, in part, to 40-50% heritability of differential vulnerability. Due to increasing\ncollaborations across the field of PTSD genomics and the advent of new analytical tools, it is a very exciting\ntime for PTSD genetic risk discovery. The purpose of this application is to facilitate meta-analyses of genome-\nwi",
           "agency": "National Institute of Mental Health",
+          "amount": 698361,
+          "start_date": "2016-08-19T00:00:00",
+          "end_date": "2024-06-30T00:00:00",
+          "project_number": "5R01MH106595-07",
+          "co_pis": [
+            "KARESTAN KOENEN",
+            "Caroline Nievergelt",
+            "KERRY RESSLER"
+          ]
+        },
+        {
+          "title": "Psychiatric Genomics Consortium for PTSD",
+          "abstract": "Project Summary\nPsychiatric Genomics Consortium for PTSD\n Posttraumatic stress disorder (PTSD) occurs only in vulnerable individuals after exposure to severe\ntraumatic events. This risk is due, in part, to 40-50% heritability of differential vulnerability. Due to increasing\ncollaborations across the field of PTSD genomics and the advent of new analytical tools, it is a very exciting\ntime for PTSD genetic risk discovery. The purpose of this application is to facilitate meta-analyses of genome-\nwi",
+          "agency": "National Institute of Mental Health",
           "amount": 775453,
           "start_date": "2016-08-19T00:00:00",
           "end_date": "2024-06-30T00:00:00",
@@ -33306,20 +33320,6 @@
           "start_date": "2016-08-19T00:00:00",
           "end_date": "2029-03-31T00:00:00",
           "project_number": "5R01MH106595-10",
-          "co_pis": [
-            "KARESTAN KOENEN",
-            "Caroline Nievergelt",
-            "KERRY RESSLER"
-          ]
-        },
-        {
-          "title": "Psychiatric Genomics Consortium for PTSD",
-          "abstract": "Project Summary\nPsychiatric Genomics Consortium for PTSD\n Posttraumatic stress disorder (PTSD) occurs only in vulnerable individuals after exposure to severe\ntraumatic events. This risk is due, in part, to 40-50% heritability of differential vulnerability. Due to increasing\ncollaborations across the field of PTSD genomics and the advent of new analytical tools, it is a very exciting\ntime for PTSD genetic risk discovery. The purpose of this application is to facilitate meta-analyses of genome-\nwi",
-          "agency": "National Institute of Mental Health",
-          "amount": 698361,
-          "start_date": "2016-08-19T00:00:00",
-          "end_date": "2024-06-30T00:00:00",
-          "project_number": "5R01MH106595-07",
           "co_pis": [
             "KARESTAN KOENEN",
             "Caroline Nievergelt",
@@ -33773,7 +33773,7 @@
         "adult males and females",
         "European‑ancestry cohorts"
       ],
-      "last_enriched": "2026-05-24T06:23:16.298007+00:00",
+      "last_enriched": "2026-05-24T07:27:05.599343+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -34175,7 +34175,7 @@
         "individuals on suppressive antiretroviral therapy",
         "athletes with ACL injuries"
       ],
-      "last_enriched": "2026-05-24T06:23:26.932594+00:00",
+      "last_enriched": "2026-05-24T07:27:14.113096+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -34217,18 +34217,6 @@
           ]
         },
         {
-          "title": "The Effect of Packaging on Smoking Perceptions and Behavior: A Randomized Trial",
-          "abstract": "DESCRIPTION (provided by applicant): We are addressing two critical areas identified by the FDA: the impact of cigarette packaging and labeling on consumer perceptions and on smoking behavior; and the effectiveness of graphic warning labels on communicating risk of tobacco products. Our aim is to provide some of the substantial evidence that Judge Jones required in finding against the FDA packaging regulations. In a randomized controlled trial (RCT), after successful completion of a run-in perio",
-          "agency": "NIH Office of the Director",
-          "amount": 830934,
-          "start_date": "2015-04-01T00:00:00",
-          "end_date": "2020-03-31T00:00:00",
-          "project_number": "5R01CA190347-02",
-          "co_pis": [
-            "JOHN PIERCE"
-          ]
-        },
-        {
           "title": "Effect of Packaging on Smoking Perceptions and Behavior: A Randomized Trial",
           "abstract": "   \r\nDESCRIPTION (provided by applicant): We are addressing two critical areas identified by the FDA: the impact of cigarette packaging and labeling on consumer perceptions and on smoking behavior; and the effectiveness of graphic warning labels on communicating risk of tobacco products. Our aim is to provide some of the substantial evidence that Judge Jones required in finding against the FDA packaging regulations. In a randomized controlled trial (RCT), after successful completion of a run-in ",
           "agency": "NIH Office of the Director",
@@ -34236,6 +34224,18 @@
           "start_date": "2015-04-01T00:00:00",
           "end_date": "2020-03-31T00:00:00",
           "project_number": "1R01CA190347-01",
+          "co_pis": [
+            "JOHN PIERCE"
+          ]
+        },
+        {
+          "title": "The Effect of Packaging on Smoking Perceptions and Behavior: A Randomized Trial",
+          "abstract": "DESCRIPTION (provided by applicant): We are addressing two critical areas identified by the FDA: the impact of cigarette packaging and labeling on consumer perceptions and on smoking behavior; and the effectiveness of graphic warning labels on communicating risk of tobacco products. Our aim is to provide some of the substantial evidence that Judge Jones required in finding against the FDA packaging regulations. In a randomized controlled trial (RCT), after successful completion of a run-in perio",
+          "agency": "NIH Office of the Director",
+          "amount": 830934,
+          "start_date": "2015-04-01T00:00:00",
+          "end_date": "2020-03-31T00:00:00",
+          "project_number": "5R01CA190347-02",
           "co_pis": [
             "JOHN PIERCE"
           ]
@@ -34686,7 +34686,7 @@
         }
       ],
       "orcid": "0000-0002-5383-9032",
-      "last_enriched": "2026-05-24T06:23:37.967538+00:00",
+      "last_enriched": "2026-05-24T07:27:23.419860+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -34972,7 +34972,7 @@
         "cancer care interpreters",
         "U.S. general population (food access studies)"
       ],
-      "last_enriched": "2026-05-24T06:23:47.077254+00:00",
+      "last_enriched": "2026-05-24T07:27:30.461822+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -35328,15 +35328,6 @@
           "project_number": "2U01AG010483-07"
         },
         {
-          "title": "Core--Biostatistics",
-          "abstract": "The Biostatistics Core provides statistical consulting, data management and quality control resources to enhance the quality of research conducted by SPOTRIAS investigators. Specifically the core provides statistical design and analysis consultation services to SPOTRIAS investigators. Design consultation includes power calculations and analysis strategies. Data analysis support ranges from providing simple descriptive statistics to the conduct of complex multivariate statistical analyses. The co",
-          "agency": "National Institute of Neurological Disorders and Stroke",
-          "amount": 153731,
-          "start_date": null,
-          "end_date": null,
-          "project_number": "5P50NS044148-04"
-        },
-        {
           "title": "CORE--DATA MANAGEMENT AND STATISTICS",
           "abstract": "The Data Management and Statistics Core has four major responsibilities: 1) to provide statistical design and analysis consultation services to ADRC investigators; 2) to prepare the ADRC database for submission to the Alzheimer's Disease Data Coordinating Center; 3) to coordinate the entry, quality control and management of data generated by the Clinical and Neuropathology cores; and 4) to educate investigators, trainees and junior faculty in the principles and use of statistical analysis method",
           "agency": "National Institute on Aging",
@@ -35344,6 +35335,15 @@
           "start_date": null,
           "end_date": null,
           "project_number": "5P50AG005131-22"
+        },
+        {
+          "title": "Core--Biostatistics",
+          "abstract": "The Biostatistics Core provides statistical consulting, data management and quality control resources to enhance the quality of research conducted by SPOTRIAS investigators. Specifically the core provides statistical design and analysis consultation services to SPOTRIAS investigators. Design consultation includes power calculations and analysis strategies. Data analysis support ranges from providing simple descriptive statistics to the conduct of complex multivariate statistical analyses. The co",
+          "agency": "National Institute of Neurological Disorders and Stroke",
+          "amount": 153731,
+          "start_date": null,
+          "end_date": null,
+          "project_number": "5P50NS044148-04"
         },
         {
           "title": "DATA CORE (DC)",
@@ -35759,7 +35759,7 @@
         }
       ],
       "orcid": "0000-0003-1686-4965",
-      "last_enriched": "2026-05-24T06:23:58.012424+00:00",
+      "last_enriched": "2026-05-24T07:27:39.696086+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -35923,7 +35923,7 @@
         "primary care patients",
         "University of California health system users"
       ],
-      "last_enriched": "2026-05-24T06:24:08.633060+00:00",
+      "last_enriched": "2026-05-24T07:27:48.848677+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -36002,18 +36002,6 @@
           "title": "The MADURA Program: Mentorship for Advancing Diversity in Undergraduate Research on Aging",
           "abstract": "I. Abstract\nThe proposed UC San Diego MADURA (Mentorship for Advancing Diversity in Undergraduate Research on\nAging) Program responds to the NIA ADAR R25 Training Program Announcement, to offer under-represented\nHispanic/Latino undergraduates tailored, longitudinal mentorship, training and work experiences with\nresearchers and clinicians focused on aging and Alzheimer's disease. It will provide effective, sustained\nacademic and social support, skills training and supervision, to foster academic ",
           "agency": "National Institute on Aging",
-          "amount": 414020,
-          "start_date": "2020-09-15T00:00:00",
-          "end_date": "2025-08-31T00:00:00",
-          "project_number": "5R25AG066594-05",
-          "co_pis": [
-            "Steven Edland"
-          ]
-        },
-        {
-          "title": "The MADURA Program: Mentorship for Advancing Diversity in Undergraduate Research on Aging",
-          "abstract": "I. Abstract\nThe proposed UC San Diego MADURA (Mentorship for Advancing Diversity in Undergraduate Research on\nAging) Program responds to the NIA ADAR R25 Training Program Announcement, to offer under-represented\nHispanic/Latino undergraduates tailored, longitudinal mentorship, training and work experiences with\nresearchers and clinicians focused on aging and Alzheimer's disease. It will provide effective, sustained\nacademic and social support, skills training and supervision, to foster academic ",
-          "agency": "National Institute on Aging",
           "amount": 370979,
           "start_date": "2020-09-15T00:00:00",
           "end_date": "2025-08-31T00:00:00",
@@ -36030,6 +36018,18 @@
           "start_date": "2020-09-15T00:00:00",
           "end_date": "2025-08-31T00:00:00",
           "project_number": "5R25AG066594-02",
+          "co_pis": [
+            "Steven Edland"
+          ]
+        },
+        {
+          "title": "The MADURA Program: Mentorship for Advancing Diversity in Undergraduate Research on Aging",
+          "abstract": "I. Abstract\nThe proposed UC San Diego MADURA (Mentorship for Advancing Diversity in Undergraduate Research on\nAging) Program responds to the NIA ADAR R25 Training Program Announcement, to offer under-represented\nHispanic/Latino undergraduates tailored, longitudinal mentorship, training and work experiences with\nresearchers and clinicians focused on aging and Alzheimer's disease. It will provide effective, sustained\nacademic and social support, skills training and supervision, to foster academic ",
+          "agency": "National Institute on Aging",
+          "amount": 414020,
+          "start_date": "2020-09-15T00:00:00",
+          "end_date": "2025-08-31T00:00:00",
+          "project_number": "5R25AG066594-05",
           "co_pis": [
             "Steven Edland"
           ]
@@ -36390,7 +36390,7 @@
         "older adults",
         "undergraduate students"
       ],
-      "last_enriched": "2026-05-24T06:24:19.736385+00:00",
+      "last_enriched": "2026-05-24T07:27:57.725273+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -36650,7 +36650,7 @@
       "department_eah": "School of Public Health",
       "department_code": "383",
       "eah_status": "Active",
-      "last_enriched": "2026-05-24T06:09:25.974947+00:00",
+      "last_enriched": "2026-05-24T06:59:32.826154+00:00",
       "profile_url": "http://profiles.ucsd.edu/xin.tu"
     },
     {
@@ -36929,7 +36929,7 @@
         }
       ],
       "orcid": "0000-0002-2256-4611",
-      "last_enriched": "2026-05-24T06:24:30.905407+00:00",
+      "last_enriched": "2026-05-24T07:28:06.646715+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1721",
       "job_code_description": "PROF-HCOMP",
@@ -37104,7 +37104,7 @@
         }
       ],
       "orcid": "0000-0003-4772-9635",
-      "last_enriched": "2026-05-24T06:24:35.989689+00:00",
+      "last_enriched": "2026-05-24T07:28:15.234965+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Dr. Jill Waalen focuses on maternal and child health, particularly the impact of substance exposure and nutrition on lactation outcomes, and on vaccine uptake and effectiveness across diverse populations. Her work also examines behavioral and psychosocial factors—such as sleep, depression, and obesity—that influence infectious disease risk and health disparities, integrating epidemiologic analyses of large health datasets with prospective cohort studies.",
@@ -37497,7 +37497,7 @@
           "end_date": "2009"
         }
       ],
-      "last_enriched": "2026-05-24T06:24:44.909575+00:00",
+      "last_enriched": "2026-05-24T07:28:22.309902+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1717",
       "job_code_description": "ASST PROF-HCOMP",
@@ -37630,7 +37630,7 @@
         "women",
         "diverse/underserved populations"
       ],
-      "last_enriched": "2026-05-24T06:24:53.981871+00:00",
+      "last_enriched": "2026-05-24T07:28:29.295603+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -38179,7 +38179,7 @@
         "women of reproductive age",
         "older men"
       ],
-      "last_enriched": "2026-05-24T06:25:04.692359+00:00",
+      "last_enriched": "2026-05-24T07:28:38.445882+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -38529,7 +38529,7 @@
         }
       ],
       "orcid": "0000-0003-4050-7802",
-      "last_enriched": "2026-05-24T06:09:35.269019+00:00",
+      "last_enriched": "2026-05-24T06:59:42.001957+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1721",
       "job_code_description": "PROF-HCOMP",
@@ -38880,7 +38880,7 @@
         }
       ],
       "orcid": "0000-0002-0913-1205",
-      "last_enriched": "2026-05-24T06:09:45.947431+00:00",
+      "last_enriched": "2026-05-24T06:59:52.536667+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 31,
@@ -39421,7 +39421,7 @@
         }
       ],
       "orcid": "0000-0002-4149-3441",
-      "last_enriched": "2026-05-24T06:25:15.815089+00:00",
+      "last_enriched": "2026-05-24T07:28:47.277868+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Shu‑Hong Zhu’s research centers on tobacco control and population behavioral patterns, with an expanding focus on cannabis use among youth. He employs large‑scale surveys and intervention studies to test novel strategies for increasing smoking cessation, including nicotine‑replacement therapy and quitline services, and evaluates the impact of policy measures such as tobacco taxes. His work emphasizes vulnerable groups such as adolescents, low‑income adults, hospitalized smokers, and Asian American/Pacific Islander populations, aiming to reduce secondhand smoke exposure and related health outcomes.",
@@ -39492,19 +39492,19 @@
           "title": "Examining Longitudinal Changes in Accelerometer-Measured Physical Activity in Preventing Cardiovascular Disease with Novel Function Data Analysis Approaches",
           "abstract": "Physical activity (PA) has been linked to health in many epidemiological studies. Physical\ninactivity and sedentary behavior are known risk factors for cardiovascular disease (CVD),\nwhich is the leading cause of death in the United States with more than half a million deaths\namong older Americans annually. The relationship between PA and CVD has been\ninvestigated with an increasing emphasis on objectively measured PA using accelerometer-\nbased activity trackers. Past analyses of accelerometer-me",
           "agency": "National Heart Lung and Blood Institute",
-          "amount": 493693,
+          "amount": 485003,
           "start_date": "2024-01-01T00:00:00",
           "end_date": "2028-12-31T00:00:00",
-          "project_number": "5R01HL166802-02"
+          "project_number": "1R01HL166802-01A1"
         },
         {
           "title": "Examining Longitudinal Changes in Accelerometer-Measured Physical Activity in Preventing Cardiovascular Disease with Novel Function Data Analysis Approaches",
           "abstract": "Physical activity (PA) has been linked to health in many epidemiological studies. Physical\ninactivity and sedentary behavior are known risk factors for cardiovascular disease (CVD),\nwhich is the leading cause of death in the United States with more than half a million deaths\namong older Americans annually. The relationship between PA and CVD has been\ninvestigated with an increasing emphasis on objectively measured PA using accelerometer-\nbased activity trackers. Past analyses of accelerometer-me",
           "agency": "National Heart Lung and Blood Institute",
-          "amount": 485003,
+          "amount": 493693,
           "start_date": "2024-01-01T00:00:00",
           "end_date": "2028-12-31T00:00:00",
-          "project_number": "1R01HL166802-01A1"
+          "project_number": "5R01HL166802-02"
         },
         {
           "title": "Examining Longitudinal Changes in Accelerometer-Measured Physical Activity in Preventing Cardiovascular Disease with Novel Function Data Analysis Approaches",
@@ -39814,7 +39814,7 @@
         }
       ],
       "orcid": "0009-0002-1537-514X",
-      "last_enriched": "2026-05-24T06:25:26.571209+00:00",
+      "last_enriched": "2026-05-24T07:28:55.924107+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 3,

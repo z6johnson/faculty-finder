@@ -189,7 +189,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T03:05:31.882003+00:00",
+      "last_enriched": "2026-05-24T03:13:12.189050+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -573,7 +573,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dagnew",
       "orcid": "0000-0002-2360-7783",
-      "last_enriched": "2026-05-17T03:07:06.717694+00:00"
+      "last_enriched": "2026-05-24T03:14:46.884239+00:00"
     },
     {
       "first_name": "Matthew",
@@ -984,7 +984,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T03:08:41.396446+00:00",
+      "last_enriched": "2026-05-24T03:16:21.807138+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -1329,7 +1329,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T03:10:16.221037+00:00",
+      "last_enriched": "2026-05-24T03:17:56.559652+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -1871,7 +1871,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T03:11:51.116239+00:00",
+      "last_enriched": "2026-05-24T03:19:31.068671+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -2226,7 +2226,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T02:35:09.572975+00:00",
+      "last_enriched": "2026-05-24T02:42:49.755413+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -2513,7 +2513,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/aandersson",
       "orcid": "0000-0003-3234-7896",
-      "last_enriched": "2026-05-17T03:13:25.743391+00:00"
+      "last_enriched": "2026-05-24T03:21:05.881458+00:00"
     },
     {
       "first_name": "Dahiana",
@@ -2582,16 +2582,6 @@
           "abstract": "The world's oceans are changing rapidly, resulting in still poorly understood impacts on ocean ecosystems, fisheries yields, and carbon storage in the deep ocean. One obvious place to start investigating these impacts is on the most abundant vertebrates on earth, yet these taxa are so obscure that even most biologists are unaware of them. Lanternfishes and bristlemouths dominate the twilight zone in oceans around the world and make up nearly half of all vertebrate biomass on earth. They number i"
         },
         {
-          "title": "CAREER: Integrating Genomic, Paleoclimatic, and Morphological Approaches to Unravel the Evolutionary History of Fossil and Extant Marine Fishes Over Time",
-          "agency": "NSF",
-          "nsf_program": "Systematics & Biodiversity Sci, Sedimentary Geo & Paleobiology, Cross-BIO Activities",
-          "amount": "1138628",
-          "start_date": "10/01/2023",
-          "end_date": "07/31/2027",
-          "nsf_award_id": "2401223",
-          "abstract": "This award is funded in whole or in part under the American Rescue Plan Act of 2021 (Public Law 117-2). \r\n\r\nUnderstanding the evolutionary history of life on earth requires comprehensive documentation of both living and fossil species. For example, our understanding of the effects of ancient events on morphological diversity is stymied by the limited inclusion of fossils, paleoclimatic data layers, and understanding of genome size evolution over time. To address this knowledge gap, this project "
-        },
-        {
           "title": "CSBR: Emergency Rescue of the Orphaned Fish Collection of the University of Puerto Rico and Capacity Expansion of the Ichthyology Collection at the Sam Noble Museum",
           "agency": "NSF",
           "nsf_program": "Capacity: Bio Collections",
@@ -2600,6 +2590,16 @@
           "end_date": "12/31/2026",
           "nsf_award_id": "2350473",
           "abstract": "Biological collections are a primary source of information to understand Earth’s biodiversity. They not only document existing diversity, but also provide the baseline to track changes across time and geography, as well as extinctions at local and global scales. This project aims to rescue the orphaned Fish Collection of the Department of Marine Sciences at the University of Puerto Rico, Mayaguez (UPR-M), improve access to specimens and associated information, and expand the shelving capacity of"
+        },
+        {
+          "title": "CAREER: Integrating Genomic, Paleoclimatic, and Morphological Approaches to Unravel the Evolutionary History of Fossil and Extant Marine Fishes Over Time",
+          "agency": "NSF",
+          "nsf_program": "Systematics & Biodiversity Sci, Sedimentary Geo & Paleobiology, Cross-BIO Activities",
+          "amount": "1138628",
+          "start_date": "10/01/2023",
+          "end_date": "07/31/2027",
+          "nsf_award_id": "2401223",
+          "abstract": "This award is funded in whole or in part under the American Rescue Plan Act of 2021 (Public Law 117-2). \r\n\r\nUnderstanding the evolutionary history of life on earth requires comprehensive documentation of both living and fossil species. For example, our understanding of the effects of ancient events on morphological diversity is stymied by the limited inclusion of fossils, paleoclimatic data layers, and understanding of genome size evolution over time. To address this knowledge gap, this project "
         },
         {
           "title": "CSBR: Emergency Rescue of the Orphaned Fish Collection of the University of Puerto Rico and Capacity Expansion of the Ichthyology Collection at the Sam Noble Museum",
@@ -2640,6 +2640,12 @@
         }
       ],
       "recent_publications": [
+        {
+          "title": "Ecological and genomic signatures of the convergent evolution of planktivory in fossil and living reef fishes over deep time.",
+          "year": 2026,
+          "journal": "Nature communications",
+          "abstract": "Transitions from benthic to pelagic habitats often coincide with shifts in diet, yet the genomic basis and macroevolutionary dynamics of these changes remain poorly understood. Surgeonfishes and allies (Acanthuriformes), with their rich fossil record, dietary diversity, and compact genomes, provide a powerful model to investigate these transitions across deep time. We integrate genomic data from 80 extant species with morphological data from 32 fossils to construct total-evidence, tip-dated phyl"
+        },
         {
           "title": "Phylogenomics of poachers (Agonidae) and the evolution of armor in cottoid fishes (Perciformes: Cottoidei).",
           "year": 2026,
@@ -2856,7 +2862,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "orcid": "0000-0002-5126-1345",
-      "last_enriched": "2026-05-17T03:15:00.584000+00:00"
+      "last_enriched": "2026-05-24T03:22:40.543995+00:00"
     },
     {
       "first_name": "Laurence",
@@ -2971,7 +2977,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/larmi",
-      "last_enriched": "2026-05-17T03:16:35.265208+00:00"
+      "last_enriched": "2026-05-24T03:24:15.120565+00:00"
     },
     {
       "first_name": "Farooq",
@@ -3631,7 +3637,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/fazam",
       "orcid": "0000-0002-6187-0021",
-      "last_enriched": "2026-05-17T03:18:09.915178+00:00"
+      "last_enriched": "2026-05-24T03:25:49.964276+00:00"
     },
     {
       "first_name": "George",
@@ -3778,7 +3784,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gbackus",
       "orcid": "0000-0002-0900-7642",
-      "last_enriched": "2026-05-17T03:19:44.807833+00:00"
+      "last_enriched": "2026-05-24T03:27:24.766141+00:00"
     },
     {
       "first_name": "Katherine",
@@ -4015,7 +4021,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T03:21:19.626816+00:00",
+      "last_enriched": "2026-05-24T03:28:59.545773+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -4465,7 +4471,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dbartlett",
       "orcid": "0000-0002-8385-1139",
-      "last_enriched": "2026-05-17T03:22:54.224283+00:00"
+      "last_enriched": "2026-05-24T03:30:34.370734+00:00"
     },
     {
       "first_name": "Andrew",
@@ -4656,7 +4662,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0002-6480-4433",
-      "last_enriched": "2026-05-17T03:24:28.989269+00:00"
+      "last_enriched": "2026-05-24T03:32:08.920790+00:00"
     },
     {
       "first_name": "Simone",
@@ -5018,7 +5024,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0002-3428-3577",
-      "last_enriched": "2026-05-17T03:26:03.559079+00:00"
+      "last_enriched": "2026-05-24T03:33:43.737144+00:00"
     },
     {
       "first_name": "Janet",
@@ -5230,7 +5236,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "orcid": "0000-0002-2486-4095",
-      "last_enriched": "2026-05-17T03:27:38.232476+00:00"
+      "last_enriched": "2026-05-24T03:35:18.573288+00:00"
     },
     {
       "first_name": "Tarik",
@@ -5297,18 +5303,6 @@
           "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
           "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
           "agency": "National Cancer Institute",
-          "amount": 391534,
-          "start_date": "2019-04-09T00:00:00",
-          "end_date": "2025-03-31T00:00:00",
-          "project_number": "5R01CA228147-04",
-          "co_pis": [
-            "Marta Jankowska"
-          ]
-        },
-        {
-          "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
-          "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
-          "agency": "National Cancer Institute",
           "amount": 446672,
           "start_date": "2019-04-09T00:00:00",
           "end_date": "2025-03-31T00:00:00",
@@ -5321,10 +5315,10 @@
           "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
           "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
           "agency": "National Cancer Institute",
-          "amount": 122632,
+          "amount": 391534,
           "start_date": "2019-04-09T00:00:00",
           "end_date": "2025-03-31T00:00:00",
-          "project_number": "5R01CA228147-06",
+          "project_number": "5R01CA228147-04",
           "co_pis": [
             "Marta Jankowska"
           ]
@@ -5361,6 +5355,18 @@
           "start_date": "2019-04-09T00:00:00",
           "end_date": "2024-03-31T00:00:00",
           "project_number": "5R01CA228147-03",
+          "co_pis": [
+            "Marta Jankowska"
+          ]
+        },
+        {
+          "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
+          "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
+          "agency": "National Cancer Institute",
+          "amount": 122632,
+          "start_date": "2019-04-09T00:00:00",
+          "end_date": "2025-03-31T00:00:00",
+          "project_number": "5R01CA228147-06",
           "co_pis": [
             "Marta Jankowska"
           ]
@@ -5633,7 +5639,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tbenmarhnia",
       "orcid": "0000-0002-4018-3089",
-      "last_enriched": "2026-05-17T03:29:12.814279+00:00"
+      "last_enriched": "2026-05-24T03:36:53.226666+00:00"
     },
     {
       "first_name": "Jonathan",
@@ -6167,7 +6173,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/jberger",
       "orcid": "0000-0002-8773-7878",
-      "last_enriched": "2026-05-17T03:30:47.657882+00:00"
+      "last_enriched": "2026-05-24T03:38:28.346947+00:00"
     },
     {
       "first_name": "Ricardo",
@@ -6271,6 +6277,12 @@
         }
       ],
       "recent_publications": [
+        {
+          "title": "Ecological and genomic signatures of the convergent evolution of planktivory in fossil and living reef fishes over deep time.",
+          "year": 2026,
+          "journal": "Nature communications",
+          "abstract": "Transitions from benthic to pelagic habitats often coincide with shifts in diet, yet the genomic basis and macroevolutionary dynamics of these changes remain poorly understood. Surgeonfishes and allies (Acanthuriformes), with their rich fossil record, dietary diversity, and compact genomes, provide a powerful model to investigate these transitions across deep time. We integrate genomic data from 80 extant species with morphological data from 32 fossils to construct total-evidence, tip-dated phyl"
+        },
         {
           "title": "Marine barriers and seascape features shape divergence in Neotropical cryptobenthic reef fishes.",
           "year": 2026,
@@ -6492,7 +6504,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/rbetancur",
       "orcid": "0000-0002-9512-5011",
-      "last_enriched": "2026-05-17T03:32:22.159459+00:00"
+      "last_enriched": "2026-05-24T03:40:02.982814+00:00"
     },
     {
       "first_name": "Yehuda",
@@ -6846,7 +6858,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ybock",
       "orcid": "0000-0001-8296-6623",
-      "last_enriched": "2026-05-17T03:33:56.881330+00:00"
+      "last_enriched": "2026-05-24T03:41:38.128476+00:00"
     },
     {
       "first_name": "Julien",
@@ -6968,7 +6980,7 @@
       "department_code": "245",
       "eah_status": "Active",
       "orcid": "0000-0001-5142-3159",
-      "last_enriched": "2026-05-17T03:35:31.658208+00:00",
+      "last_enriched": "2026-05-24T03:43:13.263885+00:00",
       "profile_url": "https://researcherprofiles.org/profile/653887107"
     },
     {
@@ -7130,7 +7142,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/aborsa",
       "orcid": "0000-0002-9939-1480",
-      "last_enriched": "2026-05-17T03:37:06.394896+00:00"
+      "last_enriched": "2026-05-24T03:44:48.568120+00:00"
     },
     {
       "first_name": "Jeff",
@@ -7384,7 +7396,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T02:35:18.318471+00:00",
+      "last_enriched": "2026-05-24T02:42:58.539258+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1200",
       "job_code_description": "ASSOC PROF-AY",
@@ -7528,7 +7540,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/bbrahamsha",
       "orcid": "0000-0002-5316-5939",
-      "last_enriched": "2026-05-17T03:38:41.161884+00:00"
+      "last_enriched": "2026-05-24T03:46:23.196103+00:00"
     },
     {
       "first_name": "Peter",
@@ -7618,7 +7630,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pbromirski",
       "orcid": "0000-0002-5342-9252",
-      "last_enriched": "2026-05-17T03:40:15.975065+00:00"
+      "last_enriched": "2026-05-24T03:47:57.995913+00:00"
     },
     {
       "first_name": "Kevin",
@@ -7834,6 +7846,12 @@
         }
       ],
       "recent_publications": [
+        {
+          "title": "Combined skeletal dysplasia and vasculopathy phenotypes associated with in-frame intragenic deletion in PRKACA.",
+          "year": 2026,
+          "journal": "HGG advances",
+          "abstract": "Pathogenic missense variants in PRKACA cause craniofacial, skeletal, and cardiac defects similar to Ellis-van Creveld syndrome. We report an individual with a previously unreported, de novo 3 amino acid deletion in PRKACA, identified on trio genome sequencing, and phenotypic features including severe neonatal hypotonia, appendicular skeletal abnormalities, osteopenia, aortic dilation, coronary dilation and vascular tortuosity. To assess this variant's effects, we performed in vitro and in vivo s"
+        },
         {
           "title": "Nurses At-Risk for Mental Health Distress and Suicidality Describe Stressors and Strategies for Healthcare System Change: A Thematic Analysis.",
           "year": 2026,
@@ -8148,23 +8166,6 @@
             "Pediatric Emergency Medicine"
           ],
           "abstract": "The evidence supporting best practices when treating children in the prehospital setting or even the effect emergency medical services (EMS) has on patient outcomes is limited. Standardizing the critical outcomes for EMS research will allow for focused and comparable effort among the small but growing group of pediatric EMS investigators on specific topics. Standardized outcomes will also provide the opportunity to collectively advance the science of EMS for children and demonstrate the effect o"
-        },
-        {
-          "title": "Structural Insights into Human Bocaparvoviruses.",
-          "year": 2017,
-          "journal": "Journal of virology",
-          "mesh_terms": [
-            "Bocavirus",
-            "Capsid",
-            "Capsid Proteins",
-            "Cryoelectron Microscopy",
-            "Human bocavirus",
-            "Humans",
-            "Imaging, Three-Dimensional",
-            "Viral Proteins",
-            "Viral Tropism"
-          ],
-          "abstract": "Bocaparvoviruses are emerging pathogens of the"
         }
       ],
       "committee_service": [],
@@ -8185,7 +8186,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0002-1944-3050",
-      "last_enriched": "2026-05-17T02:35:27.171758+00:00"
+      "last_enriched": "2026-05-24T02:43:07.292202+00:00"
     },
     {
       "first_name": "James",
@@ -8503,7 +8504,7 @@
       "department_code": "260",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/jbrune",
-      "last_enriched": "2026-05-17T03:41:50.573279+00:00"
+      "last_enriched": "2026-05-24T03:49:32.608122+00:00"
     },
     {
       "first_name": "Michael",
@@ -8619,7 +8620,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mbuckingham",
       "orcid": "0000-0001-6414-4714",
-      "last_enriched": "2026-05-17T03:43:25.257721+00:00"
+      "last_enriched": "2026-05-24T03:51:07.343056+00:00"
     },
     {
       "first_name": "Ronald",
@@ -9215,7 +9216,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/rburton",
       "orcid": "0000-0002-6995-5329",
-      "last_enriched": "2026-05-17T03:45:00.390687+00:00"
+      "last_enriched": "2026-05-24T03:52:41.885429+00:00"
     },
     {
       "first_name": "Steven",
@@ -9557,7 +9558,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/scande",
-      "last_enriched": "2026-05-17T03:46:35.155584+00:00"
+      "last_enriched": "2026-05-24T03:54:17.179058+00:00"
     },
     {
       "first_name": "Tomas",
@@ -9663,7 +9664,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tcapaldi",
       "orcid": "0000-0003-4894-736X",
-      "last_enriched": "2026-05-17T03:48:09.665015+00:00"
+      "last_enriched": "2026-05-24T03:55:51.700803+00:00"
     },
     {
       "first_name": "George",
@@ -9783,6 +9784,12 @@
       ],
       "recent_publications": [
         {
+          "title": "Ecological and genomic signatures of the convergent evolution of planktivory in fossil and living reef fishes over deep time.",
+          "year": 2026,
+          "journal": "Nature communications",
+          "abstract": "Transitions from benthic to pelagic habitats often coincide with shifts in diet, yet the genomic basis and macroevolutionary dynamics of these changes remain poorly understood. Surgeonfishes and allies (Acanthuriformes), with their rich fossil record, dietary diversity, and compact genomes, provide a powerful model to investigate these transitions across deep time. We integrate genomic data from 80 extant species with morphological data from 32 fossils to construct total-evidence, tip-dated phyl"
+        },
+        {
           "title": "Evolutionary innovation accelerates morphological diversification in pufferfishes and their relatives.",
           "year": 2024,
           "journal": "Evolution; international journal of organic evolution",
@@ -9817,7 +9824,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gcarnevale",
-      "last_enriched": "2026-05-17T03:49:44.419718+00:00"
+      "last_enriched": "2026-05-24T03:57:26.432261+00:00"
     },
     {
       "first_name": "Paterno",
@@ -10066,6 +10073,12 @@
       ],
       "recent_publications": [
         {
+          "title": "A Survey of Provider Practices for Diagnosis and Treatment of Pediatric Moderate Aplastic Anemia From the North American Pediatric Aplastic Anemia Consortium.",
+          "year": 2026,
+          "journal": "Journal of pediatric hematology/oncology",
+          "abstract": "Pediatric moderate aplastic anemia (MAA) lacks defined diagnostic criteria and a clear standard of care due to limited understanding of its pathophysiology and natural history. To understand current diagnostic and management practices for pediatric patients with MAA, a survey of the North American Pediatric Aplastic Anemia Consortium (NAPAAC) was conducted among 104 providers across 57 institutions. The survey results show that the approach to MAA remains inconsistent. The survey demonstrates br"
+        },
+        {
           "title": "Ancient felsic sediments recycled through the deep mantle by plate tectonics.",
           "year": 2026,
           "journal": "Proceedings of the National Academy of Sciences of the United States of America",
@@ -10158,7 +10171,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pcastillo",
       "orcid": "0000-0001-6140-7929",
-      "last_enriched": "2026-05-17T03:51:19.158845+00:00"
+      "last_enriched": "2026-05-24T03:59:01.097977+00:00"
     },
     {
       "first_name": "Daniel",
@@ -10449,7 +10462,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T03:52:54.275276+00:00",
+      "last_enriched": "2026-05-24T04:00:35.789788+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1675",
       "job_code_description": "EDUCATOR (WOS)",
@@ -10579,7 +10592,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/lcenturioni",
       "orcid": "0000-0002-6248-8780",
-      "last_enriched": "2026-05-17T03:54:29.019918+00:00"
+      "last_enriched": "2026-05-24T04:02:10.550645+00:00"
     },
     {
       "first_name": "Ivana",
@@ -10692,7 +10705,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/icerovecki",
       "orcid": "0000-0001-8979-9952",
-      "last_enriched": "2026-05-17T03:56:03.557990+00:00"
+      "last_enriched": "2026-05-24T04:03:45.268909+00:00"
     },
     {
       "first_name": "Paola",
@@ -10817,7 +10830,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pcessi",
       "orcid": "0000-0002-8376-7391",
-      "last_enriched": "2026-05-17T03:57:38.378547+00:00"
+      "last_enriched": "2026-05-24T04:05:20.228385+00:00"
     },
     {
       "first_name": "Christopher",
@@ -11090,7 +11103,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ccharles",
       "orcid": "0000-0001-9107-0992",
-      "last_enriched": "2026-05-17T03:59:13.113126+00:00"
+      "last_enriched": "2026-05-24T04:06:54.681550+00:00"
     },
     {
       "first_name": "David",
@@ -11277,7 +11290,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dcheckley",
       "orcid": "0000-0003-1885-252X",
-      "last_enriched": "2026-05-17T04:00:47.914558+00:00"
+      "last_enriched": "2026-05-24T04:08:29.329394+00:00"
     },
     {
       "first_name": "Lanna",
@@ -11337,7 +11350,8 @@
         {
           "title": "Artificial intelligence based assessment of treatment response in wet age related macular degeneration using paired OCT angiography.",
           "year": 2026,
-          "journal": "Scientific reports"
+          "journal": "Scientific reports",
+          "abstract": "Artificial intelligence (AI) has shown promise in retinal imaging, yet its application to longitudinal optical coherence tomography angiography (OCTA) remains limited. This study developed and evaluated an AI model for classifying treatment response in neovascular age-related macular degeneration (nAMD) using paired OCTA images acquired before and after anti-VEGF therapy. In this retrospective cohort study, paired OCTA en-face images and corresponding OCT B-scans were collected for each treatmen"
         },
         {
           "title": "COMPARISON OF ULTRAHIGH-SPEED 250 kHz OCTA WITH HIGH-SPEED 125 kHz MODE USING HEIDELBERG SPECTRALIS SHIFT: A Paired-Eye Analysis.",
@@ -11705,7 +11719,7 @@
       "profile_url": "https://scripps.ucsd.edu/profiles/lcheng",
       "orcid": "0000-0003-2375-991X",
       "h_index": 20,
-      "last_enriched": "2026-05-17T02:35:33.937663+00:00"
+      "last_enriched": "2026-05-24T02:43:13.808975+00:00"
     },
     {
       "first_name": "Teresa",
@@ -11954,7 +11968,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tchereskin",
       "orcid": "0000-0003-1214-0978",
-      "last_enriched": "2026-05-17T04:02:22.626886+00:00"
+      "last_enriched": "2026-05-24T04:10:03.998332+00:00"
     },
     {
       "first_name": "Emily",
@@ -12125,7 +12139,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0002-9351-6043",
-      "last_enriched": "2026-05-17T04:03:57.469686+00:00"
+      "last_enriched": "2026-05-24T04:11:38.703103+00:00"
     },
     {
       "first_name": "Anela",
@@ -12305,7 +12319,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-17T04:05:32.375837+00:00",
+      "last_enriched": "2026-05-24T04:13:13.813228+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1200",
       "job_code_description": "ASSOC PROF-AY",
@@ -12789,7 +12803,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/cconstable",
       "orcid": "0000-0003-4534-4977",
-      "last_enriched": "2026-05-17T04:07:07.055729+00:00"
+      "last_enriched": "2026-05-24T04:15:14.858268+00:00"
     },
     {
       "first_name": "Steven",
@@ -13114,7 +13128,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/sconstable",
       "orcid": "0000-0001-6324-3470",
-      "last_enriched": "2026-05-17T04:08:41.863244+00:00"
+      "last_enriched": "2026-05-24T04:17:17.109699+00:00"
     },
     {
       "first_name": "Geoffrey",
@@ -13377,7 +13391,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0009-0008-4138-4924",
-      "last_enriched": "2026-05-17T04:10:16.723343+00:00"
+      "last_enriched": "2026-05-24T04:19:18.112591+00:00"
     },
     {
       "first_name": "Bruce",
@@ -13533,7 +13547,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/bcornuelle",
       "orcid": "0000-0003-2110-3319",
-      "last_enriched": "2026-05-17T04:11:51.428263+00:00"
+      "last_enriched": "2026-05-24T04:20:52.845340+00:00"
     },
     {
       "first_name": "James",
@@ -13869,7 +13883,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0001-7602-6934",
-      "last_enriched": "2026-05-17T04:13:26.120100+00:00"
+      "last_enriched": "2026-05-24T04:22:27.524069+00:00"
     },
     {
       "first_name": "Paul",
@@ -14150,7 +14164,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pdayton",
       "orcid": "0000-0001-6354-4812",
-      "last_enriched": "2026-05-17T04:15:28.855459+00:00"
+      "last_enriched": "2026-05-24T04:24:03.078867+00:00"
     },
     {
       "first_name": "Grant",
@@ -14336,6 +14350,12 @@
       ],
       "recent_publications": [
         {
+          "title": "Potential energy of air bubbles in glacier ice and its conversion into acoustic energy.",
+          "year": 2026,
+          "journal": "The Journal of the Acoustical Society of America",
+          "abstract": "Air bubbles in glacier ice are released into the water and may generate sound as the ice melts. A major missing link in the study of this sound is an estimate of the sound energy radiated per unit of ice that melts. We present a theoretical upper bound for the sound energy that can be produced by the bubbles by computing their acoustically available potential energy. A more stringent upper bound based on a simple model for the behavior of the bubble upon release from the ice is then developed. T"
+        },
+        {
           "title": "Effects of Wind Speed on Water Uptake, Phase State, and Viscosity of Sea Spray Aerosols.",
           "year": 2025,
           "journal": "ACS earth & space chemistry",
@@ -14485,7 +14505,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gdeane",
       "orcid": "0000-0002-4848-8637",
-      "last_enriched": "2026-05-17T04:17:35.980825+00:00"
+      "last_enriched": "2026-05-24T04:25:37.758623+00:00"
     },
     {
       "first_name": "Moira",
@@ -14568,7 +14588,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mdecima",
       "orcid": "0000-0003-0340-648X",
-      "last_enriched": "2026-05-17T04:19:37.333438+00:00"
+      "last_enriched": "2026-05-24T04:27:12.604974+00:00"
     },
     {
       "first_name": "Catherine",
@@ -14643,7 +14663,7 @@
       "department_code": "260",
       "eah_status": "Active",
       "orcid": "0000-0002-3063-2805",
-      "last_enriched": "2026-05-17T04:21:12.130162+00:00"
+      "last_enriched": "2026-05-24T04:28:47.280965+00:00"
     },
     {
       "first_name": "Dimitri",
@@ -15017,7 +15037,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ddeheyn",
       "orcid": "0000-0002-6496-9297",
-      "last_enriched": "2026-05-17T04:22:46.770652+00:00"
+      "last_enriched": "2026-05-24T04:30:28.504794+00:00"
     },
     {
       "first_name": "Valentina",
@@ -15086,7 +15106,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "orcid": "0000-0002-5419-3747",
-      "last_enriched": "2026-05-17T04:24:26.447207+00:00"
+      "last_enriched": "2026-05-24T04:32:07.658858+00:00"
     },
     {
       "first_name": "Julia",
@@ -15389,7 +15409,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0001-7246-3117",
-      "last_enriched": "2026-05-17T04:26:01.171805+00:00"
+      "last_enriched": "2026-05-24T04:33:42.295047+00:00"
     },
     {
       "first_name": "Andrew",
@@ -15710,7 +15730,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/adickson",
       "orcid": "0000-0002-2263-8828",
-      "last_enriched": "2026-05-17T04:27:35.835939+00:00"
+      "last_enriched": "2026-05-24T04:35:17.078281+00:00"
     },
     {
       "first_name": "Clive",
@@ -15835,7 +15855,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/cdorman",
       "orcid": "0000-0002-9866-3974",
-      "last_enriched": "2026-05-17T04:29:10.693096+00:00"
+      "last_enriched": "2026-05-24T04:36:51.657921+00:00"
     },
     {
       "first_name": "Neal",
@@ -19772,7 +19792,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tgaasterland",
       "orcid": "0000-0003-4023-9342",
-      "last_enriched": "2026-05-17T02:37:08.704114+00:00"
+      "last_enriched": "2026-05-24T02:44:48.534718+00:00"
     },
     {
       "first_name": "Alice",
@@ -20209,7 +20229,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0002-9543-7744",
-      "last_enriched": "2026-05-17T02:38:43.253363+00:00",
+      "last_enriched": "2026-05-24T02:46:23.035382+00:00",
       "profile_url": "https://researcherprofiles.org/profile/184121"
     },
     {
@@ -25002,7 +25022,7 @@
       "profile_url": "https://scripps.ucsd.edu/profiles/jharris",
       "orcid": "0000-0002-2605-415X",
       "h_index": 5,
-      "last_enriched": "2026-05-17T02:40:17.843370+00:00"
+      "last_enriched": "2026-05-24T02:47:57.699215+00:00"
     },
     {
       "first_name": "Philip",
@@ -34517,7 +34537,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0001-8557-7308",
-      "last_enriched": "2026-05-17T02:41:52.538425+00:00",
+      "last_enriched": "2026-05-24T02:49:32.423158+00:00",
       "h_index": 6
     },
     {
@@ -39456,7 +39476,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0003-4719-4466",
-      "last_enriched": "2026-05-17T02:45:01.416956+00:00"
+      "last_enriched": "2026-05-24T02:52:41.700733+00:00"
     },
     {
       "first_name": "Tadeusz",
@@ -42836,7 +42856,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0003-3903-960X",
-      "last_enriched": "2026-05-17T02:48:10.351553+00:00"
+      "last_enriched": "2026-05-24T02:55:51.140985+00:00"
     },
     {
       "first_name": "Ed",
@@ -45511,6 +45531,12 @@
       ],
       "recent_publications": [
         {
+          "title": "Interpreting the dominant signature of inhomogeneous mixing resulting from dry-air entrainment in clouds.",
+          "year": 2026,
+          "journal": "Science advances",
+          "abstract": "How cloud droplets evaporate when mixed with the dry surrounding air is fundamental to cloud optical properties and lifetime. We find from observations in cumulus clouds made during the ESCAPE field campaign that this mixing process appears strongly inhomogeneous-like, where a subset of droplets evaporate completely as mixing proceeds, rather than all droplets partially evaporating. We visualize the microphysical properties in a two-dimensional evaporation-phase-relaxation space and find that a "
+        },
+        {
           "title": "Brain aging in bipolar disorder using a neuroimaging and machine learning-derived metric: Findings from the ENIGMA BD Working Group.",
           "year": 2026,
           "journal": "Journal of affective disorders",
@@ -45786,34 +45812,6 @@
             "Zanamivir"
           ],
           "abstract": "Children with severe influenza infection may require parenteral therapy if oral or inhaled therapies are ineffective or cannot be administered. Results from a study investigating intravenous (IV) zanamivir for the treatment of hospitalized infants and children with influenza are presented. This phase II, open-label, multicenter, single-arm study assessed the safety of investigational IV zanamivir in hospitalized children with influenza. Safety outcomes included treatment-emergent adverse events "
-        },
-        {
-          "title": "Cortical abnormalities in bipolar disorder: an MRI analysis of 6503 individuals from the ENIGMA Bipolar Disorder Working Group.",
-          "year": 2018,
-          "journal": "Molecular psychiatry",
-          "mesh_terms": [
-            "Adolescent",
-            "Adult",
-            "Age Factors",
-            "Bipolar Disorder",
-            "Brain",
-            "Case-Control Studies",
-            "Cerebral Cortex",
-            "Female",
-            "Frontal Lobe",
-            "Gray Matter",
-            "Humans",
-            "Magnetic Resonance Imaging",
-            "Male",
-            "Middle Aged",
-            "Neuroimaging",
-            "Prefrontal Cortex",
-            "Psychotic Disorders",
-            "Sex Factors",
-            "Temporal Lobe",
-            "Young Adult"
-          ],
-          "abstract": "Despite decades of research, the pathophysiology of bipolar disorder (BD) is still not well understood. Structural brain differences have been associated with BD, but results from neuroimaging studies have been inconsistent. To address this, we performed the largest study to date of cortical gray matter thickness and surface area measures from brain magnetic resonance imaging scans of 6503 individuals including 1837 unrelated adults with BD and 2582 unrelated healthy controls for group differenc"
         }
       ],
       "committee_service": [],
@@ -45834,7 +45832,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0003-3063-0559",
-      "last_enriched": "2026-05-17T02:49:45.039339+00:00"
+      "last_enriched": "2026-05-24T02:57:25.879363+00:00"
     },
     {
       "first_name": "Dean",
@@ -51095,7 +51093,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ksmith",
-      "last_enriched": "2026-05-17T02:51:19.859779+00:00"
+      "last_enriched": "2026-05-24T02:59:00.827409+00:00"
     },
     {
       "first_name": "George",
@@ -55389,6 +55387,12 @@
       ],
       "recent_publications": [
         {
+          "title": "Co-option of Lysosomal Machinery for Sponge Biosilicification.",
+          "year": 2026,
+          "journal": "bioRxiv : the preprint server for biology",
+          "abstract": "Biomineralization evolved repeatedly across animals, resulting in novel strategies for buoyancy, locomotion, and defense. Sponges are the only metazoans that build a silica-based skeleton and the mechanisms underlying their biosilicification are relatively understudied compared to other major silicifiers. Here, we show that in freshwater sponges, cells specialized for biosilicification, termed sclerocytes, highly express lysosomal-associated genes, including the V-H"
+        },
+        {
           "title": "A 3D-Bioprinted Artificial Coral Platform for Investigating Structural Effects on Microalgal Photophysiology.",
           "year": 2026,
           "journal": "ACS biomaterials science & engineering",
@@ -55653,20 +55657,6 @@
             "Sodium-Hydrogen Exchangers"
           ],
           "abstract": "White seabass ("
-        },
-        {
-          "title": "Changes in gill and air-breathing organ characteristics during the transition from water- to air-breathing in juvenile Arapaima gigas.",
-          "year": 2021,
-          "journal": "Journal of experimental zoology. Part A, Ecological and integrative physiology",
-          "mesh_terms": [
-            "Animals",
-            "Fishes",
-            "Gills",
-            "Respiration",
-            "Sodium-Potassium-Exchanging ATPase",
-            "Water"
-          ],
-          "abstract": "The obligate air-breathing Amazonian fish, Arapaima gigas, hatch as water-breathing larvae but with development, they modify their swim bladder to an air-breathing organ (ABO) while reducing their gill filaments to avoid oxygen loss. Here, we show that significant changes already take place between 4 weeks (1.6 g) and 11 weeks (5 g) post hatch, with a reduction in gill lamellar surface area, increase in gill diffusion distance, and proliferation of the parenchyma in the ABO. By using a variety o"
         }
       ],
       "committee_service": [],
@@ -55688,7 +55678,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mtresguerres",
       "orcid": "0000-0002-7090-9266",
-      "last_enriched": "2026-05-17T02:54:28.926378+00:00"
+      "last_enriched": "2026-05-24T03:02:09.713360+00:00"
     },
     {
       "first_name": "Victor",
@@ -58130,7 +58120,7 @@
       "eah_status": "Active",
       "orcid": "0000-0001-9551-7739",
       "profile_url": "https://researcherprofiles.org/profile/180856",
-      "last_enriched": "2026-05-17T02:57:38.052910+00:00"
+      "last_enriched": "2026-05-24T03:05:19.113311+00:00"
     },
     {
       "first_name": "Bradley",
@@ -58381,6 +58371,12 @@
       ],
       "recent_publications": [
         {
+          "title": "Ecological and genomic signatures of the convergent evolution of planktivory in fossil and living reef fishes over deep time.",
+          "year": 2026,
+          "journal": "Nature communications",
+          "abstract": "Transitions from benthic to pelagic habitats often coincide with shifts in diet, yet the genomic basis and macroevolutionary dynamics of these changes remain poorly understood. Surgeonfishes and allies (Acanthuriformes), with their rich fossil record, dietary diversity, and compact genomes, provide a powerful model to investigate these transitions across deep time. We integrate genomic data from 80 extant species with morphological data from 32 fossils to construct total-evidence, tip-dated phyl"
+        },
+        {
           "title": "Parallel shifts in differential gene expression reveal convergent miniaturization in fishes.",
           "year": 2025,
           "journal": "Proceedings of the National Academy of Sciences of the United States of America",
@@ -58538,7 +58534,7 @@
       "department_eah": "CLIMATE/ATMOS SCI/PHY OCEANOG",
       "department_code": "259",
       "eah_status": "Active",
-      "last_enriched": "2026-05-17T02:59:13.079383+00:00"
+      "last_enriched": "2026-05-24T03:06:53.793580+00:00"
     },
     {
       "first_name": "Clinton",
@@ -61010,7 +61006,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gzhang",
       "orcid": "0000-0002-9712-5226",
-      "last_enriched": "2026-05-17T03:02:22.107670+00:00"
+      "last_enriched": "2026-05-24T03:10:02.620946+00:00"
     },
     {
       "first_name": "Xin",
@@ -61322,6 +61318,12 @@
       ],
       "recent_publications": [
         {
+          "title": "Humanized-Intelligent-Green Chemistry (hiGC) Paradigm: Advancing Beyond Traditional Green Chemistry Illustrated by Ionic Liquids and Deep Eutectic Solvents.",
+          "year": 2026,
+          "journal": "Chemistry (Weinheim an der Bergstrasse, Germany)",
+          "abstract": "Ionic liquids (ILs) and deep eutectic solvents (DESs) are two types of innovative green solvents that significantly enhance the development of green chemistry. The 12 principles proposed by Anastas et al. in 1998 have guided the advancement of green chemistry, later supplemented by revised principles. However, these principles are established before the rise of artificial intelligence (AI), rely heavily on extensive trial and error, and often disregard user experience, safety and psychologic com"
+        },
+        {
           "title": "Five-Year Risk Prediction Models for Peripheral Artery Disease in Patients With Chronic Kidney Disease.",
           "year": 2026,
           "journal": "Kidney medicine",
@@ -61360,6 +61362,27 @@
           "title": "Macrophage-derived cathepsin B disrupts intestinal tight junctions through occludin degradation and promotes alcohol-associated liver disease.",
           "year": 2026,
           "journal": "Journal of hepatology",
+          "mesh_terms": [
+            "Cathepsin B",
+            "Animals",
+            "Humans",
+            "Mice",
+            "Tight Junctions",
+            "Occludin",
+            "Macrophages",
+            "Male",
+            "Intestinal Mucosa",
+            "Female",
+            "Mice, Transgenic",
+            "Liver Diseases, Alcoholic",
+            "Disease Models, Animal",
+            "Middle Aged",
+            "Feces",
+            "Hepatitis, Alcoholic",
+            "Adult",
+            "Proteomics",
+            "Ethanol"
+          ],
           "abstract": "Disruption of the intestinal barrier facilitates microbial translocation to the liver and contributes to chronic liver disease. We aimed to study the role of the fecal proteome in disease progression in patients with alcohol-associated hepatitis. We used fecal proteomics data from a multicenter cohort of patients with alcohol-associated hepatitis (n = 80), alcohol use disorder (n = 20), and controls (n = 19) (InTeam), and a cathepsin B activity assay in an independent multicenter cohort of patie"
         },
         {
@@ -61596,28 +61619,6 @@
             "White"
           ],
           "abstract": "Limited ancestral diversity has impaired our ability to detect risk variants more prevalent in ancestry groups of predominantly non-European ancestral background in genome-wide association studies (GWAS). We construct and analyze a multi-ancestry GWAS dataset in the Alzheimer's Disease Genetics Consortium (ADGC) to test for novel shared and population-specific late-onset Alzheimer's disease (LOAD) susceptibility loci and evaluate underlying genetic architecture in 37,382 non-Hispanic White (NHW)"
-        },
-        {
-          "title": "Prevalence of Extremely Severe Obesity and Metabolic Dysfunction Among US Children and Adolescents.",
-          "year": 2025,
-          "journal": "JAMA network open",
-          "mesh_terms": [
-            "Humans",
-            "Child",
-            "Adolescent",
-            "Male",
-            "Female",
-            "Prevalence",
-            "Cross-Sectional Studies",
-            "United States",
-            "Pediatric Obesity",
-            "Child, Preschool",
-            "Nutrition Surveys",
-            "Obesity, Morbid",
-            "Body Mass Index",
-            "Metabolic Diseases"
-          ],
-          "abstract": "Pediatric obesity is associated with complications such as metabolic dysfunction-associated steatotic liver disease (MASLD), type 2 diabetes, dyslipidemia, and hypertension. However, data on the prevalence of extremely severe obesity in childhood and adolescence and its associated complications are lacking. To assess trends in pediatric obesity over time and to investigate the association between obesity degree and comorbidities. This cross-sectional study included data from nationally represent"
         }
       ],
       "committee_service": [],
@@ -61638,7 +61639,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/xzhang",
-      "last_enriched": "2026-05-17T03:03:57.090367+00:00",
+      "last_enriched": "2026-05-24T03:11:37.291369+00:00",
       "h_index": 11
     },
     {

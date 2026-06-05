@@ -1,0 +1,52 @@
+name: Sync enriched data to render-sqlite
+
+# The weekly "Enrich Faculty" workflow refreshes the faculty JSON on main
+# (keeping the Vercel/JSON deployment current). This workflow then mirrors those
+# JSON files onto the render-sqlite branch so Render auto-redeploys and rebuilds
+# its SQLite database from the latest data.
+#
+# Trigger: runs after "Enrich Faculty" completes successfully (a bot's git push
+# can't trigger a push-based workflow, so workflow_run is used). Can also be run
+# manually. This file must live on the default branch (main) for the trigger to
+# fire.
+
+on:
+  workflow_run:
+    workflows: ["Enrich Faculty"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    # Only after a successful enrichment, or a manual dispatch.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout render-sqlite
+        uses: actions/checkout@v4
+        with:
+          ref: render-sqlite
+          fetch-depth: 0
+
+      - name: Pull latest faculty JSON from main
+        run: |
+          git fetch origin main
+          git checkout origin/main -- \
+            data/faculty.json data/sio_faculty.json data/jacobs_faculty.json
+
+      - name: Commit and push to render-sqlite if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/faculty.json data/sio_faculty.json data/jacobs_faculty.json
+          if git diff --cached --quiet; then
+            echo "render-sqlite already matches main's faculty data — nothing to sync."
+            exit 0
+          fi
+          git commit -m "chore: sync enriched faculty data from main ($(date -u +%Y-%m-%d))"
+          # Rebase onto any concurrent updates before pushing.
+          git pull --rebase origin render-sqlite || true
+          git push origin HEAD:render-sqlite

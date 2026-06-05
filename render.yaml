@@ -1,0 +1,37 @@
+# Render Blueprint — SQLite backend, read-only at runtime.
+#
+# The SQLite database (data/app.db) is BUILT from the committed JSON snapshots
+# at deploy time and served read-only. It is git-ignored and never committed.
+#
+# Why build-time instead of a persistent disk + cron: Render disks cannot be
+# shared between services, so a separate cron service cannot write the same DB
+# file the web service reads. Since the runtime is read-only, we rebuild the DB
+# as a deploy artifact instead. Enrichment continues to run in GitHub Actions
+# (which commits updated JSON); each push redeploys and rebuilds the DB.
+#
+# If you later want Render to own enrichment on-host, switch the web service to a
+# persistent disk and run the enrichment on a schedule inside it (see DEPLOY.md).
+
+services:
+  - type: web
+    name: research-alignment
+    runtime: python
+    plan: starter
+    branch: render-sqlite
+    autoDeploy: true
+    healthCheckPath: /
+    buildCommand: "pip install -r requirements.txt && python scripts/migrate_json_to_sqlite.py"
+    startCommand: "gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120"
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"
+      - key: LITELLM_API_KEY
+        sync: false
+      - key: LITELLM_API_BASE
+        sync: false
+      - key: LITELLM_MODEL
+        sync: false
+      - key: NCBI_API_KEY
+        sync: false
+      - key: S2_API_KEY
+        sync: false

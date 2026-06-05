@@ -5,6 +5,9 @@ __pycache__/
 .venv/
 venv/
 *.db
+*.db-wal
+*.db-shm
+data/backups/
 .vercel/
 node_modules/
 data/enrichment_log.json

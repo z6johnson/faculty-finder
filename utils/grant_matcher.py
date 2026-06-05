@@ -349,7 +349,7 @@ def match_faculty(requirements, faculty_with_interests):
         if attempt > 0:
             logger.warning("Retrying match_faculty after parse failure (attempt %d)", attempt + 1)
             time.sleep(1)
-        raw = _call_llm(MATCH_SYSTEM_PROMPT, user_prompt, max_tokens=4000, temperature=0.05,
+        raw = _call_llm(MATCH_SYSTEM_PROMPT, user_prompt, max_tokens=8000, temperature=0.05,
                         json_mode=True)
         try:
             parsed = _parse_json_response(raw)
@@ -405,39 +405,50 @@ def _has_research_profile(faculty):
     )
 
 
-def process_grant(grant_text, faculty_data):
-    """Coordinate the full matching pipeline for file-uploaded documents.
+def _match_against_db(requirements, department, conn):
+    """Shared matching tail: pull candidates from SQLite/FTS5 and rank them.
 
-    Args:
-        grant_text: Extracted text from the funding opportunity document.
-        faculty_data: List of faculty dicts from faculty.json.
-
-    Returns:
-        Dict with grant_summary, matches, and metadata.
+    The candidate pre-filter (top-N by keyword relevance) now runs in the
+    database instead of scanning every faculty record in memory.
     """
-    requirements = extract_grant_requirements(grant_text)
+    from data import db
 
-    faculty_with_interests = [
-        f for f in faculty_data if _has_research_profile(f)
-    ]
-    faculty_without = [
-        f for f in faculty_data if not _has_research_profile(f)
-    ]
+    if conn is None:
+        conn = db.get_read_conn()
 
-    # Pre-filter for large faculty sets to control token costs
-    candidates = _pre_filter_faculty(faculty_with_interests, requirements)
+    with_profile, without_profile = db.count_match_pool(conn, department)
+    keywords = _extract_requirement_keywords(requirements)
+    candidates = db.fetch_match_candidates(
+        conn, department, keywords,
+        pool_with_profile=with_profile, limit=PRE_FILTER_CANDIDATES,
+    )
 
     matches = match_faculty(requirements, candidates)
 
     return {
         "grant_summary": requirements,
         "matches": matches,
-        "faculty_without_interests_count": len(faculty_without),
-        "total_faculty_considered": len(faculty_with_interests),
+        "faculty_without_interests_count": without_profile,
+        "total_faculty_considered": with_profile,
     }
 
 
-def process_text(text, faculty_data):
+def process_grant(grant_text, department=None, conn=None):
+    """Coordinate the full matching pipeline for file-uploaded documents.
+
+    Args:
+        grant_text: Extracted text from the funding opportunity document.
+        department: Department key ("hwsph"/"sio"/"jacobs"/"all").
+        conn: Optional read-only SQLite connection (defaults to the shared one).
+
+    Returns:
+        Dict with grant_summary, matches, and metadata.
+    """
+    requirements = extract_grant_requirements(grant_text)
+    return _match_against_db(requirements, department, conn)
+
+
+def process_text(text, department=None, conn=None):
     """Coordinate the matching pipeline for manually entered expertise text.
 
     Uses the same two-stage pipeline: extract requirements from the text,
@@ -445,7 +456,8 @@ def process_text(text, faculty_data):
 
     Args:
         text: Free-text description of expertise requirements.
-        faculty_data: List of faculty dicts from faculty.json.
+        department: Department key ("hwsph"/"sio"/"jacobs"/"all").
+        conn: Optional read-only SQLite connection (defaults to the shared one).
 
     Returns:
         Dict with grant_summary, matches, and metadata.
@@ -453,21 +465,4 @@ def process_text(text, faculty_data):
     # The extraction prompt works well with free text too — it will
     # structure whatever requirements are described
     requirements = extract_grant_requirements(text)
-
-    faculty_with_interests = [
-        f for f in faculty_data if _has_research_profile(f)
-    ]
-    faculty_without = [
-        f for f in faculty_data if not _has_research_profile(f)
-    ]
-
-    candidates = _pre_filter_faculty(faculty_with_interests, requirements)
-
-    matches = match_faculty(requirements, candidates)
-
-    return {
-        "grant_summary": requirements,
-        "matches": matches,
-        "faculty_without_interests_count": len(faculty_without),
-        "total_faculty_considered": len(faculty_with_interests),
-    }
+    return _match_against_db(requirements, department, conn)

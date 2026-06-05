@@ -6,12 +6,13 @@ and writing enriched data back to the JSON file.
 
 import json
 import logging
+import os
+import tempfile
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from urllib.parse import unquote
 
-from data import db
 from .normalizer import normalize_faculty_data
 from .sources.nih_reporter import NIHReporterSource
 from .sources.nsf_awards import NSFAwardSource
@@ -23,6 +24,12 @@ from .sources.email_pattern import EmailPatternSource
 from .sources.ucsd_profile import UCSDProfileSource
 
 logger = logging.getLogger(__name__)
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+FACULTY_PATH = os.path.join(DATA_DIR, "faculty.json")
+SIO_FACULTY_PATH = os.path.join(DATA_DIR, "sio_faculty.json")
+JACOBS_FACULTY_PATH = os.path.join(DATA_DIR, "jacobs_faculty.json")
+LOG_PATH = os.path.join(DATA_DIR, "enrichment_log.jsonl")
 
 # Registry of available sources — used by HWSPH (public health) faculty
 SOURCE_CLASSES = {
@@ -67,18 +74,34 @@ REFRESHABLE_FIELDS = {"h_index"}
 JSON_FIELDS = {"funded_grants", "recent_publications", "expertise_keywords"}
 
 
+def _faculty_path(department=None):
+    """Return the faculty JSON path for the given department."""
+    if department == "sio":
+        return SIO_FACULTY_PATH
+    if department == "jacobs":
+        return JACOBS_FACULTY_PATH
+    return FACULTY_PATH
+
+
 def _load_faculty(department=None):
-    """Load all faculty for a department from SQLite (each tagged _db_id)."""
-    return db.fetch_for_enrichment(db.get_write_conn(), department)
+    """Load faculty data from JSON file."""
+    path = _faculty_path(department)
+    with open(path) as f:
+        return json.load(f)
 
 
-def _flush(records, log_entries):
-    """Persist mutated faculty records (by _db_id) and append log entries."""
-    conn = db.get_write_conn()
-    for rec in records:
-        db.save_faculty_record(conn, rec["_db_id"], rec)
-    db.append_log(conn, log_entries)
-    conn.commit()
+def _save_faculty(data, department=None):
+    """Atomically write faculty data back to JSON file."""
+    path = _faculty_path(department)
+    fd, tmp = tempfile.mkstemp(dir=DATA_DIR, suffix=".json")
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+            f.write("\n")
+        os.replace(tmp, path)
+    except Exception:
+        os.unlink(tmp)
+        raise
 
 
 def _source_classes_for(department=None):
@@ -90,18 +113,68 @@ def _source_classes_for(department=None):
     return SOURCE_CLASSES
 
 
+def _load_log():
+    """Load enrichment log (JSONL format), returning empty list if missing."""
+    if not os.path.exists(LOG_PATH):
+        return []
+    entries = []
+    with open(LOG_PATH) as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                try:
+                    entries.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+    return entries
+
+
+def _append_log_batch(entries):
+    """Append multiple entries to the enrichment log (JSONL, O(1) per entry)."""
+    if not entries:
+        return
+    with open(LOG_PATH, "a") as f:
+        for entry in entries:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+
+def _append_log(entry):
+    """Append a single entry to the enrichment log."""
+    _append_log_batch([entry])
+
+
 def _rotate_log(max_age_days=30):
-    """Prune enrichment-log entries older than max_age_days."""
-    conn = db.get_write_conn()
-    db.rotate_log(conn, max_age_days)
-    conn.commit()
+    """Prune log entries older than max_age_days."""
+    if not os.path.exists(LOG_PATH):
+        return
+    entries = _load_log()
+    if not entries:
+        return
+    from datetime import timedelta
+    cutoff_dt = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+    cutoff_iso = cutoff_dt.isoformat()
+
+    kept = [e for e in entries if (e.get("retrieved_at") or "") >= cutoff_iso]
+    pruned = len(entries) - len(kept)
+    if pruned > 0:
+        fd, tmp = tempfile.mkstemp(dir=DATA_DIR, suffix=".jsonl")
+        try:
+            with os.fdopen(fd, "w") as f:
+                for entry in kept:
+                    f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            os.replace(tmp, LOG_PATH)
+        except Exception:
+            os.unlink(tmp)
+            raise
+        logger.info("Log rotation: pruned %d entries older than %d days, kept %d.",
+                     pruned, max_age_days, len(kept))
 
 
-def _make_log_entry(faculty_id, source_name, field, old_value, new_value,
+def _make_log_entry(faculty_index, source_name, field, old_value, new_value,
                     confidence, method, source_url=None, raw_response=None):
-    """Create a log entry dict (keyed by faculty.id for the enrichment_log table)."""
+    """Create a log entry dict."""
     return {
-        "faculty_id": faculty_id,
+        "faculty_index": faculty_index,
         "source_name": source_name,
         "source_url": source_url,
         "field_updated": field,
@@ -222,7 +295,7 @@ def enrich_faculty(faculty_index, sources=None, dry_run=False, department=None,
                 faculty_dict[field] = value
 
                 log_entries.append(_make_log_entry(
-                    faculty_id=faculty_dict["_db_id"],
+                    faculty_index=faculty_index,
                     source_name=source_name,
                     field=field,
                     old_value=old_value,
@@ -244,7 +317,7 @@ def enrich_faculty(faculty_index, sources=None, dry_run=False, department=None,
                 faculty_dict[field] = value
 
                 log_entries.append(_make_log_entry(
-                    faculty_id=faculty_dict["_db_id"],
+                    faculty_index=faculty_index,
                     source_name="llm_normalizer",
                     field=field,
                     old_value=old_value,
@@ -262,7 +335,9 @@ def enrich_faculty(faculty_index, sources=None, dry_run=False, department=None,
 
     # If caller doesn't own data, save here (single-faculty mode)
     if not caller_owns_data:
-        _flush([faculty_dict], log_entries)
+        _save_faculty(data, department)
+        for entry in log_entries:
+            _append_log(entry)
         log_entries = []
 
     logger.info("Enrichment complete for %s", name)
@@ -295,9 +370,7 @@ def enrich_all(sources=None, faculty_ids=None, dry_run=False,
     faculty_list = data["faculty"]
 
     if faculty_ids:
-        # faculty_ids are faculty.id primary keys (stable across re-seeds).
-        idset = set(faculty_ids)
-        indices = [i for i, f in enumerate(faculty_list) if f["_db_id"] in idset]
+        indices = [i for i in faculty_ids if 0 <= i < len(faculty_list)]
     else:
         indices = list(range(len(faculty_list)))
         # Prioritize never-enriched faculty so time-budget cuts hit
@@ -312,10 +385,9 @@ def enrich_all(sources=None, faculty_ids=None, dry_run=False,
                 len(indices), department or "hwsph")
     results = []
     all_log_entries = []
-    pending = []  # mutated faculty records not yet written to the DB
     start_time = time.monotonic()
 
-    # Save interval: persist every N faculty to avoid losing work on crash/timeout
+    # Save interval: persist to disk every N faculty to avoid losing work
     SAVE_INTERVAL = 10
 
     for i, idx in enumerate(indices):
@@ -344,27 +416,24 @@ def enrich_all(sources=None, faculty_ids=None, dry_run=False,
 
         results.append(result)
         all_log_entries.extend(log_entries)
-        if not dry_run and "error" not in result:
-            pending.append(faculty_list[idx])
 
         if progress_callback:
             progress_callback(i + 1, len(indices))
 
-        # Periodic checkpoint: write the processed rows (per-row UPDATE) so a
-        # crash/timeout never loses more than SAVE_INTERVAL faculty.
-        if not dry_run and (i + 1) % SAVE_INTERVAL == 0 and pending:
-            _flush(pending, all_log_entries)
-            pending = []
+        # Periodic save to avoid losing work on crash/timeout
+        if not dry_run and (i + 1) % SAVE_INTERVAL == 0 and all_log_entries:
+            _save_faculty(data, department)
+            _append_log_batch(all_log_entries)
             all_log_entries = []
             logger.info("Checkpoint: saved after %d/%d faculty.", i + 1, len(indices))
 
-    # Final flush of any remaining rows/log entries
-    if not dry_run and (pending or all_log_entries):
-        _flush(pending, all_log_entries)
-
-    if not dry_run:
-        # Keep the WAL file from growing unbounded on the volume.
-        db.get_write_conn().execute("PRAGMA wal_checkpoint(TRUNCATE)")
+    # Final save
+    if not dry_run and all_log_entries:
+        _save_faculty(data, department)
+        _append_log_batch(all_log_entries)
+    elif not dry_run and results:
+        # Even if no new log entries in last batch, save faculty data
+        _save_faculty(data, department)
 
     enriched_count = sum(
         1 for r in results
@@ -381,4 +450,21 @@ def enrich_all(sources=None, faculty_ids=None, dry_run=False,
 
 def get_enrichment_status(department=None):
     """Return a summary of enrichment coverage."""
-    return db.load_status(db.get_write_conn(), department)
+    data = _load_faculty(department)
+    faculty_list = data["faculty"]
+    total = len(faculty_list)
+
+    with_original = sum(1 for f in faculty_list if f.get("research_interests"))
+    with_enriched = sum(1 for f in faculty_list if f.get("research_interests_enriched"))
+    with_grants = sum(1 for f in faculty_list if f.get("funded_grants"))
+    with_pubs = sum(1 for f in faculty_list if f.get("recent_publications"))
+
+    return {
+        "total_faculty": total,
+        "with_original_interests": with_original,
+        "with_enriched_interests": with_enriched,
+        "with_funded_grants": with_grants,
+        "with_publications": with_pubs,
+        "coverage_original": round(with_original / total * 100, 1) if total else 0,
+        "coverage_enriched": round(with_enriched / total * 100, 1) if total else 0,
+    }

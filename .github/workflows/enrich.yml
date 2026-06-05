@@ -25,7 +25,7 @@ on:
         default: ""
         type: string
       faculty_ids:
-        description: "Comma-separated faculty.id primary keys (leave empty for all)"
+        description: "Comma-separated faculty indices (leave empty for all)"
         required: false
         default: ""
         type: string
@@ -75,12 +75,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # The runtime backend is SQLite. In CI the database is rebuilt from the
-      # committed JSON snapshots, enriched, then exported back to JSON so git
-      # remains the source of provenance for this (build-time) deployment path.
-      - name: Build SQLite database from JSON
-        run: python scripts/migrate_json_to_sqlite.py --rebuild
-
       - name: Verify faculty roster is seeded
         if: env.SCHOOL == 'sio' || env.SCHOOL == 'jacobs'
         run: |
@@ -114,10 +108,6 @@ jobs:
           ENRICH_DRY_RUN: ${{ inputs.dry_run }}
         run: python enrichment/run.py
 
-      - name: Export enriched data back to JSON
-        if: inputs.dry_run != true
-        run: python scripts/export_db_to_json.py
-
       - name: Commit enriched data
         if: inputs.dry_run != true
         run: |
@@ -125,5 +115,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/faculty.json data/sio_faculty.json data/jacobs_faculty.json
           git diff --staged --quiet || git commit -m "chore: enrich ${{ env.SCHOOL || 'hwsph' }} faculty data ($(date -u +%Y-%m-%d))"
-          git pull --rebase origin main
-          git push
+          # Push to whatever branch this workflow runs on (render-sqlite during
+          # migration; main once merged). Render rebuilds the SQLite DB on deploy.
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

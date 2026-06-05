@@ -175,7 +175,7 @@ The normalizer prompt includes the faculty member's original directory descripti
 
 ### Audit Log
 
-Every field change from enrichment is recorded in the `enrichment_log` table. Each entry contains: faculty id, source name, source URL, field updated, old value, new value, confidence score, method (`api`, `scrape`, or `llm_extraction`), raw response excerpt (up to 5000 chars), and ISO timestamp. This provides full provenance for every data point in every faculty profile. Entries older than 30 days are pruned at the start of each run.
+Every field change from enrichment is recorded in an append-only JSONL log (`data/enrichment_log.jsonl`): faculty index, source name, source URL, field updated, old value, new value, confidence score, method (`api`, `scrape`, or `llm_extraction`), raw response excerpt (up to 5000 chars), and ISO timestamp. This provides full provenance for every data point in every faculty profile. Entries older than 30 days are pruned at the start of each run.
 
 ### Schedule
 
@@ -194,15 +194,16 @@ Both workflows support `workflow_dispatch` with school selector, sources, facult
 
 ## Data Backend
 
-Faculty data is stored in a **SQLite** database (`data/app.db`, FTS5 full-text
-indexed) behind a single data-access module, `data/db.py`. The web app opens it
-**read-only**; writes happen only in the batch enrichment job. The committed
-JSON files (`data/*.json`) are the seed/snapshot format — build or rebuild the
-database from them with:
+Faculty data is **authored as JSON** (`data/*.json`) — seeding and enrichment
+read and write these files, and git tracks every change for provenance. At
+runtime the app serves a **SQLite** database (`data/app.db`, FTS5 full-text
+indexed) that is **built from that JSON** by `scripts/migrate_json_to_sqlite.py`
+on each deploy. The web app opens the DB **read-only** through the single
+data-access module `data/db.py`; it is never written at request time.
 
 ```bash
-python scripts/migrate_json_to_sqlite.py     # JSON -> data/app.db (idempotent)
-python scripts/export_db_to_json.py          # data/app.db -> JSON (diffable snapshot)
+python scripts/migrate_json_to_sqlite.py     # JSON -> data/app.db (build the runtime DB)
+python scripts/export_db_to_json.py          # data/app.db -> JSON (optional reverse export)
 ```
 
 See [`DEPLOY.md`](DEPLOY.md) for deployment (Railway volume + cron, or the

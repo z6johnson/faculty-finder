@@ -175,7 +175,7 @@ The normalizer prompt includes the faculty member's original directory descripti
 
 ### Audit Log
 
-Every field change from enrichment is recorded in `data/enrichment_log.json` — an append-only log tracked in git. Each entry contains: faculty index, source name, source URL, field updated, old value, new value, confidence score, method (`api`, `scrape`, or `llm_extraction`), raw response excerpt (up to 5000 chars), and ISO timestamp. This provides full provenance for every data point in every faculty profile.
+Every field change from enrichment is recorded in the `enrichment_log` table. Each entry contains: faculty id, source name, source URL, field updated, old value, new value, confidence score, method (`api`, `scrape`, or `llm_extraction`), raw response excerpt (up to 5000 chars), and ISO timestamp. This provides full provenance for every data point in every faculty profile. Entries older than 30 days are pruned at the start of each run.
 
 ### Schedule
 
@@ -192,13 +192,30 @@ All workflows live in `.github/workflows/` and are consolidated into two files:
 
 Both workflows support `workflow_dispatch` with school selector, sources, faculty indices, and dry-run mode. The enrichment workflow verifies that SIO/Jacobs rosters are seeded before proceeding. Vercel auto-deploys when enriched data is committed.
 
+## Data Backend
+
+Faculty data is stored in a **SQLite** database (`data/app.db`, FTS5 full-text
+indexed) behind a single data-access module, `data/db.py`. The web app opens it
+**read-only**; writes happen only in the batch enrichment job. The committed
+JSON files (`data/*.json`) are the seed/snapshot format — build or rebuild the
+database from them with:
+
+```bash
+python scripts/migrate_json_to_sqlite.py     # JSON -> data/app.db (idempotent)
+python scripts/export_db_to_json.py          # data/app.db -> JSON (diffable snapshot)
+```
+
+See [`DEPLOY.md`](DEPLOY.md) for deployment (Railway volume + cron, or the
+GitHub Actions build-time path).
+
 ## Architecture
 
 | Component | Platform | What it does |
 |-----------|----------|--------------|
-| **Frontend** | Vercel | Serves `index.html`, CSS, and JS as static files via CDN |
-| **API** | Vercel / Render | Runs the Flask app — `/api/match`, `/api/match-text`, `/api/faculty` |
-| **Enrichment** | GitHub Actions | Weekly automated data enrichment from NIH, NSF, PubMed, ORCID, Semantic Scholar, UCSD/Scripps Profiles |
+| **Frontend** | Railway / Vercel | Serves `index.html`, CSS, and JS as static files |
+| **API** | Railway (gunicorn) | Runs the Flask app — `/api/match`, `/api/match-text`, `/api/faculty` |
+| **Data** | SQLite (`data/app.db`) | FTS5-indexed faculty store, read-only at request time |
+| **Enrichment** | Railway Cron / GitHub Actions | Weekly data enrichment from NIH, NSF, PubMed, ORCID, Semantic Scholar, UCSD/Scripps Profiles |
 
 ## Project Structure
 
@@ -206,14 +223,21 @@ Both workflows support `workflow_dispatch` with school selector, sources, facult
 research-alignment/
 ├── app.py                    # Flask API
 ├── requirements.txt          # Python dependencies
-├── vercel.json               # Vercel deployment config
+├── Procfile                  # gunicorn web process (Railway/Render)
+├── DEPLOY.md                 # Deployment guide
+├── vercel.json               # Legacy Vercel deployment config
 ├── index.html                # Single-page frontend (three-tab interface)
 ├── .env.example              # Environment variable template
 ├── data/
-│   ├── faculty.json          # HWSPH faculty directory
-│   ├── sio_faculty.json      # SIO faculty directory
-│   ├── jacobs_faculty.json   # Jacobs faculty directory
-│   └── enrichment_log.json   # Append-only audit log
+│   ├── db.py                 # SQLite data-access layer (all SQL)
+│   ├── schema.sql            # SQLite schema (tables + FTS5)
+│   ├── app.db                # SQLite database (generated; git-ignored)
+│   ├── faculty.json          # HWSPH faculty directory (seed/snapshot)
+│   ├── sio_faculty.json      # SIO faculty directory (seed/snapshot)
+│   └── jacobs_faculty.json   # Jacobs faculty directory (seed/snapshot)
+├── scripts/
+│   ├── migrate_json_to_sqlite.py  # JSON -> SQLite (one-off / CI bootstrap)
+│   └── export_db_to_json.py       # SQLite -> JSON (diffable provenance)
 ├── static/
 │   ├── css/style.css         # UCSD-branded styles (Seed Style Guide)
 │   └── js/app.js             # Frontend logic

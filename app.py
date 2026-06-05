@@ -1,11 +1,10 @@
-import json
 import logging
-import os
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
+from data import db
 from utils.document_parser import extract_text
 from utils.grant_matcher import process_grant, process_text
 
@@ -22,47 +21,9 @@ logger = logging.getLogger(__name__)
 
 ALLOWED_EXTENSIONS = {"pdf", "txt"}
 
-_faculty_cache = {}
-
-# Map department keys to filenames and display labels
-_DEPT_CONFIG = {
-    "hwsph":  {"filename": "faculty.json", "label": "Herbert Wertheim School of Public Health"},
-    "sio":    {"filename": "sio_faculty.json", "label": "Scripps Institution of Oceanography"},
-    "jacobs": {"filename": "jacobs_faculty.json", "label": "Jacobs School of Engineering"},
-}
-
-
-def get_faculty_data(department=None):
-    """Load faculty data from JSON file (cached after first read).
-
-    Args:
-        department: "sio", "jacobs", "all" for all schools, None for HWSPH (default).
-    """
-    cache_key = department or "hwsph"
-    if cache_key not in _faculty_cache:
-        if department == "all":
-            # Merge all departments, tagging each faculty with their dept
-            merged = []
-            for dept_key, cfg in _DEPT_CONFIG.items():
-                data_path = os.path.join(os.path.dirname(__file__), "data", cfg["filename"])
-                with open(data_path) as f:
-                    dept_data = json.load(f)
-                for fac in dept_data.get("faculty", []):
-                    fac["department"] = dept_key
-                    fac["department_label"] = cfg["label"]
-                    merged.append(fac)
-            _faculty_cache[cache_key] = {"faculty": merged}
-        else:
-            dept_key = department or "hwsph"
-            cfg = _DEPT_CONFIG[dept_key]
-            data_path = os.path.join(os.path.dirname(__file__), "data", cfg["filename"])
-            with open(data_path) as f:
-                data = json.load(f)
-            for fac in data.get("faculty", []):
-                fac["department"] = dept_key
-                fac["department_label"] = cfg["label"]
-            _faculty_cache[cache_key] = data
-    return _faculty_cache[cache_key]
+# Department keys accepted by the API. "all" spans every school. The db layer
+# treats "hwsph"/None identically and "all" as no department filter.
+VALID_DEPTS = {"hwsph", "sio", "jacobs", "all"}
 
 
 def allowed_file(filename):
@@ -92,61 +53,23 @@ def faculty_directory():
     """Return faculty data for the expert directory (browsing/filtering).
 
     Query params:
-        dept: "sio" for Scripps, omit or "hwsph" for Public Health (default).
+        dept: "sio"/"jacobs"/"hwsph", or "all" (default) for every school.
+        q:     full-text search query.
+        limit/offset: pagination (limit capped at 50).
     """
     dept = request.args.get("dept", "").strip().lower() or "all"
-    valid_depts = set(_DEPT_CONFIG.keys()) | {"all"}
-    if dept not in valid_depts:
-        return jsonify({"error": f"Unknown department: {dept}. Use {', '.join(sorted(_DEPT_CONFIG.keys()))}, or 'all'."}), 400
-    if dept == "hwsph":
-        dept = None
+    if dept not in VALID_DEPTS:
+        return jsonify({"error": f"Unknown department: {dept}. Use hwsph, sio, jacobs, or 'all'."}), 400
 
-    data = get_faculty_data(dept)
-    faculty = data.get("faculty", [])
-
-    query = request.args.get("q", "").strip().lower()
+    query = request.args.get("q", "").strip()
     limit = min(int(request.args.get("limit", 20)), 50)
     offset = int(request.args.get("offset", 0))
 
-    # Build filtered list with only the directory fields
-    result = []
-    for f in faculty:
-        if not (f.get("first_name") and f.get("last_name")):
-            continue
-
-        # If there's a query, check if all terms match
-        if query:
-            searchable = _get_searchable_text(f)
-            terms = query.split()
-            if not all(t in searchable for t in terms):
-                continue
-
-        entry = {}
-        for field in FACULTY_DIRECTORY_FIELDS:
-            if field in f:
-                entry[field] = f[field]
-        result.append(entry)
-
-    total = len(result)
-    page = result[offset:offset + limit]
-
-    return jsonify({"results": page, "total": total, "offset": offset, "limit": limit})
-
-
-def _get_searchable_text(f):
-    """Build a single lowercase string of all searchable fields for a faculty member."""
-    parts = [
-        f.get("first_name") or "", f.get("last_name") or "",
-        f.get("title") or "",
-        f.get("research_interests") or "",
-        f.get("research_interests_enriched") or "",
-        *(f.get("expertise_keywords") or []),
-        *(f.get("disease_areas") or []),
-        *(f.get("methodologies") or []),
-        *(f.get("populations") or []),
-        *(f.get("committee_service") or []),
-    ]
-    return " ".join(str(p) for p in parts).lower()
+    conn = db.get_read_conn()
+    results, total = db.search_faculty(
+        conn, dept, query, limit, offset, FACULTY_DIRECTORY_FIELDS
+    )
+    return jsonify({"results": results, "total": total, "offset": offset, "limit": limit})
 
 
 @app.route("/api/match", methods=["POST"])
@@ -168,12 +91,11 @@ def match():
         return jsonify({"error": str(e)}), 400
 
     dept = request.form.get("dept", "").strip().lower() or "all"
-    if dept == "hwsph":
-        dept = None
+    if dept not in VALID_DEPTS:
+        return jsonify({"error": f"Unknown department: {dept}"}), 400
 
     try:
-        faculty = get_faculty_data(dept)["faculty"]
-        results = process_grant(text, faculty)
+        results = process_grant(text, department=dept, conn=db.get_read_conn())
     except Exception as e:
         logger.exception("Document processing failed")
         return jsonify({"error": _friendly_error(e)}), 500
@@ -196,12 +118,11 @@ def match_text():
         return jsonify({"error": "Text is too long. Maximum 60,000 characters."}), 400
 
     dept = data.get("dept", "").strip().lower() or "all"
-    if dept == "hwsph":
-        dept = None
+    if dept not in VALID_DEPTS:
+        return jsonify({"error": f"Unknown department: {dept}"}), 400
 
     try:
-        faculty = get_faculty_data(dept)["faculty"]
-        results = process_text(text, faculty)
+        results = process_text(text, department=dept, conn=db.get_read_conn())
     except Exception as e:
         logger.exception("Text processing failed")
         return jsonify({"error": _friendly_error(e)}), 500

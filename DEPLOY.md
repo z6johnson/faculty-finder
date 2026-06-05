@@ -49,9 +49,31 @@ writer). WAL mode lets reads continue while the cron writes.
 - Nightly online backup (WAL-safe): `sqlite3 /data/app.db ".backup /data/backups/app-$(date +%F).db"`.
 - The committed JSON snapshots double as a portable cold backup.
 
-## Alternatives
-- **Render** — equivalent: Web Service + Persistent Disk + a Render Cron Job
-  sharing the disk. Same WAL/single-writer model.
+## Render (blueprint: `render.yaml`)
+
+Render disks **cannot be shared between services**, so the Railway "web reads +
+cron writes one shared volume" model doesn't translate directly. Because the
+runtime is read-only, the simplest correct pattern is to **build `data/app.db`
+from the committed JSON at deploy time** (no disk, never committed) and keep
+enrichment in GitHub Actions:
+
+1. Merge the SQLite PR into the `render-sqlite` branch, then connect a Render
+   Blueprint to this repo — it reads `render.yaml`.
+2. The web service's build runs `pip install -r requirements.txt && python
+   scripts/migrate_json_to_sqlite.py`, producing a read-only `app.db` in the
+   deploy. `startCommand` is gunicorn.
+3. Set the secrets marked `sync: false` in `render.yaml` (`LITELLM_*`,
+   `NCBI_API_KEY`, `S2_API_KEY`) in the Render dashboard.
+4. Data refreshes whenever updated JSON lands on `render-sqlite` (via the
+   GitHub Actions enrichment loop, or a merge from `main`); Render auto-redeploys
+   and rebuilds the DB.
+
+To make Render own enrichment on-host instead, give the web service a persistent
+disk (mount `/data`, set `FACULTY_DB_PATH=/data/app.db`) and run the enrichment
+on a schedule **inside** the web service (a background scheduler), since a
+separate Render Cron Job can't write the web service's disk.
+
+## Other alternatives
 - **Fly.io + LiteFS** — only if you need multi-region read replicas / HA.
 - **Neon / Supabase (managed Postgres)** — the next step *after* SQLite if you
   outgrow a single node (concurrent writers, managed backups, or Supabase auth).

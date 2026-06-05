@@ -349,7 +349,7 @@ def match_faculty(requirements, faculty_with_interests):
         if attempt > 0:
             logger.warning("Retrying match_faculty after parse failure (attempt %d)", attempt + 1)
             time.sleep(1)
-        raw = _call_llm(MATCH_SYSTEM_PROMPT, user_prompt, max_tokens=4000, temperature=0.05,
+        raw = _call_llm(MATCH_SYSTEM_PROMPT, user_prompt, max_tokens=8000, temperature=0.05,
                         json_mode=True)
         try:
             parsed = _parse_json_response(raw)

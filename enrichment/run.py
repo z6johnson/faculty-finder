@@ -4,7 +4,7 @@ Called directly: python enrichment/run.py
 
 Configuration via environment variables:
     ENRICH_SOURCES: Comma-separated source names (default: all)
-    ENRICH_FACULTY_IDS: Comma-separated faculty.id primary keys (default: all)
+    ENRICH_FACULTY_IDS: Comma-separated faculty indices (default: all)
     ENRICH_DRY_RUN: Set to "true" for dry run
     ENRICH_DEPARTMENT: Department key ("sio" for Scripps, default: HWSPH)
 """

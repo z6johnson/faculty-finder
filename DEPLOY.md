@@ -79,8 +79,10 @@ separate Render Cron Job can't write the web service's disk.
   outgrow a single node (concurrent writers, managed backups, or Supabase auth).
   Because all SQL is behind `data/db.py`, that swap is localized to one module.
 
-## GitHub Actions (build-time path, still supported)
-`.github/workflows/enrich.yml` runs a self-contained loop: rebuild the DB from
-the committed JSON, enrich, export back to JSON, and commit. Use this if you
-prefer git-as-provenance with a serverless frontend; use the Railway cron above
-if the volume DB is your source of truth.
+## Enrichment (GitHub Actions)
+`.github/workflows/enrich.yml` runs the weekly enrichment: it writes the
+refreshed faculty JSON and commits it to the deploy branch. Render's build step
+then rebuilds the SQLite database from that JSON on redeploy. JSON stays the
+authored source of truth; the database is a derived, read-only artifact. The
+workflow pushes to whichever branch it runs on (`render-sqlite` during
+migration, `main` once merged).

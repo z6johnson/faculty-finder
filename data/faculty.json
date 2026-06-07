@@ -461,7 +461,7 @@
         "older adults",
         "mothers and daughters with obesity"
       ],
-      "last_enriched": "2026-06-07T06:38:08.888978+00:00",
+      "last_enriched": "2026-06-07T07:55:16.178911+00:00",
       "profile_url": "https://profiles.ucsd.edu/tala.alrousan",
       "employee_class": "Academic: Faculty",
       "job_code": "1728",
@@ -937,7 +937,7 @@
         }
       ],
       "orcid": "0000-0001-8292-0510",
-      "last_enriched": "2026-06-07T06:38:19.259403+00:00",
+      "last_enriched": "2026-06-07T07:55:24.976251+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -1457,7 +1457,7 @@
         "cancer patients (ovarian)",
         "populations experiencing health disparities"
       ],
-      "last_enriched": "2026-06-07T06:38:22.866169+00:00",
+      "last_enriched": "2026-06-07T07:55:33.718714+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Deans/Faculty Admin",
@@ -2041,7 +2041,7 @@
       "department_eah": "School of Public Health",
       "department_code": "383",
       "eah_status": "Active",
-      "last_enriched": "2026-06-07T06:38:29.581396+00:00"
+      "last_enriched": "2026-06-07T07:55:40.531317+00:00"
     },
     {
       "first_name": "Holly",
@@ -2297,7 +2297,7 @@
       "department_code": "383",
       "eah_status": "Active",
       "orcid": "0000-0003-2618-3258",
-      "last_enriched": "2026-06-07T06:38:39.822423+00:00",
+      "last_enriched": "2026-06-07T07:55:48.942497+00:00",
       "profile_url": "https://profiles.ucsd.edu/holly.shakya"
     },
     {
@@ -2852,7 +2852,7 @@
         }
       ],
       "orcid": "0000-0003-2167-8921",
-      "last_enriched": "2026-06-07T06:37:18.513325+00:00",
+      "last_enriched": "2026-06-07T07:54:20.940451+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -3233,7 +3233,7 @@
         "community oncology practice patients",
         "cancer survivors in Southern California"
       ],
-      "last_enriched": "2026-06-07T06:38:48.349527+00:00",
+      "last_enriched": "2026-06-07T07:55:55.761470+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -3673,7 +3673,7 @@
         }
       ],
       "orcid": "0000-0001-6828-1919",
-      "last_enriched": "2026-06-07T06:38:58.772931+00:00",
+      "last_enriched": "2026-06-07T07:56:04.319928+00:00",
       "research_interests_enriched": "Dr. Angela Bazzi’s research centers on HIV prevention and substance‑use health among people who use or inject drugs, with a strong emphasis on implementation science to improve harm‑reduction services such as syringe‑service programs and pre‑exposure prophylaxis (PrEP). She employs qualitative and mixed‑methods approaches to examine program delivery, policy contexts, and behavioral interventions (e.g., motivational interviewing, drug checking) that reduce overdose, hepatitis C, and HIV transmission. Her work also explores sexual partnership concurrency in high‑risk couples and occupational stigma among professionals serving drug‑using populations.",
       "expertise_keywords": [
         "HIV prevention",
@@ -4212,7 +4212,7 @@
         }
       ],
       "orcid": "0009-0009-1463-1042",
-      "last_enriched": "2026-06-07T06:39:09.204590+00:00",
+      "last_enriched": "2026-06-07T07:56:13.079778+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Charles Berry focuses on the development and application of biostatistical and computational methods for the analysis of complex biomedical data, including statistical genomics of retroviral integration and quantitative modeling of clinical outcomes. His work bridges methodological innovation in statistical genetics, data management, and computational biology with applied research in cardiovascular disease, ophthalmology, HIV infection, substance‑use related injury, and sleep‑apnea/hypertension epidemiology.",
@@ -4406,7 +4406,7 @@
         }
       ],
       "orcid": "0000-0002-9125-5601",
-      "last_enriched": "2026-06-07T06:39:19.679822+00:00",
+      "last_enriched": "2026-06-07T07:56:21.935268+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Nancy Binkin’s research focuses on infectious disease epidemiology and health services, with an emphasis on COVID‑19 monoclonal antibody prophylaxis in solid organ transplant recipients and real‑world vaccine effectiveness. She also investigates public health workforce capacity in large U.S. health departments, and evaluates interventions to improve respectful maternity care and childhood vaccination coverage among specific populations such as military dependents.",
@@ -4479,19 +4479,19 @@
           "title": "Stakeholder Perspectives on Social Media Surveillance in Schools",
           "abstract": "PROJECT ABSTRACT\nAt a time when youth suicide and school shooting incidents are increasing, a growing number of U.S. schools are implementing commercially available social media surveillance (SMS) technology that can allegedly identify mental health and safety threats by monitoring students' social media posts. Although SMS technology is increasingly being purchased and used by schools, such use is often not disclosed to students or parents. There is also a lack of transparency regarding the met",
           "agency": "National Institute of Mental Health",
-          "amount": 578371,
+          "amount": 575974,
           "start_date": "2023-08-01T00:00:00",
-          "end_date": "2027-05-31T00:00:00",
-          "project_number": "1R01MH129774-01A1"
+          "end_date": "2025-05-31T00:00:00",
+          "project_number": "5R01MH129774-02"
         },
         {
           "title": "Stakeholder Perspectives on Social Media Surveillance in Schools",
           "abstract": "PROJECT ABSTRACT\nAt a time when youth suicide and school shooting incidents are increasing, a growing number of U.S. schools are implementing commercially available social media surveillance (SMS) technology that can allegedly identify mental health and safety threats by monitoring students' social media posts. Although SMS technology is increasingly being purchased and used by schools, such use is often not disclosed to students or parents. There is also a lack of transparency regarding the met",
           "agency": "National Institute of Mental Health",
-          "amount": 575974,
+          "amount": 578371,
           "start_date": "2023-08-01T00:00:00",
-          "end_date": "2025-05-31T00:00:00",
-          "project_number": "5R01MH129774-02"
+          "end_date": "2027-05-31T00:00:00",
+          "project_number": "1R01MH129774-01A1"
         },
         {
           "title": "Stakeholder Perspectives on Social Media Surveillance in Schools",
@@ -4524,19 +4524,19 @@
           "title": "Public Engagement for Gene Drive Technology",
           "abstract": "PROJECT SUMMARY\n Development of gene drives to control mosquito vectors of disease has rapidly accelerated in recent\nyears, and these efforts may soon culminate in gene drive systems ready for open field testing. The success of\ngene drive and other novel vector control approaches will depend on design decisions, oversight, and plans for\nfield testing and deployment that meet the needs of various stakeholders, including residents of affected areas\nand the general public, but there is little agree",
           "agency": "National Center for Advancing Translational Sciences",
-          "amount": 445290,
+          "amount": 450745,
           "start_date": "2020-09-17T00:00:00",
-          "end_date": "2025-07-31T00:00:00",
-          "project_number": "5R01TR003514-04"
+          "end_date": "2024-07-31T00:00:00",
+          "project_number": "1R01TR003514-01"
         },
         {
           "title": "Public Engagement for Gene Drive Technology",
           "abstract": "PROJECT SUMMARY\n Development of gene drives to control mosquito vectors of disease has rapidly accelerated in recent\nyears, and these efforts may soon culminate in gene drive systems ready for open field testing. The success of\ngene drive and other novel vector control approaches will depend on design decisions, oversight, and plans for\nfield testing and deployment that meet the needs of various stakeholders, including residents of affected areas\nand the general public, but there is little agree",
           "agency": "National Center for Advancing Translational Sciences",
-          "amount": 450745,
+          "amount": 445290,
           "start_date": "2020-09-17T00:00:00",
-          "end_date": "2024-07-31T00:00:00",
-          "project_number": "1R01TR003514-01"
+          "end_date": "2025-07-31T00:00:00",
+          "project_number": "5R01TR003514-04"
         },
         {
           "title": "Impact of Privacy Environments for Personal Health Data on Patients",
@@ -4830,7 +4830,7 @@
         }
       ],
       "orcid": "0000-0003-1315-8387",
-      "last_enriched": "2026-06-07T06:39:30.088644+00:00",
+      "last_enriched": "2026-06-07T07:56:30.457170+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Cinnamon Bloss investigates the intersection of digital technologies, genomics, and ethics to improve mental health outcomes and public health decision‑making. Her work focuses on school‑based social media surveillance and youth suicide prevention, the implementation and perceived utility of genomic sequencing, public engagement with emerging biotechnologies such as gene‑drive mosquito control, and the privacy implications of big‑data health information.",
@@ -5494,7 +5494,7 @@
         }
       ],
       "orcid": "0000-0002-9573-4765",
-      "last_enriched": "2026-06-07T06:39:34.330197+00:00",
+      "last_enriched": "2026-06-07T07:56:39.064156+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Kerri Boutelle investigates the psychological and neurocognitive mechanisms underlying obesity and binge‑eating across the lifespan, with a focus on appetitive traits, food cue responsiveness, and reward‑inhibition processes. Her work develops and tests family‑based, telehealth, and emotion‑regulation interventions—including regulation‑of‑cues and cognitive‑behavioral therapy—to promote weight loss and healthy eating in children, adolescents, adults, and special populations such as youth with autism spectrum disorder and veterans.",
@@ -5889,7 +5889,7 @@
         }
       ],
       "orcid": "0000-0002-8073-3671",
-      "last_enriched": "2026-06-07T06:39:38.220141+00:00",
+      "last_enriched": "2026-06-07T07:56:47.507621+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Dr. Ryan Bradley’s research centers on complementary and integrative health, with a strong emphasis on nutrition, dietary supplements, and natural product interventions. He investigates the safety, efficacy, and health impacts of compounds such as xanthohumol, cannabis, psilocybin, and multinutrient formulations across a range of conditions including Crohn’s disease, hypertension, cardiovascular disease, depression, ADHD, and non‑alcoholic fatty liver disease. His work combines clinical trials, cohort and cross‑sectional epidemiology, and biomarker analyses to address whole‑person health and health disparities in diverse U.S. populations.",
@@ -6562,7 +6562,7 @@
         "health workers",
         "infant males (circumcision context)"
       ],
-      "last_enriched": "2026-06-07T06:39:48.787107+00:00",
+      "last_enriched": "2026-06-07T07:56:56.229749+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -6957,7 +6957,7 @@
         "geriatric men (clinical case reports)",
         "children with osteomyelitis"
       ],
-      "last_enriched": "2026-06-07T06:39:59.245205+00:00",
+      "last_enriched": "2026-06-07T07:57:04.801812+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1717",
       "job_code_description": "ASST PROF-HCOMP",
@@ -7315,7 +7315,7 @@
         "underserved/health‑disparity populations",
         "adult patients"
       ],
-      "last_enriched": "2026-06-07T06:40:05.761022+00:00",
+      "last_enriched": "2026-06-07T07:57:11.642048+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "profile_url": "https://vchs.ucsd.edu/about/leadership/index.html",
@@ -7693,7 +7693,7 @@
         "transgender/non‑binary adolescents",
         "LGBTQ+ patients"
       ],
-      "last_enriched": "2026-06-07T06:40:16.028755+00:00",
+      "last_enriched": "2026-06-07T07:57:20.029227+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -8333,7 +8333,7 @@
       ],
       "h_index": 0,
       "orcid": "0000-0003-4675-7722",
-      "last_enriched": "2026-06-07T06:40:26.887351+00:00",
+      "last_enriched": "2026-06-07T07:57:29.141682+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1721",
       "job_code_description": "PROF-HCOMP",
@@ -8850,7 +8850,7 @@
         }
       ],
       "orcid": "0000-0001-7119-8542",
-      "last_enriched": "2026-06-07T06:40:37.572572+00:00",
+      "last_enriched": "2026-06-07T07:57:37.774146+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -9283,7 +9283,7 @@
         }
       ],
       "orcid": "0000-0001-9542-716X",
-      "last_enriched": "2026-06-07T06:40:44.321302+00:00",
+      "last_enriched": "2026-06-07T07:57:44.587891+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -9737,7 +9737,7 @@
         "patients with breast arterial calcification",
         "Kawasaki disease patients with coronary artery aneurysms"
       ],
-      "last_enriched": "2026-06-07T06:40:54.739362+00:00",
+      "last_enriched": "2026-06-07T07:57:53.166901+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -10380,7 +10380,7 @@
         "middle‑aged adults",
         "diverse undergraduate research trainees"
       ],
-      "last_enriched": "2026-06-07T06:41:05.258417+00:00",
+      "last_enriched": "2026-06-07T07:58:01.772358+00:00",
       "profile_url": "https://profiles.ucsd.edu/steven.edland",
       "employee_class": "Academic: Emeriti",
       "job_code": "3800",
@@ -10549,7 +10549,7 @@
         "general adult public health users",
         "county behavioral health system stakeholders"
       ],
-      "last_enriched": "2026-06-07T06:41:08.458984+00:00",
+      "last_enriched": "2026-06-07T07:58:10.303672+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -10967,7 +10967,7 @@
         "marginalized community members",
         "key populations for HIV"
       ],
-      "last_enriched": "2026-06-07T06:41:18.815424+00:00",
+      "last_enriched": "2026-06-07T07:58:18.793684+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1719",
       "job_code_description": "ASSOC PROF-HCOMP",
@@ -11058,7 +11058,7 @@
         "patients with Crohn's disease (all ages)",
         "North American populations (Canada, Mexico, USA)"
       ],
-      "last_enriched": "2026-06-07T06:41:27.407998+00:00",
+      "last_enriched": "2026-06-07T07:58:25.579542+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -11599,7 +11599,7 @@
         }
       ],
       "orcid": "0000-0003-3663-7153",
-      "last_enriched": "2026-06-07T06:37:21.938924+00:00",
+      "last_enriched": "2026-06-07T07:54:29.664779+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -11957,7 +11957,7 @@
         }
       ],
       "orcid": "0000-0002-8360-3522",
-      "last_enriched": "2026-06-07T06:41:37.824434+00:00",
+      "last_enriched": "2026-06-07T07:58:34.190032+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -12430,7 +12430,7 @@
       "department_code": "383",
       "eah_status": "Active",
       "orcid": "0000-0002-4852-6277",
-      "last_enriched": "2026-06-07T06:41:46.473231+00:00",
+      "last_enriched": "2026-06-07T07:58:41.002389+00:00",
       "profile_url": "https://researcherprofiles.org/profile/184149"
     },
     {
@@ -12676,7 +12676,7 @@
         "French population (heat wave studies)",
         "middle‑aged adults"
       ],
-      "last_enriched": "2026-06-07T06:41:48.844845+00:00",
+      "last_enriched": "2026-06-07T07:58:49.385552+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -13030,7 +13030,7 @@
         }
       ],
       "orcid": "0000-0001-6239-1965",
-      "last_enriched": "2026-06-07T06:41:59.222466+00:00",
+      "last_enriched": "2026-06-07T07:58:57.928624+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Erik Groessl’s research integrates mind‑body therapies such as yoga, meditation, and mantram with rigorous health‑economic evaluation to improve outcomes for chronic pain, PTSD, and metabolic disorders. He focuses on cost‑effectiveness and quality‑of‑life impacts of integrative interventions across diverse populations, including military personnel, veterans, older adults, and underserved ethnic groups. His work combines clinical trials, implementation science, and economic modeling to inform policy and clinical practice in integrative health.",
@@ -13171,7 +13171,7 @@
           "amount": 170356,
           "start_date": "2014-08-08T00:00:00",
           "end_date": "2019-07-31T00:00:00",
-          "project_number": "5K07CA181323-02"
+          "project_number": "5K07CA181323-03"
         },
         {
           "title": "Physical Activity and neuropsychological outcomes in a cancer population",
@@ -13180,7 +13180,7 @@
           "amount": 170356,
           "start_date": "2014-08-08T00:00:00",
           "end_date": "2019-07-31T00:00:00",
-          "project_number": "5K07CA181323-03"
+          "project_number": "5K07CA181323-02"
         },
         {
           "title": "Physical Activity and neuropsychological outcomes in a cancer population",
@@ -13198,7 +13198,7 @@
           "amount": 170356,
           "start_date": "2014-08-08T00:00:00",
           "end_date": "2019-07-31T00:00:00",
-          "project_number": "5K07CA181323-04"
+          "project_number": "5K07CA181323-05"
         },
         {
           "title": "Physical Activity and neuropsychological outcomes in a cancer population",
@@ -13207,7 +13207,7 @@
           "amount": 170356,
           "start_date": "2014-08-08T00:00:00",
           "end_date": "2019-07-31T00:00:00",
-          "project_number": "5K07CA181323-05"
+          "project_number": "5K07CA181323-04"
         }
       ],
       "recent_publications": [
@@ -13544,7 +13544,7 @@
         }
       ],
       "orcid": "0000-0001-9858-1736",
-      "last_enriched": "2026-06-07T06:42:09.555275+00:00",
+      "last_enriched": "2026-06-07T07:59:06.466000+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Sheri Hartman's research centers on developing and testing behavior‑change interventions—particularly physical‑activity and sedentary‑behavior programs—to improve cognition, quality of life, and patient‑reported outcomes among cancer survivors and older adults. She integrates technology‑enhanced coaching, health‑coach models, and theory‑driven strategies across diverse populations, including breast cancer survivors, Latina women, postmenopausal women, and adolescent/young‑adult cancer survivors, with extensions into preconception health and aging‑related cardiovascular risk.",
@@ -13731,7 +13731,7 @@
         "middle‑aged adults",
         "communities exposed to dust and heat"
       ],
-      "last_enriched": "2026-06-07T06:42:19.819612+00:00",
+      "last_enriched": "2026-06-07T07:59:14.895369+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -14310,7 +14310,7 @@
         }
       ],
       "orcid": "0000-0002-7434-0775",
-      "last_enriched": "2026-06-07T06:42:23.220308+00:00",
+      "last_enriched": "2026-06-07T07:59:23.382117+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Eric Hekler focuses on the development, optimization, and implementation of adaptive digital health interventions that leverage control‑systems engineering, sensor‑based data, and human‑centered design to promote behavior change. His work spans self‑experimentation (N‑of‑1 trials), ecological momentary assessment, and implementation science to address health equity, informed‑consent processes, and chronic disease prevention such as obesity, type‑2 diabetes, and cancer‑related outcomes.",
@@ -14867,7 +14867,7 @@
         "general California residents",
         "displaced populations"
       ],
-      "last_enriched": "2026-06-07T06:42:33.577757+00:00",
+      "last_enriched": "2026-06-07T07:59:32.023401+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -15020,6 +15020,24 @@
           "project_number": "3R01HL090975-01A2S1"
         },
         {
+          "title": "Role of obesity on vascular inflammation and immune cell activation in prehyperte",
+          "abstract": "  \r\nDESCRIPTION (provided by applicant): Hypertension (HTN) affects more than 50 million Americans and is associated with significantly increased risk for stroke and atherosclerosis. The 7th Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure (JNC 7, 2003) reported that even a mild elevation of blood pressure (BP) above normal, even if it is below the hypertensive range, can be a risk factor for cardiovascular disease (CVD) and named it \"prehyperte",
+          "agency": "National Heart Lung and Blood Institute",
+          "amount": 386250,
+          "start_date": "2009-02-01T00:00:00",
+          "end_date": "2014-01-31T00:00:00",
+          "project_number": "5R01HL090975-03"
+        },
+        {
+          "title": "Obesity, vascular inflammation, and immune cell activation in prehypertension",
+          "abstract": "  \nDESCRIPTION (provided by applicant): Hypertension (HTN) affects more than 50 million Americans and is associated with significantly increased risk for stroke and atherosclerosis. The 7th Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure (JNC 7, 2003) reported that even a mild elevation of blood pressure (BP) above normal, even if it is below the hypertensive range, can be a risk factor for cardiovascular disease (CVD) and named it \"prehyperten",
+          "agency": "National Heart Lung and Blood Institute",
+          "amount": 382388,
+          "start_date": "2009-02-01T00:00:00",
+          "end_date": "2014-01-31T00:00:00",
+          "project_number": "5R01HL090975-04"
+        },
+        {
           "title": "Obesity, vascular inflammation, and immune cell activation in prehypertension",
           "abstract": "  \nDESCRIPTION (provided by applicant): Hypertension (HTN) affects more than 50 million Americans and is associated with significantly increased risk for stroke and atherosclerosis. The 7th Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure (JNC 7, 2003) reported that even a mild elevation of blood pressure (BP) above normal, even if it is below the hypertensive range, can be a risk factor for cardiovascular disease (CVD) and named it \"prehyperten",
           "agency": "National Heart Lung and Blood Institute",
@@ -15036,24 +15054,6 @@
           "start_date": "2009-02-01T00:00:00",
           "end_date": "2014-01-31T00:00:00",
           "project_number": "1R01HL090975-01A2"
-        },
-        {
-          "title": "Obesity, vascular inflammation, and immune cell activation in prehypertension",
-          "abstract": "  \nDESCRIPTION (provided by applicant): Hypertension (HTN) affects more than 50 million Americans and is associated with significantly increased risk for stroke and atherosclerosis. The 7th Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure (JNC 7, 2003) reported that even a mild elevation of blood pressure (BP) above normal, even if it is below the hypertensive range, can be a risk factor for cardiovascular disease (CVD) and named it \"prehyperten",
-          "agency": "National Heart Lung and Blood Institute",
-          "amount": 382388,
-          "start_date": "2009-02-01T00:00:00",
-          "end_date": "2014-01-31T00:00:00",
-          "project_number": "5R01HL090975-04"
-        },
-        {
-          "title": "Role of obesity on vascular inflammation and immune cell activation in prehyperte",
-          "abstract": "  \r\nDESCRIPTION (provided by applicant): Hypertension (HTN) affects more than 50 million Americans and is associated with significantly increased risk for stroke and atherosclerosis. The 7th Joint National Committee on Prevention, Detection, Evaluation, and Treatment of High Blood Pressure (JNC 7, 2003) reported that even a mild elevation of blood pressure (BP) above normal, even if it is below the hypertensive range, can be a risk factor for cardiovascular disease (CVD) and named it \"prehyperte",
-          "agency": "National Heart Lung and Blood Institute",
-          "amount": 386250,
-          "start_date": "2009-02-01T00:00:00",
-          "end_date": "2014-01-31T00:00:00",
-          "project_number": "5R01HL090975-03"
         },
         {
           "title": "Role of obesity on vascular inflammation and immune cell activation in prehyperte",
@@ -15387,7 +15387,7 @@
         }
       ],
       "orcid": "0000-0003-0300-5950",
-      "last_enriched": "2026-06-07T06:42:35.985703+00:00",
+      "last_enriched": "2026-06-07T07:59:40.844696+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 33,
@@ -15567,7 +15567,7 @@
       "department_eah": "School of Public Health",
       "department_code": "383",
       "eah_status": "Active",
-      "last_enriched": "2026-06-07T06:42:49.760161+00:00"
+      "last_enriched": "2026-06-07T07:59:47.651300+00:00"
     },
     {
       "first_name": "Joachim",
@@ -16040,7 +16040,7 @@
         }
       ],
       "orcid": "0000-0002-8084-9869",
-      "last_enriched": "2026-06-07T06:43:00.655276+00:00",
+      "last_enriched": "2026-06-07T07:59:56.700153+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Joachim Ix investigates the mechanisms and clinical consequences of kidney tubular dysfunction, focusing on biomarkers that predict acute kidney injury (AKI) and chronic kidney disease (CKD) progression. His work integrates studies of electrolyte handling, hemodialysis, and bone health in CKD, and explores intersections with cardiovascular and liver disease. He also leads patient‑oriented research and training programs in nephrology, urology, and hematology.",
@@ -16321,19 +16321,19 @@
           "title": "Core N: Biostatistics and Modeling",
           "abstract": "Project Summary/Abstract\nCore N - The mission of the San Diego Center for AIDS Research (SD CFAR) Biostatistics and Modeling\n(BAM) Core is to provide quantitative expertise, collaboration, and training in the areas of biostatistics and\ninfectious disease modeling related to HIV research. In accordance with NIH OAR priorities and our CFAR’s\nfocus, we prioritize research in optimizing HIV care, alleviating HIV health disparities, and advancing discovery\nin HIV cure and vaccines. The BAM Core’s ser",
           "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 507060,
+          "amount": 148396,
           "start_date": null,
           "end_date": null,
-          "project_number": "5P30AI036214-25"
+          "project_number": "2P30AI036214-24"
         },
         {
           "title": "Core N: Biostatistics and Modeling",
           "abstract": "Project Summary/Abstract\nCore N - The mission of the San Diego Center for AIDS Research (SD CFAR) Biostatistics and Modeling\n(BAM) Core is to provide quantitative expertise, collaboration, and training in the areas of biostatistics and\ninfectious disease modeling related to HIV research. In accordance with NIH OAR priorities and our CFAR’s\nfocus, we prioritize research in optimizing HIV care, alleviating HIV health disparities, and advancing discovery\nin HIV cure and vaccines. The BAM Core’s ser",
           "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 148396,
+          "amount": 507060,
           "start_date": null,
           "end_date": null,
-          "project_number": "2P30AI036214-24"
+          "project_number": "5P30AI036214-25"
         },
         {
           "title": "Vision Biostatistics",
@@ -16628,7 +16628,7 @@
         }
       ],
       "orcid": "0000-0001-8408-1247",
-      "last_enriched": "2026-06-07T06:43:11.361371+00:00",
+      "last_enriched": "2026-06-07T08:00:05.701981+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "profile_url": "https://researcherprofiles.org/profile/179457",
@@ -17001,7 +17001,7 @@
         "preclinical mouse models",
         "general human populations"
       ],
-      "last_enriched": "2026-06-07T06:43:14.756084+00:00",
+      "last_enriched": "2026-06-07T08:00:14.047181+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -17201,7 +17201,7 @@
         }
       ],
       "orcid": "0000-0002-3273-184X",
-      "last_enriched": "2026-06-07T06:43:25.288841+00:00",
+      "last_enriched": "2026-06-07T08:00:22.552988+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -17433,7 +17433,7 @@
         "South African general population",
         "healthcare system stakeholders"
       ],
-      "last_enriched": "2026-06-07T06:43:35.812928+00:00",
+      "last_enriched": "2026-06-07T08:01:05.262937+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -17709,7 +17709,7 @@
         "young adults under ACA dependent coverage",
         "California residents"
       ],
-      "last_enriched": "2026-06-07T06:43:46.152271+00:00",
+      "last_enriched": "2026-06-07T08:01:13.853789+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 3,
@@ -18074,7 +18074,7 @@
         }
       ],
       "orcid": "0000-0002-2468-115X",
-      "last_enriched": "2026-06-07T06:43:56.550011+00:00",
+      "last_enriched": "2026-06-07T08:01:22.327635+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "profile_url": "https://profiles.ucsd.edu/ariel.lang",
@@ -18245,7 +18245,7 @@
         }
       ],
       "orcid": "0000-0002-6088-5176",
-      "last_enriched": "2026-06-07T06:44:05.117076+00:00",
+      "last_enriched": "2026-06-07T08:01:29.066104+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -18631,7 +18631,7 @@
         }
       ],
       "orcid": "0000-0001-9221-0336",
-      "last_enriched": "2026-06-07T06:44:15.462031+00:00",
+      "last_enriched": "2026-06-07T08:01:37.595827+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Eric Leas focuses on the epidemiology of cannabis‑derived products (including CBD, delta‑8 THC, CBG, etc.) and tobacco use, with a particular emphasis on menthol cigarettes and e‑cigarette/vaping behaviors. He leverages data‑science techniques—such as large‑scale web scraping, natural‑language processing, and statistical modeling—to examine real‑world usage patterns, policy impacts, and associated health outcomes among U.S. adult populations.",
@@ -18959,7 +18959,7 @@
       "department_eah": "School of Public Health",
       "department_code": "383",
       "eah_status": "Active",
-      "last_enriched": "2026-06-07T06:44:26.143174+00:00",
+      "last_enriched": "2026-06-07T08:01:46.445506+00:00",
       "research_interests_enriched": "Henry Lee focuses on improving outcomes for high‑risk neonates, especially those born at the periviable threshold, by developing predictive tools and leveraging large‑scale clinical registries. His work integrates health‑services research on NICU utilization and costs with cutting‑edge metabolomic profiling and deep‑learning analytics to assess infant health. He also investigates antimicrobial resistance in culture‑proven sepsis among very preterm infants and examines health disparities affecting NICU populations in border communities.",
       "expertise_keywords": [
         "periviable birth",
@@ -19334,7 +19334,7 @@
         "preterm infants",
         "pediatric patients"
       ],
-      "last_enriched": "2026-06-07T06:44:29.491119+00:00",
+      "last_enriched": "2026-06-07T08:01:54.968214+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "profile_url": "https://profiles.ucsd.edu/sydney.leibel",
@@ -19676,7 +19676,7 @@
         "riverine watershed systems",
         "fusion plasma (tokamak) environments"
       ],
-      "last_enriched": "2026-06-07T06:44:33.397814+00:00",
+      "last_enriched": "2026-06-07T08:02:03.588783+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 8,
@@ -19711,19 +19711,19 @@
           "title": "Improving Family Functioning in Obesity Treatment for Mexican American Women",
           "abstract": "SUMMARY\nMexican American women are disproportionately affected by obesity and obesity-related conditions, such as\ntype 2 diabetes. Obesity and diabetes are highly concordant in Mexican American families. Given the younger\nage of onset of diabetes in women with familial history, targeting mothers and their adult daughters for obesity\ntreatment is warranted. From a family systems perspective, family-level approaches to obesity treatment can\nimprove the adoption and maintenance of weight management",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 650397,
+          "amount": 705243,
           "start_date": "2021-08-17T00:00:00",
           "end_date": "2026-07-31T00:00:00",
-          "project_number": "5R01DK129682-03"
+          "project_number": "1R01DK129682-01"
         },
         {
           "title": "Improving Family Functioning in Obesity Treatment for Mexican American Women",
           "abstract": "SUMMARY\nMexican American women are disproportionately affected by obesity and obesity-related conditions, such as\ntype 2 diabetes. Obesity and diabetes are highly concordant in Mexican American families. Given the younger\nage of onset of diabetes in women with familial history, targeting mothers and their adult daughters for obesity\ntreatment is warranted. From a family systems perspective, family-level approaches to obesity treatment can\nimprove the adoption and maintenance of weight management",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 705243,
+          "amount": 650397,
           "start_date": "2021-08-17T00:00:00",
           "end_date": "2026-07-31T00:00:00",
-          "project_number": "1R01DK129682-01"
+          "project_number": "5R01DK129682-03"
         },
         {
           "title": "Improving Family Functioning in Obesity Treatment for Mexican American Women",
@@ -19738,19 +19738,19 @@
           "title": "Improving Family Functioning in Obesity Treatment for Mexican American Women",
           "abstract": "SUMMARY\nMexican American women are disproportionately affected by obesity and obesity-related conditions, such as\ntype 2 diabetes. Obesity and diabetes are highly concordant in Mexican American families. Given the younger\nage of onset of diabetes in women with familial history, targeting mothers and their adult daughters for obesity\ntreatment is warranted. From a family systems perspective, family-level approaches to obesity treatment can\nimprove the adoption and maintenance of weight management",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 671907,
+          "amount": 604377,
           "start_date": "2021-08-17T00:00:00",
           "end_date": "2026-07-31T00:00:00",
-          "project_number": "5R01DK129682-02"
+          "project_number": "5R01DK129682-05"
         },
         {
           "title": "Improving Family Functioning in Obesity Treatment for Mexican American Women",
           "abstract": "SUMMARY\nMexican American women are disproportionately affected by obesity and obesity-related conditions, such as\ntype 2 diabetes. Obesity and diabetes are highly concordant in Mexican American families. Given the younger\nage of onset of diabetes in women with familial history, targeting mothers and their adult daughters for obesity\ntreatment is warranted. From a family systems perspective, family-level approaches to obesity treatment can\nimprove the adoption and maintenance of weight management",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 604377,
+          "amount": 671907,
           "start_date": "2021-08-17T00:00:00",
           "end_date": "2026-07-31T00:00:00",
-          "project_number": "5R01DK129682-05"
+          "project_number": "5R01DK129682-02"
         },
         {
           "title": "Improving communication and collaboration for weight management in mother-daughter dyads",
@@ -19783,19 +19783,19 @@
           "title": "Improving communication and collaboration for weight management in mother-daughter dyads",
           "abstract": "﻿   \nDESCRIPTION (provided by applicant): The goal of this Mentored Career Development Award (K01) is to enable Dr. Becky Marquez to become an independent investigator focused on developing interventions to reduce cardiovascular disease risk factors by targeting social support networks to promote eating and exercise behaviors conducive to weight management for Latinas. Given the relationship between obesity and cardiovascular disease, it is imperative that intervention studies address weight man",
           "agency": "National Heart Lung and Blood Institute",
-          "amount": 152510,
+          "amount": 147072,
           "start_date": "2016-01-15T00:00:00",
           "end_date": "2020-12-31T00:00:00",
-          "project_number": "5K01HL130726-02"
+          "project_number": "5K01HL130726-04"
         },
         {
           "title": "Improving communication and collaboration for weight management in mother-daughter dyads",
           "abstract": "﻿   \nDESCRIPTION (provided by applicant): The goal of this Mentored Career Development Award (K01) is to enable Dr. Becky Marquez to become an independent investigator focused on developing interventions to reduce cardiovascular disease risk factors by targeting social support networks to promote eating and exercise behaviors conducive to weight management for Latinas. Given the relationship between obesity and cardiovascular disease, it is imperative that intervention studies address weight man",
           "agency": "National Heart Lung and Blood Institute",
-          "amount": 147072,
+          "amount": 152510,
           "start_date": "2016-01-15T00:00:00",
           "end_date": "2020-12-31T00:00:00",
-          "project_number": "5K01HL130726-04"
+          "project_number": "5K01HL130726-02"
         }
       ],
       "recent_publications": [
@@ -20246,7 +20246,7 @@
         "caregivers of children",
         "Middle East and North Africa refugees"
       ],
-      "last_enriched": "2026-06-07T06:44:36.757961+00:00",
+      "last_enriched": "2026-06-07T08:02:12.290010+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -20585,7 +20585,7 @@
       "department_code": "383",
       "eah_status": "Active",
       "orcid": "0000-0002-6728-1834",
-      "last_enriched": "2026-06-07T06:44:58.109212+00:00"
+      "last_enriched": "2026-06-07T08:02:21.302242+00:00"
     },
     {
       "first_name": "Linda",
@@ -21120,7 +21120,7 @@
         "participants in the Rancho Bernardo Study",
         "Women's Health Initiative cohort"
       ],
-      "last_enriched": "2026-06-07T06:45:08.592144+00:00",
+      "last_enriched": "2026-06-07T08:02:30.175404+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -21503,7 +21503,7 @@
         "Medicaid enrollees",
         "US general population"
       ],
-      "last_enriched": "2026-06-07T06:45:19.003168+00:00",
+      "last_enriched": "2026-06-07T08:02:38.973035+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -21642,7 +21642,7 @@
         "adolescents",
         "children receiving chemotherapy"
       ],
-      "last_enriched": "2026-06-07T06:45:29.357002+00:00",
+      "last_enriched": "2026-06-07T08:02:47.428126+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 9,
@@ -21815,7 +21815,7 @@
         "cancer patients across the care continuum",
         "international sarcoma cohort"
       ],
-      "last_enriched": "2026-06-07T06:45:38.086282+00:00",
+      "last_enriched": "2026-06-07T08:02:54.190754+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -21855,21 +21855,21 @@
         },
         {
           "title": "Population studies of cigarette smoking, other tobacco use, and lung cancer",
-          "abstract": "DESCRIPTION (provided by applicant): Despite strong reductions in smoking prevalence, cigarette smoking remains the leading preventable cause of death in the US, and lung cancer is the leading cause of smoking-attributable deaths. Prior to 2009, marketing, manufacture and sale of tobacco products was not under the purview of the Food and Drug Administration (FDA). The 2009 Family Smoking Prevention and Control Act gave the FDA authority over tobacco products, under a new regulatory standard of p",
-          "agency": "National Cancer Institute",
-          "amount": 202275,
-          "start_date": "2013-04-01T00:00:00",
-          "end_date": "2017-03-31T00:00:00",
-          "project_number": "5R01CA172058-03"
-        },
-        {
-          "title": "Population studies of cigarette smoking, other tobacco use, and lung cancer",
           "abstract": "   \r\nDESCRIPTION (provided by applicant): Despite strong reductions in smoking prevalence, cigarette smoking remains the leading preventable cause of death in the US, and lung cancer is the leading cause of smoking-attributable deaths. Prior to 2009, marketing, manufacture and sale of tobacco products was not under the purview of the Food and Drug Administration (FDA). The 2009 Family Smoking Prevention and Control Act gave the FDA authority over tobacco products, under a new regulatory standard",
           "agency": "National Cancer Institute",
           "amount": 196207,
           "start_date": "2013-04-01T00:00:00",
           "end_date": "2016-03-31T00:00:00",
           "project_number": "5R01CA172058-02"
+        },
+        {
+          "title": "Population studies of cigarette smoking, other tobacco use, and lung cancer",
+          "abstract": "DESCRIPTION (provided by applicant): Despite strong reductions in smoking prevalence, cigarette smoking remains the leading preventable cause of death in the US, and lung cancer is the leading cause of smoking-attributable deaths. Prior to 2009, marketing, manufacture and sale of tobacco products was not under the purview of the Food and Drug Administration (FDA). The 2009 Family Smoking Prevention and Control Act gave the FDA authority over tobacco products, under a new regulatory standard of p",
+          "agency": "National Cancer Institute",
+          "amount": 202275,
+          "start_date": "2013-04-01T00:00:00",
+          "end_date": "2017-03-31T00:00:00",
+          "project_number": "5R01CA172058-03"
         },
         {
           "title": "Genomic, clinical and behavioral signature of long-term breast cancer survival",
@@ -22395,7 +22395,7 @@
         "elderly/aged adults",
         "mouse models"
       ],
-      "last_enriched": "2026-06-07T06:45:48.714254+00:00",
+      "last_enriched": "2026-06-07T08:03:02.971544+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -22447,19 +22447,19 @@
           "title": "Leveraging Proteomics to Understand the Link Between Chronic Kidney Disease and Cognitive Impairment",
           "abstract": "PROJECT SUMMARY\nThis is the initial submission of a K01 application by Lindsay Miller Ph.D., under the mentorship of Joachim Ix\nM.D., at the University of California, San Diego (UCSD). This proposal will establish Dr. Miller as an\nindependent investigator and will leverage large-scale proteomics to understand the association and predictive\nability of the proteome with cognitive impairment (CI), a clinical symptom of Alzheimer’s Disease and Related\nDementias (ADRD) in older adults with chronic ki",
           "agency": "National Institute on Aging",
-          "amount": 124822,
+          "amount": 124825,
           "start_date": "2022-09-01T00:00:00",
           "end_date": "2027-05-31T00:00:00",
-          "project_number": "5K01AG078486-04"
+          "project_number": "5K01AG078486-03"
         },
         {
           "title": "Leveraging Proteomics to Understand the Link Between Chronic Kidney Disease and Cognitive Impairment",
           "abstract": "PROJECT SUMMARY\nThis is the initial submission of a K01 application by Lindsay Miller Ph.D., under the mentorship of Joachim Ix\nM.D., at the University of California, San Diego (UCSD). This proposal will establish Dr. Miller as an\nindependent investigator and will leverage large-scale proteomics to understand the association and predictive\nability of the proteome with cognitive impairment (CI), a clinical symptom of Alzheimer’s Disease and Related\nDementias (ADRD) in older adults with chronic ki",
           "agency": "National Institute on Aging",
-          "amount": 124825,
+          "amount": 124822,
           "start_date": "2022-09-01T00:00:00",
           "end_date": "2027-05-31T00:00:00",
-          "project_number": "5K01AG078486-03"
+          "project_number": "5K01AG078486-04"
         },
         {
           "title": "Beyond the Glomerulus: Kidney Tubule Dysfunction and Cognitive Impairments in the Elderly",
@@ -22808,7 +22808,7 @@
         "Middle Eastern and North African American populations",
         "patients with heart failure (cell‑therapy trial cohort)"
       ],
-      "last_enriched": "2026-06-07T06:45:59.006364+00:00",
+      "last_enriched": "2026-06-07T08:03:17.828823+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 22,
@@ -23345,7 +23345,7 @@
         }
       ],
       "orcid": "0000-0002-9310-3011",
-      "last_enriched": "2026-06-07T06:37:32.687828+00:00",
+      "last_enriched": "2026-06-07T07:54:38.569950+00:00",
       "employee_class": "Academic: Emeriti",
       "job_code": "1132",
       "job_code_description": "PROF EMERITUS(WOS)",
@@ -23636,7 +23636,7 @@
         "older adults with mild cognitive impairment",
         "older adults with depression"
       ],
-      "last_enriched": "2026-06-07T06:46:09.294621+00:00",
+      "last_enriched": "2026-06-07T08:03:26.792833+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -24158,7 +24158,7 @@
         }
       ],
       "orcid": "0000-0001-5719-828X",
-      "last_enriched": "2026-06-07T06:46:12.751995+00:00",
+      "last_enriched": "2026-06-07T08:03:35.618904+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -24645,7 +24645,7 @@
         "placental mammals (comparative studies)",
         "laboratory animal models"
       ],
-      "last_enriched": "2026-06-07T06:46:25.543686+00:00",
+      "last_enriched": "2026-06-07T08:03:44.039558+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -24991,7 +24991,7 @@
         "general adult population",
         "patients with chronic diseases"
       ],
-      "last_enriched": "2026-06-07T06:46:28.996655+00:00",
+      "last_enriched": "2026-06-07T08:03:52.562258+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -25279,7 +25279,7 @@
         }
       ],
       "orcid": "0009-0007-0262-3147",
-      "last_enriched": "2026-06-07T06:46:39.347116+00:00",
+      "last_enriched": "2026-06-07T08:04:06.153247+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Annie Nguyen’s research centers on the psychosocial and behavioral determinants of health in older adults, with a particular emphasis on individuals aging with HIV. She investigates mental health, quality of life, and resilience, and explores how cannabis use and caregiving dynamics affect this population. Her work is community‑engaged and spans systematic reviews, qualitative interviews, cross‑sectional surveys, and emerging data‑science approaches to inform health services and policy.",
@@ -25658,7 +25658,7 @@
         }
       ],
       "orcid": "0000-0002-7206-7381",
-      "last_enriched": "2026-06-07T06:46:42.552251+00:00",
+      "last_enriched": "2026-06-07T08:04:15.541841+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Dr. Steve Nguyen investigates molecular biomarkers of aging, focusing on how physical activity influences plasma proteomic and epigenetic signatures linked to Alzheimer’s disease and related dementias. His work integrates longitudinal cohort data, advanced proteomics, DNA‑methylation age clocks, and neuroimaging biomarkers to elucidate mechanisms of neurodegeneration and related age‑associated conditions such as osteoporotic fractures.",
@@ -26040,7 +26040,7 @@
         }
       ],
       "orcid": "0000-0001-6455-3905",
-      "last_enriched": "2026-06-07T06:46:46.066138+00:00",
+      "last_enriched": "2026-06-07T08:04:22.301740+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Victoria Ojeda conducts community‑engaged research focused on reducing racial/ethnic and justice‑system related health disparities. Her work integrates health‑literacy interventions, service‑design, and peer‑support models to improve access to physical and mental health services for justice‑involved adults, transitional‑age youth with serious mental illness, and migrant populations. She employs mixed‑methods and randomized controlled trials to evaluate interventions that address substance use, HIV risk, and broader chronic health conditions.",
@@ -26255,19 +26255,19 @@
           "title": "DRUG ABUSE TREATMENT FOR PREGNANT AND NON-PREGNANT TEENS",
           "abstract": "The purpose of this five-year study is to evaluate the effectiveness of an\nexperimental drug treatment program for two groups of \"at-risk\"\nadolescents in outpatient medical programs - pregnant adolescents, and\ndrug using adolescent women who are at-risk for pregnancy.  This drug\ntreatment program will be integrated with the UCSD Medical Center's\nAdolescent Medicine Clinic and Teen O.B. Clinic.  In both the Adolescent\nClinic and the Teen O.B. Clinic, all teens will receive the basic\ntreatment pro",
           "agency": "National Institute on Drug Abuse",
-          "amount": 739944,
+          "amount": 965003,
           "start_date": "1990-09-30T00:00:00",
           "end_date": "1995-08-31T00:00:00",
-          "project_number": "5R18DA006911-04"
+          "project_number": "5R18DA006911-03"
         },
         {
           "title": "DRUG ABUSE TREATMENT FOR PREGNANT AND NON-PREGNANT TEENS",
           "abstract": "The purpose of this five-year study is to evaluate the effectiveness of an\nexperimental drug treatment program for two groups of \"at-risk\"\nadolescents in outpatient medical programs - pregnant adolescents, and\ndrug using adolescent women who are at-risk for pregnancy.  This drug\ntreatment program will be integrated with the UCSD Medical Center's\nAdolescent Medicine Clinic and Teen O.B. Clinic.  In both the Adolescent\nClinic and the Teen O.B. Clinic, all teens will receive the basic\ntreatment pro",
           "agency": "National Institute on Drug Abuse",
-          "amount": 965003,
+          "amount": 739944,
           "start_date": "1990-09-30T00:00:00",
           "end_date": "1995-08-31T00:00:00",
-          "project_number": "5R18DA006911-03"
+          "project_number": "5R18DA006911-04"
         }
       ],
       "recent_publications": [
@@ -26660,7 +26660,7 @@
         }
       ],
       "orcid": "0000-0003-0974-7330",
-      "last_enriched": "2026-06-07T06:46:56.689115+00:00",
+      "last_enriched": "2026-06-07T08:04:31.713290+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -27372,7 +27372,7 @@
         "physical therapists",
         "overweight/obese adults"
       ],
-      "last_enriched": "2026-06-07T06:47:00.126189+00:00",
+      "last_enriched": "2026-06-07T08:04:40.293754+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -27530,7 +27530,7 @@
         }
       ],
       "orcid": "0000-0001-9472-2538",
-      "last_enriched": "2026-06-07T06:47:10.757605+00:00",
+      "last_enriched": "2026-06-07T08:04:49.049096+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Corinne Peek‑Asa’s research centers on the development, implementation, and translation of evidence‑based injury and violence prevention programs and policies. She investigates traffic‑related injuries, workplace and campus sexual violence, child maltreatment, and traumatic head and eye injuries, with a strong emphasis on international capacity building to reduce the global burden of trauma. Her work integrates program evaluation, policy analysis, and optimization of preventive interventions across diverse settings such as emergency departments, schools, and rural roadways.",
@@ -28166,7 +28166,7 @@
         }
       ],
       "orcid": "0000-0002-0075-7471",
-      "last_enriched": "2026-06-07T06:47:21.704409+00:00",
+      "last_enriched": "2026-06-07T08:04:59.156602+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "John Pierce’s research centers on the epidemiology and control of tobacco use, with a particular emphasis on electronic nicotine delivery systems (e‑cigarettes), initiation and cessation among adolescents and young adults, and the impact of product packaging and advertising on smoking behavior. He integrates population‑based cohort analyses, randomized trials, and simulation modeling to inform FDA‑relevant tobacco‑control policies and public‑health interventions in the United States.",
@@ -28578,7 +28578,7 @@
         }
       ],
       "orcid": "0000-0002-7173-1981",
-      "last_enriched": "2026-06-07T06:47:32.135054+00:00",
+      "last_enriched": "2026-06-07T08:05:07.678947+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "3269",
       "job_code_description": "ASSOC ADJ PROF-FY",
@@ -28981,7 +28981,7 @@
         "Czech Republic population",
         "global population"
       ],
-      "last_enriched": "2026-06-07T06:47:42.565520+00:00",
+      "last_enriched": "2026-06-07T08:05:16.371559+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -29311,7 +29311,7 @@
         }
       ],
       "orcid": "0000-0001-9837-7866",
-      "last_enriched": "2026-06-07T06:47:46.036691+00:00",
+      "last_enriched": "2026-06-07T08:05:25.091350+00:00",
       "profile_url": "https://researcherprofiles.org/profile/180722",
       "employee_class": "Academic: Faculty",
       "job_code": "1721",
@@ -29487,7 +29487,7 @@
         "racial/ethnic minority groups",
         "individuals with Cornelia de Lange syndrome"
       ],
-      "last_enriched": "2026-06-07T06:47:49.867592+00:00",
+      "last_enriched": "2026-06-07T08:05:33.506638+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -29919,7 +29919,7 @@
         }
       ],
       "orcid": "0000-0002-9856-6728",
-      "last_enriched": "2026-06-07T06:37:39.347401+00:00",
+      "last_enriched": "2026-06-07T07:54:45.409205+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -30042,7 +30042,7 @@
         "families",
         "patients with Stickler syndrome"
       ],
-      "last_enriched": "2026-06-07T06:48:00.113388+00:00",
+      "last_enriched": "2026-06-07T08:05:41.857631+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -30570,7 +30570,7 @@
         }
       ],
       "orcid": "0000-0003-1429-9181",
-      "last_enriched": "2026-06-07T06:48:10.436563+00:00",
+      "last_enriched": "2026-06-07T08:05:51.037712+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Professor Andrew Ries conducts clinical and translational research in respiratory medicine, with a primary focus on lung volume reduction surgery, pulmonary rehabilitation, and exercise interventions for lung cancer survivors and COPD patients. His programs combine multi‑center randomized clinical trials, prospective registries, and health‑economic modeling to assess functional capacity, quality of life, and cost‑effectiveness. He also leads epidemiologic investigations of asthma in Southeast Asian (Vietnamese) populations and validates patient‑reported outcome instruments for interstitial lung disease.",
@@ -30684,19 +30684,19 @@
           "title": "Genomic, gene-environment and casual inference studies in diabetic complications",
           "abstract": "Over 34 million Americans (~10% of population) have diabetes, 90-95% of which is type 2\ndiabetes (T2D). T2D is a leading cause of health complications in the US, and minority\npopulations with diabetes are more likely to experience microvascular complications,\nmacrovascular disease, and subsequent death than their White counterparts even when access\nto care is comparable. The pathophysiology of hyperglycemic organ damage, and why some\npatients are relatively spared, remains largely unknown. Aggre",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 536648,
+          "amount": 539776,
           "start_date": "2023-07-15T00:00:00",
           "end_date": "2028-03-31T00:00:00",
-          "project_number": "5R01DK135868-04"
+          "project_number": "5R01DK135868-03"
         },
         {
           "title": "Genomic, gene-environment and casual inference studies in diabetic complications",
           "abstract": "Over 34 million Americans (~10% of population) have diabetes, 90-95% of which is type 2\ndiabetes (T2D). T2D is a leading cause of health complications in the US, and minority\npopulations with diabetes are more likely to experience microvascular complications,\nmacrovascular disease, and subsequent death than their White counterparts even when access\nto care is comparable. The pathophysiology of hyperglycemic organ damage, and why some\npatients are relatively spared, remains largely unknown. Aggre",
           "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
-          "amount": 539776,
+          "amount": 536648,
           "start_date": "2023-07-15T00:00:00",
           "end_date": "2028-03-31T00:00:00",
-          "project_number": "5R01DK135868-03"
+          "project_number": "5R01DK135868-04"
         },
         {
           "title": "Methods for Genetic Association Analysis of Longitudinal and Multiple Phenotypes",
@@ -31031,7 +31031,7 @@
         }
       ],
       "orcid": "0000-0001-8816-6862",
-      "last_enriched": "2026-06-07T06:48:20.832379+00:00",
+      "last_enriched": "2026-06-07T08:05:59.586016+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Dr. Rany Salem’s research integrates genetic epidemiology and advanced statistical genetics to dissect the architecture of complex, multivariate and longitudinal phenotypes, with a primary focus on cardiometabolic diseases such as type 2 diabetes, diabetic kidney and liver complications, hypertension, and coronary artery disease. He develops and applies gene‑environment interaction, causal inference (including Mendelian randomization), and machine‑learning methods to large multi‑ethnic cohort and biobank datasets, extending his work to related conditions including autoimmune disorders, PTSD, melanoma, Alzheimer’s disease, and polycystic ovary syndrome.",
@@ -31570,7 +31570,7 @@
         }
       ],
       "orcid": "0000-0001-9615-8221",
-      "last_enriched": "2026-06-07T06:48:24.458699+00:00",
+      "last_enriched": "2026-06-07T08:06:08.850417+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "James Sallis studies how the built environment, crime perception, and behavior‑change strategies shape physical activity and sedentary behavior across the lifespan. His work integrates urban design, walkability, and policy contexts with health outcomes such as cardiovascular risk, metabolic health, and psychological distress, aiming to inform interventions for adolescents, older adults, and other population groups.",
@@ -31753,7 +31753,7 @@
         "health professionals and trainees",
         "U.S. clinical populations"
       ],
-      "last_enriched": "2026-06-07T06:48:27.867179+00:00",
+      "last_enriched": "2026-06-07T08:06:17.394773+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 10,
@@ -32018,7 +32018,7 @@
         "general human population exposed to extreme heat events (California)",
         "broader human populations in environmental health studies"
       ],
-      "last_enriched": "2026-06-07T06:48:31.553635+00:00",
+      "last_enriched": "2026-06-07T08:06:25.939012+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -32353,7 +32353,7 @@
         "diverse ancestry groups",
         "general aging female population"
       ],
-      "last_enriched": "2026-06-07T06:48:40.112524+00:00",
+      "last_enriched": "2026-06-07T08:06:32.883161+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -32475,15 +32475,6 @@
           "title": "Using Behavioral Economics Approach to Examine Individual Preferences for Marijuana Products",
           "abstract": "ABSTRACT\n Despite a federal prohibition against marijuana, since 2012, recreational marijuana has been legalized\nin 11 states and Washington DC where over a quarter of US population live. Among these jurisdictions, ten\nstates further opened or planned to open retail markets in near future to adults aged 21 years or older. The\nefforts of protecting public health in the new policy regime, however, have been complicated by the lack of\nknowledge regarding how individuals make purchase decisions and ",
           "agency": "National Institute on Drug Abuse",
-          "amount": 722863,
-          "start_date": "2020-09-30T00:00:00",
-          "end_date": "2025-06-30T00:00:00",
-          "project_number": "1R01DA049730-01A1"
-        },
-        {
-          "title": "Using Behavioral Economics Approach to Examine Individual Preferences for Marijuana Products",
-          "abstract": "ABSTRACT\n Despite a federal prohibition against marijuana, since 2012, recreational marijuana has been legalized\nin 11 states and Washington DC where over a quarter of US population live. Among these jurisdictions, ten\nstates further opened or planned to open retail markets in near future to adults aged 21 years or older. The\nefforts of protecting public health in the new policy regime, however, have been complicated by the lack of\nknowledge regarding how individuals make purchase decisions and ",
-          "agency": "National Institute on Drug Abuse",
           "amount": 695155,
           "start_date": "2020-09-30T00:00:00",
           "end_date": "2025-06-30T00:00:00",
@@ -32493,19 +32484,19 @@
           "title": "Using Behavioral Economics Approach to Examine Individual Preferences for Marijuana Products",
           "abstract": "ABSTRACT\n Despite a federal prohibition against marijuana, since 2012, recreational marijuana has been legalized\nin 11 states and Washington DC where over a quarter of US population live. Among these jurisdictions, ten\nstates further opened or planned to open retail markets in near future to adults aged 21 years or older. The\nefforts of protecting public health in the new policy regime, however, have been complicated by the lack of\nknowledge regarding how individuals make purchase decisions and ",
           "agency": "National Institute on Drug Abuse",
+          "amount": 722863,
+          "start_date": "2020-09-30T00:00:00",
+          "end_date": "2025-06-30T00:00:00",
+          "project_number": "1R01DA049730-01A1"
+        },
+        {
+          "title": "Using Behavioral Economics Approach to Examine Individual Preferences for Marijuana Products",
+          "abstract": "ABSTRACT\n Despite a federal prohibition against marijuana, since 2012, recreational marijuana has been legalized\nin 11 states and Washington DC where over a quarter of US population live. Among these jurisdictions, ten\nstates further opened or planned to open retail markets in near future to adults aged 21 years or older. The\nefforts of protecting public health in the new policy regime, however, have been complicated by the lack of\nknowledge regarding how individuals make purchase decisions and ",
+          "agency": "National Institute on Drug Abuse",
           "amount": 671635,
           "start_date": "2020-09-30T00:00:00",
           "end_date": "2026-06-30T00:00:00",
           "project_number": "5R01DA049730-05"
-        },
-        {
-          "title": "Neighborhood Physical, Economic, and Socioeconomic Environment In Relation to Marijuana Use and Disorder",
-          "abstract": "ABSTRACT\n Physical, economic, and socioeconomic environmental factors in one's neighborhood have been\nshown to influence substance use and substance use disorder, but the literature specific to the ecological\ncorrelates of marijuana is surprisingly limited and simplistic. With medical marijuana legalized in 23 states and\nWashington D.C. in the past two decades and recreational marijuana legalized in Colorado, Washington,\nAlaska, Oregon, and Washington D.C. recently, marijuana-related environment",
-          "agency": "National Institute on Drug Abuse",
-          "amount": 249015,
-          "start_date": "2017-02-01T00:00:00",
-          "end_date": "2021-12-31T00:00:00",
-          "project_number": "3R01DA042290-04S1"
         },
         {
           "title": "Neighborhood Physical, Economic, and Socioeconomic Environment In Relation to Marijuana Use and Disorder",
@@ -32524,6 +32515,15 @@
           "start_date": "2017-02-01T00:00:00",
           "end_date": "2020-12-31T00:00:00",
           "project_number": "5R01DA042290-03"
+        },
+        {
+          "title": "Neighborhood Physical, Economic, and Socioeconomic Environment In Relation to Marijuana Use and Disorder",
+          "abstract": "ABSTRACT\n Physical, economic, and socioeconomic environmental factors in one's neighborhood have been\nshown to influence substance use and substance use disorder, but the literature specific to the ecological\ncorrelates of marijuana is surprisingly limited and simplistic. With medical marijuana legalized in 23 states and\nWashington D.C. in the past two decades and recreational marijuana legalized in Colorado, Washington,\nAlaska, Oregon, and Washington D.C. recently, marijuana-related environment",
+          "agency": "National Institute on Drug Abuse",
+          "amount": 249015,
+          "start_date": "2017-02-01T00:00:00",
+          "end_date": "2021-12-31T00:00:00",
+          "project_number": "3R01DA042290-04S1"
         },
         {
           "title": "Neighborhood Physical, Economic, and Socioeconomic Environment In Relation to Marijuana Use and Disorder",
@@ -32879,7 +32879,7 @@
         "California residents",
         "neighborhood‑level populations"
       ],
-      "last_enriched": "2026-06-07T06:48:50.487518+00:00",
+      "last_enriched": "2026-06-07T08:06:41.447180+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -33119,7 +33119,7 @@
         "children/pediatric patients in emergency dental settings",
         "older adults undergoing joint arthroplasty"
       ],
-      "last_enriched": "2026-06-07T06:48:59.052676+00:00",
+      "last_enriched": "2026-06-07T08:06:48.292215+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -33218,20 +33218,6 @@
           "title": "Psychiatric Genomics Consortium for PTSD",
           "abstract": "Project Summary\nPsychiatric Genomics Consortium for PTSD\n Posttraumatic stress disorder (PTSD) occurs only in vulnerable individuals after exposure to severe\ntraumatic events. This risk is due, in part, to 40-50% heritability of differential vulnerability. Due to increasing\ncollaborations across the field of PTSD genomics and the advent of new analytical tools, it is a very exciting\ntime for PTSD genetic risk discovery. The purpose of this application is to facilitate meta-analyses of genome-\nwi",
           "agency": "National Institute of Mental Health",
-          "amount": 698361,
-          "start_date": "2016-08-19T00:00:00",
-          "end_date": "2024-06-30T00:00:00",
-          "project_number": "5R01MH106595-07",
-          "co_pis": [
-            "KARESTAN KOENEN",
-            "Caroline Nievergelt",
-            "KERRY RESSLER"
-          ]
-        },
-        {
-          "title": "Psychiatric Genomics Consortium for PTSD",
-          "abstract": "Project Summary\nPsychiatric Genomics Consortium for PTSD\n Posttraumatic stress disorder (PTSD) occurs only in vulnerable individuals after exposure to severe\ntraumatic events. This risk is due, in part, to 40-50% heritability of differential vulnerability. Due to increasing\ncollaborations across the field of PTSD genomics and the advent of new analytical tools, it is a very exciting\ntime for PTSD genetic risk discovery. The purpose of this application is to facilitate meta-analyses of genome-\nwi",
-          "agency": "National Institute of Mental Health",
           "amount": 775453,
           "start_date": "2016-08-19T00:00:00",
           "end_date": "2024-06-30T00:00:00",
@@ -33246,10 +33232,10 @@
           "title": "Psychiatric Genomics Consortium for PTSD",
           "abstract": "Project Summary\nPsychiatric Genomics Consortium for PTSD\n Posttraumatic stress disorder (PTSD) occurs only in vulnerable individuals after exposure to severe\ntraumatic events. This risk is due, in part, to 40-50% heritability of differential vulnerability. Due to increasing\ncollaborations across the field of PTSD genomics and the advent of new analytical tools, it is a very exciting\ntime for PTSD genetic risk discovery. The purpose of this application is to facilitate meta-analyses of genome-\nwi",
           "agency": "National Institute of Mental Health",
-          "amount": 204864,
+          "amount": 698361,
           "start_date": "2016-08-19T00:00:00",
-          "end_date": "2029-03-31T00:00:00",
-          "project_number": "5R01MH106595-10",
+          "end_date": "2024-06-30T00:00:00",
+          "project_number": "5R01MH106595-07",
           "co_pis": [
             "KARESTAN KOENEN",
             "Caroline Nievergelt",
@@ -33264,6 +33250,20 @@
           "start_date": "2016-08-19T00:00:00",
           "end_date": "2029-03-31T00:00:00",
           "project_number": "2R01MH106595-09",
+          "co_pis": [
+            "KARESTAN KOENEN",
+            "Caroline Nievergelt",
+            "KERRY RESSLER"
+          ]
+        },
+        {
+          "title": "Psychiatric Genomics Consortium for PTSD",
+          "abstract": "Project Summary\nPsychiatric Genomics Consortium for PTSD\n Posttraumatic stress disorder (PTSD) occurs only in vulnerable individuals after exposure to severe\ntraumatic events. This risk is due, in part, to 40-50% heritability of differential vulnerability. Due to increasing\ncollaborations across the field of PTSD genomics and the advent of new analytical tools, it is a very exciting\ntime for PTSD genetic risk discovery. The purpose of this application is to facilitate meta-analyses of genome-\nwi",
+          "agency": "National Institute of Mental Health",
+          "amount": 204864,
+          "start_date": "2016-08-19T00:00:00",
+          "end_date": "2029-03-31T00:00:00",
+          "project_number": "5R01MH106595-10",
           "co_pis": [
             "KARESTAN KOENEN",
             "Caroline Nievergelt",
@@ -33741,7 +33741,7 @@
         "adult males and females",
         "European‑ancestry cohorts"
       ],
-      "last_enriched": "2026-06-07T06:49:02.818499+00:00",
+      "last_enriched": "2026-06-07T08:06:57.995296+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -34123,7 +34123,7 @@
         "individuals on suppressive antiretroviral therapy",
         "athletes with ACL injuries"
       ],
-      "last_enriched": "2026-06-07T06:49:06.727098+00:00",
+      "last_enriched": "2026-06-07T08:07:06.390402+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -34632,7 +34632,7 @@
         }
       ],
       "orcid": "0000-0002-5383-9032",
-      "last_enriched": "2026-06-07T06:49:10.080553+00:00",
+      "last_enriched": "2026-06-07T08:07:15.122051+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -34918,7 +34918,7 @@
         "cancer care interpreters",
         "U.S. general population (food access studies)"
       ],
-      "last_enriched": "2026-06-07T06:49:18.613254+00:00",
+      "last_enriched": "2026-06-07T08:07:21.905512+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -35349,19 +35349,19 @@
           "title": "CORE--DATA FACILITY",
           "abstract": "The Data Core is responsible for the collection, entry, management and analysis of the MSA database. Specifically, the Core will facilitate the collection of data, it assures the quality of the captured data, it manages the evolving database, including doing routine backups. It reports to the PI and the other investigators at on the state of the database, it conducts the statistical analyses of the data, and archival of the database at the conclusion of the project. The Data Core will provide su",
           "agency": "National Institute of Neurological Disorders and Stroke",
-          "amount": 196537,
+          "amount": 196649,
           "start_date": null,
           "end_date": null,
-          "project_number": "5P01NS044233-02"
+          "project_number": "5P01NS044233-04"
         },
         {
           "title": "CORE--DATA FACILITY",
           "abstract": "The Data Core is responsible for the collection, entry, management and analysis of the MSA database. Specifically, the Core will facilitate the collection of data, it assures the quality of the captured data, it manages the evolving database, including doing routine backups. It reports to the PI and the other investigators at on the state of the database, it conducts the statistical analyses of the data, and archival of the database at the conclusion of the project. The Data Core will provide su",
           "agency": "National Institute of Neurological Disorders and Stroke",
-          "amount": 196649,
+          "amount": 196537,
           "start_date": null,
           "end_date": null,
-          "project_number": "5P01NS044233-04"
+          "project_number": "5P01NS044233-02"
         },
         {
           "title": "DATA CORE (DC)",
@@ -35705,7 +35705,7 @@
         }
       ],
       "orcid": "0000-0003-1686-4965",
-      "last_enriched": "2026-06-07T06:49:28.970371+00:00",
+      "last_enriched": "2026-06-07T08:07:30.653490+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -35869,7 +35869,7 @@
         "primary care patients",
         "University of California health system users"
       ],
-      "last_enriched": "2026-06-07T06:49:42.965830+00:00",
+      "last_enriched": "2026-06-07T08:07:39.128791+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -36334,7 +36334,7 @@
         "older adults",
         "undergraduate students"
       ],
-      "last_enriched": "2026-06-07T06:49:46.378257+00:00",
+      "last_enriched": "2026-06-07T08:07:47.702927+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -36594,7 +36594,7 @@
       "department_eah": "School of Public Health",
       "department_code": "383",
       "eah_status": "Active",
-      "last_enriched": "2026-06-07T06:37:51.179119+00:00",
+      "last_enriched": "2026-06-07T07:54:54.050936+00:00",
       "profile_url": "http://profiles.ucsd.edu/xin.tu"
     },
     {
@@ -36873,7 +36873,7 @@
         }
       ],
       "orcid": "0000-0002-2256-4611",
-      "last_enriched": "2026-06-07T06:49:56.927601+00:00",
+      "last_enriched": "2026-06-07T08:07:56.627065+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1721",
       "job_code_description": "PROF-HCOMP",
@@ -37048,7 +37048,7 @@
         }
       ],
       "orcid": "0000-0003-4772-9635",
-      "last_enriched": "2026-06-07T06:50:00.356990+00:00",
+      "last_enriched": "2026-06-07T08:08:05.977777+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Dr. Jill Waalen focuses on maternal and child health, particularly the impact of substance exposure and nutrition on lactation outcomes, and on vaccine uptake and effectiveness across diverse populations. Her work also examines behavioral and psychosocial factors—such as sleep, depression, and obesity—that influence infectious disease risk and health disparities, integrating epidemiologic analyses of large health datasets with prospective cohort studies.",
@@ -37441,7 +37441,7 @@
           "end_date": "2009"
         }
       ],
-      "last_enriched": "2026-06-07T06:50:07.611319+00:00",
+      "last_enriched": "2026-06-07T08:08:12.701400+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1717",
       "job_code_description": "ASST PROF-HCOMP",
@@ -37574,7 +37574,7 @@
         "women",
         "diverse/underserved populations"
       ],
-      "last_enriched": "2026-06-07T06:50:16.289736+00:00",
+      "last_enriched": "2026-06-07T08:08:19.539970+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Faculty",
@@ -38122,7 +38122,7 @@
         "women of reproductive age",
         "older men"
       ],
-      "last_enriched": "2026-06-07T06:50:19.550322+00:00",
+      "last_enriched": "2026-06-07T08:08:28.108537+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "employee_class": "Academic: Emeriti",
@@ -38470,7 +38470,7 @@
         }
       ],
       "orcid": "0000-0003-4050-7802",
-      "last_enriched": "2026-06-07T06:37:54.510254+00:00",
+      "last_enriched": "2026-06-07T07:55:00.935442+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1721",
       "job_code_description": "PROF-HCOMP",
@@ -38819,7 +38819,7 @@
         }
       ],
       "orcid": "0000-0002-0913-1205",
-      "last_enriched": "2026-06-07T06:38:04.833487+00:00",
+      "last_enriched": "2026-06-07T07:55:09.296167+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 31,
@@ -39375,7 +39375,7 @@
         }
       ],
       "orcid": "0000-0002-4149-3441",
-      "last_enriched": "2026-06-07T06:50:29.923593+00:00",
+      "last_enriched": "2026-06-07T08:08:36.768922+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "research_interests_enriched": "Shu‑Hong Zhu’s research centers on tobacco control and population behavioral patterns, with an expanding focus on cannabis use among youth. He employs large‑scale surveys and intervention studies to test novel strategies for increasing smoking cessation, including nicotine‑replacement therapy and quitline services, and evaluates the impact of policy measures such as tobacco taxes. His work emphasizes vulnerable groups such as adolescents, low‑income adults, hospitalized smokers, and Asian American/Pacific Islander populations, aiming to reduce secondhand smoke exposure and related health outcomes.",
@@ -39455,19 +39455,19 @@
           "title": "Examining Longitudinal Changes in Accelerometer-Measured Physical Activity in Preventing Cardiovascular Disease with Novel Function Data Analysis Approaches",
           "abstract": "Physical activity (PA) has been linked to health in many epidemiological studies. Physical\ninactivity and sedentary behavior are known risk factors for cardiovascular disease (CVD),\nwhich is the leading cause of death in the United States with more than half a million deaths\namong older Americans annually. The relationship between PA and CVD has been\ninvestigated with an increasing emphasis on objectively measured PA using accelerometer-\nbased activity trackers. Past analyses of accelerometer-me",
           "agency": "National Heart Lung and Blood Institute",
-          "amount": 493693,
+          "amount": 485003,
           "start_date": "2024-01-01T00:00:00",
           "end_date": "2028-12-31T00:00:00",
-          "project_number": "5R01HL166802-02"
+          "project_number": "1R01HL166802-01A1"
         },
         {
           "title": "Examining Longitudinal Changes in Accelerometer-Measured Physical Activity in Preventing Cardiovascular Disease with Novel Function Data Analysis Approaches",
           "abstract": "Physical activity (PA) has been linked to health in many epidemiological studies. Physical\ninactivity and sedentary behavior are known risk factors for cardiovascular disease (CVD),\nwhich is the leading cause of death in the United States with more than half a million deaths\namong older Americans annually. The relationship between PA and CVD has been\ninvestigated with an increasing emphasis on objectively measured PA using accelerometer-\nbased activity trackers. Past analyses of accelerometer-me",
           "agency": "National Heart Lung and Blood Institute",
-          "amount": 485003,
+          "amount": 493693,
           "start_date": "2024-01-01T00:00:00",
           "end_date": "2028-12-31T00:00:00",
-          "project_number": "1R01HL166802-01A1"
+          "project_number": "5R01HL166802-02"
         }
       ],
       "recent_publications": [
@@ -39782,7 +39782,7 @@
         }
       ],
       "orcid": "0009-0002-1537-514X",
-      "last_enriched": "2026-06-07T06:50:32.290916+00:00",
+      "last_enriched": "2026-06-07T08:08:45.289917+00:00",
       "committee_service": [],
       "integrity_flags": [],
       "h_index": 3,

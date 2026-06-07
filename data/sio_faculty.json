@@ -189,7 +189,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T03:22:25.981776+00:00",
+      "last_enriched": "2026-06-07T03:23:14.729876+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -573,7 +573,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dagnew",
       "orcid": "0000-0002-2360-7783",
-      "last_enriched": "2026-05-31T03:24:00.369314+00:00"
+      "last_enriched": "2026-06-07T03:24:49.221090+00:00"
     },
     {
       "first_name": "Matthew",
@@ -984,7 +984,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T03:25:34.696647+00:00",
+      "last_enriched": "2026-06-07T03:26:24.090669+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -1329,7 +1329,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T03:27:09.334032+00:00",
+      "last_enriched": "2026-06-07T03:27:58.423185+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -1395,121 +1395,187 @@
       ],
       "funded_grants": [
         {
-          "title": "Project 2 - The marine microbiome as a source for the synthesis, transformation, and distribution of seafood contaminants",
-          "abstract": "Project 2 – Summary/Abstract \nSeafood is a major dietary source of diverse chemical pollutants, especially for populations who rely on seafood as their primary protein source. Despite industrial chemicals such as PBDE fire retardants, the insecticide DDT, and PCB lubricants being banned in the U.S. for decades due to their harm to humans and the environment, these legacy chemicals still pose health risks due to their persistence in the ocean environment. They all share similar chemical features ",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 165148,
-          "start_date": "2024-03-10T00:00:00",
-          "end_date": "2029-02-28T00:00:00",
-          "project_number": "5P01ES035541-03"
-        },
-        {
-          "title": "Project 2 - The marine microbiome as a source for the synthesis, transformation, and distribution of seafood contaminants",
-          "abstract": "Project 2 – Summary/Abstract \nSeafood is a major dietary source of diverse chemical pollutants, especially for populations who rely on seafood as their primary protein source. Despite industrial chemicals such as PBDE fire retardants, the insecticide DDT, and PCB lubricants being banned in the U.S. for decades due to their harm to humans and the environment, these legacy chemicals still pose health risks due to their persistence in the ocean environment. They all share similar chemical features ",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 163381,
-          "start_date": "2024-03-10T00:00:00",
-          "end_date": "2029-02-28T00:00:00",
-          "project_number": "5P01ES035541-02"
-        },
-        {
-          "title": "Project 2 - The marine microbiome as a source for the synthesis, transformation, and distribution of seafood contaminants",
-          "abstract": "Project 2 – Summary/Abstract\nSeafood is a major dietary source of diverse chemical pollutants, especially for populations who rely on seafood\nas their primary protein source. Despite industrial chemicals such as PBDE fire retardants, the insecticide DDT,\nand PCB lubricants being banned in the U.S. for decades due to their harm to humans and the environment,\nthese legacy chemicals still pose health risks due to their persistence in the ocean environment. They all share\nsimilar chemical features o",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 163918,
-          "start_date": "2024-03-10T00:00:00",
-          "end_date": "2029-02-28T00:00:00",
-          "project_number": "1P01ES035541-01"
-        },
-        {
-          "title": "Natural Sources and Microbial Transformation of Marine Halogenated Pollutants",
-          "abstract": "Project Summary/Abstract \n \nNatural  polybrominated  organic  compounds  such  as  hydroxylated  polybrominated  diphenyl  ethers  (OH-­\nBDEs) and polybrominated pyrroles (PBPs) have recently emerged as chemicals of human health concern. \nThese  natural  product  relatives  of  anthropogenic  halogenated  persistent  organic  pollutants  (POPs)  are \nwidely  distributed  throughout  the  marine  food  web  and  accumulate  in  seafood  sources  consumed  by \nhumans.  We  and  others  have  demon",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 41627,
-          "start_date": "2021-03-08T00:00:00",
-          "end_date": "2021-06-30T00:00:00",
-          "project_number": "3R01ES030316-03S1",
+          "title": "MTM 1: Experimental framework for marine fish microbiomes through synthetic communities and multi-omic approaches",
+          "agency": "NSF",
+          "nsf_program": "URoL-Understanding the Rules o, Systems and Synthetic Biology",
+          "amount": "498850",
+          "start_date": "10/01/2020",
+          "end_date": "09/30/2024",
+          "nsf_award_id": "2025217",
+          "abstract": "Fish are recognized as a major global food resource, key ecological components of aquatic ecosystems, and have been valuable laboratory model organisms to study vertebrate biology. Like all animals, fish harbor rich communities of symbiotic microorganisms both upon their external body surfaces, such as the skin, and internally, such as the gut. These microbial populations play important roles in the health and fitness of their hosts by providing protection against invading pathogens, regulating ",
           "co_pis": [
-            "BRADLEY MOORE"
+            "Pieter C Dorrestein pdorrestein@ucsd.edu"
           ]
         },
         {
-          "title": "Natural Sources and Microbial Transformation of Marine Halogenated Pollutants",
-          "abstract": "Project Summary/Abstract\nNatural polybrominated organic compounds such as hydroxylated polybrominated diphenyl ethers (OH--\nBDEs) and polybrominated pyrroles (PBPs) have recently emerged as chemicals of human health concern.\nThese natural product relatives of anthropogenic halogenated persistent organic pollutants (POPs) are\nwidely distributed throughout the marine food web and accumulate in seafood sources consumed by humans.\nWe and others have demonstrated that OH--BDEs such as 6--OH--BDE--47 ",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 125550,
-          "start_date": "2018-09-15T00:00:00",
-          "end_date": "2023-06-30T00:00:00",
-          "project_number": "5R01ES030316-04",
-          "co_pis": [
-            "BRADLEY MOORE"
-          ]
+          "title": "AF: Small: Algebraic Methods in Codes and Computation",
+          "agency": "NSF",
+          "nsf_program": "Algorithmic Foundations",
+          "amount": "299956",
+          "start_date": "10/01/2019",
+          "end_date": "09/30/2023",
+          "nsf_award_id": "1909683",
+          "abstract": "This project investigates the power and limitations of algebraic computation and algebraic techniques in computer science. Arithmetic circuits are a very natural model of algebraic computation and most natural algebraic algorithms such as matrix multiplication, fast Fourier transforms, algorithms for computing the determinant, and others can be implemented via arithmetic circuits. This project will investigate the complexity of algebraic computation via the model of arithmetic circuits. In recen"
         },
         {
-          "title": "Natural Sources and Microbial Transformation of Marine Halogenated Pollutants",
-          "abstract": "Project Summary/Abstract\nNatural polybrominated organic compounds such as hydroxylated polybrominated diphenyl ethers (OH--\nBDEs) and polybrominated pyrroles (PBPs) have recently emerged as chemicals of human health concern.\nThese natural product relatives of anthropogenic halogenated persistent organic pollutants (POPs) are\nwidely distributed throughout the marine food web and accumulate in seafood sources consumed by humans.\nWe and others have demonstrated that OH--BDEs such as 6--OH--BDE--47 ",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 125550,
-          "start_date": "2018-09-15T00:00:00",
-          "end_date": "2023-06-30T00:00:00",
-          "project_number": "5R01ES030316-03",
-          "co_pis": [
-            "BRADLEY MOORE"
-          ]
+          "title": "AF: Small: Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "Algorithmic Foundations",
+          "amount": "200000",
+          "start_date": "10/01/2019",
+          "end_date": "09/30/2022",
+          "nsf_award_id": "1909216",
+          "abstract": "Some computational problems require more resources than others.  But recognizing which computational problems are hard and which are easy turns out to be extremely challenging.  It also turns out to be extremely important, in the following sense.  Much of our economy relies on secure on-line financial transactions, and public-key cryptography is an essential component of providing on-line security.  However, every public-key cryptographic system relies on the existence of some function that is e"
         },
         {
-          "title": "Natural Sources and Microbial Transformation of Marine Halogenated Pollutants",
-          "abstract": "Project Summary/Abstract\nNatural polybrominated organic compounds such as hydroxylated polybrominated diphenyl ethers (OH--\nBDEs) and polybrominated pyrroles (PBPs) have recently emerged as chemicals of human health concern.\nThese natural product relatives of anthropogenic halogenated persistent organic pollutants (POPs) are\nwidely distributed throughout the marine food web and accumulate in seafood sources consumed by humans.\nWe and others have demonstrated that OH--BDEs such as 6--OH--BDE--47 ",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 125550,
-          "start_date": "2018-09-15T00:00:00",
-          "end_date": "2023-06-30T00:00:00",
-          "project_number": "1R01ES030316-01",
-          "co_pis": [
-            "BRADLEY MOORE"
-          ]
+          "title": "AF: Student Travel to Clay Mathematics Institute Complexity Workshop",
+          "agency": "NSF",
+          "nsf_program": "Information Technology Researc, Algorithmic Foundations",
+          "amount": "10000",
+          "start_date": "04/01/2018",
+          "end_date": "03/31/2019",
+          "nsf_award_id": "1809703",
+          "abstract": "This award will support student and postdoctoral attendance at a workshop on computational complexity theory, organized by the Clay Mathematics Institute, and by the Computer Science Department at the University of Oxford.  Many leading figures in computational complexity have already made a commitment to attend the workshop, which will be held July 23-26 at the University of Oxford.  For these student attendees, the meeting serves as a valuable educational experience, both for the technical con"
         },
         {
-          "title": "Natural Sources and Microbial Transformation of Marine Halogenated Pollutants",
-          "abstract": "Project Summary/Abstract\nNatural polybrominated organic compounds such as hydroxylated polybrominated diphenyl ethers (OH--\nBDEs) and polybrominated pyrroles (PBPs) have recently emerged as chemicals of human health concern.\nThese natural product relatives of anthropogenic halogenated persistent organic pollutants (POPs) are\nwidely distributed throughout the marine food web and accumulate in seafood sources consumed by humans.\nWe and others have demonstrated that OH--BDEs such as 6--OH--BDE--47 ",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 125550,
-          "start_date": "2018-09-15T00:00:00",
-          "end_date": "2024-06-30T00:00:00",
-          "project_number": "5R01ES030316-05",
-          "co_pis": [
-            "BRADLEY MOORE"
-          ]
+          "title": "EAGER: AF: New approaches to hardness for circuit minimization",
+          "agency": "NSF",
+          "nsf_program": "Algorithmic Foundations",
+          "amount": "100000",
+          "start_date": "09/01/2015",
+          "end_date": "01/31/2017",
+          "nsf_award_id": "1555409",
+          "abstract": "The goal of this activity is to understand the structure of complexity classes.  Complexity classes provide the best tool currently available for understanding the computational complexity of real-world computational problems.  Some of these problems are notoriously difficult, but recent progress justifies some optimism that additional useful insight about these complexity classes can be obtained.\r\n\r\nThe Minimum Circuit Size Problem (MCSP) is a well-known example of an apparently-intractable pro"
         },
         {
-          "title": "Natural Sources and Microbial Transformation of Marine Halogenated Pollutants",
-          "abstract": "Project Summary/Abstract\nNatural polybrominated organic compounds such as hydroxylated polybrominated diphenyl ethers (OH--\nBDEs) and polybrominated pyrroles (PBPs) have recently emerged as chemicals of human health concern.\nThese natural product relatives of anthropogenic halogenated persistent organic pollutants (POPs) are\nwidely distributed throughout the marine food web and accumulate in seafood sources consumed by humans.\nWe and others have demonstrated that OH--BDEs such as 6--OH--BDE--47 ",
-          "agency": "National Institute of Environmental Health Sciences",
-          "amount": 125550,
-          "start_date": "2018-09-15T00:00:00",
-          "end_date": "2023-06-30T00:00:00",
-          "project_number": "5R01ES030316-02",
-          "co_pis": [
-            "BRADLEY MOORE"
-          ]
+          "title": "AF: Medium: Collaborative Research: Information Compression in Algorithm Design and Statistical Physics",
+          "agency": "NSF",
+          "nsf_program": "Algorithmic Foundations",
+          "amount": "461342",
+          "start_date": "06/15/2015",
+          "end_date": "05/31/2020",
+          "nsf_award_id": "1514164",
+          "abstract": "The existence of connections between probabilistic algorithms, statistical physics and information theory has been known for decades and has yielded a number of unexpected breakthroughs. Recent discoveries of the PIs and other researchers give clear indications that these connections go much deeper than previously thought. A key new idea is the realization that stochastic local search algorithms can be judged by their capacity to compress the randomness they consume, with convergence following a"
         },
         {
-          "title": "Phylogenetic Binning of Metagenomic Sequence Data",
-          "abstract": "  \r\nDESCRIPTION (provided by applicant): Culture-independent metagenomic studies are essential for understanding our relationship with the organisms comprising the human microbiome, defining optimal microbial composition to maintain health, and devising selective treatment strategies to eliminate pathogens without harming beneficial species. To use metagenomic data effectively, raw DNA sequence data (reads) must be processed computationally (assembled) to obtain longer sequences (contigs). Exist",
-          "agency": "National Human Genome Research Institute",
-          "amount": 187130,
-          "start_date": "2009-08-24T00:00:00",
-          "end_date": "2011-07-31T00:00:00",
-          "project_number": "1R21HG005107-01"
+          "title": "CAREER:   Genetic and Functional Characterization of Microbial Secondary Lipid Biosynthesis - a Biomes to Biotechnology Investigation",
+          "agency": "NSF",
+          "nsf_program": "Systems and Synthetic Biology",
+          "amount": "864751",
+          "start_date": "06/01/2012",
+          "end_date": "05/31/2018",
+          "nsf_award_id": "1149552",
+          "abstract": "Intellectual Merit.  Microbial synthesis of fatty-acid-derived hydrocarbon molecules (alkanes and alkenes) has garnered intense interest in recent years as potential sources of renewable fuels and chemicals. Realization of this potential necessitates a molecular-level understanding of the genes and gene functions involved in microbial hydrocarbon biosynthesis and their relationship with the fatty acid biosynthetic processes that provide the chemical backbone for these hydrocarbon products. The c"
         },
         {
-          "title": "Phylogenetic Binning of Metagenomic Sequence Data",
-          "abstract": "  \r\nDESCRIPTION (provided by applicant): Culture-independent metagenomic studies are essential for understanding our relationship with the organisms comprising the human microbiome, defining optimal microbial composition to maintain health, and devising selective treatment strategies to eliminate pathogens without harming beneficial species. To use metagenomic data effectively, raw DNA sequence data (reads) must be processed computationally (assembled) to obtain longer sequences (contigs). Exist",
-          "agency": "National Human Genome Research Institute",
-          "amount": 193125,
-          "start_date": "2009-08-24T00:00:00",
-          "end_date": "2012-07-31T00:00:00",
-          "project_number": "5R21HG005107-02"
+          "title": "AF: Medium: Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "Algorithmic Foundations",
+          "amount": "432769",
+          "start_date": "06/01/2011",
+          "end_date": "05/31/2015",
+          "nsf_award_id": "1064785",
+          "abstract": "This award focuses on problems in computational complexity theory, with the goal of clarifying the power and limitations of various important classes of algorithms (known as \"complexity classes\").  Complexity  classes provide the best tools currently available for understanding the computational complexity of real-world computational problems.  Part of the award supports a collaboration with researchers at the Czech Academy of Sciences.\r\n\r\nKolmogorov complexity measures the amount of \"informatio"
+        },
+        {
+          "title": "Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "Information Technology Researc, THEORY OF COMPUTING, Special Projects - CCF, COMPLEXITY & CRYPTOGRAPHY",
+          "amount": "326301",
+          "start_date": "08/01/2008",
+          "end_date": "07/31/2012",
+          "nsf_award_id": "0830133",
+          "abstract": "This project focuses on problems in computational complexity theory, with the goal of clarifying the power and limitations of various important classes of algorithms (known as ``complexity classes'').  Complexity classes provide the best tools currently available for understanding the computational complexity of real-world computational problems.\r\n\r\nRecent progress in the field has given rise to (cautious) optimism that routes can be found that avoid some of the known barriers to proving lower b"
+        },
+        {
+          "title": "Theory and Practice of Secure Computation",
+          "agency": "NSF",
+          "nsf_program": "THEORY OF COMPUTING",
+          "amount": "313867",
+          "start_date": "09/01/2007",
+          "end_date": "08/31/2011",
+          "nsf_award_id": "0728937",
+          "abstract": "There is a fundamental tension between our desire to aggregate data for useful purposes and our desire to protect the privacy of individuals. The canonical example is voting, in which we wish to add up votes without revealing any individual votes. Secure computation is a branch of cryptography that mediates and in some cases transforms this tension, allowing us to satisfy these conflicting needs to a far greater level than naively would seem possible. The research is primarily concerned with the"
+        },
+        {
+          "title": "FRG: Collaborative Research: Algorithmic Randomness",
+          "agency": "NSF",
+          "nsf_program": "FOUNDATIONS",
+          "amount": "24567",
+          "start_date": "07/01/2007",
+          "end_date": "06/30/2010",
+          "nsf_award_id": "0652582",
+          "abstract": "This Focused Research Group is a collaborative effort by researchers at many sites who bring ideas from recursion theory, complexity theory, and other specialties to bear on questions about algorithmic randomness.  Important background notions include the ideas of Kolmogorov complexity and Martin-Lof randomness, which have separately and jointly received large amounts of attention, and which come together in many of the examples and problems described in this proposal.  Issues to be studied duri"
+        },
+        {
+          "title": "Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "THEORY OF COMPUTING",
+          "amount": "200000",
+          "start_date": "06/15/2005",
+          "end_date": "05/31/2009",
+          "nsf_award_id": "0514155",
+          "abstract": "This proposal is for support of continuing research on problems in computational complexity theory. It presents detailed plans of attack on the following specific topics:\r\n\r\nAlgorithmic Randomness: Recent progress in the field of derandomization gives tools to convert randomized algorithms into deterministic ones. This yields new connections between \\Algorithmic Information Theory\" (or \\Kolmogorov Complexity\") and circuit complexity as an unexpected side-product. This may yield novel and useful "
+        },
+        {
+          "title": "Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "Special Projects - CCF",
+          "amount": "268038",
+          "start_date": "09/01/2001",
+          "end_date": "08/31/2004",
+          "nsf_award_id": "0104823",
+          "abstract": "The goal of research in complexity theory is to classify the complexity of real world computational problems by providing lower bounds on the resources required to solve them.  To date - in spite of impressive lower bounds for restricted types of circuits- almost the only useful progress toward this goal has come via the tool of reducibility, which allows one to show that problem is complete for complexity class.\r\n\r\nMany of the most important complexity classes can be characterized in terms of B"
+        },
+        {
+          "title": "Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "THEORY OF COMPUTING",
+          "amount": "238301",
+          "start_date": "07/01/1998",
+          "end_date": "06/30/2001",
+          "nsf_award_id": "9734918",
+          "abstract": "The final goal of research in complexity theory is to classify  the complexity of real-world computational problems by providing  lower bounds on the resources required to solve them.  To date -  in spite of impressive lower bounds for restricted types of  circuits  - almost the only useful progress toward this goal has  come via the tool of reducibility which allows to show that a  problem is complete for a complexity class.  Thus the complexity  class has become the fundamental object of study"
+        },
+        {
+          "title": "Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "THEORY OF COMPUTING",
+          "amount": "210000",
+          "start_date": "08/01/1995",
+          "end_date": "07/31/1998",
+          "nsf_award_id": "9509603",
+          "abstract": "The  goals of this project include: (1) Continued investigation of   complexity classes related to the computation of the  determinant and the rank of  integer matrices.  Such classes include  probabilistic logspace and the class #L of nondeterministic  logspace counting  problems(for circuits); (2) Continued exploration of resource-bounded measure,  particularly as it can be applied to small complexity classes such as P."
+        },
+        {
+          "title": "Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "THEORY OF COMPUTING",
+          "amount": "216909",
+          "start_date": "08/01/1992",
+          "end_date": "07/31/1996",
+          "nsf_award_id": "9204874",
+          "abstract": "This research on problems in complexity theory, has several                     particular goals:  (1) improved (non-)hierarchy theorems for                    probabilistic time complexity classes and related models of                     computation, (2) improved characterizations of arithmetic                       circuits in terms of Boolean circuits and related classes,                      (3) increased understanding of the relation between the                         complexity of the de"
+        },
+        {
+          "title": "Computational Complexity Theory and Circuit Complexity",
+          "agency": "NSF",
+          "nsf_program": "THEORY OF COMPUTING",
+          "amount": "53277",
+          "start_date": "06/01/1990",
+          "end_date": "11/30/1992",
+          "nsf_award_id": "9000045",
+          "abstract": "This research will study the complexity of computation using the                framework of Boolean circuit complexity.  Special emphasis is placed            on the following topics:                                                                                                                                        Strong separations of circuit classes: If known separations of small            circuit complexity classes could be strengthened, it would imply                separations on large"
+        },
+        {
+          "title": "Research Initiation:  Applications of Kolmogorov Complexity:Pseudorandom Generators, Circuit Complexity, and One-Way    Functions",
+          "agency": "NSF",
+          "nsf_program": "THEORY OF COMPUTING",
+          "amount": "31207",
+          "start_date": "07/01/1988",
+          "end_date": "12/31/1990",
+          "nsf_award_id": "8810467",
+          "abstract": "This research centers on the development of generalized Kolmogorov              complexity theory as a tool to apply to problems in various areas of            complexity theory including circuit complexity, pseudorandom                    generators, and one-way functions.  Building on the principal                   investigator's work in circuit complexity, this work seeks to relate            the size of the circuit's description to the complexity of producing            the circuit.  One go"
         }
       ],
       "recent_publications": [
@@ -1805,7 +1871,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T03:27:19.545720+00:00",
+      "last_enriched": "2026-06-07T03:29:32.916751+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -1923,9 +1989,9 @@
           "journal": "Environmental science & technology",
           "mesh_terms": [
             "Tandem Mass Spectrometry",
-            "Chromatography, Liquid",
+            "Liquid Chromatography-Mass Spectrometry",
             "Laboratories",
-            "Organic Chemicals"
+            "Chromatography, Liquid"
           ],
           "abstract": "Non-targeted liquid chromatography tandem high-resolution mass spectrometry (LC-MS/MS) is increasingly applied for the structure-resolved chemical analysis of dissolved organic matter (DOM). With new developments in MS instrumentation and analysis software, the approach has gained substantial momentum over the past decade. However, achieving high-quality analytical data that is reproducible and comparable across laboratories can be a bottleneck in non-targeted metabolomics and organic matter che"
         },
@@ -2160,7 +2226,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T02:52:10.738245+00:00",
+      "last_enriched": "2026-06-07T02:55:50.936103+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -2447,7 +2513,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/aandersson",
       "orcid": "0000-0003-3234-7896",
-      "last_enriched": "2026-05-31T03:28:53.860471+00:00"
+      "last_enriched": "2026-06-07T03:31:07.434530+00:00"
     },
     {
       "first_name": "Dahiana",
@@ -2516,16 +2582,6 @@
           "abstract": "The world's oceans are changing rapidly, resulting in still poorly understood impacts on ocean ecosystems, fisheries yields, and carbon storage in the deep ocean. One obvious place to start investigating these impacts is on the most abundant vertebrates on earth, yet these taxa are so obscure that even most biologists are unaware of them. Lanternfishes and bristlemouths dominate the twilight zone in oceans around the world and make up nearly half of all vertebrate biomass on earth. They number i"
         },
         {
-          "title": "CSBR: Emergency Rescue of the Orphaned Fish Collection of the University of Puerto Rico and Capacity Expansion of the Ichthyology Collection at the Sam Noble Museum",
-          "agency": "NSF",
-          "nsf_program": "Capacity: Bio Collections",
-          "amount": "339625",
-          "start_date": "10/01/2023",
-          "end_date": "12/31/2026",
-          "nsf_award_id": "2350473",
-          "abstract": "Biological collections are a primary source of information to understand Earth’s biodiversity. They not only document existing diversity, but also provide the baseline to track changes across time and geography, as well as extinctions at local and global scales. This project aims to rescue the orphaned Fish Collection of the Department of Marine Sciences at the University of Puerto Rico, Mayaguez (UPR-M), improve access to specimens and associated information, and expand the shelving capacity of"
-        },
-        {
           "title": "CAREER: Integrating Genomic, Paleoclimatic, and Morphological Approaches to Unravel the Evolutionary History of Fossil and Extant Marine Fishes Over Time",
           "agency": "NSF",
           "nsf_program": "Systematics & Biodiversity Sci, Sedimentary Geo & Paleobiology, Cross-BIO Activities",
@@ -2534,6 +2590,16 @@
           "end_date": "07/31/2027",
           "nsf_award_id": "2401223",
           "abstract": "This award is funded in whole or in part under the American Rescue Plan Act of 2021 (Public Law 117-2). \r\n\r\nUnderstanding the evolutionary history of life on earth requires comprehensive documentation of both living and fossil species. For example, our understanding of the effects of ancient events on morphological diversity is stymied by the limited inclusion of fossils, paleoclimatic data layers, and understanding of genome size evolution over time. To address this knowledge gap, this project "
+        },
+        {
+          "title": "CSBR: Emergency Rescue of the Orphaned Fish Collection of the University of Puerto Rico and Capacity Expansion of the Ichthyology Collection at the Sam Noble Museum",
+          "agency": "NSF",
+          "nsf_program": "Capacity: Bio Collections",
+          "amount": "339625",
+          "start_date": "10/01/2023",
+          "end_date": "12/31/2026",
+          "nsf_award_id": "2350473",
+          "abstract": "Biological collections are a primary source of information to understand Earth’s biodiversity. They not only document existing diversity, but also provide the baseline to track changes across time and geography, as well as extinctions at local and global scales. This project aims to rescue the orphaned Fish Collection of the Department of Marine Sciences at the University of Puerto Rico, Mayaguez (UPR-M), improve access to specimens and associated information, and expand the shelving capacity of"
         },
         {
           "title": "CSBR: Emergency Rescue of the Orphaned Fish Collection of the University of Puerto Rico and Capacity Expansion of the Ichthyology Collection at the Sam Noble Museum",
@@ -2796,7 +2862,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "orcid": "0000-0002-5126-1345",
-      "last_enriched": "2026-05-31T03:30:28.375214+00:00"
+      "last_enriched": "2026-06-07T03:32:42.149768+00:00"
     },
     {
       "first_name": "Laurence",
@@ -2911,7 +2977,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/larmi",
-      "last_enriched": "2026-05-31T03:32:02.741741+00:00"
+      "last_enriched": "2026-06-07T03:34:16.876078+00:00"
     },
     {
       "first_name": "Farooq",
@@ -2971,49 +3037,251 @@
       ],
       "funded_grants": [
         {
-          "title": "VIBRIO CHOLERAE PLANKTON COLONIZATION",
-          "abstract": "The human pathogen Vibrio cholerae is widely distributed along many coastlines including those of the United States. Environmental factors play a major role in determining the distribution of toxigenic V. cholerae. For example, the introduction of the seventh pandemic of cholera to Latin America in 1991 has been suggested to have been correlated with marine plankton blooms triggered by a climate change event such as that initiated by El Nino. In a effort to better understand marine vectors and c",
-          "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 246542,
-          "start_date": "2000-03-01T00:00:00",
-          "end_date": "2005-02-28T00:00:00",
-          "project_number": "1R01AI046600-01"
+          "title": "EAGER: Cyanobacteria-Bacteria Associations in the Ocean and Their Biogeochemical Consequences",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "153992",
+          "start_date": "07/01/2010",
+          "end_date": "06/30/2012",
+          "nsf_award_id": "1036613",
+          "abstract": "Azam EAGER 1036613\r\n\r\nIntellectual Merit: Pelagic marine bacteria and Archaea (\"bacteria\") play major roles in the variability in the biogeochemical fate of carbon fixed by phytoplankton in the ocean. The coupling of bacteria with the primary producers therefore has implications for climate and ecosystem models. Since bacteria interact with organic matter, including phytoplankton cells, at the nanometer to micrometer scale, understanding the biogeochemical coupling of bacteria with primary produ"
         },
         {
-          "title": "VIBRIO CHOLERAE PLANKTON COLONIZATION",
-          "abstract": "The human pathogen Vibrio cholerae is widely distributed along many coastlines including those of the United States. Environmental factors play a major role in determining the distribution of toxigenic V. cholerae. For example, the introduction of the seventh pandemic of cholera to Latin America in 1991 has been suggested to have been correlated with marine plankton blooms triggered by a climate change event such as that initiated by El Nino. In a effort to better understand marine vectors and c",
-          "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 254307,
-          "start_date": "2000-03-01T00:00:00",
-          "end_date": "2005-02-28T00:00:00",
-          "project_number": "5R01AI046600-04"
+          "title": "Bacterial Interactions Underlying Coral Disease Resistance",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "603638",
+          "start_date": "06/15/2010",
+          "end_date": "05/31/2014",
+          "nsf_award_id": "0962721",
+          "abstract": "Intellectual Merit: An ever-growing variety of diseases, including some demonstrably caused by bacteria, are decimating reef-building corals in many places around the globe. Corals are open systems persistently exposed to a great diversity of exogenous bacteria in the overlying seawater and attached to sinking particles. Furthermore, as coastal development continues to expand, increasing eutrophication, there is increasing concern that endogenous bacteria among the normal coral associated commun"
         },
         {
-          "title": "VIBRIO CHOLERAE PLANKTON COLONIZATION",
-          "abstract": "The human pathogen Vibrio cholerae is widely distributed along many coastlines including those of the United States. Environmental factors play a major role in determining the distribution of toxigenic V. cholerae. For example, the introduction of the seventh pandemic of cholera to Latin America in 1991 has been suggested to have been correlated with marine plankton blooms triggered by a climate change event such as that initiated by El Nino. In a effort to better understand marine vectors and c",
-          "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 240952,
-          "start_date": "2000-03-01T00:00:00",
-          "end_date": "2005-02-28T00:00:00",
-          "project_number": "5R01AI046600-02"
+          "title": "Bacteria-Mediated Coral Disease Resistance",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "364991",
+          "start_date": "02/01/2007",
+          "end_date": "01/31/2011",
+          "nsf_award_id": "0648116",
+          "abstract": "Corals are increasingly threatened by disease induced mortality, and the risk of infection may be increased by elevated sea surface temperature either by promoting pathogen growth or virulence, reducing host resistance to infection, or a combination of both. This project will investigate the hypothesis that coral-associated bacteria mediate disease resistance through bacteria-bacteria interactions and this resistance mechanism is altered by elevated temperatures. The project tests three hypothes"
         },
         {
-          "title": "VIBRIO CHOLERAE PLANKTON COLONIZATION",
-          "abstract": "The human pathogen Vibrio cholerae is widely distributed along many coastlines including those of the United States. Environmental factors play a major role in determining the distribution of toxigenic V. cholerae. For example, the introduction of the seventh pandemic of cholera to Latin America in 1991 has been suggested to have been correlated with marine plankton blooms triggered by a climate change event such as that initiated by El Nino. In a effort to better understand marine vectors and c",
-          "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 260886,
-          "start_date": "2000-03-01T00:00:00",
-          "end_date": "2006-02-28T00:00:00",
-          "project_number": "5R01AI046600-05"
+          "title": "Mechanism of Mucilage Formation in the North Adriatic Sea: A Component of CREICO (Cooperative Research on Ecological Interactions in the Coastal Oceans)",
+          "agency": "NSF",
+          "nsf_program": "CENTRAL & EASTERN EUROPE PROGR, WESTERN EUROPE PROGRAM, BIOLOGICAL OCEANOGRAPHY, REG ADRIATIC COOPRSRCH CSTLOCN",
+          "amount": "247620",
+          "start_date": "03/15/2002",
+          "end_date": "02/29/2008",
+          "nsf_award_id": "0132677",
+          "abstract": "The proposed research is a component of CREICO (Cooperative Research on Ecological Interactions in the Coastal Oceans) program in the Adriatic Sea. This international initiative is intended to develop cooperation between Croatia, Slovenia, Italy and the US in environmental science in the Adriatic, in concert with Adriatic Observing System (CAOS) being developed with NOAA. CREICO is intended to increase understanding of the structure and function of ecological systems in the Adriatic, and the sys"
         },
         {
-          "title": "VIBRIO CHOLERAE PLANKTON COLONIZATION",
-          "abstract": "The human pathogen Vibrio cholerae is widely distributed along many coastlines including those of the United States. Environmental factors play a major role in determining the distribution of toxigenic V. cholerae. For example, the introduction of the seventh pandemic of cholera to Latin America in 1991 has been suggested to have been correlated with marine plankton blooms triggered by a climate change event such as that initiated by El Nino. In a effort to better understand marine vectors and c",
-          "agency": "National Institute of Allergy and Infectious Diseases",
-          "amount": 247312,
-          "start_date": "2000-03-01T00:00:00",
-          "end_date": "2005-02-28T00:00:00",
-          "project_number": "5R01AI046600-03"
+          "title": "SGER: A Method to Genomic Sequence Uncultured Marine Phage",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "69999",
+          "start_date": "04/01/2001",
+          "end_date": "03/31/2002",
+          "nsf_award_id": "0116900",
+          "abstract": "Our understanding of the marine environment was fundamentally changed when it was shown that marine phage (viruses that infect bacteria) are present in extraordinary numbers (ca.1010 per liter). Since this observation, marine microbial ecologists have attempted to incorporate phage into the microbial food web concepts. This work has shown that under various conditions phage account for 12-600% of all bacterial production via lysis. The high number of observable phage and their high production ra",
+          "co_pis": [
+            "Forest Rohwer frohwer@gmail.com"
+          ]
+        },
+        {
+          "title": "Diversity of Marine Phage in the Pacific Ocean",
+          "agency": "NSF",
+          "nsf_program": "Biodiversity: Discov &Analysis",
+          "amount": "150000",
+          "start_date": "01/01/2000",
+          "end_date": "12/31/2001",
+          "nsf_award_id": "9972054",
+          "abstract": "DEB 9972054\r\n Azam\r\nThis project is designed to survey the diversity of marine phages from several sites in the Pacific Ocean.  Bacteriophage are ubiquitous components of the marine environment frequently reaching concentrations of tens to hundreds of millions of individuals per ml.  The decay rates of the bacteriophage are rapid, suggesting that production must be high to maintain the observed standing stocks.  While numerous attempts have been made to incorporate these observations and their i"
+        },
+        {
+          "title": "Bacterial Control of Silicon Regeneration in the Ocean",
+          "agency": "NSF",
+          "nsf_program": "Chemical Oceanography, BIOLOGICAL OCEANOGRAPHY",
+          "amount": "287390",
+          "start_date": "04/01/1999",
+          "end_date": "03/31/2002",
+          "nsf_award_id": "9819603",
+          "abstract": "ABSTRACT\r\n\r\nOCE-9819603 \r\n\r\nA very large fraction of the downward fluxes of biogenic silica and organic matter in the ocean are derived from the productivity of diatoms in the surface ocean.  Not surprisingly then, there is much interest in understanding what controls diatom productivity, including mechanisms for recycling silica from sinking, decomposing particles back to growing diatoms.  In this project researchers from the Scripps Institution of Oceanography and the University of California "
+        },
+        {
+          "title": "SGER:  A Rapid Method for Simultaneously Quantifying and    Identifying Marine Microbes",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "50000",
+          "start_date": "01/01/1999",
+          "end_date": "12/31/1999",
+          "nsf_award_id": "9900301",
+          "abstract": "9900301, Azam\r\nA methodology is presented that, if successful, will simultaneously quantify and qualify the majority of microbes present in an environmental sample. Such a methodology is a prerequisite to studying the distribution and diversity ofmarine microbes on the ocean basin scale. The research method is based on the fact that a seven base pair DNA tag, if sufficiently divergent, can differentiate between thousands microbial species. To be useful this tag region must be invariably located "
+        },
+        {
+          "title": "Viral Diversity and Mortality of Sea-Ice Bacteria and Algae in the Arctic Ocean",
+          "agency": "NSF",
+          "nsf_program": "ANS-Arctic Natural Sciences",
+          "amount": "184733",
+          "start_date": "08/01/1997",
+          "end_date": "07/31/1999",
+          "nsf_award_id": "9617045",
+          "abstract": "This project is designed to extend investigations of viral diversity and the magnitude and variability of bacterial and algal mortality due to viral attack in the Arctic Ocean.  The PI proposes to extend these studies with emphasis on sea ice microbial communities for comparison with the underlying sea water.  Collection, fixation, and concentration of melted sea ice samples will be accomplished at sampling sites by deployment from US Navy submarine.  Subsequent analyses will be conducted in the"
+        },
+        {
+          "title": "Development of a Non-Radioisotopic Method to Measure        Bacterial Production in the Sea",
+          "agency": "NSF",
+          "nsf_program": "ANT Organisms & Ecosystems",
+          "amount": "50000",
+          "start_date": "03/01/1997",
+          "end_date": "08/31/1998",
+          "nsf_award_id": "9708153",
+          "abstract": "9708153  Azam  Bacterial production, via 3H-thymidine incorporation, is a  \"core\" parameter in biological oceanography and marine  biogeochemistry.  No non-radio-isotopic method is currently  available but one would be highly desirable for a variety of  logistical, safety and scientific reasons.  This project  will develop a non-radioisotopic method based on the use of  the thymidine analog, 5-bromo-deoxyuridine (BrdU), for  measuring the rate of bacterial DNA synthesis in seawater  samples.  Br"
+        },
+        {
+          "title": "Bacterial Production Uncoupled from Primary Production:     Implications for DOM Fluxes in the Southern Ocean",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY, ANT Organisms & Ecosystems",
+          "amount": "292997",
+          "start_date": "08/15/1996",
+          "end_date": "07/31/1999",
+          "nsf_award_id": "9530851",
+          "abstract": "95-30851  Azam  This research project is part of the US Joint Global Ocean Flux  Study (JGOFS) Southern Ocean Program aimed at (1) a better  understanding of the fluxes of carbon, both organic and  inorganic, in the Southern Ocean, (2) identifying the physical,  ecological and biogeochemical factors and processes which  regulate the magnitude and variability of these fluxes, and (3)  placing these fluxes into the context of the contemporary global  carbon cycle.    This research will investigate"
+        },
+        {
+          "title": "Viral Diversity and Mortality of Phyto- and Bacterioplankton in the Arctic Ocean",
+          "agency": "NSF",
+          "nsf_program": "ANS-Arctic Natural Sciences",
+          "amount": "148230",
+          "start_date": "05/01/1996",
+          "end_date": "04/30/1998",
+          "nsf_award_id": "9623130",
+          "abstract": "Proposal  No: OPP-9623130    Principal Investigator:  Azam, Farooq    ABSTRACT    Viral Diversity and Mortality of Phyto-and Bacterioplankton in the Arctic Ocean    This proposal requests funding to investigate the magnitude and  variability of bacteria and phytoplankton mortality due to viral attack in the Arctic Ocean.  Viral distribution, abundance and variations in composition and diversity of viruses in the study area will also be investigated.  In addition to the examination of natural vir"
+        },
+        {
+          "title": "JGOFS: Bacterial Cycling Of Dissolved And Particulate       Organic Carbon In Oligotrophic And Eutrophic Production     Regimes Of The Arabian Sea",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "370000",
+          "start_date": "07/01/1994",
+          "end_date": "06/30/1997",
+          "nsf_award_id": "9312695",
+          "abstract": "9312695  Azam         This is a joint research proposal (F. Azam and H.  Ducklow,  co-PIs) to perform quantitative studies on the  significance of bacteria in mediating and regulating  biogeochemical fluxes of carbon and nitrogen in the Arabian  Sea, as a component of the US JGOFS Arabian Sea Process  Study.  We propose a program of core measurements to  quantify carbon and nitrogen pools and fluxes as well as  mechanistic studies to understand the response of the  bacteria-mediated processes to"
+        },
+        {
+          "title": "Uncoupled Solubilization of Marine Aggregates and its       Biogeochemical Significance",
+          "agency": "NSF",
+          "nsf_program": "Chemical Oceanography, BIOLOGICAL OCEANOGRAPHY",
+          "amount": "403423",
+          "start_date": "10/15/1992",
+          "end_date": "09/30/1995",
+          "nsf_award_id": "9219864",
+          "abstract": "Dissimilation of sinking organic aggregates is a central issue in               the regulation of carbon fluxes from the ocean's surface into its               depths.  The role of attached bacteria in particle decomposition                has been unclear.  High concentrations (108-109 ml-1) of slowly                 growing bacteria commonly found on aggregates create intense                    ectohydrolase activities which rapidly solubilize (0.2-2.1 d                    turnover time) parti"
+        },
+        {
+          "title": "Development of a Method to Measure in Situ Phage                   Production Rates in the Sea",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "50000",
+          "start_date": "07/15/1992",
+          "end_date": "06/30/1993",
+          "nsf_award_id": "9220130",
+          "abstract": "The quantitative role of bacteriophages in the biogeochemical                   cycles of the marine environment is a most urgent question.  At                 present, there is no direct method to measure phage production,                 only indirect estimates of phage production based on measures of                phage decay rates by Norwegians scientists.  This project will                  develop urgently needed and innovative techniques for measuring                 phage production in "
+        },
+        {
+          "title": "Significance of Bacterial Biomass and Production in Organic Matter Cycling in the Arctic: The Trans-Polr Sovetskiy      Soyuz Transect",
+          "agency": "NSF",
+          "nsf_program": "ARCSS-Arctic System Science",
+          "amount": "35430",
+          "start_date": "06/01/1991",
+          "end_date": "05/31/1993",
+          "nsf_award_id": "9113919",
+          "abstract": "This proposal is part of an integrated scientific investigation                 to study the properties of the Arctic ocean, atmosphere, and                    sea-ice on a transect between Murmansk, USSR and Nome, Alaska.                  There are few published measurements of biomass or production                   from most shelf and basin regions of the Arctic Ocean.  This                    project is one of four that will evaluate biological processes in               the Arctic Ocean dur"
+        },
+        {
+          "title": "Significance of Bacterial Exoenzymes in Organic Matter      Cycling in the Antarctic Ocean",
+          "agency": "NSF",
+          "nsf_program": "ANT Organisms & Ecosystems",
+          "amount": "105000",
+          "start_date": "04/01/1990",
+          "end_date": "03/31/1993",
+          "nsf_award_id": "8917016",
+          "abstract": "Coupling of carbon from primary producers to bacteria can                       significantly influence the patterns of vertical flux of organic                matter in the ocean.  Because bacteria must hydrolyze particles                 before uptake, bacterial exohydrolases must assume a central role               in carbon flux from particulate organic matter into the microbial               loop.  The expression of bacterial exohydrolase is regulated by                 substrate concentrat"
+        },
+        {
+          "title": "Significance of Bacterial Hydrolases in Particle Degradationand Carbon Flow Pathways in the Ocean's Mesopelagic Zone",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "220000",
+          "start_date": "01/15/1990",
+          "end_date": "12/31/1992",
+          "nsf_award_id": "8918015",
+          "abstract": "It is important to understand how particles which are formed in                 the upper layers of the ocean are transformed as they sink out                  of those upper layers into the benthos.  Bacteria play a major                  role in the transformation of the particles on their way to the                 bottom.  Much of the organic matter associated with these                       particles is converted to the dissolved state, a form in which                  it can be utilized b"
+        },
+        {
+          "title": "Role of Bacteria in Detrital Marine Foodwebs:  Mechanisms inBacteria-Organic Matter Interactions",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "230000",
+          "start_date": "11/01/1987",
+          "end_date": "04/30/1990",
+          "nsf_award_id": "8716994",
+          "abstract": "Research is proposed to continue the study of the mechanisms            whereby heterotrophic bacterioplankton utilize particulate                      organic matter (POM) and dissolved organic matter (DOM) in the                  sea.  The PI is also studying the magnitude and patterns of                     organic matter flux into bacteria in both the epipelagic and the                mesopelagic zones to determine how heterotrophic bacteria may                   influence the vertical trans"
+        },
+        {
+          "title": "Role of Bacteria in Detrital Marine Foodwebs: Mechanisms in Bacterioplankton-Organic Matter Interactions",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "215000",
+          "start_date": "04/15/1985",
+          "end_date": "09/30/1987",
+          "nsf_award_id": "8501363"
+        },
+        {
+          "title": "Fate of Bacterial Secondary Production in the Sea:  the RoleOf Marine Bdellovibrios As Predators of Bacteria",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "149611",
+          "start_date": "03/01/1983",
+          "end_date": "08/31/1985",
+          "nsf_award_id": "8300360"
+        },
+        {
+          "title": "Role of Bacteria in the Marine Planktonic Food Chain:       Microbial Interactions With Zooplankton Feces",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "42861",
+          "start_date": "07/15/1981",
+          "end_date": "12/31/1982",
+          "nsf_award_id": "8101807"
+        },
+        {
+          "title": "Role of Bacteria in Pelagic Marine Detrital Food Chains",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "329139",
+          "start_date": "01/01/1980",
+          "end_date": "02/28/1985",
+          "nsf_award_id": "7926458"
+        },
+        {
+          "title": "Controlled Ecosystem Population Experiment (Cepex):         Trophodynamic Role of Bacterioplankton in Pelagic Marine    Ecosystems",
+          "agency": "NSF",
+          "nsf_program": "INTER DECADE OF OCEAN EXPLORAT, ENVIRONMENTAL QUALITY",
+          "amount": "123000",
+          "start_date": "04/01/1978",
+          "end_date": "09/30/1980",
+          "nsf_award_id": "7726400"
+        },
+        {
+          "title": "Controlled Ecosystem Pollution Experiment (Cepex):  Role of Bacteria in Polluted Marine Ecosystem",
+          "agency": "NSF",
+          "nsf_program": "ENVIRONMENTAL QUALITY",
+          "amount": "48100",
+          "start_date": "11/01/1976",
+          "end_date": "06/30/1978",
+          "nsf_award_id": "7622716"
         }
       ],
       "recent_publications": [
@@ -3369,7 +3637,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/fazam",
       "orcid": "0000-0002-6187-0021",
-      "last_enriched": "2026-05-31T03:33:37.123027+00:00"
+      "last_enriched": "2026-06-07T03:35:51.402390+00:00"
     },
     {
       "first_name": "George",
@@ -3516,7 +3784,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gbackus",
       "orcid": "0000-0002-0900-7642",
-      "last_enriched": "2026-05-31T03:35:11.403305+00:00"
+      "last_enriched": "2026-06-07T03:37:26.201719+00:00"
     },
     {
       "first_name": "Katherine",
@@ -3753,7 +4021,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T03:35:21.618632+00:00",
+      "last_enriched": "2026-06-07T03:39:00.722660+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1100",
       "job_code_description": "PROF-AY",
@@ -3819,31 +4087,144 @@
       ],
       "funded_grants": [
         {
-          "title": "HIGH PRESSURE ADAPTATION IN PHOTOBACTERIUM SS9",
-          "abstract": "",
-          "agency": "National Institute of General Medical Sciences",
-          "amount": 86275,
-          "start_date": "1994-04-01T00:00:00",
-          "end_date": "1997-03-31T00:00:00",
-          "project_number": "5R21GM049800-02"
+          "title": "Collaborative Research: Influence of pressure on microbial communities in subseafloor sediment at hadal, abyssal, bathyal, and shelf water depths",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "616887",
+          "start_date": "07/01/2021",
+          "end_date": "06/30/2027",
+          "nsf_award_id": "2048927",
+          "abstract": "The globe-spanning realm of subseafloor sediment is Earth’s least-explored large biome.  This project addresses a fundamental question about the microbial communities that inhabit the subseafloor sedimentary environment – to what extent and in what ways are they adapted to the low temperature, high pressure conditions where they are found?  Or, alternatively, are they just accidentally introduced from the shallower and lower-pressure world where the organic matter that feeds them largely origina"
         },
         {
-          "title": "HIGH PRESSURE ADAPTATION IN PHOTOBACTERIUM SS9",
-          "abstract": "Life in the bulk of the deep ocean occupies a relatively constant\ntemperature but variable pressure environment. Such organisms possess\nunique biochemical and physiological adaptations for changes in pressure.\nWe propose to examine pressure regulation of outer membrane protein\nsynthesis in the deep-sea bacterium Photobacterium 559. Cultivating this\norganism from lower to higher pressures leads to the progressive induction\nof the OmpL, OmpH, and OmpI proteins. Pressure sensitive mutants impaired\n",
-          "agency": "National Institute of General Medical Sciences",
-          "amount": 90300,
-          "start_date": "1994-04-01T00:00:00",
-          "end_date": "1996-03-31T00:00:00",
-          "project_number": "1R01GM049800-01A1"
+          "title": "Collaborative Research: Transcriptional Adaptation and Response to Pressure",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY, Genetic Mechanisms",
+          "amount": "462739",
+          "start_date": "08/01/2020",
+          "end_date": "09/30/2026",
+          "nsf_award_id": "2019455",
+          "abstract": "The Earth’s deep oceans are home to an enormous amount and diversity of living creatures, including ~90% of the microbes, which can experience pressures as high as 1000 times that on the surface. The protein machines responsible for critical life processes, such as transcription of the genetic code, must be adapted to function under such extreme and inhospitable conditions. The mechanisms of this adaptation remain a mystery. This project is aimed at understanding molecular mechanisms underlying "
         },
         {
-          "title": "HIGH PRESSURE ADAPTATION IN PHOTOBACTERIUM SS9",
-          "abstract": "",
-          "agency": "National Institute of General Medical Sciences",
-          "amount": 82960,
-          "start_date": "1994-04-01T00:00:00",
-          "end_date": "1996-03-31T00:00:00",
-          "project_number": "1R21GM049800-01A1"
+          "title": "Patterns of Microbial Community Structure Within and Between Hadal Environments",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY",
+          "amount": "141134",
+          "start_date": "09/01/2015",
+          "end_date": "08/31/2019",
+          "nsf_award_id": "1536776",
+          "abstract": "The deepest portion of the ocean is present in ocean trenches, whose steep walls descend from approximately 4 miles down to depths that in some cases are close to 7 miles below the seawater surface.  At these locations Earth's crust is recycled.  Perhaps not surprisingly given their remoteness, deep ocean trenches are the least understood habitats in the ocean.  The researchers participating in this project are working to characterize the microbes present in two of the deepest trenches present o"
+        },
+        {
+          "title": "US-EC Workshop on Marine Genomics: Next Generation Scientists for Next Generation Sequencing, October 10-12, 2010, Washington, DC",
+          "agency": "NSF",
+          "nsf_program": "Physiol Mechs & Biomechanics",
+          "amount": "25000",
+          "start_date": "10/15/2010",
+          "end_date": "09/30/2011",
+          "nsf_award_id": "1068643",
+          "abstract": "This grant will support a workshop focused on developing ideas for a training course in marine microbial genomics, consistent with recommendations of the US-European Commission Taskforce on Biotechnology Research. Leading scientists from the US and Europe will meet in October, 2010 in Washington, DC. These experts will discuss recent scientific progress in marine microbiology that has accrued from modern genomic approaches, as well as opportunities and challenges for continued progress given the"
+        },
+        {
+          "title": "Deep Trench Single-cell Genomics",
+          "agency": "NSF",
+          "nsf_program": "MICROBIAL GENOME SEQUENCING",
+          "amount": "658000",
+          "start_date": "09/01/2008",
+          "end_date": "08/31/2014",
+          "nsf_award_id": "0827051",
+          "abstract": "Microbial diversity in deep-sea environments is high, where microbial evolution and distribution have been influenced by extreme factors such as high pressure, low temperature, low carbon and no light. Scientists from the University of California San Diego and University of Puerto Rico-Mayaguez will explore the biodiversity of microorganisms of particularly extreme deep-sea environments - deep-sea trenches - by focusing on one site, the Puerto Rico Trench, the deepest part of the Atlantic Ocean."
+        },
+        {
+          "title": "2008 EC-US Workshop on Marine Genomics in Association with CIESM: at the Interface of Marine Microbial Ecology and Biotechnological Applications",
+          "agency": "NSF",
+          "nsf_program": "MICRO OBS & MICRO INTER & PRO, MICROBIAL GENOME SEQUENCING, Genetic Mechanisms",
+          "amount": "41221",
+          "start_date": "09/01/2008",
+          "end_date": "06/30/2011",
+          "nsf_award_id": "0841547",
+          "abstract": "This is a Marine Genomics workshop under the auspices of the US- European Commission Taskforce on Biotechnology Research to occur in October, 2008 in Monte-Carlo, Monaco. The goal of this workshop is to bring together marine microbiologists, bioinformaticians and biotechnologists to explore future applications of (meta)genomics for basic and biotechnological research. These goals are consistent with the recommendations of the US-EC Taskforce on Biotechnology Research. Since the previous workshop"
+        },
+        {
+          "title": "Collaborative Research: MIP: Pressure Influences on Microbial Life in the Puerto Rico Trench",
+          "agency": "NSF",
+          "nsf_program": "MICROBIAL GENOME SEQUENCING, BIOLOGICAL OCEANOGRAPHY, MICRO OBS & MICRO INTER & PRO",
+          "amount": "399164",
+          "start_date": "08/15/2008",
+          "end_date": "07/31/2012",
+          "nsf_award_id": "0801793",
+          "abstract": "Pressure is a physical parameter which influences the evolution and distribution of microbial life.  Far from Earth?s surface, deep ocean trenches represent the upper boundaries of pressure in the biosphere. This is where scientists can study high pressure adaptations in their most extreme forms.  No studies have yet characterized the diversity of microbial life in trenches.  In order to do this, Doug Bartlett from UC San Diego and Wilford Schmidt from Univ. Puerto Rico-Mayaguez, will be using a"
+        },
+        {
+          "title": "SGER: Life at Depth: A Comparative Genomics Perspective",
+          "agency": "NSF",
+          "nsf_program": "MICROBIAL GENOME SEQUENCING",
+          "amount": "151635",
+          "start_date": "01/15/2006",
+          "end_date": "12/31/2007",
+          "nsf_award_id": "0544524",
+          "abstract": "This grant leverages considerable existing support to close, finish, annotate and perform comparative genomics analyses on the genomes of four deep-sea microbes. All of these organisms have been or are being sequenced as a result of the Gordon and Betty Moore Foundation Marine Microbiology Initiative.  The goal is to develop a genome sequence platform, consisting of all five known genera of piezophilic (high pressure-adapted) bacteria, and to use this resource to locate genes and protein motifs ",
+          "co_pis": [
+            "A. A Yayanos ayayanos@ucsd.edu",
+            "Theresa Gaasterland tgaasterland@ucsd.edu"
+          ]
+        },
+        {
+          "title": "Functional Genomics of High Pressure Adaptation",
+          "agency": "NSF",
+          "nsf_program": "INSTRUMENTAT & INSTRUMENT DEVP, Genetic Mechanisms",
+          "amount": "412508",
+          "start_date": "03/01/2003",
+          "end_date": "02/28/2007",
+          "nsf_award_id": "0237059",
+          "abstract": "A grant has been awarded to Dr. Douglas Bartlett of Scripps Institution of Oceanography, University of California, San Diego to identify and characterize genes and proteins which enable some species of microorganisms to flourish in deep ocean environments where the pressure can be as great as one thousand times greater than that which exists on the surface of our planet and where the temperature is close to freezing.   Most of the proposed work will be performed on a deep-sea bacterial species w"
+        },
+        {
+          "title": "Developing and Testing of Bioreactors for Methane Hydrate Biogeochemical Studies in the Laboratory",
+          "agency": "NSF",
+          "nsf_program": "OCEAN TECH & INTERDISC COORDIN",
+          "amount": "521239",
+          "start_date": "06/15/2001",
+          "end_date": "05/31/2005",
+          "nsf_award_id": "0096475",
+          "abstract": "This technology development project addresses methane hydrates, which represent the most abundant hydrocarbon source on Earth. Decades of geochemical studies have established the importance of anaerobic methane oxidation (AMO) in methane hydrate containing marine sediments, but the organisms responsible for this major process in the Carbon cycle have never been isolated; and no pure cultures of microbes capable of net AMO have yet been obtained. The project entails an interdisciplinary integrate",
+          "co_pis": [
+            "Miriam Kastner mkastner@ucsd.edu"
+          ]
+        },
+        {
+          "title": "ToxR/S and Unsaturated Fatty Acid Regulation in Photobacterium profundum Strain SS9",
+          "agency": "NSF",
+          "nsf_program": "BIOMOLECULAR PROCESSES, MICROBIAL GENETICS",
+          "amount": "319883",
+          "start_date": "09/01/1999",
+          "end_date": "08/31/2003",
+          "nsf_award_id": "9974528",
+          "abstract": "Bartlett\r\nThe ToxR/S regulon is widely distributed among bacteria of the family Vibrionaceae. However, little is known about the nature or even the number of genes regulated by these proteins, except for some genes involved in human colonization and pathogenesis which have been acquired by horizontal gene transfer in Vibrio cholerae. Recent experiments in the investigator's lab indicate that ToxR and ToxS influence the ability of the deep-sea bacterium Photobacterium profundum strain SS9 to resp",
+          "co_pis": [
+            "Kelly A Bidle kbidle@rider.edu"
+          ]
+        },
+        {
+          "title": "LExEn:  Characterization of the Upper Pressure Limits for   Microbial Life",
+          "agency": "NSF",
+          "nsf_program": "MICROBIAL GENETICS, BIOLOGICAL OCEANOGRAPHY, Genetic Mechanisms",
+          "amount": "80628",
+          "start_date": "09/01/1997",
+          "end_date": "08/31/2000",
+          "nsf_award_id": "9714292",
+          "abstract": "Bartlett  9714292  Many regions of the solar system where life is postulated to exist, such as the oceans of Europa, are characterized by pressures far greater than those experienced at Earth's surface. Because pressure exerts a fundamental influence on the properties and distribution of life, the effects of high pressure on living systems needs to be understood. Unfortunately, despite the isolation of high pressure-loving (barophilic) microbes from certain deep-sea environments, relatively litt"
+        },
+        {
+          "title": "Fatty Acid Regulation in a Deep-Sea Bacterium",
+          "agency": "NSF",
+          "nsf_program": "MICROBIAL GENETICS",
+          "amount": "228249",
+          "start_date": "08/01/1996",
+          "end_date": "07/31/2001",
+          "nsf_award_id": "9630546",
+          "abstract": "9630546  Bartlett    The objective of this investigation is to identify and characterize genes involved in pressure sensing  and high pressure adaptation in the deep-sea bacterium Photobacterum species strain SS9. Genetic  studies in this organism indicate that a link exists between the abundance of the polyunsaturated  fatty acid species all-cis-5, 8, 11, 14, 17-eicosapentaenoic acid (EPA), high pressure adaptation,  and the pressure regulation of outer membrane protein (OMP) gene expression. T"
         }
       ],
       "recent_publications": [
@@ -4090,7 +4471,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dbartlett",
       "orcid": "0000-0002-8385-1139",
-      "last_enriched": "2026-05-31T03:36:55.934092+00:00"
+      "last_enriched": "2026-06-07T03:40:35.108629+00:00"
     },
     {
       "first_name": "Andrew",
@@ -4281,7 +4662,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0002-6480-4433",
-      "last_enriched": "2026-05-31T03:38:30.271758+00:00"
+      "last_enriched": "2026-06-07T03:42:09.832969+00:00"
     },
     {
       "first_name": "Simone",
@@ -4643,7 +5024,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0002-3428-3577",
-      "last_enriched": "2026-05-31T03:40:04.803110+00:00"
+      "last_enriched": "2026-06-07T03:43:44.512818+00:00"
     },
     {
       "first_name": "Janet",
@@ -4855,7 +5236,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "orcid": "0000-0002-2486-4095",
-      "last_enriched": "2026-05-31T03:41:39.132811+00:00"
+      "last_enriched": "2026-06-07T03:45:19.196917+00:00"
     },
     {
       "first_name": "Tarik",
@@ -4922,18 +5303,6 @@
           "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
           "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
           "agency": "National Cancer Institute",
-          "amount": 446672,
-          "start_date": "2019-04-09T00:00:00",
-          "end_date": "2025-03-31T00:00:00",
-          "project_number": "5R01CA228147-05",
-          "co_pis": [
-            "Marta Jankowska"
-          ]
-        },
-        {
-          "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
-          "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
-          "agency": "National Cancer Institute",
           "amount": 391534,
           "start_date": "2019-04-09T00:00:00",
           "end_date": "2025-03-31T00:00:00",
@@ -4946,22 +5315,10 @@
           "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
           "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
           "agency": "National Cancer Institute",
-          "amount": 122632,
+          "amount": 446672,
           "start_date": "2019-04-09T00:00:00",
           "end_date": "2025-03-31T00:00:00",
-          "project_number": "5R01CA228147-06",
-          "co_pis": [
-            "Marta Jankowska"
-          ]
-        },
-        {
-          "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
-          "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
-          "agency": "National Cancer Institute",
-          "amount": 549222,
-          "start_date": "2019-04-09T00:00:00",
-          "end_date": "2024-03-31T00:00:00",
-          "project_number": "5R01CA228147-03",
+          "project_number": "5R01CA228147-05",
           "co_pis": [
             "Marta Jankowska"
           ]
@@ -4986,6 +5343,30 @@
           "start_date": "2019-04-09T00:00:00",
           "end_date": "2024-03-31T00:00:00",
           "project_number": "5R01CA228147-02",
+          "co_pis": [
+            "Marta Jankowska"
+          ]
+        },
+        {
+          "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
+          "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
+          "agency": "National Cancer Institute",
+          "amount": 549222,
+          "start_date": "2019-04-09T00:00:00",
+          "end_date": "2024-03-31T00:00:00",
+          "project_number": "5R01CA228147-03",
+          "co_pis": [
+            "Marta Jankowska"
+          ]
+        },
+        {
+          "title": "Integrating novel GIS and GPS data to assess the impact of built environments on changes in BMI, physical activity and cancer-related biomarkers in two successful weight loss interventions in women at",
+          "abstract": "In 2018, 266,120 new cases of invasive breast cancer are expected. The Breast Cancer and Environment\nResearch Program, funded by NIEHS and NCI, identified a need to better understand environmental\nexposures to inform cancer prevention efforts. Further, Just in Time Adaptive Interventions (JITAIs) employ\ntemporal and spatial cues to prompt behavior change, but little is known about spatial predictors of behaviors\nat the minute level and beyond home neighborhoods. Two successful weight loss trials",
+          "agency": "National Cancer Institute",
+          "amount": 122632,
+          "start_date": "2019-04-09T00:00:00",
+          "end_date": "2025-03-31T00:00:00",
+          "project_number": "5R01CA228147-06",
           "co_pis": [
             "Marta Jankowska"
           ]
@@ -5046,6 +5427,12 @@
         }
       ],
       "recent_publications": [
+        {
+          "title": "The use of race and ethnicity in air pollution epidemiology and methodological recommendations: A scoping review focusing on California.",
+          "year": 2026,
+          "journal": "Environmental epidemiology (Philadelphia, Pa.)",
+          "abstract": "Air pollution remains a significant global health risk, and exposure to air pollutants can lead to multiple health issues across the life course. Air pollution is also an environmental justice issue and plays a crucial role in health disparities across racial and ethnic groups, through both differential exposure and differential vulnerability. Historical patterns of discriminatory siting of emission sources have led to differential exposure to air pollution among racial and ethnic groups. Differ"
+        },
         {
           "title": "Two-way fixed effects models in air pollution epidemiology: a proposed framework for model specifications and recommendations for future studies.",
           "year": 2026,
@@ -5118,6 +5505,21 @@
           "title": "Long-term exposure to wildfire smoke particulate matter and incident stroke: a US nationwide study.",
           "year": 2026,
           "journal": "European heart journal",
+          "mesh_terms": [
+            "Humans",
+            "Particulate Matter",
+            "United States",
+            "Wildfires",
+            "Smoke",
+            "Stroke",
+            "Female",
+            "Aged",
+            "Male",
+            "Environmental Exposure",
+            "Incidence",
+            "Aged, 80 and over",
+            "Medicare"
+          ],
           "abstract": "Wildfire smoke is a growing public health concern, particularly due to its high fine particulate matter (PM2.5) concentrations. While short-term exposure has been linked to adverse cardiovascular outcomes, long-term effects remain understudied. This study examined the association between long-term wildfire smoke PM2.5 exposure and incident stroke among older US adults. A national open cohort study was conducted among Medicare Fee-for-Service beneficiaries aged ≥65 years from 2007 to 2018. Stroke"
         },
         {
@@ -5242,12 +5644,6 @@
             "Environmental Exposure"
           ],
           "abstract": "Fine particulate matter (PM In this retrospective, multicountry epidemiological study, we used the EARLY-ADAPT database to obtain daily mortality records in 654 contiguous subnational regions from 32 European countries, representing a population of 541 million individuals. We combined these data with daily estimates of fire-related and non-fire-related PM Our study data included 95⸱3 million daily deaths for all-cause mortality, 19⸱5 million daily deaths for cardiovascular mortality, and 3⸱9 mil"
-        },
-        {
-          "title": "Impact of domestic violence legislation on reported intimate partner violence: a difference-in-differences analysis across 16 countries.",
-          "year": 2025,
-          "journal": "SSM - population health",
-          "abstract": "Intimate partner violence (IPV) is a highly prevalent threat to women's health globally. Domestic violence (DV) legislation - encompassing criminal sanctions and civil remedies - has been implemented in many countries but evidence on its effects are lacking. In this study, we evaluate the impact of national-level DV legislation on married women's IPV victimization. We used self-reported IPV information from 183,222 women across 16 countries, collected in repeated cross-sectional surveys (2000-20"
         }
       ],
       "committee_service": [],
@@ -5269,7 +5665,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tbenmarhnia",
       "orcid": "0000-0002-4018-3089",
-      "last_enriched": "2026-05-31T03:43:13.440690+00:00"
+      "last_enriched": "2026-06-07T03:45:22.770281+00:00"
     },
     {
       "first_name": "Jonathan",
@@ -5803,7 +6199,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/jberger",
       "orcid": "0000-0002-8773-7878",
-      "last_enriched": "2026-05-31T03:44:47.824772+00:00"
+      "last_enriched": "2026-06-07T03:46:57.460333+00:00"
     },
     {
       "first_name": "Ricardo",
@@ -5898,7 +6294,7 @@
         {
           "title": "Collaborative Research: The role of habitat transitions in parallel marine fish radiations",
           "agency": "NSF",
-          "nsf_program": "EPSCoR Co-Funding, PHYLOGENETIC SYSTEMATICS",
+          "nsf_program": "PHYLOGENETIC SYSTEMATICS, EPSCoR Co-Funding",
           "amount": "375196",
           "start_date": "05/15/2015",
           "end_date": "04/30/2019",
@@ -6134,7 +6530,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/rbetancur",
       "orcid": "0000-0002-9512-5011",
-      "last_enriched": "2026-05-31T03:46:22.141616+00:00"
+      "last_enriched": "2026-06-07T03:48:32.012827+00:00"
     },
     {
       "first_name": "Yehuda",
@@ -6182,40 +6578,259 @@
       ],
       "funded_grants": [
         {
-          "title": "Feasibility study using real-time GPS/seismic displacements to improve disaster management and decisions pertaining to rapid assessment of structural damage from earthquakes and tsunamis ",
-          "agency": "National Aeronautics and Space Administration",
-          "start_date": "2014",
-          "end_date": "2017"
+          "title": "Facilities Support:   SOPAC GNSS Infrastructure and Real-time Operations",
+          "agency": "NSF",
+          "nsf_program": "Instrumentation & Facilities",
+          "amount": "320000",
+          "start_date": "07/01/2014",
+          "end_date": "06/30/2018",
+          "nsf_award_id": "1400901",
+          "abstract": "1400901\r\nBock\r\n\r\nThis grant supports facility operations of the Scripps Orbit and Permanent Array Center (SOPAC) over a four year period.  SOPAC activities include the collection archiving and dissemination of some 800 GPS stations worldwide that are not currently available through the UNAVCO archive.  In addition SOPAC provides daily GPS satellite orbit corrections as Global Analysis Center for the International Global Navigation Satellite System (GNSS) Network that benefit geodetic studies wor",
+          "co_pis": [
+            "Jennifer S Haase jhaase@ucsd.edu"
+          ]
         },
         {
-          "title": "Investigations into an Integrated Circum-Pacific Earthquake and Tsunami Early Warning System ",
-          "agency": "National Aeronautics and Space Administration",
-          "start_date": "2014",
-          "end_date": "2017"
+          "title": "EAR/IF:   Prototype Investigations into Integrated GPS/Seismic Networks for Improved Finite Fault Slip Modeling and Earthquake Characterization",
+          "agency": "NSF",
+          "nsf_program": "Instrumentation & Facilities",
+          "amount": "200000",
+          "start_date": "05/01/2013",
+          "end_date": "04/30/2015",
+          "nsf_award_id": "1252187",
+          "abstract": "Recent great earthquakes and ensuing tsunamis in Sumatra, Chile and Japan have demonstrated the need for accurate ground displacements that fully characterize the great amplitudes and broad dynamic range associated with these vast, complex ruptures. Our ability to model these events, whether in real-time or after the fact, is limited by the weaknesses of both seismic and geodetic networks. Geodetic instruments provide the static component as well as coarse dynamic motions but are much less preci"
         },
         {
-          "title": "Solid Earth Science ESDR System",
-          "agency": "National Aeronautics and Space Administration",
-          "start_date": "2013",
-          "end_date": "2018"
+          "title": "Prototype Investigations into Integrated GPS/Seismic Networks for Improved Finite Fault Slip Modeling and Earthquake Characterization",
+          "agency": "NSF",
+          "nsf_program": "EARTHSCOPE-SCIENCE UTILIZATION",
+          "amount": "200000",
+          "start_date": "04/15/2013",
+          "end_date": "03/31/2016",
+          "nsf_award_id": "1252186",
+          "abstract": "Recent great earthquakes and ensuing tsunamis in Sumatra, Chile and Japan have demonstrated the need for accurate ground displacements that fully characterize the great amplitudes and broad dynamic range associated with these vast, complex ruptures. Our ability to model these events, whether in real-time or after the fact, is limited by the weaknesses of both seismic and geodetic networks. Geodetic instruments provide the static component as well as coarse dynamic motions but are much less preci"
         },
         {
-          "title": "NASA Earth Science Research Program, Advancing Collaborative Connections for Earth System Science ",
-          "agency": "National Aeronautics and Space Administration",
-          "start_date": "2016",
-          "end_date": "2019"
+          "title": "RAPID: Low-Cost, Strong-Motion Sensor Packages to Obtain Full Spectrum Waveforms for Earthquake Early Warning and Structural Monitoring Applications",
+          "agency": "NSF",
+          "nsf_program": "NEES RESEARCH, Instrumentation & Facilities",
+          "amount": "85500",
+          "start_date": "02/15/2012",
+          "end_date": "07/31/2012",
+          "nsf_award_id": "1208729",
+          "abstract": "This Grant for Rapid Response Research (RAPID) investigates low-cost, strong-motion instrumentation for the earth sciences and structural engineering research communities to provide a new interdisciplinary data type: real-time, full spectrum displacements based on an optimal combination of high-rate global positioning system (GPS) and very high-rate accelerometer data.  These new data both fully capture dynamic and static near-field strong motion and enable its analysis and characterization in r"
         },
         {
-          "title": "The early phases of the crustal deformation/earthquake cycle from GNSS and complementary Earth observation datasets: Implications for earthquake and tsunami hazards",
-          "agency": "National Aeronautics and Space Administration",
-          "start_date": "2017",
-          "end_date": "2020"
+          "title": "SGER: Coseismic/Postseismic GPS Field Surveys in Response to the 26 December 2004 Mw 9.0 Sumatra Earthquake",
+          "agency": "NSF",
+          "nsf_program": "Geophysics",
+          "amount": "35000",
+          "start_date": "04/01/2005",
+          "end_date": "03/31/2006",
+          "nsf_award_id": "0517734",
+          "abstract": "\r\nWe propose to resurvey a network of (~50) geodetic monuments in North Sumatra, the Mentawai Islands, and Banda Aceh to determine coseismic and postseismic deformation caused by the 26 December 2004 Mw=9.0 Sumatra earthquake. These new data would provide critical geodetic constraints for the seismographic inversion of the earthquake source, to constrain models of the subsequent devastating tsunamis, and to contribute to the study of the great earthquake cycle in that region. It is very importan"
         },
         {
-          "title": "SOPAC GNSS Infrastructure and Real-time Operations ",
-          "agency": "National Science Foundation",
-          "start_date": "2014",
-          "end_date": "2018"
+          "title": "Investigations of Spatial and Temporal Variations in Strain Accumulation at the Sumatra Subduction Zone from Continuous GPS Measurements",
+          "agency": "NSF",
+          "nsf_program": "GLOBAL CHANGE",
+          "amount": "56106",
+          "start_date": "08/01/2000",
+          "end_date": "07/31/2001",
+          "nsf_award_id": "0001090",
+          "abstract": "Bock \r\n\r\n0001090 \r\n\r\n\r\n\r\nThe west coast of Sumatra and the Mentawai Islands offer a unique opportunity to study the process of strain accumulation and release along the Sumatran fault and subduction zone. Two giant historical earthquakes (1833 and 1861) suggest that infrequent very-large earthquakes dominate strain relief at the Sumatra subduction zone. The Sumatran fault has also been known to produce several Mw>7 earthquakes. GPS measurements collected from 1989 to 1993 revealed the spatial di"
+        },
+        {
+          "title": "Collaborative Research:  GPS Crustal Deformation Monitoring in China",
+          "agency": "NSF",
+          "nsf_program": "NATIONL EARTHQK HZRD REDCT PRG",
+          "amount": "17785",
+          "start_date": "10/01/1999",
+          "end_date": "03/31/2001",
+          "nsf_award_id": "9903774",
+          "abstract": "9903774\r\nBock \r\n\r\nThe investigators plan to measure and interpret crustal deformation in China using GPS data.  They will collaborate with Chinese scientists on their project \"Crustal Motion Observation Network of China\", sharing U.S. expertise in network design, data processing, analysis, and interpretation.  During the upcoming year the investigators will jointly analyze and interpret the Chinese data collected in 1998 and 1999, to assess the network monument stability, data quality, and appro"
+        },
+        {
+          "title": "Collaborative Research:  GPS Crustal Deformation Monitoring in China",
+          "agency": "NSF",
+          "nsf_program": "Geophysics",
+          "amount": "9350",
+          "start_date": "10/01/1998",
+          "end_date": "09/30/1999",
+          "nsf_award_id": "9806451",
+          "abstract": "9806451\r\nBock\r\n\r\nThe purpose of this project is to collaborate with Chinese scientists to collect, analyze, and interpret geodetic data on crustal deformation in China.  It is essential to acquire accurate crustal deformation information in order to understand the intra-plate dynamics of the east Eurasia plate.   The investigators will assist the Chinese on the realization of their \"Crustal Movement  Monitoring Network of China\" project, under which a huge GPS network is being established.  The "
+        },
+        {
+          "title": "Collaborative Research: Fundamental Support for GPS Research - UNAVCO Facilities",
+          "agency": "NSF",
+          "nsf_program": "FACILITY SUPPORT",
+          "amount": "116667",
+          "start_date": "09/15/1998",
+          "end_date": "10/31/1999",
+          "nsf_award_id": "9813700",
+          "abstract": "9813700  Bock         Global Positioning System (GPS) technology allows near  real-tine determination of position anywhere on Earth with  precision in the sub-centimeter range. It is making a profound  impact on understanding of diverse scientific problems in the  geosciences, including plate motions, earthquake cycles, crustal  dynamics, volcanic processes, glacier dynamics, sea level changes,  and atmospheric sensing. This award provides funding to support  part of the infrastructure needed fo"
+        },
+        {
+          "title": "Collaborative Research:  Integration of Synthetic Aperture  Radar Interferometry, Continuous GPS and GPS Meteorology    for Crustal Deformation and Earthquake Monitoring",
+          "agency": "NSF",
+          "nsf_program": "Instrumentation & Facilities",
+          "amount": "530882",
+          "start_date": "10/01/1997",
+          "end_date": "03/31/2002",
+          "nsf_award_id": "9619201",
+          "abstract": "9619201  Bock    This award supports research aimed at an integration of two  technologies which have proven useful for monitoring motion of the  Earth's crust. The Global Positioning System (GPS) is currently  capable of measuring baselines (the distance between two GPS  receiver location points on Earth) with a precision in the  millimeter range at distances of hundreds of kilometers.  Interferometric Synthetic Aperture Radar (INSAR) cannot offer a  comparable level of precision, but has the a",
+          "co_pis": [
+            "David T Sandwell dsandwell@ucsd.edu",
+            "Duncan Carr Agnew dagnew@ucsd.edu",
+            "Jean-Bernard Minster jbminster@ucsd.edu"
+          ]
+        },
+        {
+          "title": "Collaborative Research:  Fundamental Support for GPS        Research - UNAVCO Facilities",
+          "agency": "NSF",
+          "nsf_program": "Instrumentation & Facilities",
+          "amount": "100000",
+          "start_date": "09/01/1997",
+          "end_date": "08/31/1998",
+          "nsf_award_id": "9615997",
+          "abstract": "9615997  Bock         Global Positioning System (GPS) technology allows near real-  tine determination of position anywhere on Earth with precision in  the sub-centimeter range.  It is making a profound impact on  understanding of diverse scientific problems in the geosciences,  including plate motions, earthquake cycles, crustal dynamics,  volcanic processes, glacier dynamics, sea level changes, and  atmospheric sensing.  This award provides funding to support part  of the infrastructure needed"
+        },
+        {
+          "title": "COLLABORATIVE RESEARCH:  On the Sumatran Subduction Zone",
+          "agency": "NSF",
+          "nsf_program": "Tectonics",
+          "amount": "16793",
+          "start_date": "09/15/1996",
+          "end_date": "08/31/1999",
+          "nsf_award_id": "9632884",
+          "abstract": "9632884  Bock   The coral reefs of western Sumatra offer an opportunity to document the timing, geographic extent and vertical deformations associated with two great historical subjection zone earthquakes and their prehistoric predecessors. Living corals also display evidence for recent submergence, which perhaps represents elastic loading prior t the next great earthquake. This project is a collaborative study of the active tectonics of this subduction zone taking advantage of the details of co",
+          "co_pis": [
+            "Joachim Genrich"
+          ]
+        },
+        {
+          "title": "Facility for Supporting the Analysis and Integration of     Regional and Global GPS Networks for Crustal Deformation",
+          "agency": "NSF",
+          "nsf_program": "NATIONL EARTHQK HZRD REDCT PRG, Instrumentation & Facilities",
+          "amount": "209434",
+          "start_date": "05/01/1995",
+          "end_date": "04/30/1997",
+          "nsf_award_id": "9405934",
+          "abstract": "Bock  9405934  The objectives of this research are to continue to serve as a University NAVSTAR consortium (UNAVCO) facility for the archiving and analysis of GPS global tracking data to support regional crustal deformation projects.  Improve the timeliness of global products from the present 7- to 10-day delay to a 1- to 2-day delay to support in-the-field data analysis, particularly in the presence of Anti-Spoofing (AS) and Selective Availability (SA). The research will also develop and implem"
+        },
+        {
+          "title": "Space Geodetic Investigation of the Northridge Earthquake",
+          "agency": "NSF",
+          "nsf_program": "",
+          "amount": "36000",
+          "start_date": "09/01/1994",
+          "end_date": "02/29/1996",
+          "nsf_award_id": "9416338",
+          "abstract": "9416338  Bock    This project will investigate the time series of positions from the Permanent Global Positioning  System (GPS) Geodetic Array prior to and after the Northridge earthquake of January 17, 1994  focussing on the anomalous strain events detected at the Jet Propulsion Laboratory and Ranchos  Palos Verdes sites several months before the earthquake.  The signals will be analyzed by data  stacking procedures to see if they are real indicators of anomalous strain variations or artifacts "
+        },
+        {
+          "title": "UNAVCO Workshop on Continuous GPS Networks and Seismic      Networks",
+          "agency": "NSF",
+          "nsf_program": "Geophysics, GLOBAL CHANGE",
+          "amount": "7673",
+          "start_date": "06/01/1994",
+          "end_date": "05/31/1995",
+          "nsf_award_id": "9412375",
+          "abstract": "9412375  Bock      The PI will organize and run a topical workshop on \"Continuous GPS Networks and Seismic Networks\" for a group of about 40 participants, including approximately a number of graduate students and postdocs.  The workshop will be jointly funded by Scripps Oceanographic Institute, UNAVCO, and IRIS and will focus on how UNAVCO can best support PIs with global and regional products and how IRIS might participate in the support of global observations.   Global data collection and anal"
+        },
+        {
+          "title": "Analysis and Selective Resurvey of the Sumatra GPS Network",
+          "agency": "NSF",
+          "nsf_program": "Geophysics",
+          "amount": "35000",
+          "start_date": "03/15/1994",
+          "end_date": "08/31/1995",
+          "nsf_award_id": "9316889",
+          "abstract": "9316889  Bock      The PI and his postdoctoral associate will analyze their 1992 and 1993 GPS regional measurements from Sumatra and other islands in the Indonesian archipelago to study crustal deformation along the Sumatran fault and the forearc region to the southwest.  Continuous improvements in GPS satellite constellation, receiver technology and global tracking networks permit significantly more accurate estimates of surface deformation for these two years than for any of the preceding thre"
+        },
+        {
+          "title": "Precise GPS Ephemerides for Crustal Deformation Surveys",
+          "agency": "NSF",
+          "nsf_program": "Geophysics, GLOBAL CHANGE, Instrumentation & Facilities",
+          "amount": "223952",
+          "start_date": "08/01/1992",
+          "end_date": "03/31/1995",
+          "nsf_award_id": "9208447",
+          "abstract": "Scripps will serve as a facility for the archiving and                     analysis of GPS global tracing data to support regional crustal                 deformation projects.  To support operations of the Permanent GPS               Geodetic Array (PGGA) in southern California, scripps generates                 precise orbital ephemerides and maintain a comprehensive archive                of global tracking data.  At present, orbits are at the several                 parts in 108 level comput"
+        },
+        {
+          "title": "Collaborative Research: Establishment of a Geodetic Crustal Dynamics Network in Eastern Indonesia Using the Global      Positioning System",
+          "agency": "NSF",
+          "nsf_program": "GLOBAL CHANGE",
+          "amount": "185461",
+          "start_date": "07/01/1992",
+          "end_date": "06/30/1996",
+          "nsf_award_id": "9114864",
+          "abstract": "This project involves using the Global Positioning System                  (GPS) in eastern Indonesia, a region of broad deformation where the             continental margins of Australia and Southeast Asia and the oceanic             plates of the Pacific and Philippine Sea are coming together at                 rates of 80 to 110 mm/yr. Plate tectonic concepts do not explain                the evolution of Indonesia and other diffusely deforming belts                  except very generally bec"
+        },
+        {
+          "title": "U.S.-Indonesia Cooperative Research: Geodetic investigation of oblique plate convergence in Sumatra",
+          "agency": "NSF",
+          "nsf_program": "EAST ASIA, OTHER",
+          "amount": "25000",
+          "start_date": "09/15/1991",
+          "end_date": "03/31/1994",
+          "nsf_award_id": "9116211",
+          "abstract": "This proposal requests funds to permit Dr. Yehuda Bock, Scripps                 Institution of Oceanography, University of California, San Diego,               to pursue with Dr. Jacub Rais, Indonesian National Coordination                 Agency for Surveys and Mapping (BAKOSURTANAL), for 24 months, a                 study of the tectonics of the Indonesian archipelago, using                     measurements of the Global Positioning System (GPS).  They will                 study deformation as"
+        },
+        {
+          "title": "Comparison of GPS and Historical Triangulation Data for     Mapping Crustal Strain Across the Great Sumatran Fault      System",
+          "agency": "NSF",
+          "nsf_program": "NATIONL EARTHQK HZRD REDCT PRG",
+          "amount": "50000",
+          "start_date": "03/01/1991",
+          "end_date": "02/28/1993",
+          "nsf_award_id": "9004376",
+          "abstract": "This proposal is to support a graduate student for two years               to thoroughly research the Indonesian geodetic archives of the                  Dutch period in West Java and the archives of the Netherlands                   Geodetic Commission in Delft, and to perform a strain analysis                  across the Great Sumatran Fault System using historical                         triangulation data located in these archives and ongoing GPS                    measurements.  This work "
+        },
+        {
+          "title": "Preseismic and Postseismic Analysis of GPS and TrilaterationData at Loma Prieta",
+          "agency": "NSF",
+          "nsf_program": "NATIONL EARTHQK HZRD REDCT PRG",
+          "amount": "43937",
+          "start_date": "08/01/1990",
+          "end_date": "07/31/1991",
+          "nsf_award_id": "9011452",
+          "abstract": "This research is to analyze the crustal deformation of the                    region close to the Loma Prieta earthquake by using data                        collected by the U.S. Geological Survey: one source will be the                 geodolite trilateration network measured since the early 1970's,                another source will be the Global Positioning System network that               has been surveyed since 1985.  In addition to the experiments                   near Loma Prieta, GPS "
+        },
+        {
+          "title": "GPS Instruments for Crustal Deformation Monitoring in       California",
+          "agency": "NSF",
+          "nsf_program": "FACILITY SUPPORT, CONTINENTAL DYNAMICS PROGRAM",
+          "amount": "125173",
+          "start_date": "02/15/1990",
+          "end_date": "01/31/1991",
+          "nsf_award_id": "8916939",
+          "abstract": "This award provides one-half of the funds required for the                 purchase of six receivers and site packages for use in Global                   Positioning System (GPS) satellite-based geodesy. The instruments               will become the property of the Scripps Institution of                          Oceanography (SIO) of the University of California, said                        institution being committed to provide the remaining necessary                  funds for their acquisiti",
+          "co_pis": [
+            "Duncan Carr Agnew dagnew@ucsd.edu",
+            "Jean-Bernard Minster jbminster@ucsd.edu"
+          ]
+        },
+        {
+          "title": "U.S.-Indonesia Cooperative Research: Geodetic Investigation of Oblique Plate Convergence in Sumatra",
+          "agency": "NSF",
+          "nsf_program": "SCIENCE IN DEVELOPING COUNTRIE",
+          "amount": "25000",
+          "start_date": "07/15/1989",
+          "end_date": "06/30/1991",
+          "nsf_award_id": "8911791",
+          "abstract": "This proposal requests funds to permit Dr. Yehuda Bock,                         Scripps Institution of Oceanography, University of                              California, San Diego, to pursue with Dr. Joenil Kahar and                      Ir. Klaas Villanueva, Working Group on Earth Disaster                           Prevention, Bandung Institute of Technology, Indonesia, for                     24 months, a study of the tectonics of the Indonesian                           archipelago, using m"
+        },
+        {
+          "title": "Collaborative Research:  Geodetic Investigations of Oblique Plate Convergence in Sumatra",
+          "agency": "NSF",
+          "nsf_program": "Geophysics, CONTINENTAL DYNAMICS PROGRAM, GLOBAL CHANGE",
+          "amount": "264951",
+          "start_date": "02/15/1989",
+          "end_date": "01/31/1994",
+          "nsf_award_id": "8817067",
+          "abstract": "The PIs will conduct a five-year study using measurements to the                Global Positioning System (GPS) of the tectonics of the                         Indonesian archipelago.  In the first year they will study                      deformation associated with oblique plate convergence in Sumatra.               Specifically, they will examine the mechanism of decoupling of                  the oblique slip into normal subduction and shear slip on faults                parallel to the conv"
         }
       ],
       "recent_publications": [
@@ -6269,7 +6884,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ybock",
       "orcid": "0000-0001-8296-6623",
-      "last_enriched": "2026-05-31T03:47:56.572545+00:00"
+      "last_enriched": "2026-06-07T03:50:06.849218+00:00"
     },
     {
       "first_name": "Julien",
@@ -6391,7 +7006,7 @@
       "department_code": "245",
       "eah_status": "Active",
       "orcid": "0000-0001-5142-3159",
-      "last_enriched": "2026-05-31T03:49:30.949327+00:00",
+      "last_enriched": "2026-06-07T03:51:41.452815+00:00",
       "profile_url": "https://researcherprofiles.org/profile/653887107"
     },
     {
@@ -6553,7 +7168,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/aborsa",
       "orcid": "0000-0002-9939-1480",
-      "last_enriched": "2026-05-31T03:51:05.274638+00:00"
+      "last_enriched": "2026-06-07T03:53:16.117267+00:00"
     },
     {
       "first_name": "Jeff",
@@ -6635,6 +7250,12 @@
         }
       ],
       "recent_publications": [
+        {
+          "title": "Rethinking the Last Universal Common Ancestor of Life: Network Convergence and the Root of the Tree.",
+          "year": 2026,
+          "journal": "Astrobiology",
+          "abstract": "The tree of life is rooted at the \"origin of life.\" One model holds that core biochemistry, which includes the genetic code, the ribosome, biopolymer backbones, and amino acid and nucleotide monomer alphabets, was inherited vertically from a single origin of life. In this model, core biochemistry is a frozen accident that reflects prebiotic chemistry. In an alternative model explored here, life arose across diverse planetary environments and generated diverse biochemistries that competed and coo"
+        },
         {
           "title": "Viral metagenomics of Okavango Delta water pans reveal novel insights into wildlife disease potential.",
           "year": 2025,
@@ -6807,7 +7428,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T02:52:19.147346+00:00",
+      "last_enriched": "2026-06-07T02:55:59.472470+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1200",
       "job_code_description": "ASSOC PROF-AY",
@@ -6951,7 +7572,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/bbrahamsha",
       "orcid": "0000-0002-5316-5939",
-      "last_enriched": "2026-05-31T03:52:39.748878+00:00"
+      "last_enriched": "2026-06-07T03:54:50.804993+00:00"
     },
     {
       "first_name": "Peter",
@@ -7041,7 +7662,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pbromirski",
       "orcid": "0000-0002-5342-9252",
-      "last_enriched": "2026-05-31T03:54:14.093260+00:00"
+      "last_enriched": "2026-06-07T03:56:25.533266+00:00"
     },
     {
       "first_name": "Kevin",
@@ -7270,17 +7891,17 @@
           "mesh_terms": [
             "Humans",
             "Female",
-            "Male",
             "Adult",
+            "Male",
+            "Stress, Psychological",
+            "Nursing Staff, Hospital",
             "Prospective Studies",
             "Workplace",
-            "Middle Aged",
             "Suicide",
-            "Nursing Staff, Hospital",
-            "Qualitative Research",
-            "Suicidal Ideation",
+            "Middle Aged",
             "Suicide Prevention",
-            "Stress, Psychological"
+            "Working Conditions",
+            "Qualitative Research"
           ],
           "abstract": "Analyze qualitative baseline data from a randomized controlled trial to identify factors that drive stressors among at-risk nurses and identify their desired actions to improve health/well-being. Reducing nurse suicide is a national imperative. Prospective nurse cohort deemed at-risk of adverse mental health outcomes, including suicidality. Inductive reflexive thematic analysis (n = 466) of survey responses regarding stressors and solutions for positive change. The nurses' caring identity can cr"
         },
@@ -7597,7 +8218,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0002-1944-3050",
-      "last_enriched": "2026-05-31T02:52:27.683672+00:00"
+      "last_enriched": "2026-06-07T02:56:11.156311+00:00"
     },
     {
       "first_name": "James",
@@ -7915,7 +8536,7 @@
       "department_code": "260",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/jbrune",
-      "last_enriched": "2026-05-31T03:55:48.410231+00:00"
+      "last_enriched": "2026-06-07T03:58:00.013265+00:00"
     },
     {
       "first_name": "Michael",
@@ -8031,7 +8652,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mbuckingham",
       "orcid": "0000-0001-6414-4714",
-      "last_enriched": "2026-05-31T03:57:22.850690+00:00"
+      "last_enriched": "2026-06-07T03:59:34.702017+00:00"
     },
     {
       "first_name": "Ronald",
@@ -8627,7 +9248,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/rburton",
       "orcid": "0000-0002-6995-5329",
-      "last_enriched": "2026-05-31T03:57:26.238037+00:00"
+      "last_enriched": "2026-06-07T04:01:09.201668+00:00"
     },
     {
       "first_name": "Steven",
@@ -8969,7 +9590,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/scande",
-      "last_enriched": "2026-05-31T03:59:00.652529+00:00"
+      "last_enriched": "2026-06-07T04:02:43.949322+00:00"
     },
     {
       "first_name": "Tomas",
@@ -9075,7 +9696,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tcapaldi",
       "orcid": "0000-0003-4894-736X",
-      "last_enriched": "2026-05-31T04:00:34.969564+00:00"
+      "last_enriched": "2026-06-07T04:04:18.467469+00:00"
     },
     {
       "first_name": "George",
@@ -9235,7 +9856,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gcarnevale",
-      "last_enriched": "2026-05-31T04:02:09.344961+00:00"
+      "last_enriched": "2026-06-07T04:05:52.982509+00:00"
     },
     {
       "first_name": "Paterno",
@@ -9582,7 +10203,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pcastillo",
       "orcid": "0000-0001-6140-7929",
-      "last_enriched": "2026-05-31T04:03:43.614596+00:00"
+      "last_enriched": "2026-06-07T04:07:27.559094+00:00"
     },
     {
       "first_name": "Daniel",
@@ -9873,7 +10494,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T04:03:47.014464+00:00",
+      "last_enriched": "2026-06-07T04:09:01.982138+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1675",
       "job_code_description": "EDUCATOR (WOS)",
@@ -10003,7 +10624,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/lcenturioni",
       "orcid": "0000-0002-6248-8780",
-      "last_enriched": "2026-05-31T04:05:21.323566+00:00"
+      "last_enriched": "2026-06-07T04:10:36.531551+00:00"
     },
     {
       "first_name": "Ivana",
@@ -10116,7 +10737,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/icerovecki",
       "orcid": "0000-0001-8979-9952",
-      "last_enriched": "2026-05-31T04:06:55.924895+00:00"
+      "last_enriched": "2026-06-07T04:12:10.941690+00:00"
     },
     {
       "first_name": "Paola",
@@ -10241,7 +10862,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pcessi",
       "orcid": "0000-0002-8376-7391",
-      "last_enriched": "2026-05-31T04:08:30.235525+00:00"
+      "last_enriched": "2026-06-07T04:14:11.652404+00:00"
     },
     {
       "first_name": "Christopher",
@@ -10514,7 +11135,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ccharles",
       "orcid": "0000-0001-9107-0992",
-      "last_enriched": "2026-05-31T04:10:04.569614+00:00"
+      "last_enriched": "2026-06-07T04:16:12.218813+00:00"
     },
     {
       "first_name": "David",
@@ -10701,7 +11322,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/dcheckley",
       "orcid": "0000-0003-1885-252X",
-      "last_enriched": "2026-05-31T04:11:38.841597+00:00"
+      "last_enriched": "2026-06-07T04:18:12.719449+00:00"
     },
     {
       "first_name": "Lanna",
@@ -11130,7 +11751,7 @@
       "profile_url": "https://scripps.ucsd.edu/profiles/lcheng",
       "orcid": "0000-0003-2375-991X",
       "h_index": 20,
-      "last_enriched": "2026-05-31T02:52:33.944859+00:00"
+      "last_enriched": "2026-06-07T02:56:17.572107+00:00"
     },
     {
       "first_name": "Teresa",
@@ -11379,7 +12000,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tchereskin",
       "orcid": "0000-0003-1214-0978",
-      "last_enriched": "2026-05-31T04:13:13.286681+00:00"
+      "last_enriched": "2026-06-07T04:20:05.979787+00:00"
     },
     {
       "first_name": "Emily",
@@ -11550,7 +12171,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0002-9351-6043",
-      "last_enriched": "2026-05-31T04:14:47.574126+00:00"
+      "last_enriched": "2026-06-07T04:21:40.651039+00:00"
     },
     {
       "first_name": "Anela",
@@ -11730,7 +12351,7 @@
       "h_index": null,
       "committee_service": [],
       "integrity_flags": [],
-      "last_enriched": "2026-05-31T04:16:21.935342+00:00",
+      "last_enriched": "2026-06-07T04:23:15.317385+00:00",
       "employee_class": "Academic: Faculty",
       "job_code": "1200",
       "job_code_description": "ASSOC PROF-AY",
@@ -11856,7 +12477,7 @@
         {
           "title": "Collaborative Proposal: Web-based Geo-Visualization and Laboratory Integration with the Magnetics Information Consortium",
           "agency": "NSF",
-          "nsf_program": "EAR-Earth Sciences Research, EarthCube",
+          "nsf_program": "EarthCube, EAR-Earth Sciences Research",
           "amount": "621690",
           "start_date": "09/15/2018",
           "end_date": "08/31/2022",
@@ -12007,7 +12628,7 @@
         {
           "title": "Collaborative Proposal for Facility Support:  Development and Maintenance of the Magnetics Information Consortium (MagIC)",
           "agency": "NSF",
-          "nsf_program": "Geophysics, Marine Geology and Geophysics, GEOINFORMATICS",
+          "nsf_program": "Marine Geology and Geophysics, Geophysics, GEOINFORMATICS",
           "amount": "740961",
           "start_date": "09/01/2003",
           "end_date": "08/31/2008",
@@ -12035,7 +12656,7 @@
         {
           "title": "A Workshop on Future Development of Paleo and Rock Magnetic Community Databases (March 2002)",
           "agency": "NSF",
-          "nsf_program": "SCEC, Tectonics, Geophysics, Instrumentation & Facilities, Marine Geology and Geophysics",
+          "nsf_program": "SCEC, Geophysics, Marine Geology and Geophysics, Tectonics, Instrumentation & Facilities",
           "amount": "44462",
           "start_date": "02/15/2002",
           "end_date": "01/31/2003",
@@ -12214,7 +12835,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/cconstable",
       "orcid": "0000-0003-4534-4977",
-      "last_enriched": "2026-05-31T04:18:22.526831+00:00"
+      "last_enriched": "2026-06-07T04:24:50.079963+00:00"
     },
     {
       "first_name": "Steven",
@@ -12539,7 +13160,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/sconstable",
       "orcid": "0000-0001-6324-3470",
-      "last_enriched": "2026-05-31T04:20:40.297976+00:00"
+      "last_enriched": "2026-06-07T04:26:24.697753+00:00"
     },
     {
       "first_name": "Geoffrey",
@@ -12802,7 +13423,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0009-0008-4138-4924",
-      "last_enriched": "2026-05-31T04:22:40.871840+00:00"
+      "last_enriched": "2026-06-07T04:27:59.555444+00:00"
     },
     {
       "first_name": "Bruce",
@@ -12958,7 +13579,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/bcornuelle",
       "orcid": "0000-0003-2110-3319",
-      "last_enriched": "2026-05-31T04:24:15.362956+00:00"
+      "last_enriched": "2026-06-07T04:29:34.205174+00:00"
     },
     {
       "first_name": "James",
@@ -13294,7 +13915,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0001-7602-6934",
-      "last_enriched": "2026-05-31T04:25:49.811668+00:00"
+      "last_enriched": "2026-06-07T04:31:09.123787+00:00"
     },
     {
       "first_name": "Paul",
@@ -13575,7 +14196,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/pdayton",
       "orcid": "0000-0001-6354-4812",
-      "last_enriched": "2026-05-31T04:27:24.150510+00:00"
+      "last_enriched": "2026-06-07T04:32:43.612478+00:00"
     },
     {
       "first_name": "Grant",
@@ -13916,7 +14537,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gdeane",
       "orcid": "0000-0002-4848-8637",
-      "last_enriched": "2026-05-31T04:28:58.426044+00:00"
+      "last_enriched": "2026-06-07T04:34:18.132708+00:00"
     },
     {
       "first_name": "Moira",
@@ -13999,7 +14620,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mdecima",
       "orcid": "0000-0003-0340-648X",
-      "last_enriched": "2026-05-31T04:30:33.007276+00:00"
+      "last_enriched": "2026-06-07T04:35:52.996388+00:00"
     },
     {
       "first_name": "Catherine",
@@ -14074,7 +14695,7 @@
       "department_code": "260",
       "eah_status": "Active",
       "orcid": "0000-0002-3063-2805",
-      "last_enriched": "2026-05-31T04:32:07.263012+00:00"
+      "last_enriched": "2026-06-07T04:37:27.510897+00:00"
     },
     {
       "first_name": "Dimitri",
@@ -14448,7 +15069,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ddeheyn",
       "orcid": "0000-0002-6496-9297",
-      "last_enriched": "2026-05-31T04:33:41.602477+00:00"
+      "last_enriched": "2026-06-07T04:39:02.087090+00:00"
     },
     {
       "first_name": "Valentina",
@@ -14485,6 +15106,21 @@
       "funded_grants": [],
       "recent_publications": [
         {
+          "title": "The undulating tripod gait as a model of the locomotion of walking fish.",
+          "year": 2026,
+          "journal": "Nature communications",
+          "mesh_terms": [
+            "Animals",
+            "Biomechanical Phenomena",
+            "Gait",
+            "Models, Biological",
+            "Fishes",
+            "Walking",
+            "Locomotion"
+          ],
+          "abstract": "A large subset of fishes capable of terrestrial walking exhibit strikingly similar gaits despite spanning across the phylogenetic space and having substantial differences in morphology. This recurrent pattern suggests the existence of shared mechanical principles underlying locomotor convergence. To investigate these principles, we analyze a common strategy we term the \"undulating tripod gait\", a coordinated pattern of axial body undulation coupled with alternating anterior contact with the grou"
+        },
+        {
           "title": "Compensatory sensory mechanisms in naïve blind cavefish navigating novel environments after lateral line ablation.",
           "year": 2025,
           "journal": "Comparative biochemistry and physiology. Part A, Molecular & integrative physiology",
@@ -14517,7 +15153,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "orcid": "0000-0002-5419-3747",
-      "last_enriched": "2026-05-31T04:35:46.317306+00:00"
+      "last_enriched": "2026-06-07T04:40:40.888331+00:00"
     },
     {
       "first_name": "Julia",
@@ -14820,7 +15456,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "orcid": "0000-0001-7246-3117",
-      "last_enriched": "2026-05-31T04:37:20.679366+00:00"
+      "last_enriched": "2026-06-07T04:42:15.382114+00:00"
     },
     {
       "first_name": "Andrew",
@@ -15141,7 +15777,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/adickson",
       "orcid": "0000-0002-2263-8828",
-      "last_enriched": "2026-05-31T04:38:55.089216+00:00"
+      "last_enriched": "2026-06-07T04:43:49.770681+00:00"
     },
     {
       "first_name": "Clive",
@@ -15266,7 +15902,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/cdorman",
       "orcid": "0000-0002-9866-3974",
-      "last_enriched": "2026-05-31T04:40:29.508983+00:00"
+      "last_enriched": "2026-06-07T04:45:24.283551+00:00"
     },
     {
       "first_name": "Neal",
@@ -15388,7 +16024,7 @@
         {
           "title": "Origin of continental margin bedforms: slides or drift deposits, a rock magnetic approach",
           "agency": "NSF",
-          "nsf_program": "OCEAN DRILLING PROGRAM, Instrumentation & Facilities, Marine Geology and Geophysics",
+          "nsf_program": "Instrumentation & Facilities, OCEAN DRILLING PROGRAM, Marine Geology and Geophysics",
           "amount": "141553",
           "start_date": "09/01/2004",
           "end_date": "08/31/2006",
@@ -15476,7 +16112,7 @@
       "department_code": "243",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ndriscoll",
-      "last_enriched": "2026-05-31T04:42:03.921334+00:00"
+      "last_enriched": "2026-06-07T04:46:58.620091+00:00"
     },
     {
       "first_name": "Matthew",
@@ -15648,7 +16284,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mdzieciuch",
       "orcid": "0000-0001-7926-7602",
-      "last_enriched": "2026-05-31T04:43:38.274867+00:00"
+      "last_enriched": "2026-06-07T04:48:33.303088+00:00"
     },
     {
       "first_name": "Yassir",
@@ -15757,7 +16393,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/yeddebbar",
       "orcid": "0000-0002-4194-8311",
-      "last_enriched": "2026-05-31T04:45:12.550097+00:00"
+      "last_enriched": "2026-06-07T04:50:07.781518+00:00"
     },
     {
       "first_name": "Ian",
@@ -19203,7 +19839,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/tgaasterland",
       "orcid": "0000-0003-4023-9342",
-      "last_enriched": "2026-05-31T02:54:08.267308+00:00"
+      "last_enriched": "2026-06-07T02:56:23.918435+00:00"
     },
     {
       "first_name": "Alice",
@@ -19640,7 +20276,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0002-9543-7744",
-      "last_enriched": "2026-05-31T02:55:42.598632+00:00",
+      "last_enriched": "2026-06-07T02:57:58.628978+00:00",
       "profile_url": "https://researcherprofiles.org/profile/184121"
     },
     {
@@ -24021,7 +24657,7 @@
         {
           "title": "The New Mexico STEM Transfer Coalition: Improving the Success and Matriculation Rates of Two-Year College STEM Students from Small, Minority-Serving Colleges in Northern New Mexico",
           "agency": "NSF",
-          "nsf_program": "STEP-STEM Talent Expansn Pgm, S-STEM-Schlr Sci Tech Eng&Math",
+          "nsf_program": "S-STEM-Schlr Sci Tech Eng&Math, STEP-STEM Talent Expansn Pgm",
           "amount": "1249999",
           "start_date": "09/01/2012",
           "end_date": "08/31/2018",
@@ -24433,7 +25069,7 @@
       "profile_url": "https://scripps.ucsd.edu/profiles/jharris",
       "orcid": "0000-0002-2605-415X",
       "h_index": 5,
-      "last_enriched": "2026-05-31T02:57:17.088958+00:00"
+      "last_enriched": "2026-06-07T02:59:33.332661+00:00"
     },
     {
       "first_name": "Philip",
@@ -33546,14 +34182,14 @@
           "nsf_program": "Software Institutes",
           "amount": "179471",
           "start_date": "08/01/2023",
-          "end_date": "07/31/2026",
+          "end_date": "07/31/2027",
           "nsf_award_id": "2311757",
           "abstract": "Effective management of scientific data produced by extreme-scale simulations and instruments is crucial for advancing scientific discoveries. Due to the scale of data and the diverse requirements of scientific analytics, there is a growing need to manage data in a progressive manner, such that users can stream as much data as they need to carry out their data analytics with reduced data movement and computation. However, little effort has been put into creating robust and scalable cyberinfrastr"
         },
         {
           "title": "CAREER: Enabling Progressive Data Analytics for High Performance Computing: Algorithms and System Support",
           "agency": "NSF",
-          "nsf_program": "Information Technology Researc, CAREER: FACULTY EARLY CAR DEV, Unallocated Program Costs",
+          "nsf_program": "CAREER: FACULTY EARLY CAR DEV, Information Technology Researc, Unallocated Program Costs",
           "amount": "499748",
           "start_date": "04/01/2022",
           "end_date": "03/31/2027",
@@ -33948,7 +34584,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0001-8557-7308",
-      "last_enriched": "2026-05-31T02:58:51.462386+00:00",
+      "last_enriched": "2026-06-07T03:01:08.028953+00:00",
       "h_index": 6
     },
     {
@@ -38887,7 +39523,7 @@
       "department_code": "295",
       "eah_status": "Active",
       "orcid": "0000-0003-4719-4466",
-      "last_enriched": "2026-05-31T03:02:00.004933+00:00"
+      "last_enriched": "2026-06-07T03:04:16.776674+00:00"
     },
     {
       "first_name": "Tadeusz",
@@ -42267,7 +42903,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0003-3903-960X",
-      "last_enriched": "2026-05-31T03:05:08.482903+00:00"
+      "last_enriched": "2026-06-07T03:07:25.397832+00:00"
     },
     {
       "first_name": "Ed",
@@ -44887,94 +45523,57 @@
       "populations": [],
       "funded_grants": [
         {
-          "title": "VErtical Structure and Sources of AERosols in the Mediterranean Region: a pre-campaign for ChArMEx and HyMeX (VESSAER)",
-          "agency": "EUFAR Transactional Access",
-          "start_date": "2012",
-          "end_date": "2012"
-        },
-        {
-          "title": "Système de Mesures scIentifiques de flux de suRface en mIlieu mAritime embarqué sur Drone (MIRIAD)",
-          "agency": "FEDER - Région Occitanie",
-          "start_date": "2015",
-          "end_date": "2019"
-        },
-        {
-          "title": "Skyscanner",
-          "agency": "RTRA - STAE",
-          "start_date": "2014",
-          "end_date": "2015"
-        },
-        {
-          "title": "ReNovRisk, UAV measurements of aerosol and energy flux over the Indian Ocean",
-          "agency": "FEDER et INTER-REG V",
-          "start_date": "2017",
-          "end_date": "2020"
-        },
-        {
-          "title": "Miniaturization of streamwise CCN counter",
-          "agency": "National Science Foundation",
-          "start_date": "2007",
-          "end_date": "2008"
-        },
-        {
-          "title": "Pacific Dust Experiment (PACDEX)",
-          "agency": "National Science Foundation",
-          "start_date": "2008",
-          "end_date": "2008"
-        },
-        {
-          "title": "Collaborative Research: Antarctic Low Cloud Interaction with Natural Aerosol (ALCINA)",
-          "agency": "Directorate for Geosciences",
-          "start_date": "2023",
-          "end_date": "2027"
-        },
-        {
           "title": "Collaborative Research: Experiment of Sea Breeze Convection, Aerosols, Precipitation and Environment (ESCAPE)",
-          "agency": "Directorate for Geosciences",
-          "start_date": "2021",
-          "end_date": "2023"
+          "agency": "NSF",
+          "nsf_program": "Physical & Dynamic Meteorology",
+          "amount": "517355",
+          "start_date": "01/01/2021",
+          "end_date": "12/31/2024",
+          "nsf_award_id": "2019965",
+          "abstract": "This award provides funding for an observational field experiment in the Houston, Texas area to study clouds and precipitation, and their dependence on environmental factors including small particulates known as aerosols.  The Houston region represents a unique region of study, where isolated clouds and thunderstorms are common, there is a sea breeze due to the nearby Gulf of Mexico, and there are specific sources of aerosol due to urban and industrial emissions.  The research team will deploy r"
         },
         {
-          "title": "Network for studying Entrainment and microPHysics of cLouds using Adaptive Exploration – NEPHELAE",
-          "agency": "Agence Nationale de la Recherche",
-          "start_date": "2017",
-          "end_date": "2021"
+          "title": "Measurements of CCN on the NSF/NCAR HIAPER G-V to Study Aerosol-cloud Interactions as Part of the Southern Ocean Clouds Radiation Transport Aerosol Transport Experimental",
+          "agency": "NSF",
+          "nsf_program": "Climate & Large-Scale Dynamics, Physical & Dynamic Meteorology",
+          "amount": "507637",
+          "start_date": "03/01/2017",
+          "end_date": "02/28/2021",
+          "nsf_award_id": "1660374",
+          "abstract": "The Southern Ocean (SO), meaning the global ocean of the high latitude Southern Hemisphere, has a well-deserved reputation as the stormiest place on earth. The remoteness of the SO and its unforgiving conditions have severely limited observations of atmospheric processes occurring above it, including cloud processes in the cyclones traveling along the South Polar front. Yet these processes are of interest for a variety of reasons, including the fact that SO clouds are relatively free from the ef"
         },
         {
-          "title": "MRI: Development of PAEROS (Portable AERosol Observing System) for Global Observations",
-          "agency": "Directorate for Geosciences",
-          "start_date": "2008",
-          "end_date": "2013"
-        },
-        {
-          "title": "In-Situ Observations of Maritime Sources/Sinks of Aerosol and Cloud Condensation Nuclei at Palmer Station, Antarctica: PAEROS Pilot Phase",
-          "agency": "Directorate for Geosciences",
-          "start_date": "2013",
-          "end_date": "2015"
+          "title": "In-Situ Observations of Maritime Sources/Sinks of Aerosol and Cloud Condensation Nuclei at Palmer Station, Antarctica:  PAEROS Pilot Phase",
+          "agency": "NSF",
+          "nsf_program": "ANT Ocean & Atmos Sciences",
+          "amount": "452194",
+          "start_date": "05/15/2013",
+          "end_date": "04/30/2015",
+          "nsf_award_id": "1246152",
+          "abstract": "The composition and concentration of marine aerosols in the Southern Ocean atmosphere is a key factor needed for our improved understanding of global climate change. Both the sources (e.g. sea-salt, biogenic, anthropogenic, mineral dust) and the fluxes of aerosols and cloud condensation and ice nuclei (CCN; IN) under prevailing atmospheric conditions (e.g. wind speed, temperature, insolation, precipitation etc.) are poorly known in this harsh and remote environment. Yet they are essential in und",
+          "co_pis": [
+            "Craig E Corrigan (Former) ccorrigan@ucsd.edu"
+          ]
         },
         {
           "title": "RAPID: PAEROS ChArMEx Mountain Experiment (PACMEx)",
-          "agency": "Directorate for Geosciences",
-          "start_date": "2013",
-          "end_date": "2014"
+          "agency": "NSF",
+          "nsf_program": "Physical & Dynamic Meteorology, Climate & Large-Scale Dynamics",
+          "amount": "199997",
+          "start_date": "04/01/2013",
+          "end_date": "03/31/2014",
+          "nsf_award_id": "1332554",
+          "abstract": "The Mediterranean Region has been identified as a hot-spot in future climate change projections, as expected changes in the hydrological cycle will affect the water resources for millions of people by the turn of the century. Model simulations suggest a significant decrease in the summer precipitation along with a rise in ambient temperature; in addition, a greater variability in precipitation will likely increase the intensity of flash floods, droughts, and heat waves. Until now, however, most "
         },
         {
-          "title": "Aerosol Direct Radiative Impacts on the regional climate in the MEDiterranean region. – ADRIMED",
-          "agency": "Agence Nationale de la Recherche",
-          "start_date": "2011",
-          "end_date": "2015"
-        },
-        {
-          "title": "Tropospheric Observing System for the Investigation and Management of the Environment – VOLTIGE",
-          "agency": "Agence Nationale de la Recherche",
-          "start_date": "2012",
-          "end_date": "2014"
-        },
-        {
-          "title": "Impact of Biogenic versus Anthropogenic emissions on Clouds and Climate: towards a Holistic UnderStanding",
-          "agency": "European Commission",
-          "start_date": "2013",
-          "end_date": "2018"
+          "title": "MRI:  Development of PAEROS (Portable AERosol Observing System) for Global Observations",
+          "agency": "NSF",
+          "nsf_program": "Climate & Large-Scale Dynamics, Atmospheric Chemistry, Physical & Dynamic Meteorology, Major Research Instrumentation",
+          "amount": "1247692",
+          "start_date": "11/01/2008",
+          "end_date": "04/30/2013",
+          "nsf_award_id": "0821599",
+          "abstract": "The Portable AERosol Observing System (PAEROS) is a development project for a miniaturized instrument package that, when deployed, is expected to provide worldwide observations of aerosols and cloud condensation nuclei (CCN). Small autonomous networks are the future of in-situ atmospheric observations and will dramatically increase spatial coverage, reliability and cost efficiency. The development of PAEROS utilizes techniques developed by the PI to miniaturize and automate payloads for unmanned"
         }
       ],
       "recent_publications": [
@@ -44991,18 +45590,18 @@
           "mesh_terms": [
             "Humans",
             "Bipolar Disorder",
-            "Machine Learning",
+            "Magnetic Resonance Imaging",
             "Adult",
-            "Middle Aged",
+            "Machine Learning",
             "Male",
+            "Middle Aged",
             "Female",
             "Brain",
-            "Magnetic Resonance Imaging",
             "Aged",
-            "Adolescent",
+            "Aging",
             "Neuroimaging",
-            "Young Adult",
-            "Aging"
+            "Adolescent",
+            "Young Adult"
           ],
           "abstract": "Bipolar disorder (BD) is associated with clinical and biological markers of premature aging. In this largest study of brain age in BD to date, with 2919 participants, we compared brain-predicted age difference (brain-PAD) in individuals with BD and healthy comparison (HC) participants. Brain-PAD is a machine learning-estimated metric that quantifies the difference between an individual's predicted brain age and their chronological age, a potential clinical bio-signature of premature brain aging."
         },
@@ -45013,20 +45612,18 @@
           "mesh_terms": [
             "Humans",
             "Adolescent",
-            "HIV Infections",
             "Female",
-            "Male",
-            "HIV-1",
-            "Rilpivirine",
-            "Anti-HIV Agents",
-            "Child",
+            "HIV Infections",
             "Pyridones",
-            "Injections, Intramuscular",
+            "Male",
+            "Diketopiperazines",
+            "Rilpivirine",
+            "HIV-1",
+            "Child",
+            "Anti-HIV Agents",
             "Viral Load",
-            "Delayed-Action Preparations",
-            "Botswana",
-            "Treatment Outcome",
-            "Diketopiperazines"
+            "Injections, Intramuscular",
+            "Treatment Outcome"
           ],
           "abstract": "Combined intramuscular long-acting cabotegravir-rilpivirine is the first long-acting combination antiretroviral therapy regimen approved for adults with HIV. The International Maternal Pediatric Adolescent AIDS Clinical Trials Network (IMPAACT 2017)-More Options for Children and Adolescents (MOCHA) study assessed safety, acceptability, tolerability, antiviral activity, and pharmacokinetics of these drugs in adolescents with HIV-1. Here we present secondary outcome data up to week 48. In this pha"
         },
@@ -45280,7 +45877,7 @@
       "department_code": "256",
       "eah_status": "Active",
       "orcid": "0000-0003-3063-0559",
-      "last_enriched": "2026-05-31T03:06:42.777099+00:00"
+      "last_enriched": "2026-06-07T03:08:59.763082+00:00"
     },
     {
       "first_name": "Dean",
@@ -50239,10 +50836,10 @@
             "Humans",
             "Fertility Preservation",
             "Neoplasms",
-            "Adolescent",
-            "Child",
-            "Counseling",
             "Female",
+            "Counseling",
+            "Child",
+            "Adolescent",
             "Male",
             "United States"
           ],
@@ -50541,7 +51138,7 @@
       "department_code": "242",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/ksmith",
-      "last_enriched": "2026-05-31T03:08:17.051548+00:00"
+      "last_enriched": "2026-06-07T03:10:34.298841+00:00"
     },
     {
       "first_name": "George",
@@ -54760,40 +55357,77 @@
       "populations": [],
       "funded_grants": [
         {
-          "title": "New Tools for Advancing Model Systems in Aquatic Symbiosis",
-          "agency": "Gordon and Betty Moore Foundation",
-          "start_date": "2020",
-          "end_date": "2023"
+          "title": "Collaborative Research: Comparative genomics and physiology to discover integrated mechanisms that support phenotypic plasticity",
+          "agency": "NSF",
+          "nsf_program": "Integrtv Ecological Physiology",
+          "amount": "268647",
+          "start_date": "10/01/2024",
+          "end_date": "07/31/2027",
+          "nsf_award_id": "2532373",
+          "abstract": "Most species are adapted to live in relatively stable environments. Rare are those species that tolerate environments that fluctuate rapidly and severely. Little is known about what drives the physiological flexibility needed for species to survive and thrive in highly variable environments. This research will use genetic and physiological tools and approaches developed for North American killifish to gain an integrative understanding of how extreme physiological flexibility is assembled and how"
         },
         {
-          "title": "Carbon dioxide, pH and bicarbonate sensing in sharks",
-          "agency": "Directorate for Biological Sciences",
-          "start_date": "2014",
-          "end_date": "2018"
+          "title": "Collaborative Research: ANT LIA: Diving into the Ecology of an Antarctic Ascidian-Microbiome-Palmerolide Association using a Multi-omic and Functional Approach",
+          "agency": "NSF",
+          "nsf_program": "ANT Organisms & Ecosystems",
+          "amount": "411920",
+          "start_date": "09/01/2024",
+          "end_date": "08/31/2028",
+          "nsf_award_id": "2142913",
+          "abstract": "Non-technical description\r\nMarine invertebrates often have mutually beneficial partnerships with microorganisms that biosynthesize compounds with nutritive or defensive functions and are integral for survival. Additionally, these “natural products” often have bioactive properties with human health applications fighting infection or different types of cancer. This project focuses on the ascidian (“sea squirt”) Synoicum adareanum, found in the Anvers Island region of the Antarctic Peninsula, and w"
+        },
+        {
+          "title": "Collaborative Research: NSF-BSF: Photophysiology and bio-optics of Red Sea mesophotic corals",
+          "agency": "NSF",
+          "nsf_program": "BIOLOGICAL OCEANOGRAPHY, Integrtv Ecological Physiology",
+          "amount": "211641",
+          "start_date": "08/15/2022",
+          "end_date": "07/31/2025",
+          "nsf_award_id": "2149926",
+          "abstract": "Tropical coral reefs are hotspots of biodiversity and provide critical services to numerous coastal communities worldwide. A combination of global and local stressors have led to the unprecedented degradation of shallow water coral reef communities. Most importantly, elevated water temperatures combined with excess solar radiation can cause coral bleaching, which describes the loss of the coral’s symbiotic algae and is regarded as the major threat to the future existence of shallow-water reefs. "
         },
         {
           "title": "Acid/base sensing and regulation of multiple physiological processes in fish",
-          "agency": "Directorate for Biological Sciences",
-          "start_date": "2018",
-          "end_date": "2021"
+          "agency": "NSF",
+          "nsf_program": "Physiol Mechs & Biomechanics",
+          "amount": "667800",
+          "start_date": "06/01/2018",
+          "end_date": "07/31/2023",
+          "nsf_award_id": "1754994",
+          "abstract": "All organisms must be able to sense and regulate the pH level in their fluids to avoid cell malfunction that can lead to sickness and, in extreme cases, death. Prior work identified the a soluble enzyme in gills from sharks and rays as a novel molecular sensor and regulator of high blood pH. The current project will explore the putative role of this soluble enzyme in sensing and regulating low blood pH in shark gills, and will expand those studies to gills of other aquatic vertebrates, bony fish"
         },
         {
-          "title": "Collaborative Research: Searching for Links Between Genotype and Phenotype in the Evolution of Air Breathing, Hypoxia, and Terrestriality in Gobies",
-          "agency": "Directorate for Biological Sciences",
-          "start_date": "2009",
-          "end_date": "2013"
+          "title": "Carbon dioxide, pH and bicarbonate sensing in sharks",
+          "agency": "NSF",
+          "nsf_program": "Physiol Mechs & Biomechanics",
+          "amount": "548000",
+          "start_date": "09/01/2014",
+          "end_date": "08/31/2018",
+          "nsf_award_id": "1354181",
+          "abstract": "All organisms must be able to sense and regulate the levels of acidity (low pH) and alkalinity (high pH) in their internal fluids. However, the mechanisms by which organisms sense acidity and alkalinity are not well understood. Sharks undergo pronounced variations in blood pH as part of their normal physiology, and therefore are excellent models to study mechanisms for pH sensing and regulation. This project will use biochemical, molecular, cell biology, and physiological tools to determine how "
         },
         {
-          "title": "Ocean Acidification: Physiological Mechanisms for CO2-sensing and Related Intracellular Signaling Pathways in Corals",
-          "agency": "Directorate for Biological Sciences",
-          "start_date": "2012",
-          "end_date": "2017"
+          "title": "Ocean Acidification:   Physiological Mechanisms for CO2-sensing and Related Intracellular Signaling Pathways in Corals",
+          "agency": "NSF",
+          "nsf_program": "CRI-Ocean Acidification, Integrtv Ecological Physiology",
+          "amount": "867045",
+          "start_date": "08/01/2012",
+          "end_date": "07/31/2017",
+          "nsf_award_id": "1220641",
+          "abstract": "Carbon dioxide has been rapidly accumulating in the atmosphere over the past 200 years as a by-product of the modern industrialized human lifestyle. A large portion of this excess carbon dioxide is dissolving in the oceans, producing hydrogen ions that lower the pH of the water, thus making it more acidic. Because the current rate of ocean acidification is faster than the most rapid rates recorded in the geological record, it is unclear whether marine organisms will be able to survive and adapt ",
+          "co_pis": [
+            "Dimitri D Deheyn ddeheyn@ucsd.edu"
+          ]
         },
         {
-          "title": "Cellular physiological mechanisms for coral calcification and photosynthesis: extending lab-based models to the field",
-          "agency": "Directorate for Geosciences",
-          "start_date": "2015",
-          "end_date": "2019"
+          "title": "Collaborative Research:   Searching for Links Between Genotype and Phenotype in the Evolution of Air Breathing, Hypoxia, and Terrestriality in Gobies",
+          "agency": "NSF",
+          "nsf_program": "Integrtv Ecological Physiology",
+          "amount": "560536",
+          "start_date": "09/01/2009",
+          "end_date": "08/31/2013",
+          "nsf_award_id": "0922569",
+          "abstract": "\"This award is funded under the American Recovery and Reinvestment Act of 2009 (Public Law 111-5).\" This study will investigate aspects of aerial respiration and amphibious capacity in mudskipper fishes (Family Gobiidae), which are renowned for their capacity to live out of water.  The research will probe the genetic bases for the evolutionary progression of the mudskippers from forms that only used air-breathing as an emergency response to low environmental oxygen conditions to forms that spend"
         }
       ],
       "recent_publications": [
@@ -55089,7 +55723,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/mtresguerres",
       "orcid": "0000-0002-7090-9266",
-      "last_enriched": "2026-05-31T03:11:25.446666+00:00"
+      "last_enriched": "2026-06-07T03:13:43.246051+00:00"
     },
     {
       "first_name": "Victor",
@@ -57531,7 +58165,7 @@
       "eah_status": "Active",
       "orcid": "0000-0001-9551-7739",
       "profile_url": "https://researcherprofiles.org/profile/180856",
-      "last_enriched": "2026-05-31T03:14:33.957270+00:00"
+      "last_enriched": "2026-06-07T03:16:52.554293+00:00"
     },
     {
       "first_name": "Bradley",
@@ -57945,7 +58579,8 @@
       "department_eah": "CLIMATE/ATMOS SCI/PHY OCEANOG",
       "department_code": "259",
       "eah_status": "Active",
-      "last_enriched": "2026-05-31T03:16:08.322224+00:00"
+      "last_enriched": "2026-06-07T03:16:56.427411+00:00",
+      "profile_url": "https://researcherprofiles.org/profile/112627383"
     },
     {
       "first_name": "Clinton",
@@ -60417,7 +61052,7 @@
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/gzhang",
       "orcid": "0000-0002-9712-5226",
-      "last_enriched": "2026-05-31T03:19:17.078082+00:00"
+      "last_enriched": "2026-06-07T03:20:05.355586+00:00"
     },
     {
       "first_name": "Xin",
@@ -60532,7 +61167,7 @@
           "nsf_program": "Info Integration & Informatics",
           "amount": "173754",
           "start_date": "07/01/2024",
-          "end_date": "06/30/2026",
+          "end_date": "06/30/2027",
           "nsf_award_id": "2348417",
           "abstract": "Federated systems are currently popular because they provide computing resources over a distributed network. Examples of these systems include distributed cloud computing and mobile cellular networks. To enhance real-time decision-making, reduce latency, and address growing privacy concerns, federated learning (FL) has emerged as a paradigm for implementing artificial intelligence (AI) models at the edge. FL enables edge devices to collaboratively train a global model without sharing raw data. H"
         },
@@ -60825,18 +61460,17 @@
           "mesh_terms": [
             "Humans",
             "Nephrectomy",
-            "Male",
             "Female",
             "Middle Aged",
+            "Male",
             "Aged",
             "Constriction",
-            "Kidney Neoplasms",
             "Solitary Kidney",
-            "Glomerular Filtration Rate",
-            "Time Factors",
+            "Kidney Neoplasms",
             "Blood Loss, Surgical",
-            "Ischemia",
-            "Kidney"
+            "Glomerular Filtration Rate",
+            "Warm Ischemia",
+            "Time Factors"
           ],
           "abstract": "To explore the effects of ischaemia time (IT) in a multicentre cohort of patients with solitary kidney (SK), treated with partial nephrectomy (PN) for a renal mass, on short- and long-term kidney function, haemorrhagic risk and pathological outcomes. This is an observational study of 426 patients with SK treated with on- and off-clamp PN for a single cT1-3 N0M0 renal mass from 2000 to 2023 at 19 global institutions. The primary outcomes were postoperative and 1-year renal function. The secondary"
         },
@@ -61048,7 +61682,7 @@
       "department_code": "259",
       "eah_status": "Active",
       "profile_url": "https://scripps.ucsd.edu/profiles/xzhang",
-      "last_enriched": "2026-05-31T03:20:51.548063+00:00",
+      "last_enriched": "2026-06-07T03:21:40.014716+00:00",
       "h_index": 11
     },
     {

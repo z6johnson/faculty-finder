@@ -12,3 +12,9 @@ data/backups/
 node_modules/
 data/enrichment_log.json
 data/enrichment_log.jsonl
+
+# Sensitive UCSD HR data — the raw Employee Activity Hub extract must NEVER be
+# committed. It lives only on the private runtime volume (EAH_CSV_PATH).
+data/private/
+data/*.csv
+*EAH*

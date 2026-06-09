@@ -10,11 +10,24 @@ import csv
 import json
 import os
 import re
+import sys
 import tempfile
 from collections import defaultdict
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
-EAH_PATH = os.path.join(DATA_DIR, "EAH Active Academics.csv")
+# Writable state dir for the faculty JSON snapshots (see enrichment/pipeline.py).
+DATA_DIR = (os.environ.get("DATA_STATE_DIR", "").strip()
+            or os.path.join(os.path.dirname(__file__), "..", "data"))
+
+# The raw EAH extract is sensitive UCSD HR PII and must NEVER live inside the
+# repo tree. In production EAH_CSV_PATH points at the private runtime volume
+# (e.g. /data/private/...). The default below is for local/dev use only and is
+# git-ignored.
+EAH_PATH = (os.environ.get("EAH_CSV_PATH", "").strip()
+            or os.path.join(DATA_DIR, "EAH Active Academics.csv"))
+
+
+class EAHFileMissing(Exception):
+    """Raised when no EAH extract is present at EAH_PATH."""
 
 SCHOOL_CONFIG = {
     "hwsph": {
@@ -121,7 +134,13 @@ def map_title(job_code_desc):
 
 
 def load_eah():
-    """Load and parse the EAH CSV, returning all rows."""
+    """Load and parse the EAH CSV, returning all rows.
+
+    Raises EAHFileMissing if no extract has been uploaded yet, so callers
+    (cron/admin) can skip gracefully instead of crashing.
+    """
+    if not os.path.exists(EAH_PATH):
+        raise EAHFileMissing(f"No EAH extract found at {EAH_PATH}")
     rows = []
     with open(EAH_PATH, encoding="latin-1") as f:
         # Skip 3 header/info rows
@@ -479,7 +498,13 @@ def process_school(school_name, config, eah_rows):
     }
 
 
-def main():
+def run_eah_reconcile():
+    """Reconcile every tracked school against the EAH extract.
+
+    Returns an aggregate summary dict (per-school results plus totals) so
+    callers such as the admin upload handler and the scheduler can surface
+    what changed. Raises EAHFileMissing if no extract is present.
+    """
     print("=" * 60)
     print("EAH Enrichment Pass")
     print("=" * 60)
@@ -506,6 +531,24 @@ def main():
     print(f"  Total new faculty added: {total_new}")
     print(f"  Total faculty across all schools: {total_now}")
 
+    return {
+        "eah_rows": len(eah_rows),
+        "schools": results,
+        "total_matched": total_matched,
+        "total_removed_inactive": total_flagged,
+        "total_new_added": total_new,
+        "total_now": total_now,
+    }
+
+
+def main():
+    try:
+        run_eah_reconcile()
+        return 0
+    except EAHFileMissing as e:
+        print(f"SKIP: {e}")
+        return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

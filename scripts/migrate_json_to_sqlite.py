@@ -26,7 +26,8 @@ DEPT_FILES = {
     "sio": "sio_faculty.json",
     "jacobs": "jacobs_faculty.json",
 }
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+DATA_DIR = (os.environ.get("DATA_STATE_DIR", "").strip()
+            or os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data"))
 
 
 def _drop_all(conn):

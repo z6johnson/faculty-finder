@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Admin dashboard</h1>
+<p class="muted">Manage faculty data, enrichment, and employment verification.</p>
+
+<div class="card">
+  <div class="tiles">
+    <a class="tile" href="{{ url_for('admin.eah') }}">
+      <h3>EAH Sync</h3>
+      <p class="muted">Upload the Employee Activity Hub extract to verify current
+      employment and prune inactive faculty.</p>
+    </a>
+    <div class="tile" style="opacity:.6;">
+      <h3>Enrichment</h3>
+      <p class="muted">Run and schedule profile enrichment. (Coming next.)</p>
+    </div>
+    <div class="tile" style="opacity:.6;">
+      <h3>Status &amp; audit</h3>
+      <p class="muted">Job history, audit log, match stats. (Coming next.)</p>
+    </div>
+    <div class="tile" style="opacity:.6;">
+      <h3>Review faculty</h3>
+      <p class="muted">Curate and override faculty records. (Coming next.)</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

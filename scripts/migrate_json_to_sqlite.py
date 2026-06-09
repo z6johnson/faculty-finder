@@ -41,22 +41,25 @@ def _drop_all(conn):
     conn.commit()
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--db", help="Override FACULTY_DB_PATH for this run.")
-    parser.add_argument("--rebuild", action="store_true",
-                        help="Drop and recreate all tables before importing.")
-    args = parser.parse_args()
+def run_migration(rebuild=False, db_path=None):
+    """Build/refresh the SQLite DB from the faculty JSON snapshots.
 
-    if args.db:
-        db.DB_PATH = args.db
+    Idempotent (records UPSERT on stable_key). Callable in-process by the
+    entrypoint, the admin EAH upload handler, and the enrichment scheduler so
+    the runtime DB stays in sync with the JSON state after writes.
+
+    Returns a stats dict.
+    """
+    if db_path:
+        db.DB_PATH = db_path
 
     conn = db.connect(readonly=False)
-    if args.rebuild:
+    if rebuild:
         _drop_all(conn)
     db.init_schema(conn)
 
     grand_total = 0
+    per_dept = {}
     for dept, filename in DEPT_FILES.items():
         path = os.path.join(DATA_DIR, filename)
         if not os.path.exists(path):
@@ -78,6 +81,7 @@ def main():
             "SELECT COUNT(*) FROM faculty WHERE department = ?", (dept,)
         ).fetchone()[0]
         grand_total += len(faculty)
+        per_dept[dept] = count
         print(f"  {dept:8s} imported {len(faculty):5d} records  (rows in db: {count})")
 
     db.set_meta(conn, "schema_version", 1)
@@ -88,11 +92,28 @@ def main():
     fts_rows = conn.execute("SELECT COUNT(*) FROM faculty_fts").fetchone()[0]
     print(f"\nDone. {grand_total} records processed, {total_rows} faculty rows, "
           f"{fts_rows} FTS rows. DB at {db.DB_PATH}")
-    if total_rows != fts_rows:
+    fts_consistent = total_rows == fts_rows
+    if not fts_consistent:
         print("WARNING: faculty row count != FTS row count!")
-        return 1
     conn.close()
-    return 0
+    return {
+        "processed": grand_total,
+        "faculty_rows": total_rows,
+        "fts_rows": fts_rows,
+        "per_dept": per_dept,
+        "fts_consistent": fts_consistent,
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--db", help="Override FACULTY_DB_PATH for this run.")
+    parser.add_argument("--rebuild", action="store_true",
+                        help="Drop and recreate all tables before importing.")
+    args = parser.parse_args()
+
+    stats = run_migration(rebuild=args.rebuild, db_path=args.db)
+    return 0 if stats["fts_consistent"] else 1
 
 
 if __name__ == "__main__":

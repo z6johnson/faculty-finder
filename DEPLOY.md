@@ -1,8 +1,37 @@
 # Deployment
 
-The runtime data backend is **SQLite** (`data/app.db`, FTS5-indexed). The web
-process opens it **read-only**; data changes happen only in the batch enrichment
-job. All SQL lives in `data/db.py`.
+**Model: a single self-hosted container, operated entirely through a web GUI.**
+Enrichment, the weekly schedule, and the sensitive EAH employment sync all run
+*inside the deployed service* — not GitHub Actions, not the CLI. All mutable
+state lives on a private `/data` volume that lift-and-shifts to the UCSD on-prem
+VM later; the committed faculty JSON is a seed/cold backup. All SQL lives in
+`data/db.py` (so a later Postgres swap is localized).
+
+```
+ONE service (Dockerfile), gunicorn --workers 1 --threads 8
+├── public:  /  ·  /api/match  ·  /api/faculty
+├── /admin (password-gated): EAH upload · run/schedule enrichment ·
+│            status & audit · curate faculty
+├── APScheduler (scheduler.py)  — weekly enrichment + EAH reconcile, in-process
+└── job runner (jobs.py)        — background runs, status tracked in the `jobs` table
+/data volume (gitignored):  app.db · state/*.json · private/EAH*.csv · backups/
+```
+
+### Deploy on Railway (GUI, no CLI)
+1. Connect this repo in the Railway dashboard — it builds the `Dockerfile`.
+2. Attach a **volume** at `/data`.
+3. Set env vars in the dashboard: `SECRET_KEY`, `ADMIN_PASSWORD`, `LITELLM_API_KEY`,
+   `LITELLM_API_BASE`, `LITELLM_MODEL` (optional `NCBI_API_KEY`, `S2_API_KEY`,
+   `EAH_RECONCILE_HOUR`). `FACULTY_DB_PATH`, `DATA_STATE_DIR`, `EAH_CSV_PATH` default
+   to `/data/...` in the Dockerfile. Set `ENABLE_SCHEDULER=false` to disable the
+   in-app scheduler.
+4. `docker-entrypoint.sh` seeds the volume from the committed JSON and builds `app.db`
+   on first boot. Then open `/admin`, sign in, and upload the EAH extract on the
+   **EAH Sync** page (it is written only to the private volume, never git).
+
+The same image + volume move to the UCSD on-prem VM later; swap password login for
+UCSD SSO at that point. The lower-level SQLite/Railway notes below remain accurate
+for the data layer.
 
 ## One-off: build the database
 
@@ -13,12 +42,16 @@ python scripts/migrate_json_to_sqlite.py        # JSON -> data/app.db (idempoten
 Re-running is safe (records UPSERT on a stable identity key). `--rebuild` drops
 and recreates the tables. Override the location with `FACULTY_DB_PATH`.
 
-## Recommended: Railway (persistent host + volume + cron)
+## Railway (persistent host + volume)
+
+> Enrichment scheduling now runs **in-process** (`scheduler.py` + `jobs.py`), so a
+> separate Railway cron trigger is no longer needed — the steps below predate that
+> and the cron parts are optional/legacy. The volume + env setup still applies.
 
 Serverless (Vercel) can't host a writable SQLite, so deploy to a persistent
 host. One Railway **service** owns a **volume**; the web process reads the DB and
-a **cron trigger on the same service** runs the weekly enrichment (the sole
-writer). WAL mode lets reads continue while the cron writes.
+the in-app scheduler/job-runner performs the weekly enrichment (the sole writer).
+WAL mode lets reads continue while writes happen.
 
 1. **Create the service** from this repo. Start command (also in `Procfile`):
    ```

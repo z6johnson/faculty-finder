@@ -329,6 +329,12 @@ Return the faculty directory for browsing and filtering.
 
 ## Deployment
 
+**Recommended: deploy on Railway as a single container** — see the step-by-step
+guide in **[RAILWAY.md](RAILWAY.md)**. Enrichment, scheduling, and the sensitive
+EAH employment sync all run inside the service (no GitHub Actions, no CLI), with
+a persistent `/data` volume. For the data-layer / alternative-host details, see
+[DEPLOY.md](DEPLOY.md).
+
 ### Environment Variables
 
 | Variable | Required | Description |

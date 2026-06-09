@@ -25,7 +25,11 @@ from .sources.ucsd_profile import UCSDProfileSource
 
 logger = logging.getLogger(__name__)
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+# Writable state directory for faculty JSON + enrichment log. Defaults to the
+# repo's data/ dir (local/dev); set DATA_STATE_DIR to a persistent volume path
+# in production so an immutable container image never writes into its own tree.
+DATA_DIR = (os.environ.get("DATA_STATE_DIR", "").strip()
+            or os.path.join(os.path.dirname(__file__), "..", "data"))
 FACULTY_PATH = os.path.join(DATA_DIR, "faculty.json")
 SIO_FACULTY_PATH = os.path.join(DATA_DIR, "sio_faculty.json")
 JACOBS_FACULTY_PATH = os.path.join(DATA_DIR, "jacobs_faculty.json")

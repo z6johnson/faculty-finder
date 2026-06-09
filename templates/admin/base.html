@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin{% endblock %} · Research Alignment</title>
+  <style>
+    :root { --navy:#182b49; --blue:#006a96; --gold:#ffcd00; --bg:#f4f6f8; --line:#dfe3e8; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+           background:var(--bg); color:#1c2733; }
+    header { background:var(--navy); color:#fff; padding:14px 24px; display:flex; align-items:center; gap:16px; }
+    header .brand { font-weight:700; }
+    header nav { margin-left:auto; display:flex; gap:18px; align-items:center; }
+    header nav a { color:#cfe3ee; text-decoration:none; font-size:14px; }
+    header nav a:hover { color:#fff; }
+    main { max-width:880px; margin:32px auto; padding:0 20px; }
+    h1 { font-size:22px; margin:0 0 4px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:10px; padding:22px; margin:18px 0; }
+    .btn { display:inline-block; background:var(--blue); color:#fff; border:0; border-radius:6px;
+           padding:10px 18px; font-size:14px; cursor:pointer; text-decoration:none; }
+    .btn:hover { background:#005a80; }
+    .btn.secondary { background:#fff; color:var(--blue); border:1px solid var(--blue); }
+    input[type=password], input[type=file] { width:100%; padding:10px; border:1px solid var(--line);
+           border-radius:6px; font-size:14px; }
+    label { display:block; font-size:13px; font-weight:600; margin:0 0 6px; }
+    .flash { padding:12px 16px; border-radius:8px; margin:12px 0; font-size:14px; }
+    .flash.success { background:#e6f4ea; border:1px solid #99d6ad; color:#11652b; }
+    .flash.error { background:#fdecea; border:1px solid #f3a39c; color:#8a1c12; }
+    .muted { color:#5a6b7b; font-size:13px; }
+    code { background:#eef1f4; padding:1px 6px; border-radius:4px; font-size:13px; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); }
+    .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+    .tile { display:block; padding:18px; border:1px solid var(--line); border-radius:10px;
+            background:#fff; text-decoration:none; color:inherit; }
+    .tile:hover { border-color:var(--blue); }
+    .tile h3 { margin:0 0 6px; color:var(--blue); font-size:16px; }
+    .tile p { margin:0; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="brand">Research Alignment</span>
+    <span class="muted" style="color:#9bb3c4;">Admin</span>
+    {% if session.get('is_admin') %}
+    <nav>
+      <a href="{{ url_for('admin.home') }}">Dashboard</a>
+      <a href="{{ url_for('admin.eah') }}">EAH Sync</a>
+      <form method="post" action="{{ url_for('admin.logout') }}" style="margin:0;">
+        <button class="btn secondary" style="padding:6px 12px;">Log out</button>
+      </form>
+    </nav>
+    {% endif %}
+  </header>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

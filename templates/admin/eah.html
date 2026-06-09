@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+{% block title %}EAH Sync{% endblock %}
+{% block content %}
+<h1>EAH employment sync</h1>
+<p class="muted">
+  Upload the UCSD Employee Activity Hub <strong>Active Academics</strong> CSV
+  export. It is stored only in private runtime storage and is never committed to
+  the repository. Reconciliation verifies current employment, updates HR fields,
+  adds newly-appointed faculty, and removes anyone no longer active.
+</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Upload extract</h3>
+  <form method="post" action="{{ url_for('admin.eah_upload') }}" enctype="multipart/form-data">
+    <label for="eah_csv">EAH Active Academics CSV</label>
+    <input type="file" id="eah_csv" name="eah_csv" accept=".csv" required>
+    <p class="muted" style="margin:10px 0 0;">
+      Stored at <code>{{ eah_path }}</code>
+      {% if eah_exists %}· an extract is currently present{% else %}· no extract uploaded yet{% endif %}.
+    </p>
+    <button class="btn" style="margin-top:16px;"
+            onclick="this.disabled=true;this.textContent='Reconciling…';this.form.submit();">
+      Upload &amp; reconcile
+    </button>
+  </form>
+</div>
+
+{% if last_result %}
+<div class="card">
+  <h3 style="margin-top:0;">Last reconcile</h3>
+  <p class="muted">{{ last_result.eah_rows }} EAH rows · {{ last_result.total_matched }} matched ·
+     {{ last_result.total_removed_inactive }} removed (inactive) ·
+     {{ last_result.total_new_added }} added · {{ last_result.total_now }} active now.</p>
+  <table>
+    <thead><tr><th>School</th><th>In data</th><th>EAH people</th><th>Matched</th>
+      <th>Removed</th><th>Added</th><th>Now</th></tr></thead>
+    <tbody>
+      {% for s in last_result.schools %}
+      <tr>
+        <td>{{ s.school }}</td><td>{{ s.original_count }}</td><td>{{ s.eah_count }}</td>
+        <td>{{ s.matched }}</td><td>{{ s.removed_inactive }}</td>
+        <td>{{ s.new_added }}</td><td>{{ s.total_now }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

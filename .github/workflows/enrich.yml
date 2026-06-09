@@ -1,13 +1,13 @@
 name: Enrich Faculty
 
+# NOTE: Scheduled enrichment has moved IN-APP (APScheduler in scheduler.py,
+# run by the deployed service). The weekly `schedule:` cron triggers were
+# removed so enrichment no longer depends on GitHub Actions and never commits
+# data back to the repo. This workflow remains as a manual, public-data-only
+# fallback (it does NOT touch the sensitive EAH extract). Prefer the in-app
+# admin Enrichment page for normal operation.
+
 on:
-  schedule:
-    # HWSPH: Every Sunday at midnight UTC
-    - cron: "0 0 * * 0"
-    # SIO: Every Sunday at 2am UTC
-    - cron: "0 2 * * 0"
-    # Jacobs: Every Sunday at 4am UTC
-    - cron: "0 4 * * 0"
   workflow_dispatch:
     inputs:
       school:

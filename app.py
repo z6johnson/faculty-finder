@@ -1,9 +1,12 @@
 import logging
+import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
+from admin import admin_bp
 from data import db
 from utils.document_parser import extract_text
 from utils.grant_matcher import process_grant, process_text
@@ -11,13 +14,54 @@ from utils.grant_matcher import process_grant, process_text
 load_dotenv()
 
 app = Flask(__name__)
-app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10 MB
+# The EAH extract can be larger than a funding doc, so allow a generous upload
+# ceiling for the (auth-gated) admin endpoints.
+app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024  # 64 MB
+
+# Session secret for the admin area. Must be set in production; a missing key
+# falls back to an ephemeral random one (logs out admins on restart).
+app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(32)
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    # Secure cookies in production; relaxed locally so dev over http works.
+    SESSION_COOKIE_SECURE=os.environ.get("FLASK_ENV") != "development",
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=12),
+)
 
 # CORS only needed for local development (same-origin on Vercel)
 CORS(app, origins=["http://localhost:*", "http://127.0.0.1:*"])
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+if not os.environ.get("SECRET_KEY"):
+    logger.warning("SECRET_KEY not set — using an ephemeral key; admin sessions "
+                   "will not survive a restart.")
+if not os.environ.get("ADMIN_PASSWORD"):
+    logger.warning("ADMIN_PASSWORD not set — the /admin area is locked out until "
+                   "it is configured.")
+
+app.register_blueprint(admin_bp)
+
+
+def _init_runtime():
+    """One-time process setup: ensure the schema (jobs table), recover jobs
+    left running by a previous crash, and start the weekly scheduler."""
+    try:
+        db.ensure_schema()
+        db.fail_stale_jobs()
+    except Exception:
+        logger.exception("Runtime DB init failed (continuing).")
+    if os.environ.get("ENABLE_SCHEDULER", "true").lower() != "false":
+        try:
+            import scheduler
+            scheduler.start()
+        except Exception:
+            logger.exception("Scheduler failed to start (continuing).")
+
+
+_init_runtime()
 
 ALLOWED_EXTENSIONS = {"pdf", "txt"}
 

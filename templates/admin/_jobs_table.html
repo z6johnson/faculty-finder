@@ -1,0 +1,21 @@
+{% if recent_jobs %}
+<table>
+  <thead><tr><th>#</th><th>Kind</th><th>Trigger</th><th>Status</th>
+    <th>Progress</th><th>Created</th><th>Detail</th></tr></thead>
+  <tbody>
+    {% for j in recent_jobs %}
+    <tr>
+      <td>{{ j.id }}</td>
+      <td>{{ j.kind }}</td>
+      <td>{{ j.trigger or "—" }}</td>
+      <td>{{ j.status }}</td>
+      <td>{{ j.progress or "—" }}</td>
+      <td class="muted">{{ j.created_at[:19] if j.created_at else "" }}</td>
+      <td class="muted">{{ j.error or j.result or "" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No jobs yet.</p>
+{% endif %}

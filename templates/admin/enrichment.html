@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+{% block title %}Enrichment{% endblock %}
+{% block content %}
+<h1>Enrichment</h1>
+<p class="muted">Enrichment runs in-process (no GitHub Actions). Trigger a run now
+or let the weekly schedule handle it. Runs query public academic sources and the
+LLM normalizer, then refresh the live database.</p>
+
+<div class="card">
+  <h3 style="margin-top:0;">Run now</h3>
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    {% for key, label in depts %}
+    <form method="post" action="{{ url_for('admin.enrich_run') }}" style="margin:0;">
+      <input type="hidden" name="department" value="{{ key }}">
+      <button class="btn">Enrich {{ label }}</button>
+    </form>
+    {% endfor %}
+    <form method="post" action="{{ url_for('admin.eah_reconcile_run') }}" style="margin:0;">
+      <button class="btn secondary">Re-run EAH reconcile</button>
+    </form>
+  </div>
+  <p class="muted" style="margin-bottom:0;">A run can take many minutes; track it
+  under “Recent jobs” below (refresh to update).</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Weekly schedule (UTC)</h3>
+  {% if scheduled %}
+  <table>
+    <thead><tr><th>Job</th><th>Next run</th></tr></thead>
+    <tbody>
+      {% for j in scheduled %}
+      <tr><td>{{ j.id }}</td><td>{{ j.next_run or "—" }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">Scheduler not running in this process.</p>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">Recent jobs</h3>
+  {% include "admin/_jobs_table.html" %}
+</div>
+{% endblock %}

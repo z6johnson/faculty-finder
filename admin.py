@@ -17,9 +17,19 @@ import tempfile
 from flask import (Blueprint, flash, redirect, render_template, request,
                    session, url_for)
 
+from data import db
+
 logger = logging.getLogger(__name__)
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+
+# Department keys -> human labels for the admin UI.
+DEPTS = [("hwsph", "Public Health"), ("sio", "Scripps"), ("jacobs", "Jacobs")]
+
+# Fields an operator may curate by hand (the rest come from enrichment/EAH).
+_TEXT_EDIT_FIELDS = ["title", "research_interests_enriched", "eah_status"]
+_LIST_EDIT_FIELDS = ["expertise_keywords", "methodologies", "disease_areas",
+                     "populations"]
 
 
 def _admin_password():
@@ -143,3 +153,134 @@ def eah_upload():
         "success",
     )
     return redirect(url_for("admin.eah"))
+
+
+# ---------------------------------------------------------------------------
+# Enrichment (run now + schedule + job history)
+# ---------------------------------------------------------------------------
+
+@admin_bp.route("/enrichment")
+@login_required
+def enrichment():
+    import scheduler
+    conn = db.get_read_conn()
+    return render_template(
+        "admin/enrichment.html",
+        depts=DEPTS,
+        recent_jobs=db.list_jobs(conn, limit=15),
+        scheduled=scheduler.scheduled_jobs(),
+    )
+
+
+@admin_bp.route("/enrich/run", methods=["POST"])
+@login_required
+def enrich_run():
+    import jobs
+    dept = (request.form.get("department") or "").strip().lower()
+    valid = {d for d, _ in DEPTS}
+    if dept not in valid:
+        flash("Unknown department.", "error")
+        return redirect(url_for("admin.enrichment"))
+    job_id = jobs.submit("enrich", {"department": dept}, trigger="manual")
+    flash(f"Enrichment queued for {dept} (job #{job_id}).", "success")
+    return redirect(url_for("admin.enrichment"))
+
+
+@admin_bp.route("/eah/reconcile", methods=["POST"])
+@login_required
+def eah_reconcile_run():
+    import jobs
+    job_id = jobs.submit("eah_reconcile", trigger="manual")
+    flash(f"EAH reconcile queued (job #{job_id}).", "success")
+    return redirect(url_for("admin.enrichment"))
+
+
+# ---------------------------------------------------------------------------
+# Status & audit dashboard
+# ---------------------------------------------------------------------------
+
+@admin_bp.route("/status")
+@login_required
+def status():
+    conn = db.get_read_conn()
+    stats = {key: db.load_status(conn, key) for key, _ in DEPTS}
+    return render_template(
+        "admin/status.html",
+        depts=DEPTS,
+        stats=stats,
+        recent_jobs=db.list_jobs(conn, limit=10),
+        audit=db.recent_enrichment_log(conn, limit=40),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Faculty review / curate
+# ---------------------------------------------------------------------------
+
+@admin_bp.route("/faculty")
+@login_required
+def faculty_list():
+    conn = db.get_read_conn()
+    dept = (request.args.get("dept") or "").strip().lower() or None
+    if dept and dept not in {d for d, _ in DEPTS}:
+        dept = None
+    query = (request.args.get("q") or "").strip() or None
+    rows, total = db.admin_list_faculty(conn, department=dept, query=query, limit=50)
+    return render_template("admin/faculty_list.html", rows=rows, total=total,
+                           depts=DEPTS, dept=dept, query=query or "")
+
+
+@admin_bp.route("/faculty/<int:faculty_id>")
+@login_required
+def faculty_edit(faculty_id):
+    conn = db.get_read_conn()
+    rec = db.admin_get_faculty(conn, faculty_id)
+    if not rec:
+        flash("Faculty not found.", "error")
+        return redirect(url_for("admin.faculty_list"))
+    return render_template("admin/faculty_edit.html", rec=rec,
+                           list_fields=_LIST_EDIT_FIELDS)
+
+
+@admin_bp.route("/faculty/<int:faculty_id>", methods=["POST"])
+@login_required
+def faculty_save(faculty_id):
+    from enrichment import pipeline
+
+    conn = db.get_read_conn()
+    rec = db.admin_get_faculty(conn, faculty_id)
+    if not rec:
+        flash("Faculty not found.", "error")
+        return redirect(url_for("admin.faculty_list"))
+
+    dept = rec["department"]          # 'hwsph' | 'sio' | 'jacobs'
+    stable_key = rec["stable_key"]
+
+    edits = {}
+    for f in _TEXT_EDIT_FIELDS:
+        edits[f] = (request.form.get(f) or "").strip()
+    for f in _LIST_EDIT_FIELDS:
+        raw = request.form.get(f) or ""
+        edits[f] = [s.strip() for s in raw.split(",") if s.strip()]
+
+    # Update the JSON snapshot (the source of truth that survives rebuilds),
+    # then upsert the same record into the live DB.
+    data = pipeline._load_faculty(dept)
+    target = next((r for r in data["faculty"]
+                   if db.compute_stable_key(dept, r) == stable_key), None)
+    if target is None:
+        flash("Could not locate this record in the data file — not saved.", "error")
+        return redirect(url_for("admin.faculty_edit", faculty_id=faculty_id))
+
+    target.update(edits)
+    pipeline._save_faculty(data, dept)
+
+    wconn = db.connect(readonly=False)
+    try:
+        db.upsert_faculty(wconn, dept, target)
+        wconn.commit()
+    finally:
+        wconn.close()
+
+    flash("Saved.", "success")
+    return redirect(url_for("admin.faculty_edit", faculty_id=faculty_id))

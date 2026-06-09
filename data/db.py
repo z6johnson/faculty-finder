@@ -499,3 +499,148 @@ def set_meta(conn, key, value):
 def get_meta(conn, key, default=None):
     row = conn.execute("SELECT value FROM meta WHERE key = ?", (key,)).fetchone()
     return json.loads(row[0]) if row else default
+
+
+# ---------------------------------------------------------------------------
+# Schema bootstrap (idempotent) — lets a running app pick up new tables (jobs)
+# without a manual migration.
+# ---------------------------------------------------------------------------
+
+def ensure_schema():
+    """Apply schema.sql against the live DB (CREATE ... IF NOT EXISTS)."""
+    conn = connect(readonly=False)
+    try:
+        init_schema(conn)
+    finally:
+        conn.close()
+
+
+# ---------------------------------------------------------------------------
+# Background jobs
+#
+# Status writes each open a short-lived writable connection: the job runner
+# thread and request threads can write concurrently without sharing a single
+# connection object (WAL + busy_timeout serialize them safely). Reads use the
+# caller's read-only connection.
+# ---------------------------------------------------------------------------
+
+def _now_iso():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def create_job(kind, params=None, trigger="manual"):
+    conn = connect(readonly=False)
+    try:
+        cur = conn.execute(
+            "INSERT INTO jobs (kind, params, status, trigger, created_at) "
+            "VALUES (?, ?, 'queued', ?, ?)",
+            (kind, json.dumps(params or {}), trigger, _now_iso()),
+        )
+        conn.commit()
+        return cur.lastrowid
+    finally:
+        conn.close()
+
+
+def start_job(job_id):
+    _job_set(job_id, "UPDATE jobs SET status='running', started_at=? WHERE id=?",
+             (_now_iso(), job_id))
+
+
+def set_job_progress(job_id, progress):
+    _job_set(job_id, "UPDATE jobs SET progress=? WHERE id=?", (progress, job_id))
+
+
+def finish_job(job_id, status, result=None, error=None):
+    _job_set(
+        job_id,
+        "UPDATE jobs SET status=?, result=?, error=?, finished_at=? WHERE id=?",
+        (status, json.dumps(result) if result is not None else None,
+         error, _now_iso(), job_id),
+    )
+
+
+def fail_stale_jobs():
+    """Mark jobs left 'queued'/'running' by a crash/restart as failed."""
+    conn = connect(readonly=False)
+    try:
+        conn.execute(
+            "UPDATE jobs SET status='failed', error='interrupted by restart', "
+            "finished_at=? WHERE status IN ('queued','running')",
+            (_now_iso(),),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def _job_set(job_id, sql, params):
+    conn = connect(readonly=False)
+    try:
+        conn.execute(sql, params)
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def get_job(conn, job_id):
+    row = conn.execute("SELECT * FROM jobs WHERE id=?", (job_id,)).fetchone()
+    return dict(row) if row else None
+
+
+def list_jobs(conn, limit=25):
+    rows = conn.execute(
+        "SELECT * FROM jobs ORDER BY id DESC LIMIT ?", (limit,)
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def recent_enrichment_log(conn, limit=50):
+    rows = conn.execute(
+        "SELECT retrieved_at, source_name, field_updated, method, confidence,"
+        " stable_key FROM enrichment_log ORDER BY id DESC LIMIT ?",
+        (limit,),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+# ---------------------------------------------------------------------------
+# Admin faculty curation
+# ---------------------------------------------------------------------------
+
+def admin_list_faculty(conn, department=None, query=None, limit=50, offset=0):
+    """Lightweight list for the curate UI: includes id/stable_key for editing."""
+    dept_sql, dept_params = _dept_clause(department)
+    match = _fts_query([query], op="AND") if query else None
+    cols = ("faculty.id, faculty.stable_key, faculty.department, faculty.first_name,"
+            " faculty.last_name, faculty.title, faculty.email, faculty.eah_status,"
+            " faculty.last_enriched")
+    if match:
+        base = (" FROM faculty_fts JOIN faculty ON faculty.id = faculty_fts.rowid"
+                " WHERE faculty_fts MATCH ?" + dept_sql)
+        params = [match] + dept_params
+        total = conn.execute("SELECT COUNT(*)" + base, params).fetchone()[0]
+        rows = conn.execute(
+            f"SELECT {cols}" + base + " ORDER BY bm25(faculty_fts) LIMIT ? OFFSET ?",
+            params + [limit, offset],
+        ).fetchall()
+    else:
+        base = " FROM faculty WHERE 1=1" + dept_sql
+        total = conn.execute("SELECT COUNT(*)" + base, dept_params).fetchone()[0]
+        rows = conn.execute(
+            f"SELECT {cols}" + base + " ORDER BY last_name, first_name LIMIT ? OFFSET ?",
+            dept_params + [limit, offset],
+        ).fetchall()
+    return [dict(r) for r in rows], total
+
+
+def admin_get_faculty(conn, faculty_id):
+    """Full record for one faculty, including id/stable_key/department."""
+    row = conn.execute("SELECT * FROM faculty WHERE id=?", (faculty_id,)).fetchone()
+    if not row:
+        return None
+    rec = _row_to_faculty(row)
+    rec["id"] = row["id"]
+    rec["stable_key"] = row["stable_key"]
+    rec["department"] = row["department"]
+    return rec

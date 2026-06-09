@@ -11,18 +11,20 @@
       <p class="muted">Upload the Employee Activity Hub extract to verify current
       employment and prune inactive faculty.</p>
     </a>
-    <div class="tile" style="opacity:.6;">
+    <a class="tile" href="{{ url_for('admin.enrichment') }}">
       <h3>Enrichment</h3>
-      <p class="muted">Run and schedule profile enrichment. (Coming next.)</p>
-    </div>
-    <div class="tile" style="opacity:.6;">
+      <p class="muted">Run enrichment on demand and review the weekly schedule
+      and job history.</p>
+    </a>
+    <a class="tile" href="{{ url_for('admin.status') }}">
       <h3>Status &amp; audit</h3>
-      <p class="muted">Job history, audit log, match stats. (Coming next.)</p>
-    </div>
-    <div class="tile" style="opacity:.6;">
+      <p class="muted">Coverage stats per school, recent jobs, and the
+      enrichment audit log.</p>
+    </a>
+    <a class="tile" href="{{ url_for('admin.faculty_list') }}">
       <h3>Review faculty</h3>
-      <p class="muted">Curate and override faculty records. (Coming next.)</p>
-    </div>
+      <p class="muted">Search, curate, and override individual faculty records.</p>
+    </a>
   </div>
 </div>
 {% endblock %}

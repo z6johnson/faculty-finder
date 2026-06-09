@@ -95,3 +95,21 @@ CREATE TABLE IF NOT EXISTS meta (
     key   TEXT PRIMARY KEY,
     value TEXT
 );
+
+-- Background jobs (enrichment runs, EAH reconciles) launched from the admin UI
+-- or the in-process scheduler. Replaces the GitHub Actions run history.
+CREATE TABLE IF NOT EXISTS jobs (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    kind        TEXT NOT NULL,          -- 'enrich' | 'eah_reconcile'
+    params      TEXT,                   -- JSON
+    status      TEXT NOT NULL,          -- 'queued' | 'running' | 'succeeded' | 'failed'
+    trigger     TEXT,                   -- 'manual' | 'schedule'
+    progress    TEXT,                   -- free-text, e.g. "42/99"
+    result      TEXT,                   -- JSON summary
+    error       TEXT,
+    created_at  TEXT NOT NULL,
+    started_at  TEXT,
+    finished_at TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_jobs_created ON jobs(created_at);

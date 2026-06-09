@@ -44,6 +44,25 @@ if not os.environ.get("ADMIN_PASSWORD"):
 
 app.register_blueprint(admin_bp)
 
+
+def _init_runtime():
+    """One-time process setup: ensure the schema (jobs table), recover jobs
+    left running by a previous crash, and start the weekly scheduler."""
+    try:
+        db.ensure_schema()
+        db.fail_stale_jobs()
+    except Exception:
+        logger.exception("Runtime DB init failed (continuing).")
+    if os.environ.get("ENABLE_SCHEDULER", "true").lower() != "false":
+        try:
+            import scheduler
+            scheduler.start()
+        except Exception:
+            logger.exception("Scheduler failed to start (continuing).")
+
+
+_init_runtime()
+
 ALLOWED_EXTENSIONS = {"pdf", "txt"}
 
 # Department keys accepted by the API. "all" spans every school. The db layer

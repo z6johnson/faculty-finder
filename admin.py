@@ -18,13 +18,14 @@ from flask import (Blueprint, flash, redirect, render_template, request,
                    session, url_for)
 
 from data import db
+from data import divisions
 
 logger = logging.getLogger(__name__)
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
-# Department keys -> human labels for the admin UI.
-DEPTS = [("hwsph", "Public Health"), ("sio", "Scripps"), ("jacobs", "Jacobs")]
+# Division slugs -> human labels for the admin UI (from the registry).
+DEPTS = [(d.slug, d.label) for d in divisions.DIVISIONS]
 
 # Fields an operator may curate by hand (the rest come from enrichment/EAH).
 _TEXT_EDIT_FIELDS = ["title", "research_interests_enriched", "eah_status"]
@@ -97,7 +98,6 @@ def eah():
 @login_required
 def eah_upload():
     from scripts import eah_enrichment
-    from scripts.migrate_json_to_sqlite import run_migration
 
     file = request.files.get("eah_csv")
     if not file or not file.filename:
@@ -123,6 +123,9 @@ def eah_upload():
         flash("Failed to save the uploaded file.", "error")
         return redirect(url_for("admin.eah"))
 
+    # The reconcile writes straight to SQLite (the source of truth). Faculty
+    # absent from EAH are soft-flagged Inactive — never deleted here — so
+    # EAH-seeded rows outside the legacy JSON snapshots always survive.
     try:
         result = eah_enrichment.run_eah_reconcile()
     except eah_enrichment.EAHFileMissing:
@@ -133,22 +136,11 @@ def eah_upload():
         flash("Reconcile failed — the file was saved but not applied. See server logs.", "error")
         return redirect(url_for("admin.eah"))
 
-    # Re-sync the runtime SQLite DB from the JSON snapshots the reconcile wrote.
-    # rebuild=True is required: reconcile PRUNES inactive faculty from the JSON,
-    # and a plain upsert would leave those now-inactive rows lingering in the DB
-    # (defeating employment verification). A full rebuild makes the DB exactly
-    # match the reconciled JSON.
-    try:
-        run_migration(rebuild=True)
-    except Exception:
-        logger.exception("DB re-sync after EAH reconcile failed")
-        flash("Reconcile applied to JSON, but the database re-sync failed. See logs.", "error")
-        return redirect(url_for("admin.eah"))
-
     session["last_eah_result"] = result
     flash(
         f"EAH reconcile complete — {result['total_matched']} matched, "
-        f"{result['total_removed_inactive']} removed (inactive), "
+        f"{result['total_moved']} moved divisions, "
+        f"{result['total_removed_inactive']} flagged inactive, "
         f"{result['total_new_added']} added.",
         "success",
     )
@@ -186,6 +178,41 @@ def enrich_run():
     return redirect(url_for("admin.enrichment"))
 
 
+@admin_bp.route("/identity/run", methods=["POST"])
+@login_required
+def identity_run():
+    import jobs
+    params = {"pi_only": bool(request.form.get("pi_only"))}
+    dept = (request.form.get("department") or "").strip().lower()
+    if dept and dept in {d for d, _ in DEPTS}:
+        params["department"] = dept
+    job_id = jobs.submit("identity_resolve", params, trigger="manual")
+    flash(f"Identity resolution queued (job #{job_id}).", "success")
+    return redirect(url_for("admin.enrichment"))
+
+
+@admin_bp.route("/backfill/run", methods=["POST"])
+@login_required
+def backfill_run():
+    import jobs
+    params = {"pi_only": bool(request.form.get("pi_only"))}
+    batch = (request.form.get("batch_size") or "").strip()
+    if batch.isdigit():
+        params["batch_size"] = int(batch)
+    job_id = jobs.submit("backfill", params, trigger="manual")
+    flash(f"Backfill queued (job #{job_id}).", "success")
+    return redirect(url_for("admin.enrichment"))
+
+
+@admin_bp.route("/escholarship/run", methods=["POST"])
+@login_required
+def escholarship_run():
+    import jobs
+    job_id = jobs.submit("escholarship_harvest", {}, trigger="manual")
+    flash(f"eScholarship harvest queued (job #{job_id}).", "success")
+    return redirect(url_for("admin.enrichment"))
+
+
 @admin_bp.route("/eah/reconcile", methods=["POST"])
 @login_required
 def eah_reconcile_run():
@@ -203,14 +230,74 @@ def eah_reconcile_run():
 @login_required
 def status():
     conn = db.get_read_conn()
-    stats = {key: db.load_status(conn, key) for key, _ in DEPTS}
     return render_template(
         "admin/status.html",
-        depts=DEPTS,
-        stats=stats,
+        divisions=db.load_status_by_division(conn),
         recent_jobs=db.list_jobs(conn, limit=10),
         audit=db.recent_enrichment_log(conn, limit=40),
     )
+
+
+# ---------------------------------------------------------------------------
+# Identity review queue
+# ---------------------------------------------------------------------------
+
+@admin_bp.route("/identity")
+@login_required
+def identity_queue():
+    conn = db.get_read_conn()
+    dept = (request.args.get("dept") or "").strip().lower() or None
+    if dept and dept not in {d for d, _ in DEPTS}:
+        dept = None
+    candidates = db.list_identity_candidates(conn, department=dept)
+    # Group by faculty for display.
+    grouped = []
+    for cand in candidates:
+        if not grouped or grouped[-1]["faculty_id"] != cand["faculty_id"]:
+            grouped.append({
+                "faculty_id": cand["faculty_id"],
+                "name": f"{cand['f_first']} {cand['f_last']}",
+                "title": cand["f_title"],
+                "division": cand["f_division_school"] or cand["f_department"],
+                "email": cand["f_email"],
+                "candidates": [],
+            })
+        grouped[-1]["candidates"].append(cand)
+    return render_template("admin/identity_queue.html", groups=grouped,
+                           depts=DEPTS, dept=dept)
+
+
+@admin_bp.route("/identity/<int:candidate_id>/decide", methods=["POST"])
+@login_required
+def identity_decide(candidate_id):
+    accept = request.form.get("decision") == "accept"
+    conn = db.connect(readonly=False)
+    try:
+        cand = db.decide_identity_candidate(conn, candidate_id, accept)
+        conn.commit()
+    finally:
+        conn.close()
+    if cand:
+        flash(("Accepted" if accept else "Rejected")
+              + f" {cand['source']} match for faculty #{cand['faculty_id']}.",
+              "success")
+    else:
+        flash("Candidate not found or already decided.", "error")
+    return redirect(url_for("admin.identity_queue"))
+
+
+@admin_bp.route("/identity/<int:faculty_id>/not-findable", methods=["POST"])
+@login_required
+def identity_not_findable(faculty_id):
+    conn = db.connect(readonly=False)
+    try:
+        db.reject_faculty_identity(conn, faculty_id)
+        conn.commit()
+    finally:
+        conn.close()
+    flash(f"Faculty #{faculty_id} marked not findable — excluded from enrichment.",
+          "success")
+    return redirect(url_for("admin.identity_queue"))
 
 
 # ---------------------------------------------------------------------------
@@ -245,39 +332,22 @@ def faculty_edit(faculty_id):
 @admin_bp.route("/faculty/<int:faculty_id>", methods=["POST"])
 @login_required
 def faculty_save(faculty_id):
-    from enrichment import pipeline
-
     conn = db.get_read_conn()
     rec = db.admin_get_faculty(conn, faculty_id)
     if not rec:
         flash("Faculty not found.", "error")
         return redirect(url_for("admin.faculty_list"))
 
-    dept = rec["department"]          # 'hwsph' | 'sio' | 'jacobs'
-    stable_key = rec["stable_key"]
-
-    edits = {}
     for f in _TEXT_EDIT_FIELDS:
-        edits[f] = (request.form.get(f) or "").strip()
+        rec[f] = (request.form.get(f) or "").strip()
     for f in _LIST_EDIT_FIELDS:
         raw = request.form.get(f) or ""
-        edits[f] = [s.strip() for s in raw.split(",") if s.strip()]
+        rec[f] = [s.strip() for s in raw.split(",") if s.strip()]
 
-    # Update the JSON snapshot (the source of truth that survives rebuilds),
-    # then upsert the same record into the live DB.
-    data = pipeline._load_faculty(dept)
-    target = next((r for r in data["faculty"]
-                   if db.compute_stable_key(dept, r) == stable_key), None)
-    if target is None:
-        flash("Could not locate this record in the data file — not saved.", "error")
-        return redirect(url_for("admin.faculty_edit", faculty_id=faculty_id))
-
-    target.update(edits)
-    pipeline._save_faculty(data, dept)
-
+    # SQLite is the source of truth; write the edit straight to the row.
     wconn = db.connect(readonly=False)
     try:
-        db.upsert_faculty(wconn, dept, target)
+        db.save_faculty_record(wconn, faculty_id, rec)
         wconn.commit()
     finally:
         wconn.close()

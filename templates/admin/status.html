@@ -4,19 +4,22 @@
 <h1>Status &amp; audit</h1>
 
 <div class="card">
-  <h3 style="margin-top:0;">Coverage by school</h3>
+  <h3 style="margin-top:0;">Coverage by division</h3>
   <table>
-    <thead><tr><th>School</th><th>Faculty</th><th>Enriched interests</th>
-      <th>With grants</th><th>With pubs</th></tr></thead>
+    <thead><tr><th>Division</th><th>Faculty</th><th>PI-eligible</th>
+      <th>Identity resolved</th><th>Awaiting review</th><th>Not found</th>
+      <th>Matchable</th><th>Enriched</th></tr></thead>
     <tbody>
-      {% for key, label in depts %}
-      {% set s = stats[key] %}
+      {% for d in divisions %}
       <tr>
-        <td>{{ label }}</td>
-        <td>{{ s.total_faculty }}</td>
-        <td>{{ s.with_enriched_interests }} ({{ s.coverage_enriched }}%)</td>
-        <td>{{ s.with_funded_grants }}</td>
-        <td>{{ s.with_publications }}</td>
+        <td>{{ d.department_label or d.department }}</td>
+        <td>{{ d.total }}</td>
+        <td>{{ d.pi_eligible }}</td>
+        <td>{{ d.resolved }} ({{ d.pct_resolved }}%)</td>
+        <td>{% if d.ambiguous %}<a href="{{ url_for('admin.identity_queue', dept=d.department) }}">{{ d.ambiguous }}</a>{% else %}0{% endif %}</td>
+        <td>{{ d.not_found }}</td>
+        <td>{{ d.with_profile }}</td>
+        <td>{{ d.enriched }} ({{ d.pct_enriched }}%)</td>
       </tr>
       {% endfor %}
     </tbody>

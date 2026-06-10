@@ -65,9 +65,12 @@ _init_runtime()
 
 ALLOWED_EXTENSIONS = {"pdf", "txt"}
 
-# Department keys accepted by the API. "all" spans every school. The db layer
-# treats "hwsph"/None identically and "all" as no department filter.
-VALID_DEPTS = {"hwsph", "sio", "jacobs", "all"}
+# Division slugs accepted by the API. "all" spans every division and "other"
+# is the registry's fallback bucket. The db layer treats "all"/None as no
+# department filter.
+from data.divisions import known_slugs
+
+VALID_DEPTS = set(known_slugs()) | {"all", "other"}
 
 
 def allowed_file(filename):
@@ -103,7 +106,8 @@ def faculty_directory():
     """
     dept = request.args.get("dept", "").strip().lower() or "all"
     if dept not in VALID_DEPTS:
-        return jsonify({"error": f"Unknown department: {dept}. Use hwsph, sio, jacobs, or 'all'."}), 400
+        return jsonify({"error": f"Unknown department: {dept}. Use a division "
+                                 f"slug ({', '.join(sorted(VALID_DEPTS))})."}), 400
 
     query = request.args.get("q", "").strip()
     limit = min(int(request.args.get("limit", 20)), 50)

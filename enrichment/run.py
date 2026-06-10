@@ -43,8 +43,12 @@ def main():
 
     dry_run = os.environ.get("ENRICH_DRY_RUN", "").lower() == "true"
 
-    department = os.environ.get("ENRICH_DEPARTMENT", "").strip().lower() or None
-    dept_label = department or "hwsph"
+    # Default preserved from the single-school era; pass an explicit division
+    # slug (or "all") to enrich anything else.
+    department = os.environ.get("ENRICH_DEPARTMENT", "").strip().lower() or "hwsph"
+    if department == "all":
+        department = None
+    dept_label = department or "all"
 
     # Show pre-enrichment status
     status = get_enrichment_status(department)

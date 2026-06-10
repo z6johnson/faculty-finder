@@ -50,7 +50,7 @@ class ORCIDSource(BaseSource):
         })
 
     def fields_provided(self):
-        return ["orcid", "recent_publications", "funded_grants", "email"]
+        return ["orcid", "recent_publications", "funded_grants", "email", "awards"]
 
     def fetch(self, faculty_dict):
         """Search ORCID for this faculty member and extract their record."""
@@ -203,6 +203,11 @@ class ORCIDSource(BaseSource):
         if fundings:
             result["funded_grants"] = fundings
 
+        # Extract distinctions (honors/awards)
+        awards = self._extract_distinctions(record)
+        if awards:
+            result["awards"] = awards
+
         # Provide works_count for the normalizer
         works_section = (
             record.get("activities-summary", {})
@@ -299,6 +304,37 @@ class ORCIDSource(BaseSource):
                 publications.append(pub)
 
         return publications or None
+
+    @staticmethod
+    def _extract_distinctions(record):
+        """Extract honors/awards from the ORCID distinctions section."""
+        groups = (
+            record.get("activities-summary", {})
+            .get("distinctions", {})
+            .get("affiliation-group", [])
+        )
+
+        awards = []
+        for group in groups[:20]:
+            for summary in group.get("summaries", []):
+                dist = summary.get("distinction-summary", {})
+                name = (dist.get("role-title") or "").strip()
+                if not name:
+                    continue
+                award = {"name": name, "source": "orcid"}
+                org = (dist.get("organization") or {}).get("name")
+                if org:
+                    award["granting_org"] = org
+                start = dist.get("start-date") or {}
+                year = (start.get("year") or {}).get("value") if start else None
+                if year:
+                    try:
+                        award["year"] = int(year)
+                    except (ValueError, TypeError):
+                        pass
+                awards.append(award)
+
+        return awards or None
 
     def _extract_fundings(self, record):
         """Extract funding/grants from ORCID record."""

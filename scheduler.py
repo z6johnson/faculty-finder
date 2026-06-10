@@ -40,10 +40,47 @@ def start():
         args=["eah_reconcile"], kwargs={"trigger": "schedule"},
         id="eah_reconcile", replace_existing=True,
     )
+
+    # Nightly backfill (Mon-Sat) chips away at never-enriched, identity-
+    # resolved faculty across all divisions — PI-eligible rows sort first.
+    backfill_hour = int(os.environ.get("BACKFILL_HOUR", "2"))
+    backfill_budget = int(os.environ.get("BACKFILL_TIME_BUDGET", str(4 * 3600)))
+    sched.add_job(
+        jobs.submit, "cron", day_of_week="mon-sat", hour=backfill_hour, minute=0,
+        args=["backfill", {"time_budget_seconds": backfill_budget}],
+        kwargs={"trigger": "schedule"},
+        id="backfill", replace_existing=True,
+    )
+
+    # Weekly identity sweep: resolve faculty added by EAH reconciles and
+    # retry earlier not-found lookups (people publish over time).
+    sched.add_job(
+        jobs.submit, "cron", day_of_week="sun", hour=8, minute=0,
+        args=["identity_resolve", {"include_not_found": True,
+                                   "time_budget_seconds": 3 * 3600}],
+        kwargs={"trigger": "schedule"},
+        id="identity_resolve", replace_existing=True,
+    )
+
+    # Weekly JSON provenance snapshot of the DB (SQLite is source of truth).
+    sched.add_job(
+        _export_snapshot, "cron", day_of_week="sun", hour=10, minute=0,
+        id="export_snapshot", replace_existing=True,
+    )
+
     sched.start()
     _scheduler = sched
-    logger.info("Scheduler started (weekly enrichment + EAH reconcile, UTC).")
+    logger.info("Scheduler started (weekly enrichment + EAH reconcile + "
+                "identity sweep + snapshot; nightly backfill; UTC).")
     return sched
+
+
+def _export_snapshot():
+    try:
+        from scripts.export_db_to_json import export_snapshots
+        export_snapshots()
+    except Exception:
+        logger.exception("Weekly DB snapshot export failed")
 
 
 def scheduled_jobs():

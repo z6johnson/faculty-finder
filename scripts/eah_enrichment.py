@@ -1,20 +1,33 @@
 #!/usr/bin/env python3
-"""Enrich faculty JSON files with Employee Activity Hub (EAH) data.
+"""Reconcile the Employee Activity Hub (EAH) extract against the faculty DB.
 
-Reads the EAH Active Academics CSV and reconciles it against our three
-tracked schools (HWSPH, Jacobs, SIO). Updates contact details, adds EAH
-fields, flags inactive faculty, and adds new faculty from EAH.
+Reads the EAH Active Academics CSV and reconciles it against SQLite — the
+source of truth — for EVERY UCSD division (not just the three originally
+tracked schools). For each division:
+
+  * matched faculty get refreshed contact/HR fields,
+  * faculty matched in a DIFFERENT division are moved (EAH wins),
+  * faculty absent from EAH are soft-flagged eah_status='Inactive'
+    (never deleted — purges are admin-confirmed via
+    data.db.purge_flagged_faculty),
+  * EAH people with no existing row are inserted with
+    identity_status='unresolved' so identity resolution picks them up.
 """
 
 import csv
-import json
 import os
 import re
 import sys
-import tempfile
 from collections import defaultdict
 
-# Writable state dir for the faculty JSON snapshots (see enrichment/pipeline.py).
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from data import db
+from data.divisions import division_for
+from utils.names import (email_local, names_compatible, normalize_name,
+                         parse_eah_name)
+
+# Writable state dir (kept for the local/dev EAH default path below).
 DATA_DIR = (os.environ.get("DATA_STATE_DIR", "").strip()
             or os.path.join(os.path.dirname(__file__), "..", "data"))
 
@@ -29,23 +42,6 @@ EAH_PATH = (os.environ.get("EAH_CSV_PATH", "").strip()
 class EAHFileMissing(Exception):
     """Raised when no EAH extract is present at EAH_PATH."""
 
-SCHOOL_CONFIG = {
-    "hwsph": {
-        "json_path": os.path.join(DATA_DIR, "faculty.json"),
-        "filter": lambda r: r.get("Division / School", "").strip() == "School of Public Health",
-        "has_subdepartment": False,
-    },
-    "jacobs": {
-        "json_path": os.path.join(DATA_DIR, "jacobs_faculty.json"),
-        "filter": lambda r: r.get("Division / School", "").strip() == "Jacobs School of Engineering",
-        "has_subdepartment": True,
-    },
-    "sio": {
-        "json_path": os.path.join(DATA_DIR, "sio_faculty.json"),
-        "filter": lambda r: "SIO" in r.get("Division / School", "") or r.get("Division / School", "").strip() == "VC-SIO Other",
-        "has_subdepartment": True,
-    },
-}
 
 # EAH CSV column -> faculty record field mapping
 EAH_FIELD_MAP = {
@@ -97,30 +93,6 @@ TITLE_PATTERNS = [
 ]
 
 
-def normalize_name(s):
-    """Remove non-alpha chars and lowercase for comparison."""
-    return re.sub(r"[^a-z]", "", s.lower())
-
-
-def email_local(email):
-    """Return the local part of an email address (before @)."""
-    if not email or "@" not in email:
-        return (email or "").lower().strip()
-    return email.split("@")[0].lower().strip()
-
-
-def parse_eah_name(name_str):
-    """Parse 'Last, First Middle' into (first_name, last_name)."""
-    name_str = name_str.strip()
-    if "," not in name_str:
-        parts = name_str.split()
-        return (parts[0] if parts else "", " ".join(parts[1:]) if len(parts) > 1 else "")
-    last, rest = name_str.split(",", 1)
-    first_parts = rest.strip().split()
-    first = first_parts[0] if first_parts else ""
-    return first.strip(), last.strip()
-
-
 def map_title(job_code_desc):
     """Map EAH Job Code Description to a human-readable title."""
     if not job_code_desc:
@@ -152,35 +124,32 @@ def load_eah():
     return rows
 
 
-def filter_and_deduplicate(eah_rows, school_filter):
-    """Filter EAH rows for a school and deduplicate by person.
+def deduplicate_people(rows):
+    """Deduplicate EAH rows by person (email, else name).
 
     For people with multiple rows, prefer the row with a PROF-like title
     (most representative academic appointment).
     """
-    school_rows = [r for r in eah_rows if school_filter(r)]
-
-    # Group by (email, name) to handle duplicates
-    by_person = {}
-    for row in school_rows:
+    by_person = defaultdict(list)
+    for row in rows:
         email = row.get("Email", "").strip().lower()
         name = row.get("Employee Name", "").strip()
-        key = email or name
-        if key not in by_person:
-            by_person[key] = []
-        by_person[key].append(row)
+        by_person[email or name].append(row)
 
-    # Pick best row per person (prefer PROF in job code description)
     deduped = {}
-    for key, rows in by_person.items():
-        best = rows[0]
-        for r in rows:
+    for key, person_rows in by_person.items():
+        best = person_rows[0]
+        for r in person_rows:
             desc = (r.get("Job Code Description") or "").upper()
             if "PROF" in desc and "PROF" not in (best.get("Job Code Description") or "").upper():
                 best = r
         deduped[key] = best
-
     return deduped
+
+
+def eah_person_key(row):
+    return (row.get("Email", "").strip().lower()
+            or row.get("Employee Name", "").strip())
 
 
 def build_eah_indices(deduped):
@@ -189,7 +158,7 @@ def build_eah_indices(deduped):
     by_email_local = {}    # local part of email -> row
     by_name = {}           # (norm_first, norm_last) -> row
 
-    for key, row in deduped.items():
+    for row in deduped.values():
         email = row.get("Email", "").strip().lower()
         if email:
             by_email[email] = row
@@ -205,20 +174,11 @@ def build_eah_indices(deduped):
     return by_email, by_email_local, by_name
 
 
-def _names_compatible(our_first, our_last, eah_row):
-    """Check if faculty name is compatible with an EAH record's name."""
+def _names_compatible_with_row(our_first, our_last, eah_row):
     eah_first_raw, eah_last_raw = parse_eah_name(eah_row.get("Employee Name", ""))
-    eah_first = normalize_name(eah_first_raw)
-    eah_last = normalize_name(eah_last_raw)
-    if not eah_first or not eah_last or not our_first or not our_last:
-        return False
-    # Last names must match (or one contains the other for hyphenated names)
-    if our_last != eah_last and our_last not in eah_last and eah_last not in our_last:
-        return False
-    # First names must share a prefix (handles middle names, nicknames)
-    if not (eah_first.startswith(our_first[:3]) or our_first.startswith(eah_first[:3])):
-        return False
-    return True
+    return names_compatible(our_first, our_last,
+                            normalize_name(eah_first_raw),
+                            normalize_name(eah_last_raw))
 
 
 def match_faculty_to_eah(faculty, by_email, by_email_local, by_name):
@@ -231,19 +191,18 @@ def match_faculty_to_eah(faculty, by_email, by_email_local, by_name):
     # Tier 1: exact email + name cross-validation
     if our_email and our_email in by_email:
         row = by_email[our_email]
-        if _names_compatible(our_first, our_last, row):
+        if _names_compatible_with_row(our_first, our_last, row):
             return row
         # Email matches but name doesn't — likely a wrong email in our data
 
     # Tier 2: email local part + name cross-validation
     if our_local and our_local in by_email_local:
         row = by_email_local[our_local]
-        if _names_compatible(our_first, our_last, row):
+        if _names_compatible_with_row(our_first, our_last, row):
             return row
 
     # Tier 3: name matching
     if our_first and our_last:
-        # Exact first+last
         if (our_first, our_last) in by_name:
             return by_name[(our_first, our_last)]
 
@@ -309,13 +268,13 @@ def apply_eah_fields(faculty, eah_row, updates_tracker):
     eah_status = (eah_row.get("Column1") or "").strip()
     if eah_status:
         faculty["eah_status"] = eah_status
-    elif "eah_status" not in faculty:
-        faculty["eah_status"] = ""
+    elif not faculty.get("eah_status") or faculty.get("eah_status") in ("Inactive", "Duplicate"):
+        faculty["eah_status"] = "Active"
 
     return faculty
 
 
-def create_new_faculty(eah_row, has_subdepartment):
+def create_new_faculty(eah_row):
     """Create a new faculty record from an EAH row."""
     first, last = parse_eah_name(eah_row.get("Employee Name", ""))
     mapped_title = map_title(eah_row.get("Job Code Description", "")) or ""
@@ -336,11 +295,11 @@ def create_new_faculty(eah_row, has_subdepartment):
         "recent_publications": [],
         "committee_service": [],
         "integrity_flags": [],
+        "identity_status": "unresolved",
     }
 
-    if has_subdepartment:
-        dept_unit = (eah_row.get("Dept / Unit") or "").strip()
-        record["subdepartment"] = dept_unit.title() if dept_unit else ""
+    dept_unit = (eah_row.get("Dept / Unit") or "").strip()
+    record["subdepartment"] = dept_unit.title() if dept_unit else ""
 
     # Add all EAH fields
     for csv_col, json_field in EAH_FIELD_MAP.items():
@@ -350,194 +309,114 @@ def create_new_faculty(eah_row, has_subdepartment):
         else:
             record[json_field] = eah_value
 
-    eah_status = (eah_row.get("Column1") or "").strip()
-    record["eah_status"] = eah_status
-
+    record["eah_status"] = (eah_row.get("Column1") or "").strip() or "Active"
     return record
 
 
-def save_json_atomic(data, path):
-    """Atomically write JSON data to a file."""
-    dir_path = os.path.dirname(path)
-    fd, tmp = tempfile.mkstemp(dir=dir_path, suffix=".json")
-    try:
-        with os.fdopen(fd, "w") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-            f.write("\n")
-        os.replace(tmp, path)
-    except Exception:
-        os.unlink(tmp)
-        raise
-
-
-def process_school(school_name, config, eah_rows):
-    """Process a single school: match, update, flag, add new."""
-    print(f"\n{'='*60}")
-    print(f"Processing: {school_name.upper()}")
-    print(f"{'='*60}")
-
-    # Load existing faculty data
-    with open(config["json_path"]) as f:
-        data = json.load(f)
-    faculty_list = data["faculty"]
-    original_count = len(faculty_list)
-
-    # Filter and deduplicate EAH records for this school
-    deduped = filter_and_deduplicate(eah_rows, config["filter"])
-    print(f"  Faculty in our data: {original_count}")
-    print(f"  Unique people in EAH: {len(deduped)}")
-
-    # Build lookup indices
-    by_email, by_email_local, by_name = build_eah_indices(deduped)
-
-    # Track what was matched
-    matched_eah_keys = set()
-    matched_count = 0
-    removed_inactive = []
-    updates_tracker = defaultdict(int)
-
-    # Match each existing faculty member; collect unmatched for removal
-    matched_faculty = []
-    for faculty in faculty_list:
-        eah_row = match_faculty_to_eah(faculty, by_email, by_email_local, by_name)
-
-        if eah_row:
-            matched_count += 1
-            eah_key = (eah_row.get("Email", "").strip().lower() or
-                       eah_row.get("Employee Name", "").strip())
-            matched_eah_keys.add(eah_key)
-
-            # Apply EAH fields
-            apply_eah_fields(faculty, eah_row, updates_tracker)
-            matched_faculty.append(faculty)
-        else:
-            # Remove: not found in EAH Active Academics
-            name = f"{faculty.get('first_name', '')} {faculty.get('last_name', '')}"
-            removed_inactive.append(name)
-
-    # Replace faculty list with only matched (active) faculty
-    faculty_list[:] = matched_faculty
-
-    # Deduplicate: if multiple existing records matched the same EAH person,
-    # keep the one with the most enriched data and remove the others.
-    seen_emails = {}
-    to_remove = []
-    for i, faculty in enumerate(faculty_list):
-        email = (faculty.get("email") or "").strip().lower()
-        if not email:
-            continue
-        if email in seen_emails:
-            prev_idx = seen_emails[email]
-            prev = faculty_list[prev_idx]
-            # Score by data richness
-            def _richness(f):
-                score = 0
-                if f.get("research_interests_enriched"): score += 3
-                if f.get("funded_grants"): score += len(f["funded_grants"])
-                if f.get("recent_publications"): score += len(f["recent_publications"])
-                if f.get("expertise_keywords"): score += 1
-                if f.get("orcid"): score += 1
-                return score
-            if _richness(faculty) > _richness(prev):
-                to_remove.append(prev_idx)
-                seen_emails[email] = i
-            else:
-                to_remove.append(i)
-        else:
-            seen_emails[email] = i
-    if to_remove:
-        for idx in sorted(to_remove, reverse=True):
-            removed = faculty_list.pop(idx)
-            print(f"  Removed duplicate: {removed.get('first_name')} {removed.get('last_name')} ({removed.get('email')})")
-
-    # Find EAH records not matched to any existing faculty -> add new
-    new_faculty = []
-    for key, row in deduped.items():
-        if key not in matched_eah_keys:
-            new_record = create_new_faculty(row, config["has_subdepartment"])
-            new_faculty.append(new_record)
-            faculty_list.append(new_record)
-
-    # Sort faculty list by last name, first name for consistency
-    faculty_list.sort(key=lambda f: (
-        (f.get("last_name") or "").lower(),
-        (f.get("first_name") or "").lower()
-    ))
-
-    # Save
-    save_json_atomic(data, config["json_path"])
-
-    # Report
-    print(f"  Matched: {matched_count}")
-    print(f"  Removed (not in EAH): {len(removed_inactive)}")
-    print(f"  New faculty added: {len(new_faculty)}")
-    print(f"  Total faculty now: {len(faculty_list)}")
-
-    if updates_tracker:
-        print(f"  Fields updated: {dict(updates_tracker)}")
-
-    if removed_inactive:
-        print(f"\n  --- Removed ({len(removed_inactive)}) ---")
-        for name in sorted(removed_inactive):
-            print(f"    {name}")
-
-    if new_faculty:
-        print(f"\n  --- New Faculty Added ({len(new_faculty)}) ---")
-        for f in sorted(new_faculty, key=lambda x: x.get("last_name", "")):
-            print(f"    {f['first_name']} {f['last_name']} ({f.get('email', '')})")
-
-    return {
-        "school": school_name,
-        "original_count": original_count,
-        "eah_count": len(deduped),
-        "matched": matched_count,
-        "removed_inactive": len(removed_inactive),
-        "new_added": len(new_faculty),
-        "total_now": len(faculty_list),
-        "updates": dict(updates_tracker),
-    }
-
-
 def run_eah_reconcile():
-    """Reconcile every tracked school against the EAH extract.
+    """Reconcile every division against the EAH extract, directly in SQLite.
 
-    Returns an aggregate summary dict (per-school results plus totals) so
-    callers such as the admin upload handler and the scheduler can surface
-    what changed. Raises EAHFileMissing if no extract is present.
+    Returns an aggregate summary dict (per-division results plus totals).
+    Raises EAHFileMissing if no extract is present.
     """
     print("=" * 60)
-    print("EAH Enrichment Pass")
+    print("EAH Reconcile (DB-native, all divisions)")
     print("=" * 60)
 
-    # Load EAH data once
     eah_rows = load_eah()
     print(f"Loaded {len(eah_rows)} EAH rows")
 
+    # Group EAH rows by division slug.
+    rows_by_division = defaultdict(list)
+    labels = {}
+    for row in eah_rows:
+        slug, label, _ = division_for(row.get("Division / School", ""))
+        rows_by_division[slug].append(row)
+        labels[slug] = label
+
+    conn = db.get_write_conn()
+    db.init_schema(conn)
+
     results = []
-    for school_name, config in SCHOOL_CONFIG.items():
-        result = process_school(school_name, config, eah_rows)
-        results.append(result)
+    updates_tracker = defaultdict(int)
+    moved = 0
+
+    # Global person index (across all divisions) so a division transfer is
+    # detected as a move, not an inactive-flag + duplicate-insert.
+    global_deduped = deduplicate_people(eah_rows)
+    g_email, g_local, g_name = build_eah_indices(global_deduped)
+
+    matched_person_keys = set()
+
+    # Pass 1: reconcile every existing DB row (all divisions at once).
+    existing = db.fetch_for_enrichment(conn, department=None)["faculty"]
+    print(f"Faculty rows in DB: {len(existing)}")
+    matched = flagged = 0
+    for faculty in existing:
+        eah_row = match_faculty_to_eah(faculty, g_email, g_local, g_name)
+        fid = faculty["_db_id"]
+        if not eah_row:
+            if (faculty.get("eah_status") or "") not in ("Inactive", "Duplicate"):
+                db.mark_eah_status(conn, fid, "Inactive")
+            flagged += 1
+            continue
+
+        person_key = eah_person_key(eah_row)
+        if person_key in matched_person_keys:
+            # A previous (richer-keyed) row already claimed this person.
+            db.mark_eah_status(conn, fid, "Duplicate")
+            continue
+        matched_person_keys.add(person_key)
+        matched += 1
+
+        apply_eah_fields(faculty, eah_row, updates_tracker)
+        slug, label, _ = division_for(eah_row.get("Division / School", ""))
+        if slug != faculty.get("department"):
+            db.update_faculty_division(conn, fid, slug, label)
+            moved += 1
+        db.save_faculty_record(conn, fid, faculty)
+    conn.commit()
+
+    # Pass 2: insert EAH people with no existing row, division by division.
+    total_new = 0
+    for slug in sorted(rows_by_division):
+        deduped = deduplicate_people(rows_by_division[slug])
+        new_count = 0
+        for person_key, row in deduped.items():
+            if person_key in matched_person_keys:
+                continue
+            record = create_new_faculty(row)
+            record["department_label"] = labels[slug]
+            db.upsert_faculty(conn, slug, record)
+            new_count += 1
+        conn.commit()
+        total_new += new_count
+        results.append({
+            "division": slug,
+            "eah_count": len(deduped),
+            "new_added": new_count,
+        })
+        print(f"  {slug:12s} EAH people: {len(deduped):5d}  new rows: {new_count}")
 
     # Summary
     print(f"\n{'='*60}")
     print("SUMMARY")
     print(f"{'='*60}")
-    total_matched = sum(r["matched"] for r in results)
-    total_flagged = sum(r["removed_inactive"] for r in results)
-    total_new = sum(r["new_added"] for r in results)
-    total_now = sum(r["total_now"] for r in results)
-    print(f"  Total matched: {total_matched}")
-    print(f"  Total removed (not in EAH): {total_flagged}")
-    print(f"  Total new faculty added: {total_new}")
-    print(f"  Total faculty across all schools: {total_now}")
+    print(f"  Matched (existing rows refreshed): {matched}")
+    print(f"  Moved between divisions: {moved}")
+    print(f"  Flagged inactive (kept, excluded from matching): {flagged}")
+    print(f"  New faculty added: {total_new}")
+    if updates_tracker:
+        print(f"  Fields updated: {dict(updates_tracker)}")
 
     return {
         "eah_rows": len(eah_rows),
-        "schools": results,
-        "total_matched": total_matched,
-        "total_removed_inactive": total_flagged,
+        "divisions": results,
+        "total_matched": matched,
+        "total_moved": moved,
+        "total_removed_inactive": flagged,   # key kept for admin UI compat
         "total_new_added": total_new,
-        "total_now": total_now,
+        "updates": dict(updates_tracker),
     }
 
 

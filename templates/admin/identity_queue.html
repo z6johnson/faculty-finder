@@ -21,12 +21,40 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
   ORCID-verified employment); everything else stays here for review.</span>
 </form>
 
+<form method="post" action="{{ url_for('admin.identity_llm_sweep') }}" class="toolbar">
+  <button class="btn btn-primary">Run LLM adjudication on pending queue</button>
+  <label class="muted" style="margin-left:8px;">
+    <input type="checkbox" name="dry_run" value="1"> dry run (annotate only)
+  </label>
+  <span class="muted">Compares each candidate's recent publications and
+  affiliation history against the faculty record. Accepts only two-pass
+  high-confidence matches; everything else is annotated and re-sorted here
+  for faster review. Never auto-rejects.</span>
+</form>
+
 {% if groups %}
 {% for g in groups %}
 <div class="card">
   <h3>{{ g.name }}
     <span class="muted">— {{ g.title }}, {{ g.division }}
     {% if g.email %}({{ g.email }}){% endif %}</span></h3>
+  {% if g.llm_pick %}
+  <p class="muted" style="margin:4px 0;">
+    <strong>LLM suggests:</strong>
+    {{ g.llm_pick.display_name or g.llm_pick.external_id }}
+    (confidence {{ "%.2f"|format(g.llm_pick.llm_confidence or 0) }})
+    {% if g.llm_pick.llm_reasoning %}<br>
+    <span style="font-size:0.85em;">{{ g.llm_pick.llm_reasoning }}</span>
+    {% endif %}
+  </p>
+  {% elif g.llm_reject_all %}
+  <p class="muted" style="margin:4px 0;">
+    <strong>LLM: none of these look right</strong>
+    {% if g.candidates[0].llm_reasoning %}<br>
+    <span style="font-size:0.85em;">{{ g.candidates[0].llm_reasoning }}</span>
+    {% endif %}
+  </p>
+  {% endif %}
   <table>
     <thead><tr><th>Source</th><th>Candidate</th><th>Affiliation</th>
       <th>Score</th><th>Evidence</th><th></th></tr></thead>

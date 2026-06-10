@@ -105,15 +105,28 @@ _FACULTY_COLUMN_MIGRATIONS = [
     ("patents", "TEXT"),
 ]
 
+_IDENTITY_CANDIDATE_COLUMN_MIGRATIONS = [
+    ("llm_verdict", "TEXT"),
+    ("llm_confidence", "REAL"),
+    ("llm_reasoning", "TEXT"),
+    ("llm_evaluated_at", "TEXT"),
+]
 
-def _apply_migrations(conn):
-    """Idempotently add columns that postdate an existing faculty table."""
-    existing = {row[1] for row in conn.execute("PRAGMA table_info(faculty)")}
+
+def _migrate_table(conn, table, migrations):
+    existing = {row[1] for row in conn.execute(f"PRAGMA table_info({table})")}
     if not existing:
         return  # fresh DB; schema.sql creates the full table
-    for col, decl in _FACULTY_COLUMN_MIGRATIONS:
+    for col, decl in migrations:
         if col not in existing:
-            conn.execute(f"ALTER TABLE faculty ADD COLUMN {col} {decl}")
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN {col} {decl}")
+
+
+def _apply_migrations(conn):
+    """Idempotently add columns that postdate an existing table."""
+    _migrate_table(conn, "faculty", _FACULTY_COLUMN_MIGRATIONS)
+    _migrate_table(conn, "identity_candidates",
+                   _IDENTITY_CANDIDATE_COLUMN_MIGRATIONS)
 
 
 def init_schema(conn):
@@ -776,6 +789,7 @@ def list_identity_candidates(conn, status="pending", department=None, limit=200)
         "SELECT c.*, f.first_name AS f_first, f.last_name AS f_last,"
         " f.title AS f_title, f.department AS f_department,"
         " f.division_school AS f_division_school, f.email AS f_email,"
+        " f.research_interests AS f_research_interests,"
         " f.stable_key AS f_stable_key"
         " FROM identity_candidates c JOIN faculty f ON f.id = c.faculty_id"
         " WHERE c.status = ?" + dept_sql +
@@ -786,6 +800,21 @@ def list_identity_candidates(conn, status="pending", department=None, limit=200)
         params.append(limit)
     rows = conn.execute(sql, params).fetchall()
     return [dict(r) for r in rows]
+
+
+def annotate_identity_candidates_llm(conn, annotations):
+    """Write LLM adjudication annotations onto pending candidate rows.
+
+    annotations: {row_id: (verdict, confidence, reasoning)}. Advisory only —
+    rows stay 'pending'; the review queue uses these to sort and badge.
+    """
+    now = _now_iso()
+    conn.executemany(
+        "UPDATE identity_candidates SET llm_verdict = ?, llm_confidence = ?,"
+        " llm_reasoning = ?, llm_evaluated_at = ? WHERE id = ? AND status = 'pending'",
+        [(verdict, confidence, reasoning, now, row_id)
+         for row_id, (verdict, confidence, reasoning) in annotations.items()],
+    )
 
 
 def get_identity_candidate(conn, candidate_id):

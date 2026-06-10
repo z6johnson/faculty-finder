@@ -316,6 +316,19 @@ def identity_queue():
         grouped[-1]["candidates"].append(cand)
     for g in grouped:
         g["clusters"] = _cluster_identity_candidates(g["candidates"])
+        # LLM adjudication triage: a row the LLM would accept surfaces the
+        # group to the top; "none of these" verdicts sink to the bottom for
+        # quick human confirmation (never auto-rejected).
+        g["llm_pick"] = next(
+            (c for c in g["candidates"] if c.get("llm_verdict") == "accept"),
+            None)
+        g["llm_reject_all"] = bool(g["candidates"]) and all(
+            c.get("llm_verdict") == "reject" for c in g["candidates"])
+    grouped.sort(key=lambda g: (
+        0 if g["llm_pick"] else (2 if g["llm_reject_all"] else 1),
+        -(g["llm_pick"]["llm_confidence"] or 0) if g["llm_pick"] else 0,
+        g["name"],
+    ))
     return render_template("admin/identity_queue.html", groups=grouped,
                            depts=DEPTS, dept=dept)
 
@@ -326,6 +339,25 @@ def identity_resweep():
     import jobs
     job_id = jobs.submit("identity_resweep", {}, trigger="manual")
     flash(f"Auto-accept re-sweep queued (job #{job_id}).", "success")
+    return redirect(url_for("admin.identity_queue"))
+
+
+@admin_bp.route("/identity/llm-sweep", methods=["POST"])
+@login_required
+def identity_llm_sweep():
+    import os
+
+    import jobs
+    if not os.environ.get("LITELLM_API_KEY"):
+        flash("LITELLM_API_KEY is not configured — LLM adjudication "
+              "unavailable.", "error")
+        return redirect(url_for("admin.identity_queue"))
+    dry_run = request.form.get("dry_run") == "1"
+    job_id = jobs.submit("identity_llm_sweep", {"dry_run": dry_run},
+                         trigger="manual")
+    flash(f"LLM adjudication queued (job #{job_id}"
+          + (", dry run — annotations only" if dry_run else "") + ").",
+          "success")
     return redirect(url_for("admin.identity_queue"))
 
 

@@ -83,7 +83,15 @@ CREATE TABLE IF NOT EXISTS identity_candidates (
     evidence     TEXT,                     -- JSON: name similarity, topics, counts
     status       TEXT NOT NULL DEFAULT 'pending',  -- pending | accepted | rejected
     created_at   TEXT NOT NULL,
-    decided_at   TEXT
+    decided_at   TEXT,
+
+    -- LLM adjudication annotations (enrichment/identity_llm.py). Advisory
+    -- only: 'accept' marks the row the LLM would pick; 'reject'/'abstain'
+    -- pre-triage the manual queue. Never auto-rejects anything.
+    llm_verdict      TEXT,                 -- 'accept' | 'reject' | 'abstain'
+    llm_confidence   REAL,
+    llm_reasoning    TEXT,
+    llm_evaluated_at TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_idcand_status ON identity_candidates(status, faculty_id);

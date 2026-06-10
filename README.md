@@ -103,7 +103,20 @@ matchable profile:
    (ROR `0168r3w48`), scored on name similarity, affiliation currency, and
    topic↔division consistency. Confident matches are auto-accepted; ambiguous
    ones land in the admin **Identity review** queue; misses are marked
-   `not_found` and retried weekly.
+   `not_found` and retried weekly. Two follow-up sweeps shrink the review
+   queue without sacrificing precision:
+   - *Rule re-sweep* (`identity_resweep`) — conservative deterministic
+     auto-accepts (duplicate-profile collapse, ORCID-verified employment).
+   - *LLM adjudication* (`identity_llm_sweep`, `enrichment/identity_llm.py`)
+     — for the leftovers, an LLM compares each candidate's recent
+     publications, affiliation history, and name variants against the
+     faculty's HR title, division, and research interests. Accepts require
+     two agreeing passes plus deterministic guardrails (UCSD affiliation,
+     name-similarity floor, confidence ≥ `IDENTITY_LLM_ACCEPT_CONFIDENCE`)
+     and are logged with method `identity_llm_rule`; everything else is only
+     annotated to pre-sort the review queue — never auto-rejected. Backtest
+     accept precision with `scripts/calibrate_identity_llm.py` before
+     enabling the weekly run (`ENABLE_IDENTITY_LLM_SWEEP=true`).
 2. **Enrichment** (`enrichment/pipeline.py`) — fetches from the division's
    source bundle, merges fields, and LLM-normalizes the profile.
 3. **Backfill** (job kind `backfill`) — nightly batches enrich
@@ -221,6 +234,8 @@ Every field change from enrichment and every auto-accepted identity is recorded 
 | Enrich hwsph / sio / jacobs | Sun 00:00 / 02:00 / 04:00 |
 | EAH reconcile (no-op without an uploaded extract) | Sun 06:00 (`EAH_RECONCILE_HOUR`) |
 | Identity sweep (new + `not_found` retries) | Sun 08:00 |
+| Identity rule re-sweep of the review queue | Sun 09:00 |
+| Identity LLM adjudication (opt-in: `ENABLE_IDENTITY_LLM_SWEEP=true`) | Sun 10:00 |
 | JSON provenance snapshot to `/data/backups` | Sun 10:00 |
 | Backfill (never-enriched, identity-resolved; PI-eligible first) | Mon–Sat 02:00 (`BACKFILL_HOUR`), budget `BACKFILL_TIME_BUDGET` (default 4h) |
 

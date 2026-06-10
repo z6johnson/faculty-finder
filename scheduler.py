@@ -72,6 +72,17 @@ def start():
         id="identity_resweep", replace_existing=True,
     )
 
+    # Weekly LLM adjudication of whatever the deterministic rules left in
+    # the review queue. Off by default until the calibration backtest
+    # (scripts/calibrate_identity_llm.py) signs off on accept precision.
+    if os.environ.get("ENABLE_IDENTITY_LLM_SWEEP", "").lower() in ("true", "1"):
+        sched.add_job(
+            jobs.submit, "cron", day_of_week="sun", hour=10, minute=0,
+            args=["identity_llm_sweep", {"time_budget_seconds": 2 * 3600}],
+            kwargs={"trigger": "schedule"},
+            id="identity_llm_sweep", replace_existing=True,
+        )
+
     # Weekly JSON provenance snapshot of the DB (SQLite is source of truth).
     sched.add_job(
         _export_snapshot, "cron", day_of_week="sun", hour=10, minute=0,

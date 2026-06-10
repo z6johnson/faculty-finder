@@ -20,8 +20,8 @@ _queue = queue.Queue()
 _worker = None
 _worker_lock = threading.Lock()
 
-VALID_KINDS = {"enrich", "eah_reconcile", "identity_resolve", "backfill",
-               "escholarship_harvest"}
+VALID_KINDS = {"enrich", "eah_reconcile", "identity_resolve",
+               "identity_resweep", "backfill", "escholarship_harvest"}
 
 
 def _ensure_worker():
@@ -69,6 +69,8 @@ def _execute(job_id):
         result = _run_eah(job_id)
     elif job["kind"] == "identity_resolve":
         result = _run_identity(job_id, params)
+    elif job["kind"] == "identity_resweep":
+        result = _run_identity_resweep(job_id, params)
     elif job["kind"] == "backfill":
         result = _run_backfill(job_id, params)
     elif job["kind"] == "escholarship_harvest":
@@ -131,6 +133,17 @@ def _run_identity(job_id, params):
         limit=params.get("limit"),
         include_not_found=bool(params.get("include_not_found")),
         progress_callback=_progress_writer(job_id, every=25),
+        time_budget_seconds=params.get("time_budget_seconds"),
+    )
+
+
+def _run_identity_resweep(job_id, params):
+    from enrichment.identity import resweep_pending
+
+    return resweep_pending(
+        department=params.get("department") or None,
+        max_orcid_lookups=params.get("max_orcid_lookups", 200),
+        progress_callback=_progress_writer(job_id, every=10),
         time_budget_seconds=params.get("time_budget_seconds"),
     )
 

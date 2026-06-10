@@ -27,41 +27,51 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
   <h3>{{ g.name }}
     <span class="muted">— {{ g.title }}, {{ g.division }}
     {% if g.email %}({{ g.email }}){% endif %}</span></h3>
-  <div class="table-scroll">
-    <table>
-      <thead><tr><th>Source</th><th>Candidate</th><th>Affiliation</th>
-        <th>Score</th><th>Evidence</th><th></th></tr></thead>
-      <tbody>
-        {% for c in g.candidates %}
-        <tr>
-          <td>{{ c.source }}</td>
-          <td>
-            {% if c.source == 'openalex' %}
-            <a href="https://openalex.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
-            {% else %}
-            <a href="https://orcid.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
-            {% endif %}
-          </td>
-          <td class="muted">{{ c.affiliation or "—" }}</td>
-          <td>{{ "%.2f"|format(c.score) }}</td>
-          <td class="muted cell-wrap">{{ c.evidence }}</td>
-          <td class="cell-actions">
-            <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}">
-              <input type="hidden" name="decision" value="accept">
-              <button class="btn btn-primary btn-sm">Accept</button>
-            </form>
-            <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}">
-              <input type="hidden" name="decision" value="reject">
-              <button class="btn btn-secondary btn-sm">Reject</button>
-            </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <form method="post" action="{{ url_for('admin.identity_not_findable', faculty_id=g.faculty_id) }}" class="btn-row">
-    <button class="btn btn-secondary">None of these — not findable</button>
+  <table>
+    <thead><tr><th>Source</th><th>Candidate</th><th>Affiliation</th>
+      <th>Score</th><th>Evidence</th><th></th></tr></thead>
+    <tbody>
+      {% for cl in g.clusters %}
+      {% set c = cl.canonical %}
+      <tr>
+        <td>{{ c.source }}</td>
+        <td>
+          {% if c.source == 'openalex' %}
+          <a href="https://openalex.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
+          {% else %}
+          <a href="https://orcid.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
+          {% endif %}
+          {% if cl.siblings %}
+          <div class="muted" style="font-size:0.85em;">
+            + {{ cl.siblings|length }} duplicate profile(s) of the same person:
+            {% for s in cl.siblings %}
+            <a href="https://openalex.org/{{ s.external_id }}" target="_blank" rel="noopener">{{ s.display_name or s.external_id }}</a>{{ ", " if not loop.last }}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </td>
+        <td class="muted">{{ c.affiliation or "—" }}</td>
+        <td>{{ "%.2f"|format(c.score) }}</td>
+        <td class="muted" style="max-width:320px; overflow-wrap:anywhere;">{{ c.evidence }}</td>
+        <td style="white-space:nowrap;">
+          <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
+            <input type="hidden" name="decision" value="accept">
+            <input type="hidden" name="cluster_ids" value="{{ cl.member_ids|join(',') }}">
+            <button class="btn">Accept</button>
+          </form>
+          <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
+            <input type="hidden" name="decision" value="reject">
+            <input type="hidden" name="cluster_ids" value="{{ cl.member_ids|join(',') }}">
+            <button class="btn secondary">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <form method="post" action="{{ url_for('admin.identity_not_findable', faculty_id=g.faculty_id) }}"
+        style="margin-top:8px;">
+    <button class="btn secondary">None of these — not findable</button>
   </form>
 </div>
 {% endfor %}

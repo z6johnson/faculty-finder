@@ -52,6 +52,56 @@ class IdentityRulesTests(unittest.TestCase):
                        topic_domains=["Health Sciences"])
         self.assertFalse(identity_rules.is_same_person(a, e))
 
+    def test_middle_initial_variants_are_same_person(self):
+        # OpenAlex's usual split: same author under "Wael K. Al-Delaimy",
+        # "Wael Al-Delaimy" and "Wael K Al-Delaimy".
+        base = dict(ucsd_current=True, topic_domains=["Health Sciences"])
+        a = _candidate("A1", display_name="Wael K. Al-Delaimy", **base)
+        b = _candidate("A2", display_name="Wael Al-Delaimy", **base)
+        c = _candidate("A3", display_name="Wael K Al-Delaimy", **base)
+        d = _candidate("A4", display_name="Wael Kareem Al-Delaimy", **base)
+        self.assertTrue(identity_rules.is_same_person(a, b))
+        self.assertTrue(identity_rules.is_same_person(a, c))
+        self.assertTrue(identity_rules.is_same_person(a, d))
+
+    def test_conflicting_middle_initials_are_not_same_person(self):
+        base = dict(ucsd_current=True, topic_domains=["Health Sciences"])
+        a = _candidate("A1", display_name="Jane K. Smith", **base)
+        b = _candidate("A2", display_name="Jane R. Smith", **base)
+        self.assertFalse(identity_rules.is_same_person(a, b))
+
+    def test_missing_domains_do_not_block_collapse(self):
+        # Tiny stub profiles often carry no topics at all; absence of data
+        # must not keep the pair in the manual queue.
+        a = _candidate("A1", ucsd_listed=True, topic_domains=["Health Sciences"])
+        b = _candidate("A2", ucsd_listed=True)
+        self.assertTrue(identity_rules.is_same_person(a, b))
+        self.assertTrue(identity_rules.is_same_person(b, a))
+
+    def test_cluster_membership_is_pairwise(self):
+        # "Jane K. Smith" and "Jane R. Smith" both match plain "Jane Smith"
+        # but conflict with each other — only one may join the cluster, and
+        # the other must keep the runner-up high (no auto-accept).
+        base = dict(ucsd_current=True, topic_domains=["Health Sciences"])
+        best = _candidate("A1", score=1.0, works_count=200, **base)
+        r1 = _candidate("A2", score=1.0, display_name="Jane K. Smith", **base)
+        r2 = _candidate("A3", score=1.0, display_name="Jane R. Smith", **base)
+        out = identity_rules.collapse_duplicate_ties([best, r1, r2],
+                                                     tie_margin=0.05)
+        self.assertEqual(set(out["cluster_ids"]), {"A1", "A2"})
+        self.assertEqual(out["runner_up"], 1.0)
+
+    def test_orcid_carrying_rivals_checked_against_each_other(self):
+        # An ORCID-less best must not bridge two rivals with different ORCIDs.
+        base = dict(ucsd_current=True, topic_domains=["Health Sciences"])
+        best = _candidate("A1", score=1.0, works_count=200, **base)
+        r1 = _candidate("A2", score=1.0, orcid="0000-0001-1111-2222", **base)
+        r2 = _candidate("A3", score=1.0, orcid="0000-0002-3333-4444", **base)
+        out = identity_rules.collapse_duplicate_ties([best, r1, r2],
+                                                     tie_margin=0.05)
+        self.assertEqual(set(out["cluster_ids"]), {"A1", "A2"})
+        self.assertEqual(out["runner_up"], 1.0)
+
     def test_name_branch_kill_switch(self):
         a = _candidate("A1", ucsd_listed=True, topic_domains=["Health Sciences"])
         b = _candidate("A2", ucsd_listed=True, topic_domains=["Health Sciences"])
@@ -286,6 +336,39 @@ class IdentityResolveRuleTests(_ResolverTestBase):
         self.assertIn("duplicate_tie_collapse", logs[0]["raw_response"])
         conn.close()
 
+    def test_middle_initial_split_profiles_auto_accept(self):
+        # The screenshot case: one person split across five tied OpenAlex
+        # profiles whose names differ only by middle initial.
+        conn, fid, faculty = self._seed_faculty()
+        base = dict(ucsd_current=True)
+        candidates = [
+            _candidate("A1", score=1.0, display_name="Jane K. Smith",
+                       works_count=243, cited_by_count=9985,
+                       topic_domains=["Health Sciences", "Social Sciences"],
+                       orcid="0000-0001-1111-2222", **base),
+            _candidate("A2", score=1.0, display_name="Jane Smith",
+                       works_count=3,
+                       topic_domains=["Social Sciences", "Health Sciences"],
+                       **base),
+            _candidate("A3", score=1.0, display_name="Jane Smith",
+                       works_count=1,
+                       topic_domains=["Health Sciences"], **base),
+            _candidate("A4", score=1.0, display_name="Jane K Smith",
+                       works_count=1, **base),  # stub with no topic data
+            _candidate("A5", score=1.0, display_name="Jane K. Smith",
+                       works_count=1,
+                       topic_domains=["Health Sciences"], **base),
+        ]
+        outcome = self._resolver(candidates).resolve(conn, faculty)
+        self.assertEqual(outcome, "auto")
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertEqual(row["openalex_id"], "A1")  # largest profile wins
+        self.assertEqual(row["orcid"], "0000-0001-1111-2222")
+        logs = self._log_rows(conn)
+        self.assertEqual(logs[0]["method"], "identity_auto_rule")
+        self.assertIn("duplicate_tie_collapse", logs[0]["raw_response"])
+        conn.close()
+
     def test_different_orcid_tie_stays_ambiguous(self):
         conn, fid, faculty = self._seed_faculty()
         candidates = [
@@ -425,6 +508,31 @@ class IdentityResweepTests(_ResolverTestBase):
 
         logs = self._log_rows(conn)
         self.assertEqual({l["method"] for l in logs}, {"identity_auto_rule"})
+        conn.close()
+
+    def test_resweep_collapses_middle_initial_split(self):
+        from enrichment.identity import resweep_pending
+        conn, fid, _ = self._seed_faculty()
+        base = dict(ucsd_current=True, topic_domains=["Health Sciences"])
+        self._queue(conn, fid, [
+            _candidate("A1", score=1.0, display_name="Jane K. Smith",
+                       works_count=243, orcid="0000-0001-1111-2222", **base),
+            _candidate("A2", score=1.0, display_name="Jane Smith",
+                       works_count=3, **base),
+            _candidate("A3", score=1.0, display_name="Jane K Smith",
+                       works_count=1, **base),
+        ])
+        stats = resweep_pending(orcid_source=_StubORCID())
+        self.assertEqual(stats["accepted_tie_collapse"], 1)
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertEqual(row["openalex_id"], "A1")
+        self.assertEqual(row["orcid"], "0000-0001-1111-2222")
+        self.assertEqual(row["identity_status"], "confirmed")
+        statuses = {r["external_id"]: r["status"] for r in conn.execute(
+            "SELECT external_id, status FROM identity_candidates"
+            " WHERE faculty_id=?", (fid,))}
+        self.assertEqual(statuses, {"A1": "accepted", "A2": "rejected",
+                                    "A3": "rejected"})
         conn.close()
 
     def test_resweep_is_idempotent(self):

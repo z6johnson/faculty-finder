@@ -14,7 +14,8 @@ logger = logging.getLogger(__name__)
 NORMALIZE_SYSTEM_PROMPT = """\
 You are an academic profile analyst. You will receive raw data about a \
 faculty member collected from multiple public sources (university profile, \
-NIH/NSF grants, PubMed/Semantic Scholar publications). Your task is to \
+NIH/NSF grants, publications from OpenAlex/PubMed/Semantic Scholar and \
+discipline-specific indexes, patents, and awards). Your task is to \
 produce a clean, structured summary of their research expertise.
 
 Rules:
@@ -22,6 +23,8 @@ Rules:
 2. Preserve factual accuracy — do not invent expertise not supported by the data.
 3. When sources conflict, prefer the university profile over other sources.
 4. Be concise but comprehensive.
+5. Factor honors, awards, and patents into the narrative when present — they \
+signal recognized expertise and translational work.
 
 Return ONLY valid JSON with this structure:
 {
@@ -41,17 +44,35 @@ Ocean, deep sea, Antarctic, coastal wetlands, ...)"]
 If there is insufficient data for a field, use an empty list or null."""
 
 
-def normalize_faculty_data(faculty_dict, raw_enrichment_data):
-    """Use LLM to produce structured profile fields from raw enrichment data.
+# Sources whose recent_publications get the generic rendering below.
+_GENERIC_PUB_SOURCES = ("openalex", "dblp", "arxiv", "nasa_ads", "repec",
+                        "escholarship")
 
-    Args:
-        faculty_dict: Current faculty record dict.
-        raw_enrichment_data: Dict mapping source_name -> raw data dict.
 
-    Returns:
-        Dict with normalized fields, or None if normalization fails.
+def _render_pubs(pubs, limit=10):
+    lines = []
+    for p in pubs[:limit]:
+        line = f"- {p.get('title', 'Untitled')}"
+        if p.get("journal"):
+            line += f" ({p['journal']}"
+            if p.get("year"):
+                line += f", {p['year']}"
+            line += ")"
+        elif p.get("year"):
+            line += f" ({p['year']})"
+        lines.append(line)
+        if p.get("mesh_terms"):
+            lines.append(f"  MeSH: {', '.join(p['mesh_terms'][:5])}")
+    return lines
+
+
+def build_context(faculty_dict, raw_enrichment_data):
+    """Build the LLM normalization context string.
+
+    Exposed separately so the pipeline can fingerprint it (faculty.raw_hash)
+    and skip the LLM call when nothing changed since the previous run.
+    Returns None when there is not enough data to normalize.
     """
-    # Build the context for the LLM
     parts = []
 
     name = f"{faculty_dict.get('first_name', '')} {faculty_dict.get('last_name', '')}"
@@ -139,6 +160,48 @@ def normalize_faculty_data(faculty_dict, raw_enrichment_data):
                     "\n".join(f"- {w}" for w in data["recent_works"][:5])
                 )
 
+        if source_name == "openalex":
+            metrics = []
+            if data.get("h_index") is not None:
+                metrics.append(f"h-index: {data['h_index']}")
+            if data.get("works_count") is not None:
+                metrics.append(f"{data['works_count']} works")
+            if data.get("citation_count") is not None:
+                metrics.append(f"{data['citation_count']} citations")
+            if metrics:
+                parts.append(f"OpenAlex metrics: {', '.join(metrics)}")
+            if data.get("expertise_keywords"):
+                parts.append("OpenAlex research topics: "
+                             + ", ".join(data["expertise_keywords"][:15]))
+
+        if source_name in _GENERIC_PUB_SOURCES and data.get("recent_publications"):
+            label = source_name.replace("_", " ")
+            parts.append(f"Recent publications ({label}):\n"
+                         + "\n".join(_render_pubs(data["recent_publications"])))
+
+        if source_name == "clinical_trials" and data.get("funded_grants"):
+            trials_text = [f"- {t.get('title', 'Untitled')} ({t.get('status', '')})"
+                           for t in data["funded_grants"][:8]]
+            parts.append("Clinical trials (as investigator):\n" + "\n".join(trials_text))
+
+        if source_name == "patents_view" and data.get("patents"):
+            pat_text = []
+            for p in data["patents"][:8]:
+                line = f"- {p.get('title', 'Untitled')}"
+                if p.get("year"):
+                    line += f" ({p['year']})"
+                pat_text.append(line)
+            parts.append("US patents (UC-assigned):\n" + "\n".join(pat_text))
+
+        if source_name == "wikidata" and data.get("awards"):
+            award_text = []
+            for a in data["awards"][:10]:
+                line = f"- {a.get('name', '')}"
+                if a.get("year"):
+                    line += f" ({a['year']})"
+                award_text.append(line)
+            parts.append("Honors and awards:\n" + "\n".join(award_text))
+
     # Fallback: if raw enrichment data didn't include grants or publications
     # (e.g. source API was down or returned nothing this run), use data that
     # was fetched in a previous run and is already stored on the faculty record.
@@ -176,16 +239,47 @@ def normalize_faculty_data(faculty_dict, raw_enrichment_data):
         if pubs_text:
             parts.append("Previously fetched publications:\n" + "\n".join(pubs_text))
 
+    has_awards_context = any("award" in p.lower() for p in parts[1:])
+    if not has_awards_context and faculty_dict.get("awards"):
+        award_text = []
+        for a in faculty_dict["awards"][:10]:
+            line = f"- {a.get('name', '') if isinstance(a, dict) else a}"
+            if isinstance(a, dict) and a.get("year"):
+                line += f" ({a['year']})"
+            award_text.append(line)
+        parts.append("Honors and awards:\n" + "\n".join(award_text))
+
+    has_patents_context = any("patent" in p.lower() for p in parts[1:])
+    if not has_patents_context and faculty_dict.get("patents"):
+        pat_text = [f"- {p.get('title', '') if isinstance(p, dict) else p}"
+                    for p in faculty_dict["patents"][:8]]
+        parts.append("US patents:\n" + "\n".join(pat_text))
+
     if len(parts) <= 1:
         # Only have the name — not enough data to normalize
         return None
 
-    user_prompt = "\n\n".join(parts)
+    return "\n\n".join(parts)
 
+
+def normalize_from_context(name, context):
+    """Run the LLM over a pre-built context string."""
     try:
-        raw = _call_llm(NORMALIZE_SYSTEM_PROMPT, user_prompt, max_tokens=1000, temperature=0.1)
-        result = _parse_json_response(raw)
-        return result
+        raw = _call_llm(NORMALIZE_SYSTEM_PROMPT, context, max_tokens=1000, temperature=0.1)
+        return _parse_json_response(raw)
     except Exception:
         logger.exception("LLM normalization failed for %s", name)
         return None
+
+
+def normalize_faculty_data(faculty_dict, raw_enrichment_data):
+    """Use LLM to produce structured profile fields from raw enrichment data.
+
+    Convenience wrapper over build_context + normalize_from_context (the
+    pipeline calls them separately so it can fingerprint the context).
+    """
+    context = build_context(faculty_dict, raw_enrichment_data)
+    if not context:
+        return None
+    name = f"{faculty_dict.get('first_name', '')} {faculty_dict.get('last_name', '')}"
+    return normalize_from_context(name, context)

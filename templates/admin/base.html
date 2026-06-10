@@ -47,6 +47,7 @@
     <nav>
       <a href="{{ url_for('admin.home') }}">Dashboard</a>
       <a href="{{ url_for('admin.eah') }}">EAH Sync</a>
+      <a href="{{ url_for('admin.identity_queue') }}">Identity review</a>
       <form method="post" action="{{ url_for('admin.logout') }}" style="margin:0;">
         <button class="btn secondary" style="padding:6px 12px;">Log out</button>
       </form>

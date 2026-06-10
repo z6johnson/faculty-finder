@@ -8,19 +8,48 @@ LLM normalizer, then refresh the live database.</p>
 
 <div class="card">
   <h3 style="margin-top:0;">Run now</h3>
-  <div style="display:flex; gap:10px; flex-wrap:wrap;">
-    {% for key, label in depts %}
-    <form method="post" action="{{ url_for('admin.enrich_run') }}" style="margin:0;">
-      <input type="hidden" name="department" value="{{ key }}">
-      <button class="btn">Enrich {{ label }}</button>
-    </form>
-    {% endfor %}
+  <form method="post" action="{{ url_for('admin.enrich_run') }}"
+        style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+    <select name="department">
+      {% for key, label in depts %}
+      <option value="{{ key }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn">Enrich division</button>
+  </form>
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
     <form method="post" action="{{ url_for('admin.eah_reconcile_run') }}" style="margin:0;">
       <button class="btn secondary">Re-run EAH reconcile</button>
+    </form>
+    <form method="post" action="{{ url_for('admin.escholarship_run') }}" style="margin:0;">
+      <button class="btn secondary">Harvest eScholarship</button>
     </form>
   </div>
   <p class="muted" style="margin-bottom:0;">A run can take many minutes; track it
   under “Recent jobs” below (refresh to update).</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0;">New-faculty pipeline</h3>
+  <p class="muted">Step 1 resolves EAH-seeded faculty to OpenAlex/ORCID identities
+  (ambiguous matches go to the <a href="{{ url_for('admin.identity_queue') }}">review
+  queue</a>); step 2 backfills enrichment for resolved, never-enriched faculty.</p>
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <form method="post" action="{{ url_for('admin.identity_run') }}" style="margin:0;">
+      <input type="hidden" name="pi_only" value="1">
+      <button class="btn">Resolve identities (PI-eligible)</button>
+    </form>
+    <form method="post" action="{{ url_for('admin.identity_run') }}" style="margin:0;">
+      <button class="btn secondary">Resolve identities (everyone)</button>
+    </form>
+    <form method="post" action="{{ url_for('admin.backfill_run') }}" style="margin:0;">
+      <input type="hidden" name="pi_only" value="1">
+      <button class="btn">Backfill enrichment (PI-eligible)</button>
+    </form>
+    <form method="post" action="{{ url_for('admin.backfill_run') }}" style="margin:0;">
+      <button class="btn secondary">Backfill enrichment (everyone)</button>
+    </form>
+  </div>
 </div>
 
 <div class="card">

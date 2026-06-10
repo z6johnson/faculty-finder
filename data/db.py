@@ -23,28 +23,25 @@ DB_PATH = os.environ.get(
 )
 SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "schema.sql")
 
-DEPT_LABELS = {
-    "hwsph": "Herbert Wertheim School of Public Health",
-    "sio": "Scripps Institution of Oceanography",
-    "jacobs": "Jacobs School of Engineering",
-}
+from data import divisions
 
 # Scalar (text) columns that pass through unchanged.
 _TEXT_FIELDS = [
     "first_name", "last_name", "title", "email",
     "research_interests", "research_interests_enriched",
-    "profile_url", "orcid", "last_enriched",
+    "profile_url", "orcid", "openalex_id", "identity_status", "raw_hash",
+    "last_enriched",
     "employee_class", "job_code", "job_code_description",
     "vc_area", "division_school", "department_unit",
     "department_l2", "department_l3", "department_l4", "department_l5",
     "department_eah", "department_code", "eah_status", "subdepartment",
 ]
-_INT_FIELDS = ["h_index", "pi_eligible"]
+_INT_FIELDS = ["h_index", "citation_count", "works_count", "pi_eligible"]
 # Arrays / nested objects stored as JSON text.
 _JSON_FIELDS = [
     "degrees", "expertise_keywords", "methodologies", "disease_areas",
     "populations", "committee_service", "integrity_flags",
-    "funded_grants", "recent_publications",
+    "funded_grants", "recent_publications", "awards", "patents",
 ]
 # Every column written from a faculty record (excludes id/stable_key/department/
 # department_label and the derived has_profile/grants_count/pubs_count/updated_at).
@@ -96,8 +93,32 @@ def get_write_conn():
     return _write_conn
 
 
+# Columns added after the original schema shipped. Existing production DBs
+# pick them up via ALTER TABLE (schema.sql only creates missing *tables*).
+_FACULTY_COLUMN_MIGRATIONS = [
+    ("openalex_id", "TEXT"),
+    ("identity_status", "TEXT NOT NULL DEFAULT 'unresolved'"),
+    ("citation_count", "INTEGER"),
+    ("works_count", "INTEGER"),
+    ("raw_hash", "TEXT"),
+    ("awards", "TEXT"),
+    ("patents", "TEXT"),
+]
+
+
+def _apply_migrations(conn):
+    """Idempotently add columns that postdate an existing faculty table."""
+    existing = {row[1] for row in conn.execute("PRAGMA table_info(faculty)")}
+    if not existing:
+        return  # fresh DB; schema.sql creates the full table
+    for col, decl in _FACULTY_COLUMN_MIGRATIONS:
+        if col not in existing:
+            conn.execute(f"ALTER TABLE faculty ADD COLUMN {col} {decl}")
+
+
 def init_schema(conn):
-    """Apply schema.sql (idempotent)."""
+    """Apply schema.sql plus column migrations (idempotent)."""
+    _apply_migrations(conn)
     with open(SCHEMA_PATH) as f:
         conn.executescript(f.read())
     conn.commit()
@@ -148,10 +169,9 @@ def _row_to_faculty(row, for_export=False):
         val = row[field]
         if val is not None:
             rec[field] = val
-    if row["h_index"] is not None:
-        rec["h_index"] = row["h_index"]
-    if row["pi_eligible"] is not None:
-        rec["pi_eligible"] = bool(row["pi_eligible"])
+    for field in _INT_FIELDS:
+        if row[field] is not None:
+            rec[field] = bool(row[field]) if field == "pi_eligible" else row[field]
     for field in _JSON_FIELDS:
         raw = row[field]
         rec[field] = json.loads(raw) if raw else []
@@ -165,7 +185,10 @@ def _record_values(record):
     """Serialize a faculty record dict to the column tuple for write."""
     values = []
     for field in _TEXT_FIELDS:
-        values.append(record.get(field))
+        val = record.get(field)
+        if field == "identity_status" and not val:
+            val = "unresolved"  # column is NOT NULL
+        values.append(val)
     for field in _INT_FIELDS:
         val = record.get(field)
         if field == "pi_eligible" and isinstance(val, bool):
@@ -182,10 +205,13 @@ def _record_values(record):
 # ---------------------------------------------------------------------------
 
 def _norm_dept(department):
-    """None/'hwsph' -> 'hwsph'; 'all' -> None (no filter); else the dept key."""
-    if department in (None, "hwsph"):
-        return "hwsph"
-    if department == "all":
+    """None/'all'/'' -> None (no filter); else the division slug.
+
+    Historically None meant 'hwsph'; callers now pass explicit slugs, and an
+    absent department means "every division" so new-division rows are never
+    silently scoped to public health.
+    """
+    if department in (None, "", "all"):
         return None
     return department
 
@@ -290,12 +316,19 @@ def search_faculty(conn, department=None, query=None, limit=20, offset=0,
     return results, total
 
 
+# Faculty flagged out of the EAH reconcile stay in the DB (purges are
+# admin-confirmed) but are excluded from the public matching pool.
+_INACTIVE_STATUSES = ("Inactive", "Duplicate")
+_ACTIVE_SQL = (" AND (faculty.eah_status IS NULL OR faculty.eah_status NOT IN "
+               + "(" + ",".join(f"'{s}'" for s in _INACTIVE_STATUSES) + "))")
+
+
 def count_match_pool(conn, department=None):
     """Return (with_profile, without_profile) counts for a department."""
     dept_sql, dept_params = _dept_clause(department)
     row = conn.execute(
         "SELECT COALESCE(SUM(has_profile), 0), COUNT(*) "
-        "FROM faculty WHERE 1=1" + dept_sql, dept_params,
+        "FROM faculty WHERE 1=1" + dept_sql + _ACTIVE_SQL, dept_params,
     ).fetchone()
     with_profile, total = row[0], row[1]
     return with_profile, total - with_profile
@@ -330,14 +363,14 @@ def fetch_match_candidates(conn, department, keywords, pool_with_profile=None,
     # Small pool or no usable keywords: return all matchable faculty.
     if pool_with_profile <= limit or not match:
         rows = conn.execute(
-            "SELECT id FROM faculty WHERE has_profile = 1" + dept_sql
+            "SELECT id FROM faculty WHERE has_profile = 1" + dept_sql + _ACTIVE_SQL
             + " ORDER BY last_name, first_name", dept_params,
         ).fetchall()
         return _load_records(conn, [r["id"] for r in rows])
 
     ranked = conn.execute(
         "SELECT faculty.id FROM faculty_fts JOIN faculty ON faculty.id = faculty_fts.rowid"
-        " WHERE faculty_fts MATCH ? AND faculty.has_profile = 1" + dept_sql
+        " WHERE faculty_fts MATCH ? AND faculty.has_profile = 1" + dept_sql + _ACTIVE_SQL
         + " ORDER BY bm25(faculty_fts) LIMIT ?",
         [match] + dept_params + [limit],
     ).fetchall()
@@ -346,7 +379,7 @@ def fetch_match_candidates(conn, department, keywords, pool_with_profile=None,
     if len(ids) < limit:
         placeholders = ",".join("?" * len(ids)) if ids else "0"
         pad = conn.execute(
-            "SELECT id FROM faculty WHERE has_profile = 1" + dept_sql
+            "SELECT id FROM faculty WHERE has_profile = 1" + dept_sql + _ACTIVE_SQL
             + f" AND id NOT IN ({placeholders})"
             " ORDER BY h_index DESC, last_name, first_name LIMIT ?",
             dept_params + ids + [limit - len(ids)],
@@ -374,6 +407,7 @@ def fetch_for_enrichment(conn, department=None):
     for row in rows:
         rec = _row_to_faculty(row)
         rec["_db_id"] = row["id"]
+        rec["_stable_key"] = row["stable_key"]
         faculty.append(rec)
     return {"faculty": faculty}
 
@@ -397,14 +431,46 @@ def save_faculty_record(conn, faculty_id, record):
     reindex_faculty(conn, faculty_id, record)
 
 
+def update_faculty_division(conn, faculty_id, slug, label):
+    """Move a faculty row to another division (EAH says they transferred)."""
+    conn.execute(
+        "UPDATE faculty SET department = ?, department_label = ?, updated_at = ?"
+        " WHERE id = ?",
+        (slug, label, _now_iso(), faculty_id),
+    )
+
+
+def mark_eah_status(conn, faculty_id, status):
+    """Soft-flag a row's employment status (e.g. 'Inactive', 'Duplicate')."""
+    conn.execute(
+        "UPDATE faculty SET eah_status = ?, updated_at = ? WHERE id = ?",
+        (status, _now_iso(), faculty_id),
+    )
+
+
+def purge_flagged_faculty(conn):
+    """Admin-confirmed removal of rows flagged Inactive/Duplicate by the EAH
+    reconcile. Returns the number of rows deleted."""
+    placeholders = ",".join("?" * len(_INACTIVE_STATUSES))
+    ids = [r[0] for r in conn.execute(
+        f"SELECT id FROM faculty WHERE eah_status IN ({placeholders})",
+        _INACTIVE_STATUSES,
+    ).fetchall()]
+    for fid in ids:
+        conn.execute("DELETE FROM faculty_fts WHERE rowid = ?", (fid,))
+        conn.execute("DELETE FROM faculty WHERE id = ?", (fid,))
+    return len(ids)
+
+
 def upsert_faculty(conn, department, record):
     """Insert or update a faculty row by stable_key (used by migration/seed).
 
     Returns the faculty id.
     """
-    department = _norm_dept(department) or department
+    if not department:
+        raise ValueError("upsert_faculty requires an explicit division slug")
     stable_key = compute_stable_key(department, record)
-    label = DEPT_LABELS.get(department, department)
+    label = record.get("department_label") or divisions.label_for(department)
     now = datetime.now(timezone.utc).isoformat()
 
     insert_cols = (["stable_key", "department", "department_label"]
@@ -644,3 +710,182 @@ def admin_get_faculty(conn, faculty_id):
     rec["stable_key"] = row["stable_key"]
     rec["department"] = row["department"]
     return rec
+
+
+# ---------------------------------------------------------------------------
+# Identity resolution
+# ---------------------------------------------------------------------------
+
+def fetch_identity_queue(conn, department=None, pi_only=False, statuses=("unresolved",),
+                         limit=None):
+    """Faculty awaiting identity resolution, tagged with ``_db_id``."""
+    dept_sql, params = _dept_clause(department)
+    status_sql = ",".join("?" * len(statuses))
+    sql = (f"SELECT * FROM faculty WHERE identity_status IN ({status_sql})"
+           + dept_sql)
+    params = list(statuses) + params
+    if pi_only:
+        sql += " AND pi_eligible = 1"
+    sql += " ORDER BY pi_eligible DESC, id"
+    if limit:
+        sql += " LIMIT ?"
+        params.append(limit)
+    rows = conn.execute(sql, params).fetchall()
+    out = []
+    for row in rows:
+        rec = _row_to_faculty(row)
+        rec["_db_id"] = row["id"]
+        rec["_stable_key"] = row["stable_key"]
+        out.append(rec)
+    return out
+
+
+def set_identity_status(conn, faculty_id, status):
+    conn.execute("UPDATE faculty SET identity_status = ?, updated_at = ? WHERE id = ?",
+                 (status, _now_iso(), faculty_id))
+
+
+def insert_identity_candidates(conn, faculty_id, candidates):
+    """Store candidate external identities for admin review."""
+    now = _now_iso()
+    conn.executemany(
+        "INSERT INTO identity_candidates"
+        " (faculty_id, source, external_id, display_name, affiliation, score,"
+        "  evidence, status, created_at)"
+        " VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?)",
+        [(faculty_id, c["source"], c["external_id"], c.get("display_name"),
+          c.get("affiliation"), c["score"],
+          json.dumps(c.get("evidence") or {}, ensure_ascii=False), now)
+         for c in candidates],
+    )
+
+
+def clear_identity_candidates(conn, faculty_id):
+    """Drop pending candidates before a re-run for the same faculty."""
+    conn.execute(
+        "DELETE FROM identity_candidates WHERE faculty_id = ? AND status = 'pending'",
+        (faculty_id,),
+    )
+
+
+def list_identity_candidates(conn, status="pending", department=None, limit=200):
+    """Pending candidates grouped for the review queue, newest first."""
+    dept_sql, dept_params = _dept_clause(department, alias="f")
+    rows = conn.execute(
+        "SELECT c.*, f.first_name AS f_first, f.last_name AS f_last,"
+        " f.title AS f_title, f.department AS f_department,"
+        " f.division_school AS f_division_school, f.email AS f_email"
+        " FROM identity_candidates c JOIN faculty f ON f.id = c.faculty_id"
+        " WHERE c.status = ?" + dept_sql +
+        " ORDER BY c.faculty_id, c.score DESC LIMIT ?",
+        [status] + dept_params + [limit],
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def get_identity_candidate(conn, candidate_id):
+    row = conn.execute(
+        "SELECT * FROM identity_candidates WHERE id = ?", (candidate_id,)
+    ).fetchone()
+    return dict(row) if row else None
+
+
+def decide_identity_candidate(conn, candidate_id, accept):
+    """Accept/reject one candidate. Accepting writes the external id onto the
+    faculty row (orcid only if currently empty), marks the faculty 'confirmed',
+    and rejects sibling candidates."""
+    cand = get_identity_candidate(conn, candidate_id)
+    if not cand or cand["status"] != "pending":
+        return None
+    now = _now_iso()
+    new_status = "accepted" if accept else "rejected"
+    conn.execute(
+        "UPDATE identity_candidates SET status = ?, decided_at = ? WHERE id = ?",
+        (new_status, now, candidate_id),
+    )
+    if not accept:
+        return cand
+
+    fid = cand["faculty_id"]
+    if cand["source"] == "openalex":
+        conn.execute(
+            "UPDATE faculty SET openalex_id = COALESCE(openalex_id, ?) WHERE id = ?",
+            (cand["external_id"], fid),
+        )
+        evidence = json.loads(cand["evidence"] or "{}")
+        if evidence.get("orcid"):
+            conn.execute(
+                "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
+                (evidence["orcid"], fid),
+            )
+    elif cand["source"] == "orcid":
+        conn.execute(
+            "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
+            (cand["external_id"], fid),
+        )
+    set_identity_status(conn, fid, "confirmed")
+    conn.execute(
+        "UPDATE identity_candidates SET status = 'rejected', decided_at = ?"
+        " WHERE faculty_id = ? AND status = 'pending' AND id != ?",
+        (now, fid, candidate_id),
+    )
+    return cand
+
+
+def reject_faculty_identity(conn, faculty_id):
+    """Mark a faculty as not findable anywhere; excluded from enrichment."""
+    now = _now_iso()
+    conn.execute(
+        "UPDATE identity_candidates SET status = 'rejected', decided_at = ?"
+        " WHERE faculty_id = ? AND status = 'pending'",
+        (now, faculty_id),
+    )
+    set_identity_status(conn, faculty_id, "rejected")
+
+
+# ---------------------------------------------------------------------------
+# Backfill selection & division coverage
+# ---------------------------------------------------------------------------
+
+def fetch_backfill_candidates(conn, pi_only=False, limit=None):
+    """Identity-resolved, never-enriched faculty in priority order."""
+    sql = ("SELECT * FROM faculty"
+           " WHERE last_enriched IS NULL"
+           " AND identity_status IN ('auto', 'confirmed')")
+    params = []
+    if pi_only:
+        sql += " AND pi_eligible = 1"
+    sql += " ORDER BY pi_eligible DESC, department, id"
+    if limit:
+        sql += " LIMIT ?"
+        params.append(limit)
+    rows = conn.execute(sql, params).fetchall()
+    out = []
+    for row in rows:
+        rec = _row_to_faculty(row)
+        rec["_db_id"] = row["id"]
+        rec["_stable_key"] = row["stable_key"]
+        out.append(rec)
+    return out
+
+
+def load_status_by_division(conn):
+    """Per-division coverage for the admin dashboard."""
+    rows = conn.execute(
+        "SELECT department, department_label, COUNT(*) AS total,"
+        " SUM(CASE WHEN identity_status IN ('auto','confirmed') THEN 1 ELSE 0 END) AS resolved,"
+        " SUM(CASE WHEN identity_status = 'ambiguous' THEN 1 ELSE 0 END) AS ambiguous,"
+        " SUM(CASE WHEN identity_status = 'not_found' THEN 1 ELSE 0 END) AS not_found,"
+        " SUM(has_profile) AS with_profile,"
+        " SUM(CASE WHEN last_enriched IS NOT NULL THEN 1 ELSE 0 END) AS enriched,"
+        " SUM(CASE WHEN pi_eligible = 1 THEN 1 ELSE 0 END) AS pi_eligible"
+        " FROM faculty GROUP BY department ORDER BY total DESC"
+    ).fetchall()
+    out = []
+    for r in rows:
+        d = dict(r)
+        total = d["total"] or 0
+        d["pct_resolved"] = round((d["resolved"] or 0) / total * 100, 1) if total else 0
+        d["pct_enriched"] = round((d["enriched"] or 0) / total * 100, 1) if total else 0
+        out.append(d)
+    return out

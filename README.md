@@ -92,41 +92,72 @@ Both LLM calls use the same model via LiteLLM (default: `openai/api-gpt-oss-120b
 
 ## Enrichment Pipeline
 
-Faculty profiles start with basic directory data (name, title, email, research interests) and are enriched weekly from six public academic data sources. The pipeline runs via GitHub Actions every Sunday and commits updated data back to the repository.
+Faculty records are seeded from the Employee Activity Hub (EAH) HR extract for
+**every UCSD division** (~5,500 active academics) and enriched from free/open
+academic data sources. Three stages take a row from bare HR data to a
+matchable profile:
+
+1. **Identity resolution** (`enrichment/identity.py`, job kind
+   `identity_resolve`) — resolves each person to an OpenAlex author id (and
+   ORCID when known) using name search constrained to the UCSD institution
+   (ROR `0168r3w48`), scored on name similarity, affiliation currency, and
+   topic↔division consistency. Confident matches are auto-accepted; ambiguous
+   ones land in the admin **Identity review** queue; misses are marked
+   `not_found` and retried weekly.
+2. **Enrichment** (`enrichment/pipeline.py`) — fetches from the division's
+   source bundle, merges fields, and LLM-normalizes the profile.
+3. **Backfill** (job kind `backfill`) — nightly batches enrich
+   identity-resolved, never-enriched faculty, PI-eligible rows first.
+
+Faculty without an enriched profile stay out of the public matching pool
+(`has_profile` gating), as do rows soft-flagged `Inactive` by the EAH
+reconcile.
 
 ### Data Sources
 
-#### HWSPH (Public Health) Sources
+Every division gets the **core** sources; discipline-specific extras are
+routed per division in `enrichment/routing.py` (division slugs come from the
+EAH `Division / School` value via `data/divisions.py`).
 
-| Source | Confidence | API | Auth Required | Rate Limit | Fields Provided |
-|--------|-----------|-----|---------------|------------|-----------------|
-| **UCSD Profiles** | 1.0 | Web scrape (`profiles.ucsd.edu`) | No | 1 req/2s | `research_interests_enriched`, `profile_url` |
-| **ORCID** | 0.9 | REST (`pub.orcid.org/v3.0`) | No | 1 req/s | `orcid`, `recent_publications`, `funded_grants` |
-| **NIH RePORTER** | 0.8 | REST (`api.reporter.nih.gov/v2`) | No | 1 req/s | `funded_grants` |
-| **Semantic Scholar** | 0.75 | REST (`api.semanticscholar.org/graph/v1`) | Optional (`S2_API_KEY`) | 3 req/s free, 1 req/s with key | `h_index`, `recent_publications` |
-| **PubMed** | 0.7 | REST (NCBI E-utilities) | Optional (`NCBI_API_KEY`) | 3 req/s free, 10 req/s with key | `recent_publications` |
+#### Core (all divisions)
 
-#### SIO (Scripps Oceanography) Sources
+| Source | Confidence | API | Auth | Fields Provided |
+|--------|-----------|-----|------|-----------------|
+| **OpenAlex** | 0.85 | REST (`api.openalex.org`) | Optional `OPENALEX_MAILTO` (polite pool) | `openalex_id`, `orcid`, `h_index`, `citation_count`, `works_count`, `recent_publications`, `expertise_keywords` |
+| **ORCID** | 0.9 | REST (`pub.orcid.org/v3.0`) | No | `orcid`, `recent_publications`, `funded_grants`, `awards` |
+| **UCSD Profiles** | 1.0 | Web scrape (`profiles.ucsd.edu`) | No | `research_interests_enriched`, `profile_url` |
+| **Wikidata** | 0.8 | SPARQL | No (only runs when ORCID known) | `awards` (honors, society memberships) |
+| **Email pattern** | 0.5 | Inference | No | `email` fallback |
 
-Same as HWSPH, plus:
+#### Discipline extras by division
 
-| Source | Confidence | API | Auth Required | Rate Limit | Fields Provided |
-|--------|-----------|-----|---------------|------------|-----------------|
-| **Scripps Profiles** | 1.0 | Web scrape (`profiles.ucsd.edu`, `scripps.ucsd.edu`) | No | 1 req/2s | `research_interests_enriched`, `profile_url` |
-| **NSF Awards** | 0.8 | REST (`api.nsf.gov/services/v1`) | No | 1 req/s | `funded_grants` |
+| Division(s) | Extra sources |
+|-------------|---------------|
+| hwsph | PubMed, NIH RePORTER, Semantic Scholar, ClinicalTrials.gov |
+| sio | Scripps Profiles, NSF Awards, NIH RePORTER, PubMed, Semantic Scholar |
+| jacobs | NSF, NIH, PubMed, Semantic Scholar, DBLP, arXiv, PatentsView |
+| som, skaggs | PubMed, NIH RePORTER, ClinicalTrials.gov, PatentsView |
+| bio-sci | PubMed, NIH, NSF, PatentsView |
+| phys-sci | NSF, arXiv, NASA ADS, PatentsView, Crossref |
+| soc-sci | NSF, NIH, RePEc, Crossref |
+| arts-hum | Crossref, eScholarship |
+| rady, gps | RePEc, NSF, Crossref |
+| (anything else) | Crossref, NSF |
 
-SIO uses Scripps Profiles instead of UCSD Profiles, and adds NSF Awards. NIH RePORTER, PubMed, ORCID, and Semantic Scholar are shared.
-
-#### Jacobs (School of Engineering) Sources
-
-Same as HWSPH, plus NSF Awards:
-
-| Source | Confidence | API | Auth Required | Rate Limit | Fields Provided |
-|--------|-----------|-----|---------------|------------|-----------------|
-| **UCSD Profiles** | 1.0 | Web scrape (`profiles.ucsd.edu`) | No | 1 req/2s | `research_interests_enriched`, `profile_url` |
-| **NSF Awards** | 0.8 | REST (`api.nsf.gov/services/v1`) | No | 1 req/s | `funded_grants` |
-
-Jacobs uses UCSD Profiles (like HWSPH) and adds NSF Awards (like SIO). NIH RePORTER, PubMed, ORCID, and Semantic Scholar are shared.
+| Source | Confidence | Auth | Notes |
+|--------|-----------|------|-------|
+| **NIH RePORTER** | 0.8 | No | Federal grant records |
+| **NSF Awards** | 0.8 | No | Federal grant records |
+| **PatentsView (USPTO)** | 0.8 | Free key `PATENTSVIEW_API_KEY` | Patents; assignee must be the UC Regents |
+| **ClinicalTrials.gov v2** | 0.8 | No | Trials where the person is an overall official with a UCSD affiliation |
+| **NASA ADS** | 0.8 | Free key `ADS_API_KEY` | Physics/astronomy literature |
+| **DBLP** | 0.75 | No | CS bibliography; requires an unambiguous author |
+| **eScholarship** | 0.75 | No | UC open-access repository; bulk OAI-PMH harvest (`escholarship_harvest` job) into a local lookup table |
+| **Semantic Scholar** | 0.75 | Optional `S2_API_KEY` | Legacy bundles only |
+| **PubMed** | 0.7 | Optional `NCBI_API_KEY` | Biomedical literature |
+| **Crossref** | 0.7 | Optional mailto | Funder acknowledgements looked up by DOI (from OpenAlex works) |
+| **RePEc/IDEAS** | 0.7 | Free code `REPEC_API_CODE` | Economics/management |
+| **arXiv** | 0.65 | No | Preprints; exact-name match required |
 
 ### Source Details
 
@@ -146,13 +177,19 @@ Jacobs uses UCSD Profiles (like HWSPH) and adds NSF Awards (like SIO). NIH RePOR
 
 The pipeline runs in three phases per faculty member:
 
-**Phase 1 — Fetch:** Queries all configured sources sequentially, with per-source rate limiting. Each source returns a raw data dict or `None`.
+**Phase 1 — Fetch:** Queries the division's routed sources concurrently, with
+per-source rate limiting (source instances are shared across the whole run so
+limits actually hold).
 
-**Phase 2 — Direct field writes:** Writes fields that don't require LLM synthesis:
-- **One-time writes** (`profile_url`, `orcid`, `google_scholar_id`, `h_index`): Written only if the field is currently empty. Never overwritten once set.
-- **Wholesale replacements** (`funded_grants`, `recent_publications`, `expertise_keywords`): Replaced entirely with fresh data from the source on each run.
+**Phase 2 — Field writes:** Sources are applied in descending confidence order:
+- **One-time writes** (`profile_url`, `orcid`, `openalex_id`, `google_scholar_id`): Written only if the field is currently empty. Never overwritten once set.
+- **Refreshed metrics** (`h_index`, `citation_count`, `works_count`): Updated every run.
+- **Merged lists** (`funded_grants`, `recent_publications`, `expertise_keywords`, `awards`, `patents`): Merged across sources with per-field dedupe (DOI/normalized title/patent number); higher-confidence entries win on collisions; capped per field.
 
-**Phase 3 — LLM normalization:** All raw source data is sent to the LLM normalizer, which synthesizes five structured fields:
+**Phase 3 — LLM normalization:** Skipped when the raw context fingerprint
+(`faculty.raw_hash`) is unchanged from the previous run — refreshes are nearly
+LLM-free when nothing changed. Otherwise the normalizer synthesizes five
+structured fields:
 - `research_interests_enriched` — 2–4 sentence narrative research summary
 - `expertise_keywords` — Domain-specific keyword list
 - `methodologies` — Research methods (e.g., RCT, cohort study, remote sensing, numerical modeling)
@@ -175,35 +212,52 @@ The normalizer prompt includes the faculty member's original directory descripti
 
 ### Audit Log
 
-Every field change from enrichment is recorded in an append-only JSONL log (`data/enrichment_log.jsonl`): faculty index, source name, source URL, field updated, old value, new value, confidence score, method (`api`, `scrape`, or `llm_extraction`), raw response excerpt (up to 5000 chars), and ISO timestamp. This provides full provenance for every data point in every faculty profile. Entries older than 30 days are pruned at the start of each run.
+Every field change from enrichment and every auto-accepted identity is recorded in the `enrichment_log` table: faculty id, stable key, source name, source URL, field updated, old value, new value, confidence score, method (`api`, `scrape`, `llm_extraction`, or `identity_auto`), raw response excerpt (up to 5000 chars), and ISO timestamp. This provides full provenance for every data point in every faculty profile. Entries older than 30 days are pruned at the start of each run.
 
-### Schedule
+### Schedule (in-process, UTC)
 
-All workflows live in `.github/workflows/` and are consolidated into two files:
+| Job | When |
+|-----|------|
+| Enrich hwsph / sio / jacobs | Sun 00:00 / 02:00 / 04:00 |
+| EAH reconcile (no-op without an uploaded extract) | Sun 06:00 (`EAH_RECONCILE_HOUR`) |
+| Identity sweep (new + `not_found` retries) | Sun 08:00 |
+| JSON provenance snapshot to `/data/backups` | Sun 10:00 |
+| Backfill (never-enriched, identity-resolved; PI-eligible first) | Mon–Sat 02:00 (`BACKFILL_HOUR`), budget `BACKFILL_TIME_BUDGET` (default 4h) |
 
-**Enrichment** (`enrich.yml`) — runs weekly, staggered to avoid overlap:
-- **HWSPH:** Every Sunday at midnight UTC
-- **SIO:** Every Sunday at 2:00 AM UTC
-- **Jacobs:** Every Sunday at 4:00 AM UTC
+All of these can also be triggered from the admin **Enrichment** page; eScholarship harvests (`escholarship_harvest`) are manual-trigger only.
 
-**Seeding** (`seed.yml`) — manual dispatch only, for re-seeding faculty rosters from public directories:
-- **SIO:** Scrapes UCSD catalog + `profiles.ucsd.edu`
-- **Jacobs:** Scrapes Jacobs School directory + UCSD catalog
+### New-division rollout runbook
 
-Both workflows support `workflow_dispatch` with school selector, sources, faculty indices, and dry-run mode. The enrichment workflow verifies that SIO/Jacobs rosters are seeded before proceeding. Vercel auto-deploys when enriched data is committed.
+1. Deploy (startup applies the schema migrations automatically).
+2. Upload the latest EAH extract via **Admin → EAH Sync** — the reconcile now
+   seeds/refreshes every division directly in SQLite and soft-flags departed
+   faculty `Inactive` (purge later with `data.db.purge_flagged_faculty`).
+3. If divisions were seeded before this release, run
+   `python scripts/normalize_divisions.py` once to slug them.
+4. **Admin → Enrichment → Resolve identities (PI-eligible)**, then work the
+   **Identity review** queue.
+5. **Backfill enrichment (PI-eligible)** — or wait for the nightly job.
+6. Repeat 4–5 without the PI filter for the remaining academics.
 
 ## Data Backend
 
-Faculty data is **authored as JSON** (`data/*.json`) — seeding and enrichment
-read and write these files, and git tracks every change for provenance. At
-runtime the app serves a **SQLite** database (`data/app.db`, FTS5 full-text
-indexed) that is **built from that JSON** by `scripts/migrate_json_to_sqlite.py`
-on each deploy. The web app opens the DB **read-only** through the single
-data-access module `data/db.py`; it is never written at request time.
+**SQLite is the source of truth** (`/data/app.db` on the persistent volume;
+FTS5 full-text indexed). Seeding (EAH reconcile), enrichment, identity
+resolution, and admin edits all write straight to the DB through the single
+data-access module `data/db.py`; the web app reads it through read-only
+connections and never writes at request time.
+
+The git-tracked JSON files (`data/*.json`) are the historical seeds for the
+original three schools: they bootstrap a brand-new volume once
+(`scripts/migrate_json_to_sqlite.py`, guarded by the entrypoint) and are no
+longer written by the pipeline. Weekly per-division snapshots land in
+`/data/backups` for provenance.
 
 ```bash
-python scripts/migrate_json_to_sqlite.py     # JSON -> data/app.db (build the runtime DB)
-python scripts/export_db_to_json.py          # data/app.db -> JSON (optional reverse export)
+python scripts/migrate_json_to_sqlite.py        # bootstrap only: JSON -> app.db
+python scripts/export_db_to_json.py             # app.db -> legacy JSON files
+python scripts/export_db_to_json.py --snapshots # app.db -> per-division dated snapshots
+python scripts/normalize_divisions.py --dry-run # preview division slug normalization
 ```
 
 See [`DEPLOY.md`](DEPLOY.md) for deployment (Railway volume + cron, or the

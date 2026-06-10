@@ -57,12 +57,51 @@ def export_department(conn, dept):
     print(f"  {dept:8s} -> {DEPT_FILES[dept]} ({len(faculty)} faculty)")
 
 
+def export_snapshots(backup_dir=None):
+    """Write per-division provenance snapshots (every division, not just the
+    legacy three) into the backups dir on the persistent volume. Called weekly
+    by the scheduler now that SQLite is the source of truth."""
+    from datetime import datetime, timezone
+
+    backup_dir = backup_dir or os.environ.get(
+        "SNAPSHOT_DIR", os.path.join(DATA_DIR, "backups"))
+    os.makedirs(backup_dir, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d")
+
+    conn = db.connect(readonly=True)
+    try:
+        depts = [r[0] for r in conn.execute(
+            "SELECT DISTINCT department FROM faculty ORDER BY department"
+        ).fetchall()]
+        for dept in depts:
+            rows = conn.execute(
+                "SELECT * FROM faculty WHERE department = ?"
+                " ORDER BY last_name, first_name", (dept,),
+            ).fetchall()
+            faculty = [db._row_to_faculty(row, for_export=True) for row in rows]
+            out = {"department": dept, "exported_at": stamp, "faculty": faculty}
+            path = os.path.join(backup_dir, f"{dept}_faculty_{stamp}.json")
+            _write_atomic(path, out)
+        print(f"Snapshots for {len(depts)} divisions written to {backup_dir}")
+    finally:
+        conn.close()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--db", help="Override FACULTY_DB_PATH for this run.")
     parser.add_argument("--dept", choices=list(DEPT_FILES),
                         help="Export a single department (default: all).")
+    parser.add_argument("--snapshots", action="store_true",
+                        help="Write per-division snapshots for every division "
+                             "into the backups dir instead.")
     args = parser.parse_args()
+
+    if args.snapshots:
+        if args.db:
+            db.DB_PATH = args.db
+        export_snapshots()
+        return 0
 
     if args.db:
         db.DB_PATH = args.db

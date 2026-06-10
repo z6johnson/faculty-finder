@@ -8,7 +8,7 @@
 CREATE TABLE IF NOT EXISTS faculty (
     id               INTEGER PRIMARY KEY AUTOINCREMENT,   -- surrogate key / FTS rowid
     stable_key       TEXT NOT NULL UNIQUE,                -- identity (orcid|email|name)
-    department       TEXT NOT NULL,                       -- 'hwsph' | 'sio' | 'jacobs'
+    department       TEXT NOT NULL,                       -- division slug (see data/divisions.py)
     department_label TEXT NOT NULL,
 
     -- scalar / queryable columns
@@ -20,7 +20,13 @@ CREATE TABLE IF NOT EXISTS faculty (
     research_interests_enriched TEXT,
     profile_url                 TEXT,
     orcid                       TEXT,
+    openalex_id                 TEXT,
+    identity_status             TEXT NOT NULL DEFAULT 'unresolved',
+        -- 'unresolved' | 'auto' | 'confirmed' | 'ambiguous' | 'not_found' | 'rejected'
     h_index                     INTEGER,
+    citation_count              INTEGER,
+    works_count                 INTEGER,
+    raw_hash                    TEXT,                     -- LLM normalization skip fingerprint
     last_enriched               TEXT,                     -- ISO8601
 
     -- HR / org scalars
@@ -50,6 +56,8 @@ CREATE TABLE IF NOT EXISTS faculty (
     integrity_flags     TEXT,    -- JSON array
     funded_grants       TEXT,    -- JSON array of objects (heterogeneous keys)
     recent_publications TEXT,    -- JSON array of objects
+    awards              TEXT,    -- JSON array of objects {name, year, granting_org, source}
+    patents             TEXT,    -- JSON array of objects {title, patent_number, year, assignee}
 
     -- derived / denormalized helpers
     has_profile  INTEGER NOT NULL DEFAULT 0,   -- 1 if matchable (has interests/keywords)
@@ -61,6 +69,39 @@ CREATE TABLE IF NOT EXISTS faculty (
 CREATE INDEX IF NOT EXISTS idx_faculty_dept     ON faculty(department);
 CREATE INDEX IF NOT EXISTS idx_faculty_lastname ON faculty(last_name, first_name);
 CREATE INDEX IF NOT EXISTS idx_faculty_profile  ON faculty(department, has_profile);
+CREATE INDEX IF NOT EXISTS idx_faculty_identity ON faculty(identity_status, pi_eligible);
+
+-- Candidate external identities awaiting human review (identity resolution).
+CREATE TABLE IF NOT EXISTS identity_candidates (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    faculty_id   INTEGER NOT NULL REFERENCES faculty(id) ON DELETE CASCADE,
+    source       TEXT NOT NULL,            -- 'openalex' | 'orcid'
+    external_id  TEXT NOT NULL,            -- author id or ORCID iD
+    display_name TEXT,
+    affiliation  TEXT,
+    score        REAL NOT NULL,
+    evidence     TEXT,                     -- JSON: name similarity, topics, counts
+    status       TEXT NOT NULL DEFAULT 'pending',  -- pending | accepted | rejected
+    created_at   TEXT NOT NULL,
+    decided_at   TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_idcand_status ON identity_candidates(status, faculty_id);
+
+-- Local lookup table for eScholarship (no author-search API; bulk-harvested
+-- via OAI-PMH by enrichment/escholarship_harvest.py).
+CREATE TABLE IF NOT EXISTS escholarship_pubs (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    author_norm  TEXT NOT NULL,          -- normalized "last|first" key
+    title        TEXT NOT NULL,
+    year         INTEGER,
+    journal      TEXT,
+    doi          TEXT,
+    source_url   TEXT,
+    harvested_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_eschol_author ON escholarship_pubs(author_norm);
 
 -- Full-text search index (rowid == faculty.id, maintained by data/db.py).
 CREATE VIRTUAL TABLE IF NOT EXISTS faculty_fts USING fts5(

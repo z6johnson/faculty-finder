@@ -267,6 +267,15 @@ def identity_queue():
                            depts=DEPTS, dept=dept)
 
 
+@admin_bp.route("/identity/resweep", methods=["POST"])
+@login_required
+def identity_resweep():
+    import jobs
+    job_id = jobs.submit("identity_resweep", {}, trigger="manual")
+    flash(f"Auto-accept re-sweep queued (job #{job_id}).", "success")
+    return redirect(url_for("admin.identity_queue"))
+
+
 @admin_bp.route("/identity/<int:candidate_id>/decide", methods=["POST"])
 @login_required
 def identity_decide(candidate_id):

@@ -10,13 +10,22 @@ Decisions per faculty (faculty.identity_status):
   0.6 - 0.9, or tied         -> store identity_candidates rows, 'ambiguous'
                                 (admin review queue accepts/rejects)
   no candidates              -> 'not_found' (re-swept periodically)
+
+Conservative auto-accept rules (enrichment/identity_rules.py) decide some
+would-be-ambiguous cases without review: duplicate OpenAlex profiles of the
+same person collapse into one (method 'identity_auto_rule'), exact-name
+candidates corroborated by an employment-verified ORCID record accept below
+0.9, and ORCID-fallback hits accept when uniquely and strictly verified.
+resweep_pending() applies the same rules to the already-queued backlog.
 """
 
+import json
 import logging
 
 from data import db
 from utils.names import name_similarity
 
+from . import identity_rules
 from .sources.openalex import OpenAlexSource, UCSD_INSTITUTION_ID, AUTHORS_URL
 from .sources.orcid import ORCIDSource
 
@@ -109,6 +118,39 @@ def _score_openalex_author(author, faculty):
     return score, evidence
 
 
+def _identity_log_entry(faculty_id, stable_key, candidate, *, method,
+                        confidence, rule_info=None):
+    return {
+        "faculty_id": faculty_id,
+        "stable_key": stable_key,
+        "source_name": candidate["source"],
+        "source_url": (f"https://openalex.org/{candidate['external_id']}"
+                       if candidate["source"] == "openalex"
+                       else f"https://orcid.org/{candidate['external_id']}"),
+        "field_updated": "identity",
+        "old_value": "unresolved",
+        "new_value": candidate["external_id"],
+        "confidence": confidence,
+        "method": method,
+        "raw_response": (json.dumps(rule_info, ensure_ascii=False)
+                         if rule_info else None),
+        "retrieved_at": db._now_iso(),
+    }
+
+
+def _adopt_cluster_orcid(canonical, candidates, cluster_ids):
+    """When duplicate profiles collapse, the canonical one may lack the
+    ORCID a sibling carries — same person, so adopt it."""
+    if canonical["evidence"].get("orcid"):
+        return
+    for c in candidates:
+        if c.get("external_id") in cluster_ids:
+            sibling_orcid = (c.get("evidence") or {}).get("orcid")
+            if sibling_orcid:
+                canonical["evidence"]["orcid"] = sibling_orcid
+                return
+
+
 class IdentityResolver:
     def __init__(self):
         self._openalex = OpenAlexSource()
@@ -154,23 +196,58 @@ class IdentityResolver:
 
     def _orcid_fallback(self, faculty):
         """ORCID name+affiliation search when OpenAlex finds nothing."""
-        orcid_id = self._orcid._search_by_name(
-            faculty.get("first_name", ""), faculty.get("last_name", ""))
+        first = faculty.get("first_name", "")
+        last = faculty.get("last_name", "")
+        orcid_id, hit_count = self._orcid.search_by_name_counted(first, last)
         if not orcid_id:
             return None
         record = self._orcid._fetch_full_record(orcid_id)
         if not record or not self._orcid._has_ucsd_affiliation(record):
             return None
+        # Employment-grade facts let resolve() auto-accept the airtight
+        # subset (unique hit, employment-verified, exact record name or
+        # matching email); everything else stays reviewed-tier.
+        verification = self._orcid._verify_record(
+            record, orcid_id, first, last, email=faculty.get("email"))
         return {
             "source": "orcid",
             "external_id": orcid_id,
-            "display_name": f"{faculty.get('first_name')} {faculty.get('last_name')}",
+            "display_name": f"{first} {last}",
             "affiliation": "UCSD (per ORCID employment/education)",
             # Name match came from the ORCID query itself; affiliation was
             # verified against the full record — solid but reviewed-tier.
             "score": 0.8,
-            "evidence": {"orcid": orcid_id, "via": "orcid_affiliation_search"},
+            "evidence": {
+                "orcid": orcid_id,
+                "via": "orcid_affiliation_search",
+                "unique_hit": hit_count == 1,
+                "employment_verified": verification["employment_verified"],
+                "record_name_similarity": verification["record_name_similarity"],
+                "record_email_match": verification["record_email_match"],
+            },
         }
+
+    def _accept(self, conn, faculty, candidate, *, method, confidence,
+                rule_info=None):
+        """Write the candidate's external ids onto the faculty row, mark it
+        'auto', and log the decision."""
+        faculty_id = faculty["_db_id"]
+        if candidate["source"] == "openalex":
+            conn.execute(
+                "UPDATE faculty SET openalex_id = COALESCE(openalex_id, ?)"
+                " WHERE id = ?", (candidate["external_id"], faculty_id))
+            if candidate["evidence"].get("orcid"):
+                conn.execute(
+                    "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
+                    (candidate["evidence"]["orcid"], faculty_id))
+        else:
+            conn.execute(
+                "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
+                (candidate["external_id"], faculty_id))
+        db.set_identity_status(conn, faculty_id, "auto")
+        db.append_log(conn, [_identity_log_entry(
+            faculty_id, faculty.get("_stable_key"), candidate,
+            method=method, confidence=confidence, rule_info=rule_info)])
 
     def resolve(self, conn, faculty):
         """Resolve one faculty record; writes status/candidates. Returns the
@@ -187,39 +264,49 @@ class IdentityResolver:
             db.set_identity_status(conn, faculty_id, "not_found")
             return "not_found"
 
-        best = candidates[0]
-        runner_up = candidates[1]["score"] if len(candidates) > 1 else 0.0
-        unambiguous = (best["score"] - runner_up) > TIE_MARGIN
+        collapse = identity_rules.collapse_duplicate_ties(candidates, TIE_MARGIN)
+        best = collapse["canonical"]
+        unambiguous = (collapse["effective_score"] - collapse["runner_up"]) > TIE_MARGIN
 
-        if best["score"] >= AUTO_ACCEPT_SCORE and unambiguous:
-            if best["source"] == "openalex":
-                conn.execute(
-                    "UPDATE faculty SET openalex_id = COALESCE(openalex_id, ?)"
-                    " WHERE id = ?", (best["external_id"], faculty_id))
-                if best["evidence"].get("orcid"):
-                    conn.execute(
-                        "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
-                        (best["evidence"]["orcid"], faculty_id))
-            else:
-                conn.execute(
-                    "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
-                    (best["external_id"], faculty_id))
-            db.set_identity_status(conn, faculty_id, "auto")
-            db.append_log(conn, [{
-                "faculty_id": faculty_id,
-                "stable_key": faculty.get("_stable_key"),
-                "source_name": best["source"],
-                "source_url": (f"https://openalex.org/{best['external_id']}"
-                               if best["source"] == "openalex"
-                               else f"https://orcid.org/{best['external_id']}"),
-                "field_updated": "identity",
-                "old_value": "unresolved",
-                "new_value": best["external_id"],
-                "confidence": best["score"],
-                "method": "identity_auto",
-                "raw_response": None,
-                "retrieved_at": db._now_iso(),
-            }])
+        if collapse["effective_score"] >= AUTO_ACCEPT_SCORE and unambiguous:
+            rule_info = None
+            method = "identity_auto"
+            if collapse["collapsed"]:
+                method = "identity_auto_rule"
+                rule_info = {"rule": "duplicate_tie_collapse",
+                             "cluster": collapse["cluster_ids"]}
+                _adopt_cluster_orcid(best, candidates, collapse["cluster_ids"])
+            self._accept(conn, faculty, best, method=method,
+                         confidence=collapse["effective_score"],
+                         rule_info=rule_info)
+            return "auto"
+
+        # ORCID employment corroboration: an exact-name UCSD candidate whose
+        # attached ORCID record independently verifies UCSD employment.
+        if (best["source"] == "openalex" and unambiguous
+                and identity_rules.orcid_corroboration_precheck(faculty, best)):
+            verification = self._orcid.verify_ucsd_employment(
+                identity_rules.evidence_orcid(best),
+                faculty.get("first_name", ""), faculty.get("last_name", ""),
+                email=faculty.get("email"))
+            if identity_rules.orcid_corroboration_confirms(verification):
+                self._accept(conn, faculty, best, method="identity_auto_rule",
+                             confidence=best["score"],
+                             rule_info={"rule": "orcid_employment_corroboration",
+                                        **verification})
+                return "auto"
+
+        # Strictly verified ORCID fallback (unique hit + employment +
+        # exact record name, or exact email match).
+        if (best["source"] == "orcid"
+                and identity_rules.orcid_fallback_qualifies(best.get("evidence"))):
+            self._accept(conn, faculty, best, method="identity_auto_rule",
+                         confidence=best["score"],
+                         rule_info={"rule": "orcid_fallback_verified",
+                                    **{k: best["evidence"].get(k) for k in
+                                       ("unique_hit", "employment_verified",
+                                        "record_name_similarity",
+                                        "record_email_match")}})
             return "auto"
 
         db.clear_identity_candidates(conn, faculty_id)
@@ -267,3 +354,162 @@ def resolve_batch(department=None, pi_only=False, limit=None,
     conn.commit()
     logger.info("Identity resolution done: %s", stats)
     return stats
+
+
+def resweep_pending(department=None, max_orcid_lookups=None,
+                    progress_callback=None, time_budget_seconds=None,
+                    orcid_source=None):
+    """Apply the conservative auto-accept rules to the pending review queue.
+
+    Works from the stored identity_candidates rows (tie collapse needs no
+    network; ORCID verification is budgeted by max_orcid_lookups). Accepts
+    go through db.decide_identity_candidate — the same path as a manual
+    accept — and are logged with method 'identity_auto_rule'. Nothing is
+    ever auto-rejected; non-qualifying faculty stay queued for humans.
+    Returns a stats dict.
+    """
+    import time as _time
+
+    conn = db.get_write_conn()
+    rows = db.list_identity_candidates(conn, department=department, limit=None)
+    groups = {}
+    for row in rows:
+        groups.setdefault(row["faculty_id"], []).append(row)
+    logger.info("Identity re-sweep: %d faculty with pending candidates "
+                "(dept=%s)", len(groups), department or "all")
+
+    orcid_source = orcid_source or ORCIDSource()
+    stats = {"faculty_seen": len(groups), "accepted_tie_collapse": 0,
+             "accepted_orcid_corroboration": 0, "accepted_orcid_fallback": 0,
+             "orcid_lookups": 0, "left_pending": 0}
+    start = _time.monotonic()
+
+    def _lookup_budget_left():
+        return max_orcid_lookups is None or stats["orcid_lookups"] < max_orcid_lookups
+
+    for i, (faculty_id, group) in enumerate(groups.items()):
+        if time_budget_seconds is not None:
+            if _time.monotonic() - start > time_budget_seconds - 30:
+                logger.warning("Identity re-sweep: time budget reached "
+                               "after %d/%d", i, len(groups))
+                break
+        faculty = {
+            "_db_id": faculty_id,
+            "_stable_key": group[0].get("f_stable_key"),
+            "first_name": group[0]["f_first"],
+            "last_name": group[0]["f_last"],
+            "email": group[0].get("f_email"),
+        }
+        candidates = []
+        for row in group:
+            try:
+                evidence = json.loads(row["evidence"] or "{}")
+            except ValueError:
+                evidence = {}
+            candidates.append({
+                "_row_id": row["id"],
+                "source": row["source"],
+                "external_id": row["external_id"],
+                "display_name": row["display_name"],
+                "score": row["score"],
+                "evidence": evidence,
+            })
+        candidates.sort(key=lambda c: -c["score"])
+
+        try:
+            accepted = _resweep_decide(faculty, candidates, orcid_source,
+                                       stats, _lookup_budget_left)
+        except Exception:
+            logger.exception("Identity re-sweep failed for faculty id %s",
+                             faculty_id)
+            stats["left_pending"] += 1
+            continue
+
+        if accepted:
+            candidate, rule_info, stat_key, sibling_orcid = accepted
+            decided = db.decide_identity_candidate(conn, candidate["_row_id"],
+                                                   accept=True)
+            if decided:
+                if sibling_orcid:
+                    conn.execute(
+                        "UPDATE faculty SET orcid = COALESCE(orcid, ?)"
+                        " WHERE id = ?", (sibling_orcid, faculty_id))
+                db.append_log(conn, [_identity_log_entry(
+                    faculty_id, faculty["_stable_key"], candidate,
+                    method="identity_auto_rule",
+                    confidence=candidate["score"], rule_info=rule_info)])
+                stats[stat_key] += 1
+            conn.commit()
+        else:
+            stats["left_pending"] += 1
+        if progress_callback:
+            progress_callback(i + 1, len(groups))
+
+    conn.commit()
+    logger.info("Identity re-sweep done: %s", stats)
+    return stats
+
+
+def _resweep_decide(faculty, candidates, orcid_source, stats, budget_left):
+    """Pick at most one candidate to auto-accept for one faculty. Returns
+    (candidate, rule_info, stat_key, sibling_orcid) or None."""
+    collapse = identity_rules.collapse_duplicate_ties(candidates, TIE_MARGIN)
+    best = collapse["canonical"]
+    if best is None:
+        return None
+    unambiguous = (collapse["effective_score"] - collapse["runner_up"]) > TIE_MARGIN
+
+    if (collapse["collapsed"] and unambiguous
+            and collapse["effective_score"] >= AUTO_ACCEPT_SCORE):
+        sibling_orcid = None
+        if not best["evidence"].get("orcid"):
+            _adopt_cluster_orcid(best, candidates, collapse["cluster_ids"])
+            sibling_orcid = best["evidence"].get("orcid")
+        return (best, {"rule": "duplicate_tie_collapse",
+                       "cluster": collapse["cluster_ids"]},
+                "accepted_tie_collapse", sibling_orcid)
+
+    if (best["source"] == "openalex" and unambiguous
+            and identity_rules.orcid_corroboration_precheck(faculty, best)
+            and budget_left()):
+        stats["orcid_lookups"] += 1
+        verification = orcid_source.verify_ucsd_employment(
+            identity_rules.evidence_orcid(best),
+            faculty["first_name"], faculty["last_name"],
+            email=faculty.get("email"))
+        if identity_rules.orcid_corroboration_confirms(verification):
+            return (best, {"rule": "orcid_employment_corroboration",
+                           **verification},
+                    "accepted_orcid_corroboration", None)
+        return None
+
+    if best["source"] == "orcid":
+        evidence = best.get("evidence") or {}
+        if "employment_verified" not in evidence:
+            # Legacy fallback row ({orcid, via} only): re-verify fresh, but
+            # only trust it if the same ORCID still comes back from search.
+            if not budget_left():
+                return None
+            stats["orcid_lookups"] += 1
+            found_id, hit_count = orcid_source.search_by_name_counted(
+                faculty["first_name"], faculty["last_name"])
+            if found_id != best["external_id"]:
+                return None
+            verification = orcid_source.verify_ucsd_employment(
+                best["external_id"], faculty["first_name"],
+                faculty["last_name"], email=faculty.get("email"))
+            if not verification:
+                return None
+            evidence = dict(evidence, unique_hit=(hit_count == 1),
+                            **{k: verification[k] for k in
+                               ("employment_verified",
+                                "record_name_similarity",
+                                "record_email_match")})
+        if identity_rules.orcid_fallback_qualifies(evidence):
+            return (best, {"rule": "orcid_fallback_verified",
+                           **{k: evidence.get(k) for k in
+                              ("unique_hit", "employment_verified",
+                               "record_name_similarity",
+                               "record_email_match")}},
+                    "accepted_orcid_fallback", None)
+    return None

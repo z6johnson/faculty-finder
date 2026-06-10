@@ -769,17 +769,22 @@ def clear_identity_candidates(conn, faculty_id):
 
 
 def list_identity_candidates(conn, status="pending", department=None, limit=200):
-    """Pending candidates grouped for the review queue, newest first."""
+    """Pending candidates grouped for the review queue, newest first.
+    limit=None returns the whole queue (identity re-sweep)."""
     dept_sql, dept_params = _dept_clause(department, alias="f")
-    rows = conn.execute(
+    sql = (
         "SELECT c.*, f.first_name AS f_first, f.last_name AS f_last,"
         " f.title AS f_title, f.department AS f_department,"
-        " f.division_school AS f_division_school, f.email AS f_email"
+        " f.division_school AS f_division_school, f.email AS f_email,"
+        " f.stable_key AS f_stable_key"
         " FROM identity_candidates c JOIN faculty f ON f.id = c.faculty_id"
         " WHERE c.status = ?" + dept_sql +
-        " ORDER BY c.faculty_id, c.score DESC LIMIT ?",
-        [status] + dept_params + [limit],
-    ).fetchall()
+        " ORDER BY c.faculty_id, c.score DESC")
+    params = [status] + dept_params
+    if limit is not None:
+        sql += " LIMIT ?"
+        params.append(limit)
+    rows = conn.execute(sql, params).fetchall()
     return [dict(r) for r in rows]
 
 

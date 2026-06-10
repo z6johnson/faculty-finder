@@ -62,6 +62,16 @@ def start():
         id="identity_resolve", replace_existing=True,
     )
 
+    # Weekly re-sweep of the identity review queue: auto-accept pending
+    # candidates that satisfy the conservative rules (duplicate-profile
+    # collapse, ORCID employment corroboration) after the Sunday resolve.
+    sched.add_job(
+        jobs.submit, "cron", day_of_week="sun", hour=9, minute=0,
+        args=["identity_resweep", {"max_orcid_lookups": 200}],
+        kwargs={"trigger": "schedule"},
+        id="identity_resweep", replace_existing=True,
+    )
+
     # Weekly JSON provenance snapshot of the DB (SQLite is source of truth).
     sched.add_job(
         _export_snapshot, "cron", day_of_week="sun", hour=10, minute=0,
@@ -71,7 +81,7 @@ def start():
     sched.start()
     _scheduler = sched
     logger.info("Scheduler started (weekly enrichment + EAH reconcile + "
-                "identity sweep + snapshot; nightly backfill; UTC).")
+                "identity sweep + re-sweep + snapshot; nightly backfill; UTC).")
     return sched
 
 

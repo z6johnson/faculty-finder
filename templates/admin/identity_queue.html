@@ -15,6 +15,13 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
   </select>
 </form>
 
+<form method="post" action="{{ url_for('admin.identity_resweep') }}"
+      style="margin-bottom:14px;">
+  <button class="btn">Apply auto-accept rules to pending queue</button>
+  <span class="muted">Accepts only airtight cases (duplicate OpenAlex profiles,
+  ORCID-verified employment); everything else stays here for review.</span>
+</form>
+
 {% if groups %}
 {% for g in groups %}
 <div class="card">

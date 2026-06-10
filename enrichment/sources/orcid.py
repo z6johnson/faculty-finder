@@ -18,6 +18,8 @@ API docs: https://info.orcid.org/documentation/api-tutorials/
 
 import logging
 
+from utils.names import name_similarity
+
 from .base import BaseSource
 
 logger = logging.getLogger(__name__)
@@ -35,6 +37,13 @@ UCSD_AFFILIATION_STRINGS = [
     "ucsd",
     "scripps institution of oceanography",
     "scripps research",
+]
+
+# Employment-grade subset used by the identity auto-accept rules. Excludes
+# "scripps research": The Scripps Research Institute is a separate
+# institution from UCSD (only Scripps Institution of Oceanography is ours).
+UCSD_EMPLOYMENT_STRINGS = [
+    s for s in UCSD_AFFILIATION_STRINGS if s != "scripps research"
 ]
 
 
@@ -168,6 +177,89 @@ class ORCIDSource(BaseSource):
                         return True
 
         return False
+
+    @staticmethod
+    def _has_ucsd_employment(record):
+        """Strict check: UCSD appears in the *employments* section.
+
+        Unlike _has_ucsd_affiliation this never falls back to education (a
+        UCSD degree does not make someone UCSD faculty) and uses the
+        employment-grade string list. Identity auto-accept rules depend on
+        this distinction; do not loosen it without revisiting them.
+        """
+        activities = record.get("activities-summary", {})
+        for group in activities.get("employments", {}).get("affiliation-group", []):
+            for summary in group.get("summaries", []):
+                emp = summary.get("employment-summary", {})
+                org_name = (emp.get("organization", {}).get("name") or "").lower()
+                for ucsd_str in UCSD_EMPLOYMENT_STRINGS:
+                    if ucsd_str in org_name:
+                        return True
+        return False
+
+    @staticmethod
+    def _record_name(record):
+        """(given, family) from the record's own person.name section."""
+        name = (record.get("person") or {}).get("name") or {}
+        given = ((name.get("given-names") or {}).get("value") or "").strip()
+        family = ((name.get("family-name") or {}).get("value") or "").strip()
+        return given, family
+
+    def search_by_name_counted(self, first_name, last_name):
+        """Like _search_by_name but also returns how many profiles matched,
+        so callers can require a unique hit before trusting the match."""
+        query = (
+            f'given-names:{first_name} AND family-name:{last_name} '
+            f'AND affiliation-org-name:"University of California San Diego"'
+        )
+        resp = self._get(SEARCH_URL, params={"q": query, "rows": 5})
+        if not resp:
+            return None, 0
+        try:
+            data = resp.json()
+        except ValueError:
+            return None, 0
+        results = data.get("result") or []
+        if not results:
+            return None, 0
+        return results[0].get("orcid-identifier", {}).get("path"), len(results)
+
+    def verify_ucsd_employment(self, orcid_id, first_name, last_name, email=None):
+        """Fetch one ORCID record and verify it at employment grade.
+
+        The single network primitive behind the identity auto-accept rules.
+        Returns None when the record cannot be fetched (callers fail closed),
+        otherwise the dict described by _verify_record.
+        """
+        record = self._fetch_full_record(orcid_id)
+        if not record:
+            return None
+        return self._verify_record(record, orcid_id, first_name, last_name,
+                                   email=email)
+
+    @classmethod
+    def _verify_record(cls, record, orcid_id, first_name, last_name, email=None):
+        """Verification facts for an already-fetched record: employment-only
+        UCSD check, the record's *own* name similarity to the faculty (the
+        search query matching is not enough — wrong records come back), and
+        whether the record exposes the faculty's exact email."""
+        given, family = cls._record_name(record)
+        sim = 0.0
+        if given and family:
+            sim = name_similarity(first_name, last_name, given, family)
+            # Given-names often carries middle names ("Jane Marie"); the
+            # first token is the comparable part.
+            sim = max(sim, name_similarity(first_name, last_name,
+                                           given.split()[0], family))
+        record_email = cls._extract_email(record, first_name, last_name)
+        email_match = bool(email and record_email
+                           and record_email == email.strip().lower())
+        return {
+            "orcid": orcid_id,
+            "employment_verified": cls._has_ucsd_employment(record),
+            "record_name_similarity": sim,
+            "record_email_match": email_match,
+        }
 
     def _fetch_full_record(self, orcid_id):
         """Fetch the full ORCID record JSON."""

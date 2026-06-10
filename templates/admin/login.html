@@ -1,13 +1,13 @@
 {% extends "admin/base.html" %}
 {% block title %}Sign in{% endblock %}
 {% block content %}
-<div class="card" style="max-width:420px; margin:48px auto;">
+<div class="card login-card">
   <h1>Admin sign in</h1>
   <p class="muted">Authorized staff only. This area manages sensitive data.</p>
-  <form method="post" style="margin-top:18px;">
+  <form method="post">
     <label for="password">Password</label>
-    <input type="password" id="password" name="password" autofocus autocomplete="current-password" required>
-    <button class="btn" style="margin-top:16px; width:100%;">Sign in</button>
+    <input type="password" id="password" name="password" class="text-input" autofocus autocomplete="current-password" required>
+    <button class="btn btn-primary">Sign in</button>
   </form>
 </div>
 {% endblock %}

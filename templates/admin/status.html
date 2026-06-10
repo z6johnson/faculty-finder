@@ -4,52 +4,56 @@
 <h1>Status &amp; audit</h1>
 
 <div class="card">
-  <h3 style="margin-top:0;">Coverage by division</h3>
-  <table>
-    <thead><tr><th>Division</th><th>Faculty</th><th>PI-eligible</th>
-      <th>Identity resolved</th><th>Awaiting review</th><th>Not found</th>
-      <th>Matchable</th><th>Enriched</th></tr></thead>
-    <tbody>
-      {% for d in divisions %}
-      <tr>
-        <td>{{ d.department_label or d.department }}</td>
-        <td>{{ d.total }}</td>
-        <td>{{ d.pi_eligible }}</td>
-        <td>{{ d.resolved }} ({{ d.pct_resolved }}%)</td>
-        <td>{% if d.ambiguous %}<a href="{{ url_for('admin.identity_queue', dept=d.department) }}">{{ d.ambiguous }}</a>{% else %}0{% endif %}</td>
-        <td>{{ d.not_found }}</td>
-        <td>{{ d.with_profile }}</td>
-        <td>{{ d.enriched }} ({{ d.pct_enriched }}%)</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <h3>Coverage by division</h3>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Division</th><th>Faculty</th><th>PI-eligible</th>
+        <th>Identity resolved</th><th>Awaiting review</th><th>Not found</th>
+        <th>Matchable</th><th>Enriched</th></tr></thead>
+      <tbody>
+        {% for d in divisions %}
+        <tr>
+          <td>{{ d.department_label or d.department }}</td>
+          <td>{{ d.total }}</td>
+          <td>{{ d.pi_eligible }}</td>
+          <td>{{ d.resolved }} ({{ d.pct_resolved }}%)</td>
+          <td>{% if d.ambiguous %}<a href="{{ url_for('admin.identity_queue', dept=d.department) }}">{{ d.ambiguous }}</a>{% else %}0{% endif %}</td>
+          <td>{{ d.not_found }}</td>
+          <td>{{ d.with_profile }}</td>
+          <td>{{ d.enriched }} ({{ d.pct_enriched }}%)</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0;">Recent jobs</h3>
+  <h3>Recent jobs</h3>
   {% include "admin/_jobs_table.html" %}
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0;">Enrichment audit log</h3>
+  <h3>Enrichment audit log</h3>
   {% if audit %}
-  <table>
-    <thead><tr><th>When</th><th>Source</th><th>Field</th><th>Method</th>
-      <th>Conf.</th><th>Record</th></tr></thead>
-    <tbody>
-      {% for e in audit %}
-      <tr>
-        <td class="muted">{{ e.retrieved_at[:19] if e.retrieved_at else "" }}</td>
-        <td>{{ e.source_name }}</td>
-        <td>{{ e.field_updated }}</td>
-        <td>{{ e.method }}</td>
-        <td>{{ e.confidence }}</td>
-        <td class="muted">{{ e.stable_key }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>When</th><th>Source</th><th>Field</th><th>Method</th>
+        <th>Conf.</th><th>Record</th></tr></thead>
+      <tbody>
+        {% for e in audit %}
+        <tr>
+          <td class="muted">{{ e.retrieved_at[:19] if e.retrieved_at else "" }}</td>
+          <td>{{ e.source_name }}</td>
+          <td>{{ e.field_updated }}</td>
+          <td>{{ e.method }}</td>
+          <td>{{ e.confidence }}</td>
+          <td class="muted">{{ e.stable_key }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
   {% else %}
   <p class="muted">No audit entries yet.</p>
   {% endif %}

@@ -32,7 +32,8 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
     <thead><tr><th>Source</th><th>Candidate</th><th>Affiliation</th>
       <th>Score</th><th>Evidence</th><th></th></tr></thead>
     <tbody>
-      {% for c in g.candidates %}
+      {% for cl in g.clusters %}
+      {% set c = cl.canonical %}
       <tr>
         <td>{{ c.source }}</td>
         <td>
@@ -41,6 +42,14 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
           {% else %}
           <a href="https://orcid.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
           {% endif %}
+          {% if cl.siblings %}
+          <div class="muted" style="font-size:0.85em;">
+            + {{ cl.siblings|length }} duplicate profile(s) of the same person:
+            {% for s in cl.siblings %}
+            <a href="https://openalex.org/{{ s.external_id }}" target="_blank" rel="noopener">{{ s.display_name or s.external_id }}</a>{{ ", " if not loop.last }}
+            {% endfor %}
+          </div>
+          {% endif %}
         </td>
         <td class="muted">{{ c.affiliation or "—" }}</td>
         <td>{{ "%.2f"|format(c.score) }}</td>
@@ -48,10 +57,12 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
         <td style="white-space:nowrap;">
           <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
             <input type="hidden" name="decision" value="accept">
+            <input type="hidden" name="cluster_ids" value="{{ cl.member_ids|join(',') }}">
             <button class="btn">Accept</button>
           </form>
           <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
             <input type="hidden" name="decision" value="reject">
+            <input type="hidden" name="cluster_ids" value="{{ cl.member_ids|join(',') }}">
             <button class="btn secondary">Reject</button>
           </form>
         </td>

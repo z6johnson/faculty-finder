@@ -10,6 +10,7 @@ straight to the private runtime path (EAH_CSV_PATH) and never touches git.
 
 import functools
 import hmac
+import json
 import logging
 import os
 import tempfile
@@ -242,6 +243,56 @@ def status():
 # Identity review queue
 # ---------------------------------------------------------------------------
 
+def _cluster_identity_candidates(candidates):
+    """Cluster one faculty's pending rows into same-person groups so the
+    reviewer makes one decision per person, not one per OpenAlex profile.
+
+    Display-only: reuses identity_rules.is_same_person pairwise (no score
+    margin — the rows are shown together regardless). Each cluster's
+    canonical is the largest profile by works/citations; siblings get
+    rejected automatically when the canonical is accepted."""
+    from enrichment import identity_rules
+
+    parsed = []
+    for cand in candidates:
+        cand = dict(cand)
+        try:
+            cand["evidence_dict"] = json.loads(cand.get("evidence") or "{}")
+        except ValueError:
+            cand["evidence_dict"] = {}
+        parsed.append(cand)
+
+    def _same(a, b):
+        return (a["source"] == "openalex" and b["source"] == "openalex"
+                and identity_rules.is_same_person(
+                    {"evidence": a["evidence_dict"],
+                     "display_name": a.get("display_name")},
+                    {"evidence": b["evidence_dict"],
+                     "display_name": b.get("display_name")}))
+
+    def _rank(c):
+        return (c["evidence_dict"].get("works_count") or 0,
+                c["evidence_dict"].get("cited_by_count") or 0,
+                c.get("external_id") or "")
+
+    clusters = []
+    for cand in parsed:
+        for cluster in clusters:
+            if all(_same(member, cand) for member in cluster):
+                cluster.append(cand)
+                break
+        else:
+            clusters.append([cand])
+
+    out = []
+    for cluster in clusters:
+        canonical = max(cluster, key=_rank)
+        siblings = [c for c in cluster if c["id"] != canonical["id"]]
+        out.append({"canonical": canonical, "siblings": siblings,
+                    "member_ids": [c["id"] for c in cluster]})
+    return out
+
+
 @admin_bp.route("/identity")
 @login_required
 def identity_queue():
@@ -263,6 +314,8 @@ def identity_queue():
                 "candidates": [],
             })
         grouped[-1]["candidates"].append(cand)
+    for g in grouped:
+        g["clusters"] = _cluster_identity_candidates(g["candidates"])
     return render_template("admin/identity_queue.html", groups=grouped,
                            depts=DEPTS, dept=dept)
 
@@ -280,15 +333,41 @@ def identity_resweep():
 @login_required
 def identity_decide(candidate_id):
     accept = request.form.get("decision") == "accept"
+    # Sibling rows clustered with this candidate in the review UI (duplicate
+    # profiles of the same person): rejected together, and on accept the
+    # canonical may adopt a sibling's ORCID (same person).
+    sibling_ids = [int(s) for s in
+                   (request.form.get("cluster_ids") or "").split(",")
+                   if s.strip().isdigit() and int(s) != candidate_id]
     conn = db.connect(readonly=False)
     try:
+        sibling_orcid = None
+        if accept:
+            for sid in sibling_ids:
+                sib = db.get_identity_candidate(conn, sid)
+                if not sib:
+                    continue
+                evidence = json.loads(sib["evidence"] or "{}")
+                if evidence.get("orcid"):
+                    sibling_orcid = evidence["orcid"]
+                    break
         cand = db.decide_identity_candidate(conn, candidate_id, accept)
+        if cand and accept and sibling_orcid:
+            conn.execute(
+                "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
+                (sibling_orcid, cand["faculty_id"]))
+        if cand and not accept:
+            for sid in sibling_ids:
+                db.decide_identity_candidate(conn, sid, accept=False)
         conn.commit()
     finally:
         conn.close()
     if cand:
+        n_extra = len(sibling_ids) if not accept else 0
         flash(("Accepted" if accept else "Rejected")
-              + f" {cand['source']} match for faculty #{cand['faculty_id']}.",
+              + f" {cand['source']} match for faculty #{cand['faculty_id']}."
+              + (f" ({n_extra} duplicate profile(s) rejected too.)"
+                 if n_extra else ""),
               "success")
     else:
         flash("Candidate not found or already decided.", "error")

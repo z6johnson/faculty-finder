@@ -8,34 +8,31 @@
 <div class="card">
   <form method="post" action="{{ url_for('admin.faculty_save', faculty_id=rec.id) }}">
     <label for="title">Title</label>
-    <input type="text" id="title" name="title" value="{{ rec.title or '' }}"
-           style="width:100%; padding:10px; border:1px solid #dfe3e8; border-radius:6px;">
+    <input type="text" id="title" name="title" value="{{ rec.title or '' }}" class="text-input">
 
-    <label for="research_interests_enriched" style="margin-top:14px;">Enriched research interests</label>
+    <label for="research_interests_enriched">Enriched research interests</label>
     <textarea id="research_interests_enriched" name="research_interests_enriched"
-              rows="4" style="width:100%; padding:10px; border:1px solid #dfe3e8; border-radius:6px;">{{ rec.research_interests_enriched or '' }}</textarea>
+              rows="4" class="text-input">{{ rec.research_interests_enriched or '' }}</textarea>
 
     {% for f in list_fields %}
-    <label for="{{ f }}" style="margin-top:14px;">{{ f.replace('_',' ')|title }} <span class="muted">(comma-separated)</span></label>
+    <label for="{{ f }}">{{ f.replace('_',' ')|title }} <span class="muted">(comma-separated)</span></label>
     <input type="text" id="{{ f }}" name="{{ f }}"
-           value="{{ (rec[f] or [])|join(', ') }}"
-           style="width:100%; padding:10px; border:1px solid #dfe3e8; border-radius:6px;">
+           value="{{ (rec[f] or [])|join(', ') }}" class="text-input">
     {% endfor %}
 
-    <label for="eah_status" style="margin-top:14px;">EAH status</label>
-    <input type="text" id="eah_status" name="eah_status" value="{{ rec.eah_status or '' }}"
-           style="width:100%; padding:10px; border:1px solid #dfe3e8; border-radius:6px;">
+    <label for="eah_status">EAH status</label>
+    <input type="text" id="eah_status" name="eah_status" value="{{ rec.eah_status or '' }}" class="text-input">
 
-    <div style="margin-top:18px; display:flex; gap:10px;">
-      <button class="btn">Save</button>
-      <a class="btn secondary" href="{{ url_for('admin.faculty_list') }}">Back</a>
+    <div class="btn-row">
+      <button class="btn btn-primary">Save</button>
+      <a class="btn btn-secondary" href="{{ url_for('admin.faculty_list') }}">Back</a>
     </div>
   </form>
 </div>
 
 {% if rec.research_interests %}
 <div class="card">
-  <h3 style="margin-top:0;">Original directory interests <span class="muted">(read-only)</span></h3>
+  <h3>Original directory interests <span class="muted">(read-only)</span></h3>
   <p class="muted">{{ rec.research_interests }}</p>
 </div>
 {% endif %}

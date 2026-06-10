@@ -7,69 +7,70 @@ or let the weekly schedule handle it. Runs query public academic sources and the
 LLM normalizer, then refresh the live database.</p>
 
 <div class="card">
-  <h3 style="margin-top:0;">Run now</h3>
-  <form method="post" action="{{ url_for('admin.enrich_run') }}"
-        style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+  <h3>Run now</h3>
+  <form method="post" action="{{ url_for('admin.enrich_run') }}" class="form-row">
     <select name="department">
       {% for key, label in depts %}
       <option value="{{ key }}">{{ label }}</option>
       {% endfor %}
     </select>
-    <button class="btn">Enrich division</button>
+    <button class="btn btn-primary">Enrich division</button>
   </form>
-  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-    <form method="post" action="{{ url_for('admin.eah_reconcile_run') }}" style="margin:0;">
-      <button class="btn secondary">Re-run EAH reconcile</button>
+  <div class="btn-row">
+    <form method="post" action="{{ url_for('admin.eah_reconcile_run') }}">
+      <button class="btn btn-secondary">Re-run EAH reconcile</button>
     </form>
-    <form method="post" action="{{ url_for('admin.escholarship_run') }}" style="margin:0;">
-      <button class="btn secondary">Harvest eScholarship</button>
+    <form method="post" action="{{ url_for('admin.escholarship_run') }}">
+      <button class="btn btn-secondary">Harvest eScholarship</button>
     </form>
   </div>
-  <p class="muted" style="margin-bottom:0;">A run can take many minutes; track it
+  <p class="muted">A run can take many minutes; track it
   under “Recent jobs” below (refresh to update).</p>
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0;">New-faculty pipeline</h3>
+  <h3>New-faculty pipeline</h3>
   <p class="muted">Step 1 resolves EAH-seeded faculty to OpenAlex/ORCID identities
   (ambiguous matches go to the <a href="{{ url_for('admin.identity_queue') }}">review
   queue</a>); step 2 backfills enrichment for resolved, never-enriched faculty.</p>
-  <div style="display:flex; gap:10px; flex-wrap:wrap;">
-    <form method="post" action="{{ url_for('admin.identity_run') }}" style="margin:0;">
+  <div class="btn-row">
+    <form method="post" action="{{ url_for('admin.identity_run') }}">
       <input type="hidden" name="pi_only" value="1">
-      <button class="btn">Resolve identities (PI-eligible)</button>
+      <button class="btn btn-primary">Resolve identities (PI-eligible)</button>
     </form>
-    <form method="post" action="{{ url_for('admin.identity_run') }}" style="margin:0;">
-      <button class="btn secondary">Resolve identities (everyone)</button>
+    <form method="post" action="{{ url_for('admin.identity_run') }}">
+      <button class="btn btn-secondary">Resolve identities (everyone)</button>
     </form>
-    <form method="post" action="{{ url_for('admin.backfill_run') }}" style="margin:0;">
+    <form method="post" action="{{ url_for('admin.backfill_run') }}">
       <input type="hidden" name="pi_only" value="1">
-      <button class="btn">Backfill enrichment (PI-eligible)</button>
+      <button class="btn btn-primary">Backfill enrichment (PI-eligible)</button>
     </form>
-    <form method="post" action="{{ url_for('admin.backfill_run') }}" style="margin:0;">
-      <button class="btn secondary">Backfill enrichment (everyone)</button>
+    <form method="post" action="{{ url_for('admin.backfill_run') }}">
+      <button class="btn btn-secondary">Backfill enrichment (everyone)</button>
     </form>
   </div>
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0;">Weekly schedule (UTC)</h3>
+  <h3>Weekly schedule (UTC)</h3>
   {% if scheduled %}
-  <table>
-    <thead><tr><th>Job</th><th>Next run</th></tr></thead>
-    <tbody>
-      {% for j in scheduled %}
-      <tr><td>{{ j.id }}</td><td>{{ j.next_run or "—" }}</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Job</th><th>Next run</th></tr></thead>
+      <tbody>
+        {% for j in scheduled %}
+        <tr><td>{{ j.id }}</td><td>{{ j.next_run or "—" }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
   {% else %}
   <p class="muted">Scheduler not running in this process.</p>
   {% endif %}
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0;">Recent jobs</h3>
+  <h3>Recent jobs</h3>
   {% include "admin/_jobs_table.html" %}
 </div>
 {% endblock %}

@@ -10,40 +10,44 @@
 </p>
 
 <div class="card">
-  <h3 style="margin-top:0;">Upload extract</h3>
+  <h3>Upload extract</h3>
   <form method="post" action="{{ url_for('admin.eah_upload') }}" enctype="multipart/form-data">
     <label for="eah_csv">EAH Active Academics CSV</label>
     <input type="file" id="eah_csv" name="eah_csv" accept=".csv" required>
-    <p class="muted" style="margin:10px 0 0;">
+    <p class="muted">
       Stored at <code>{{ eah_path }}</code>
       {% if eah_exists %}· an extract is currently present{% else %}· no extract uploaded yet{% endif %}.
     </p>
-    <button class="btn" style="margin-top:16px;"
-            onclick="this.disabled=true;this.textContent='Reconciling…';this.form.submit();">
-      Upload &amp; reconcile
-    </button>
+    <div class="btn-row">
+      <button class="btn btn-primary"
+              onclick="this.disabled=true;this.textContent='Reconciling…';this.form.submit();">
+        Upload &amp; reconcile
+      </button>
+    </div>
   </form>
 </div>
 
 {% if last_result %}
 <div class="card">
-  <h3 style="margin-top:0;">Last reconcile</h3>
+  <h3>Last reconcile</h3>
   <p class="muted">{{ last_result.eah_rows }} EAH rows · {{ last_result.total_matched }} matched ·
      {{ last_result.total_removed_inactive }} removed (inactive) ·
      {{ last_result.total_new_added }} added · {{ last_result.total_now }} active now.</p>
-  <table>
-    <thead><tr><th>School</th><th>In data</th><th>EAH people</th><th>Matched</th>
-      <th>Removed</th><th>Added</th><th>Now</th></tr></thead>
-    <tbody>
-      {% for s in last_result.schools %}
-      <tr>
-        <td>{{ s.school }}</td><td>{{ s.original_count }}</td><td>{{ s.eah_count }}</td>
-        <td>{{ s.matched }}</td><td>{{ s.removed_inactive }}</td>
-        <td>{{ s.new_added }}</td><td>{{ s.total_now }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>School</th><th>In data</th><th>EAH people</th><th>Matched</th>
+        <th>Removed</th><th>Added</th><th>Now</th></tr></thead>
+      <tbody>
+        {% for s in last_result.schools %}
+        <tr>
+          <td>{{ s.school }}</td><td>{{ s.original_count }}</td><td>{{ s.eah_count }}</td>
+          <td>{{ s.matched }}</td><td>{{ s.removed_inactive }}</td>
+          <td>{{ s.new_added }}</td><td>{{ s.total_now }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endif %}
 {% endblock %}

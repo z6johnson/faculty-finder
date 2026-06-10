@@ -6,7 +6,7 @@
 Accepting a candidate writes its OpenAlex/ORCID id onto the faculty record and
 unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
 
-<form method="get" style="margin-bottom:14px;">
+<form method="get" class="toolbar">
   <select name="dept" onchange="this.form.submit()">
     <option value="">All divisions</option>
     {% for key, label in depts %}
@@ -15,9 +15,8 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
   </select>
 </form>
 
-<form method="post" action="{{ url_for('admin.identity_resweep') }}"
-      style="margin-bottom:14px;">
-  <button class="btn">Apply auto-accept rules to pending queue</button>
+<form method="post" action="{{ url_for('admin.identity_resweep') }}" class="toolbar">
+  <button class="btn btn-primary">Apply auto-accept rules to pending queue</button>
   <span class="muted">Accepts only airtight cases (duplicate OpenAlex profiles,
   ORCID-verified employment); everything else stays here for review.</span>
 </form>
@@ -25,47 +24,48 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
 {% if groups %}
 {% for g in groups %}
 <div class="card">
-  <h3 style="margin-top:0;">{{ g.name }}
-    <span class="muted" style="font-weight:normal;">— {{ g.title }}, {{ g.division }}
+  <h3>{{ g.name }}
+    <span class="muted">— {{ g.title }}, {{ g.division }}
     {% if g.email %}({{ g.email }}){% endif %}</span></h3>
-  <table>
-    <thead><tr><th>Source</th><th>Candidate</th><th>Affiliation</th>
-      <th>Score</th><th>Evidence</th><th></th></tr></thead>
-    <tbody>
-      {% for c in g.candidates %}
-      <tr>
-        <td>{{ c.source }}</td>
-        <td>
-          {% if c.source == 'openalex' %}
-          <a href="https://openalex.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
-          {% else %}
-          <a href="https://orcid.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
-          {% endif %}
-        </td>
-        <td class="muted">{{ c.affiliation or "—" }}</td>
-        <td>{{ "%.2f"|format(c.score) }}</td>
-        <td class="muted" style="max-width:320px; overflow-wrap:anywhere;">{{ c.evidence }}</td>
-        <td style="white-space:nowrap;">
-          <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
-            <input type="hidden" name="decision" value="accept">
-            <button class="btn">Accept</button>
-          </form>
-          <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
-            <input type="hidden" name="decision" value="reject">
-            <button class="btn secondary">Reject</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <form method="post" action="{{ url_for('admin.identity_not_findable', faculty_id=g.faculty_id) }}"
-        style="margin-top:8px;">
-    <button class="btn secondary">None of these — not findable</button>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Source</th><th>Candidate</th><th>Affiliation</th>
+        <th>Score</th><th>Evidence</th><th></th></tr></thead>
+      <tbody>
+        {% for c in g.candidates %}
+        <tr>
+          <td>{{ c.source }}</td>
+          <td>
+            {% if c.source == 'openalex' %}
+            <a href="https://openalex.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
+            {% else %}
+            <a href="https://orcid.org/{{ c.external_id }}" target="_blank" rel="noopener">{{ c.display_name or c.external_id }}</a>
+            {% endif %}
+          </td>
+          <td class="muted">{{ c.affiliation or "—" }}</td>
+          <td>{{ "%.2f"|format(c.score) }}</td>
+          <td class="muted cell-wrap">{{ c.evidence }}</td>
+          <td class="cell-actions">
+            <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}">
+              <input type="hidden" name="decision" value="accept">
+              <button class="btn btn-primary btn-sm">Accept</button>
+            </form>
+            <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}">
+              <input type="hidden" name="decision" value="reject">
+              <button class="btn btn-secondary btn-sm">Reject</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <form method="post" action="{{ url_for('admin.identity_not_findable', faculty_id=g.faculty_id) }}" class="btn-row">
+    <button class="btn btn-secondary">None of these — not findable</button>
   </form>
 </div>
 {% endfor %}
 {% else %}
-<div class="card"><p class="muted" style="margin:0;">No pending identity reviews.</p></div>
+<div class="card"><p class="muted">No pending identity reviews.</p></div>
 {% endif %}
 {% endblock %}

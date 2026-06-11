@@ -21,8 +21,9 @@ ONE service (Dockerfile), gunicorn --workers 1 --threads 8
 1. Connect this repo in the Railway dashboard — it builds the `Dockerfile`.
 2. Attach a **volume** at `/data`.
 3. Set env vars in the dashboard: `SECRET_KEY`, `ADMIN_PASSWORD`, `LITELLM_API_KEY`,
-   `LITELLM_API_BASE`, `LITELLM_MODEL` (optional `NCBI_API_KEY`, `S2_API_KEY`,
-   `EAH_RECONCILE_HOUR`). `FACULTY_DB_PATH`, `DATA_STATE_DIR`, `EAH_CSV_PATH` default
+   `LITELLM_API_BASE`, `LITELLM_MODEL`, `OPENALEX_MAILTO` (a contact email —
+   without it OpenAlex rate-limits to a trickle; optional `NCBI_API_KEY`,
+   `S2_API_KEY`, `EAH_RECONCILE_HOUR`). `FACULTY_DB_PATH`, `DATA_STATE_DIR`, `EAH_CSV_PATH` default
    to `/data/...` in the Dockerfile. Set `ENABLE_SCHEDULER=false` to disable the
    in-app scheduler.
 4. `docker-entrypoint.sh` seeds the volume from the committed JSON and builds `app.db`
@@ -61,6 +62,7 @@ WAL mode lets reads continue while writes happen.
 3. **Environment variables:**
    - `FACULTY_DB_PATH=/data/app.db`
    - `LITELLM_API_KEY`, `LITELLM_API_BASE`, `LITELLM_MODEL`
+   - `OPENALEX_MAILTO` (contact email for the OpenAlex polite pool)
    - `NCBI_API_KEY`, `S2_API_KEY` (optional)
 4. **Bootstrap the DB once** against the volume (Railway one-off command / shell):
    ```

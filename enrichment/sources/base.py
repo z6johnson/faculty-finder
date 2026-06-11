@@ -37,27 +37,54 @@ class BaseSource(ABC):
             time.sleep(self.min_request_interval - elapsed)
         self._last_request_time = time.time()
 
+    # Throttling (429) and transient unavailability (503) get retried with
+    # backoff; anything else keeps the warn-and-return-None contract.
+    _RETRY_STATUSES = (429, 503)
+    _MAX_ATTEMPTS = 3
+    _MAX_BACKOFF = 30.0
+    _MAX_INTERVAL = 1.0  # ceiling for adaptive politeness after a 429
+
+    def _request(self, method, url, **kwargs):
+        """Rate-limited request with error handling and 429/503 backoff."""
+        for attempt in range(self._MAX_ATTEMPTS):
+            self._rate_limit()
+            try:
+                resp = self._session.request(method, url, timeout=30, **kwargs)
+                resp.raise_for_status()
+                return resp
+            except requests.RequestException as e:
+                status = getattr(getattr(e, "response", None),
+                                 "status_code", None)
+                if (status in self._RETRY_STATUSES
+                        and attempt < self._MAX_ATTEMPTS - 1):
+                    retry_after = e.response.headers.get("Retry-After")
+                    try:
+                        delay = float(retry_after)
+                    except (TypeError, ValueError):
+                        delay = 0.0
+                    delay = min(max(delay, 2.0 ** (attempt + 1)),
+                                self._MAX_BACKOFF)
+                    if status == 429:
+                        # Server says we're too fast: stay slower for the
+                        # rest of this run, not just this request.
+                        self.min_request_interval = min(
+                            self.min_request_interval * 2, self._MAX_INTERVAL)
+                    logger.info("%s %s got %s — retrying in %.1fs "
+                                "(attempt %d/%d)", method, url, status, delay,
+                                attempt + 1, self._MAX_ATTEMPTS)
+                    time.sleep(delay)
+                    continue
+                logger.warning("%s request to %s failed: %s", method, url, e)
+                return None
+        return None
+
     def _get(self, url, **kwargs):
         """Rate-limited GET request with error handling."""
-        self._rate_limit()
-        try:
-            resp = self._session.get(url, timeout=30, **kwargs)
-            resp.raise_for_status()
-            return resp
-        except requests.RequestException as e:
-            logger.warning("Request to %s failed: %s", url, e)
-            return None
+        return self._request("GET", url, **kwargs)
 
     def _post(self, url, **kwargs):
         """Rate-limited POST request with error handling."""
-        self._rate_limit()
-        try:
-            resp = self._session.post(url, timeout=30, **kwargs)
-            resp.raise_for_status()
-            return resp
-        except requests.RequestException as e:
-            logger.warning("POST to %s failed: %s", url, e)
-            return None
+        return self._request("POST", url, **kwargs)
 
     @abstractmethod
     def fetch(self, faculty_dict):

@@ -230,7 +230,9 @@ class IdentityResolver:
     def _accept(self, conn, faculty, candidate, *, method, confidence,
                 rule_info=None):
         """Write the candidate's external ids onto the faculty row, mark it
-        'auto', and log the decision."""
+        'auto', and log the decision. A duplicate-tie cluster's sibling
+        profile ids are kept as alternates so enrichment reads their works
+        too."""
         faculty_id = faculty["_db_id"]
         if candidate["source"] == "openalex":
             conn.execute(
@@ -240,6 +242,8 @@ class IdentityResolver:
                 conn.execute(
                     "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
                     (candidate["evidence"]["orcid"], faculty_id))
+            for alt_id in (rule_info or {}).get("cluster") or []:
+                db.add_openalex_alt(conn, faculty_id, alt_id)
         else:
             conn.execute(
                 "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
@@ -364,9 +368,10 @@ def resweep_pending(department=None, max_orcid_lookups=None,
     Works from the stored identity_candidates rows (tie collapse needs no
     network; ORCID verification is budgeted by max_orcid_lookups). Accepts
     go through db.decide_identity_candidate — the same path as a manual
-    accept — and are logged with method 'identity_auto_rule'. Nothing is
-    ever auto-rejected; non-qualifying faculty stay queued for humans.
-    Returns a stats dict.
+    accept — and are logged with method 'identity_auto_rule'. Whole groups
+    are never auto-rejected; non-qualifying faculty stay queued for humans.
+    An accepted verdict merges its duplicate-profile cluster as alternate
+    ids and retires the remaining candidates. Returns a stats dict.
     """
     import time as _time
 
@@ -428,8 +433,21 @@ def resweep_pending(department=None, max_orcid_lookups=None,
         if accepted:
             candidate, rule_info, stat_key, sibling_orcid = accepted
             decided = db.decide_identity_candidate(conn, candidate["_row_id"],
-                                                   accept=True)
+                                                   "accept")
             if decided:
+                # Cluster siblings are duplicate profiles of the accepted
+                # person — merge them as alternate ids; the remaining
+                # candidates lost an airtight verdict and are rejected.
+                cluster = set((rule_info or {}).get("cluster") or [])
+                for c in candidates:
+                    if c["_row_id"] == candidate["_row_id"]:
+                        continue
+                    if c["external_id"] in cluster:
+                        db.decide_identity_candidate(conn, c["_row_id"],
+                                                     "merge")
+                    else:
+                        db.decide_identity_candidate(conn, c["_row_id"],
+                                                     "reject")
                 if sibling_orcid:
                     conn.execute(
                         "UPDATE faculty SET orcid = COALESCE(orcid, ?)"

@@ -250,7 +250,7 @@ def _cluster_identity_candidates(candidates):
     Display-only: reuses identity_rules.is_same_person pairwise (no score
     margin — the rows are shown together regardless). Each cluster's
     canonical is the largest profile by works/citations; siblings get
-    rejected automatically when the canonical is accepted."""
+    merged as alternate ids when the canonical is accepted or merged."""
     from enrichment import identity_rules
 
     parsed = []
@@ -311,6 +311,7 @@ def identity_queue():
                 "title": cand["f_title"],
                 "division": cand["f_division_school"] or cand["f_department"],
                 "email": cand["f_email"],
+                "openalex_id": cand.get("f_openalex_id"),
                 "candidates": [],
             })
         grouped[-1]["candidates"].append(cand)
@@ -364,45 +365,62 @@ def identity_llm_sweep():
 @admin_bp.route("/identity/<int:candidate_id>/decide", methods=["POST"])
 @login_required
 def identity_decide(candidate_id):
-    accept = request.form.get("decision") == "accept"
-    # Sibling rows clustered with this candidate in the review UI (duplicate
-    # profiles of the same person): rejected together, and on accept the
-    # canonical may adopt a sibling's ORCID (same person).
+    decision = request.form.get("decision")
+    if decision not in ("accept", "merge", "reject"):
+        flash("Unknown decision.", "error")
+        return redirect(url_for("admin.identity_queue"))
+    # Sibling rows clustered with this candidate in the review UI are
+    # duplicate OpenAlex profiles of the same person: they follow the
+    # canonical — merged as alternate ids on accept/merge (their works and
+    # ORCID belong to this person too), rejected together on reject.
+    # Candidates outside the cluster are left pending for explicit review.
     sibling_ids = [int(s) for s in
                    (request.form.get("cluster_ids") or "").split(",")
                    if s.strip().isdigit() and int(s) != candidate_id]
+    sibling_decision = "reject" if decision == "reject" else "merge"
+    n_siblings = 0
     conn = db.connect(readonly=False)
     try:
-        sibling_orcid = None
-        if accept:
+        cand = db.decide_identity_candidate(conn, candidate_id, decision)
+        if cand:
             for sid in sibling_ids:
-                sib = db.get_identity_candidate(conn, sid)
-                if not sib:
-                    continue
-                evidence = json.loads(sib["evidence"] or "{}")
-                if evidence.get("orcid"):
-                    sibling_orcid = evidence["orcid"]
-                    break
-        cand = db.decide_identity_candidate(conn, candidate_id, accept)
-        if cand and accept and sibling_orcid:
-            conn.execute(
-                "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
-                (sibling_orcid, cand["faculty_id"]))
-        if cand and not accept:
-            for sid in sibling_ids:
-                db.decide_identity_candidate(conn, sid, accept=False)
+                if db.decide_identity_candidate(conn, sid, sibling_decision):
+                    n_siblings += 1
         conn.commit()
     finally:
         conn.close()
     if cand:
-        n_extra = len(sibling_ids) if not accept else 0
-        flash(("Accepted" if accept else "Rejected")
-              + f" {cand['source']} match for faculty #{cand['faculty_id']}."
-              + (f" ({n_extra} duplicate profile(s) rejected too.)"
-                 if n_extra else ""),
-              "success")
+        verb = {"accept": "Accepted", "merge": "Merged",
+                "reject": "Rejected"}[decision]
+        extra = ""
+        if n_siblings:
+            extra = (f" ({n_siblings} duplicate profile(s) "
+                     + ("rejected too.)" if decision == "reject"
+                        else "merged as alternates.)"))
+        flash(f"{verb} {cand['source']} match for faculty "
+              f"#{cand['faculty_id']}." + extra, "success")
     else:
         flash("Candidate not found or already decided.", "error")
+    return redirect(url_for("admin.identity_queue"))
+
+
+@admin_bp.route("/identity/<int:faculty_id>/reopen", methods=["POST"])
+@login_required
+def identity_reopen(faculty_id):
+    """Restore auto-rejected candidates (rejected as a side effect of an
+    accept) to pending so they can be merged or re-reviewed."""
+    conn = db.connect(readonly=False)
+    try:
+        n = db.reopen_identity_candidates(conn, faculty_id)
+        conn.commit()
+    finally:
+        conn.close()
+    if n:
+        flash(f"Reopened {n} candidate(s) for faculty #{faculty_id}.",
+              "success")
+    else:
+        flash(f"No auto-rejected candidates to reopen for faculty "
+              f"#{faculty_id}.", "error")
     return redirect(url_for("admin.identity_queue"))
 
 

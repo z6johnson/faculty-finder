@@ -411,5 +411,6 @@ a persistent `/data` volume. For the data-layer / alternative-host details, see
 | `LITELLM_API_KEY` | Yes | LLM API key |
 | `LITELLM_API_BASE` | Yes | LLM API endpoint URL |
 | `LITELLM_MODEL` | No | Model identifier (default: `openai/api-gpt-oss-120b`) |
+| `OPENALEX_MAILTO` | Strongly recommended | Contact email for the OpenAlex polite pool — without it, OpenAlex requests are heavily rate-limited (429s) |
 | `NCBI_API_KEY` | No | PubMed API key (increases rate limit from 3 to 10 req/s) |
 | `S2_API_KEY` | No | Semantic Scholar API key (increases quota) |

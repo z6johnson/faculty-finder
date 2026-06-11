@@ -85,6 +85,7 @@ Open the service → **Variables** and add the following.
 | `LITELLM_API_KEY` | your LLM key | Enrichment + matching |
 | `LITELLM_API_BASE` | your LLM base URL | Enrichment + matching |
 | `LITELLM_MODEL` | e.g. `openai/api-gpt-oss-120b` | Model id |
+| `OPENALEX_MAILTO` | a contact email | Joins the OpenAlex polite pool — without it, enrichment and identity dossier fetches get rate-limited (429s) |
 
 **Already defaulted by the Dockerfile** (only set these to override):
 

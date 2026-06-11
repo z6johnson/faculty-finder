@@ -3,8 +3,11 @@
 {% block content %}
 <h1>Identity review queue</h1>
 <p class="muted">Ambiguous external-identity matches from identity resolution.
-Accepting a candidate writes its OpenAlex/ORCID id onto the faculty record and
-unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
+Accepting a candidate writes its OpenAlex/ORCID id onto the faculty record as
+the primary and unblocks enrichment. Merging records an additional OpenAlex
+profile of the same person as an alternate id — enrichment reads works from
+the primary and all merged alternates. Rejecting all of them leaves the
+faculty unmatched.</p>
 
 <form method="get" class="toolbar">
   <select name="dept" onchange="this.form.submit()">
@@ -28,8 +31,9 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
   </label>
   <span class="muted">Compares each candidate's recent publications and
   affiliation history against the faculty record. Accepts only two-pass
-  high-confidence matches; everything else is annotated and re-sorted here
-  for faster review. Never auto-rejects.</span>
+  high-confidence matches (duplicate profiles of the accepted person are
+  merged as alternates); everything else is annotated and re-sorted here
+  for faster review. Never rejects a whole group.</span>
 </form>
 
 {% if groups %}
@@ -38,6 +42,13 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
   <h3>{{ g.name }}
     <span class="muted">— {{ g.title }}, {{ g.division }}
     {% if g.email %}({{ g.email }}){% endif %}</span></h3>
+  {% if g.openalex_id %}
+  <p class="muted" style="margin:4px 0;">
+    Already has accepted profile
+    <a href="https://openalex.org/{{ g.openalex_id }}" target="_blank" rel="noopener">{{ g.openalex_id }}</a>
+    — merge candidates that are the same person, or reject the rest.
+  </p>
+  {% endif %}
   {% if g.llm_pick %}
   <p class="muted" style="margin:4px 0;">
     <strong>LLM suggests:</strong>
@@ -80,13 +91,31 @@ unblocks enrichment; rejecting all of them leaves the faculty unmatched.</p>
         </td>
         <td class="muted">{{ c.affiliation or "—" }}</td>
         <td>{{ "%.2f"|format(c.score) }}</td>
-        <td class="muted" style="max-width:320px; overflow-wrap:anywhere;">{{ c.evidence }}</td>
+        <td class="muted" style="max-width:320px; overflow-wrap:anywhere;">
+          {% set ev = c.evidence_dict or {} %}
+          {% set bits = [] %}
+          {% if ev.works_count is not none %}{% set _ = bits.append("%s works"|format(ev.works_count)) %}{% endif %}
+          {% if ev.cited_by_count is not none %}{% set _ = bits.append("%s citations"|format(ev.cited_by_count)) %}{% endif %}
+          {% if ev.name_similarity is not none %}{% set _ = bits.append("name %.2f"|format(ev.name_similarity)) %}{% endif %}
+          {% if ev.ucsd_current %}{% set _ = bits.append("UCSD current") %}
+          {% elif ev.ucsd_listed %}{% set _ = bits.append("UCSD listed") %}{% endif %}
+          {% if ev.orcid %}{% set _ = bits.append("has ORCID") %}{% endif %}
+          {{ bits|join(" · ") or c.evidence }}
+        </td>
         <td style="white-space:nowrap;">
+          {% if g.openalex_id and c.source == 'openalex' %}
+          <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
+            <input type="hidden" name="decision" value="merge">
+            <input type="hidden" name="cluster_ids" value="{{ cl.member_ids|join(',') }}">
+            <button class="btn" title="Same person as the accepted profile — add as alternate id">Merge</button>
+          </form>
+          {% else %}
           <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
             <input type="hidden" name="decision" value="accept">
             <input type="hidden" name="cluster_ids" value="{{ cl.member_ids|join(',') }}">
             <button class="btn">Accept</button>
           </form>
+          {% endif %}
           <form method="post" action="{{ url_for('admin.identity_decide', candidate_id=c.id) }}" style="display:inline;">
             <input type="hidden" name="decision" value="reject">
             <input type="hidden" name="cluster_ids" value="{{ cl.member_ids|join(',') }}">

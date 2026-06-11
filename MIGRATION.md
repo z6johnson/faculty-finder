@@ -88,6 +88,7 @@ In your repo → **Settings** → **Secrets and variables** → **Actions**, add
 | `LITELLM_API_KEY` | Yes | LLM API key for normalization |
 | `LITELLM_API_BASE` | Yes | LLM API base URL |
 | `LITELLM_MODEL` | No | LLM model override |
+| `OPENALEX_MAILTO` | Strongly recommended | Contact email for the OpenAlex polite pool (avoids 429 rate limits) |
 | `NCBI_API_KEY` | No | PubMed higher rate limits (3 → 10 req/s). Free at [ncbi.nlm.nih.gov/account](https://www.ncbi.nlm.nih.gov/account/) |
 | `S2_API_KEY` | No | Semantic Scholar higher rate limits (3 → 1 req/s with key, but higher quota). See [semanticscholar.org/product/api](https://www.semanticscholar.org/product/api) |
 

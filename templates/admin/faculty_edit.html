@@ -36,4 +36,26 @@
   <p class="muted">{{ rec.research_interests }}</p>
 </div>
 {% endif %}
+
+<div class="card">
+  <h3>Identity</h3>
+  <p class="muted">
+    Status: {{ rec.identity_status or 'unresolved' }}
+    {% if rec.orcid %} · ORCID:
+    <a href="https://orcid.org/{{ rec.orcid }}" target="_blank" rel="noopener">{{ rec.orcid }}</a>{% endif %}
+    {% if rec.openalex_id %} · OpenAlex:
+    <a href="https://openalex.org/{{ rec.openalex_id }}" target="_blank" rel="noopener">{{ rec.openalex_id }}</a>{% endif %}
+    {% if rec.openalex_id_alt %} · merged alternates:
+    {% for alt in rec.openalex_id_alt %}
+    <a href="https://openalex.org/{{ alt }}" target="_blank" rel="noopener">{{ alt }}</a>{{ ", " if not loop.last }}
+    {% endfor %}
+    {% endif %}
+  </p>
+  <form method="post" action="{{ url_for('admin.identity_reopen', faculty_id=rec.id) }}">
+    <button class="btn secondary">Reopen auto-rejected candidates</button>
+  </form>
+  <p class="muted">Restores candidates that were rejected as a side effect of
+  accepting another candidate, so they can be merged as alternate profiles or
+  re-reviewed in the identity queue.</p>
+</div>
 {% endblock %}

@@ -37,6 +37,11 @@ class OpenAlexSource(BaseSource):
     def __init__(self):
         super().__init__()
         self._mailto = os.environ.get("OPENALEX_MAILTO", "").strip()
+        if not self._mailto:
+            logger.warning(
+                "OPENALEX_MAILTO is not set — requests are outside the "
+                "OpenAlex polite pool and will be rate-limited (429s). "
+                "Set it to a contact email address.")
 
     def fields_provided(self):
         return ["openalex_id", "orcid", "h_index", "citation_count",
@@ -76,11 +81,38 @@ class OpenAlexSource(BaseSource):
         if keywords:
             result["expertise_keywords"] = keywords
 
-        pubs = self._fetch_works(openalex_id)
+        # Alternate profiles (OpenAlex splits of the same person, merged in
+        # identity review) contribute their works and counts too.
+        alt_ids = [a for a in (faculty_dict.get("openalex_id_alt") or [])
+                   if a and a != openalex_id]
+        self._fold_in_alternates(result, alt_ids)
+
+        pubs = self._fetch_works(openalex_id, alt_ids=alt_ids)
         if pubs:
             result["recent_publications"] = pubs
 
         return result
+
+    def _fold_in_alternates(self, result, alt_ids):
+        """Sum works/citation counts (max h_index) across alternate author
+        profiles. Failures degrade gracefully to the primary's numbers."""
+        for alt_id in alt_ids:
+            resp = self._get(f"{AUTHORS_URL}/{alt_id}", params=self._params())
+            if not resp:
+                continue
+            try:
+                alt = resp.json()
+            except ValueError:
+                continue
+            if alt.get("works_count") is not None:
+                result["works_count"] = ((result.get("works_count") or 0)
+                                         + alt["works_count"])
+            if alt.get("cited_by_count") is not None:
+                result["citation_count"] = ((result.get("citation_count") or 0)
+                                            + alt["cited_by_count"])
+            alt_h = (alt.get("summary_stats") or {}).get("h_index")
+            if alt_h is not None:
+                result["h_index"] = max(result.get("h_index") or 0, alt_h)
 
     def _find_author(self, faculty_dict):
         """Resolve the OpenAlex author record using the safest available key."""
@@ -141,10 +173,12 @@ class OpenAlexSource(BaseSource):
                 return True
         return False
 
-    def _fetch_works(self, openalex_id):
-        """Most recent works for an author id."""
+    def _fetch_works(self, openalex_id, alt_ids=None):
+        """Most recent works for an author id (plus merged alternate
+        profiles — OpenAlex filter values OR together with '|')."""
+        author_filter = "|".join([openalex_id] + list(alt_ids or []))
         resp = self._get(WORKS_URL, params=self._params({
-            "filter": f"authorships.author.id:{openalex_id}",
+            "filter": f"authorships.author.id:{author_filter}",
             "sort": "publication_date:desc",
             "per-page": 20,
         }))

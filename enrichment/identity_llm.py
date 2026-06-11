@@ -9,7 +9,9 @@ compared against the faculty's HR title, division, and research interests.
 
 Precision-first design (a wrong match poisons downstream enrichment):
   - The LLM may only ACCEPT or ABSTAIN; reject_all verdicts merely annotate
-    and downrank the manual queue. Nothing is ever auto-rejected.
+    and downrank the manual queue. Whole groups are never auto-rejected;
+    only an accepted verdict retires its losing co-candidates (duplicate
+    profiles of the accepted person are merged as alternate ids, not lost).
   - Accepts require two independent calls agreeing on the same candidate
     (the second sees the candidates in shuffled order — order invariance
     catches position bias at temperature 0), pass deterministic guardrails
@@ -72,9 +74,22 @@ Respond with ONLY a JSON object:
  "confidence": <0.0-1.0>,
  "reasoning": "<2-4 sentences citing the specific evidence>"}
 
+Output the raw JSON object only — no markdown fences, no text before or
+after it. Keep reasoning to at most 4 sentences.
+
 Use "accept" only when the evidence is decisive that one candidate is this
 person. Use "reject_all" only when every candidate is clearly someone else.
 You may only pick external ids that appear in the candidate list."""
+
+
+class AdjudicationError(Exception):
+    """Infrastructure failure during one adjudication (LLM call or response
+    parsing) — distinct from a genuine abstain so the sweep never stamps
+    llm_evaluated_at for it. kind: 'budget' | 'llm_call' | 'parse'."""
+
+    def __init__(self, kind, message=""):
+        super().__init__(message or kind)
+        self.kind = kind
 
 
 def _accept_confidence():
@@ -248,24 +263,25 @@ def acceptance_guardrails(verdict, candidates, accept_confidence=None):
     return True, "ok"
 
 
+def _stamp_is_fresh(stamp, now=None):
+    """True when an llm_evaluated_at ISO timestamp is newer than RECHECK_DAYS."""
+    if not stamp:
+        return False
+    try:
+        seen = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if seen.tzinfo is None:
+        seen = seen.replace(tzinfo=timezone.utc)
+    now = now or datetime.now(timezone.utc)
+    return seen >= now - timedelta(days=RECHECK_DAYS)
+
+
 def _recently_evaluated(group, now=None):
     """True when every pending row in the group carries an llm_evaluated_at
     newer than RECHECK_DAYS — the LLM already abstained; don't re-bill."""
-    now = now or datetime.now(timezone.utc)
-    cutoff = now - timedelta(days=RECHECK_DAYS)
-    for row in group:
-        stamp = row.get("llm_evaluated_at")
-        if not stamp:
-            return False
-        try:
-            seen = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
-        except ValueError:
-            return False
-        if seen.tzinfo is None:
-            seen = seen.replace(tzinfo=timezone.utc)
-        if seen < cutoff:
-            return False
-    return True
+    return all(_stamp_is_fresh(row.get("llm_evaluated_at"), now)
+               for row in group)
 
 
 def _collapse_for_prompt(candidates):
@@ -289,7 +305,7 @@ def _collapse_for_prompt(candidates):
 
 def _default_llm_call(system_prompt, user_prompt):
     from utils.grant_matcher import _call_llm
-    return _call_llm(system_prompt, user_prompt, max_tokens=500,
+    return _call_llm(system_prompt, user_prompt, max_tokens=1500,
                      temperature=0, json_mode=True)
 
 
@@ -390,18 +406,57 @@ def build_dossiers(candidates, openalex, stats, max_fetches):
     return dossiers
 
 
-def adjudicate(faculty, candidates, dossiers, llm_call, shuffle_seed=None):
-    """One LLM pass; returns a validated verdict (abstain on parse failure)."""
+def _is_budget_error(exc):
+    try:
+        import litellm
+        if isinstance(exc, (litellm.RateLimitError,
+                            litellm.BudgetExceededError)):
+            return True
+    except (ImportError, AttributeError):
+        pass
+    return "budget" in str(exc).lower()
+
+
+def adjudicate(faculty, candidates, dossiers, llm_call, shuffle_seed=None,
+               stats=None):
+    """One LLM pass; returns a validated verdict.
+
+    Infrastructure failures raise AdjudicationError instead of masquerading
+    as abstains: a budget/transport error or an unparseable response says
+    nothing about the candidates, so the group must stay un-stamped and be
+    retried on a later sweep. An unparseable response is retried once
+    (counted in stats['llm_calls']). A parseable-but-malformed verdict is
+    still the model's answer and collapses to abstain via validate_verdict.
+    """
     from utils.grant_matcher import _parse_json_response
 
     prompt = build_user_prompt(faculty, candidates, dossiers,
                                shuffle_seed=shuffle_seed)
+
+    def _call():
+        try:
+            return llm_call(SYSTEM_PROMPT, prompt)
+        except Exception as e:
+            kind = "budget" if _is_budget_error(e) else "llm_call"
+            raise AdjudicationError(
+                kind, f"LLM call failed for faculty id "
+                      f"{faculty.get('_db_id')}: {e}") from e
+
+    text = _call()
     try:
-        raw = _parse_json_response(llm_call(SYSTEM_PROMPT, prompt))
-    except Exception:
-        logger.exception("LLM adjudication failed for faculty id %s",
-                         faculty.get("_db_id"))
-        raw = None
+        raw = _parse_json_response(text)
+    except ValueError:
+        logger.warning("Unparseable LLM response for faculty id %s — "
+                       "retrying once", faculty.get("_db_id"))
+        if stats is not None:
+            stats["llm_calls"] += 1
+        text = _call()
+        try:
+            raw = _parse_json_response(text)
+        except ValueError as e:
+            raise AdjudicationError(
+                "parse", f"Unparseable LLM response for faculty id "
+                         f"{faculty.get('_db_id')} after retry") from e
     return validate_verdict(raw, candidates)
 
 
@@ -418,8 +473,16 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
     Accepts go through db.decide_identity_candidate — the same path as a
     manual accept — and are logged with method 'identity_llm_rule'. Abstain
     and reject_all verdicts only annotate the rows (llm_* columns) so the
-    admin queue can be triaged; nothing is ever auto-rejected. Returns a
-    stats dict.
+    admin queue can be triaged; nothing is ever auto-rejected.
+
+    Dry runs annotate (including llm_evaluated_at) but never commit: abstain
+    annotations cache the verdict for RECHECK_DAYS so the next sweep doesn't
+    re-bill, and accept annotations are *promoted* — committed without new
+    LLM calls — by the next non-dry run, after a fresh guardrail re-check.
+
+    Infrastructure failures (LLM budget/transport errors, unparseable
+    responses) never stamp llm_evaluated_at; the sweep aborts early on
+    budget exhaustion or repeated consecutive errors. Returns a stats dict.
     """
     import time as _time
 
@@ -445,9 +508,11 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
 
     stats = {"faculty_seen": len(groups), "eligible": 0, "skipped_recent": 0,
              "llm_calls": 0, "dossier_fetches": 0, "accepted_llm": 0,
-             "abstained": 0, "reject_all_flagged": 0, "guardrail_blocked": 0,
-             "errors": 0, "left_pending": 0}
+             "promoted": 0, "abstained": 0, "reject_all_flagged": 0,
+             "guardrail_blocked": 0, "errors": 0, "budget_errors": 0,
+             "left_pending": 0}
     start = _time.monotonic()
+    consecutive_errors = 0
 
     for i, (faculty_id, group) in enumerate(groups.items()):
         if time_budget_seconds is not None:
@@ -459,11 +524,6 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
             logger.warning("Identity LLM sweep: call budget reached "
                            "after %d/%d", i, len(groups))
             break
-
-        if not force and _recently_evaluated(group):
-            stats["skipped_recent"] += 1
-            stats["left_pending"] += 1
-            continue
 
         faculty = {
             "_db_id": faculty_id,
@@ -491,8 +551,27 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
                 "evidence": evidence,
             })
         candidates.sort(key=lambda c: -(c["score"] or 0))
-
         eligible = eligible_candidates(candidates)
+
+        # Promote a stored accept annotation (e.g. from a dry run) before
+        # spending anything: the verdict was already paid for and vetted.
+        if not dry_run and eligible:
+            try:
+                if _promote_annotated_accept(conn, faculty, candidates,
+                                             eligible, group, stats,
+                                             accept_confidence, model):
+                    if progress_callback:
+                        progress_callback(i + 1, len(groups))
+                    continue
+            except Exception:
+                logger.exception("Annotation promotion failed for faculty "
+                                 "id %s", faculty_id)
+
+        if not force and _recently_evaluated(group):
+            stats["skipped_recent"] += 1
+            stats["left_pending"] += 1
+            continue
+
         if not eligible:
             stats["left_pending"] += 1
             continue
@@ -503,11 +582,38 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
                 conn, faculty, candidates, eligible, openalex_source,
                 llm_call, stats, max_dossier_fetches, self_consistency,
                 accept_confidence, model, dry_run)
+            consecutive_errors = 0
+        except AdjudicationError as e:
+            logger.warning("Identity LLM sweep: %s failure for faculty id "
+                           "%s: %s", e.kind, faculty_id, e)
+            stats["errors"] += 1
+            stats["left_pending"] += 1
+            consecutive_errors += 1
+            if e.kind == "budget":
+                stats["budget_errors"] += 1
+                stats["aborted"] = "llm_budget_exhausted"
+                logger.warning("Identity LLM sweep: LLM budget exhausted "
+                               "after %d/%d — aborting", i, len(groups))
+                break
+            if consecutive_errors >= 3:
+                stats["aborted"] = "consecutive_errors"
+                logger.warning("Identity LLM sweep: %d consecutive errors "
+                               "after %d/%d — aborting", consecutive_errors,
+                               i, len(groups))
+                break
+            continue
         except Exception:
             logger.exception("Identity LLM sweep failed for faculty id %s",
                              faculty_id)
             stats["errors"] += 1
             stats["left_pending"] += 1
+            consecutive_errors += 1
+            if consecutive_errors >= 3:
+                stats["aborted"] = "consecutive_errors"
+                logger.warning("Identity LLM sweep: %d consecutive errors "
+                               "after %d/%d — aborting", consecutive_errors,
+                               i, len(groups))
+                break
             continue
 
         if not accepted:
@@ -520,23 +626,92 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
     return stats
 
 
+def _commit_accept(conn, faculty, candidates, verdict, cluster_ids,
+                   rule_info):
+    """Commit an accept verdict through the same db path as a manual accept:
+    accept the chosen candidate as primary, merge its duplicate-profile
+    cluster siblings as alternate ids (adopting their ORCID), and reject the
+    remaining candidates — the two-pass verdict was exclusive. Returns True
+    when the decision landed."""
+    faculty_id = faculty["_db_id"]
+    chosen = next(c for c in candidates
+                  if c["external_id"] == verdict["candidate_external_id"])
+    decided = db.decide_identity_candidate(conn, chosen["_row_id"], "accept")
+    if not decided:
+        return False
+    cluster_ids = set(cluster_ids or [])
+    for c in candidates:
+        if c["_row_id"] == chosen["_row_id"]:
+            continue
+        if c["external_id"] in cluster_ids:
+            # Duplicate OpenAlex profile of the accepted person: keep its
+            # works reachable by enrichment instead of dropping them.
+            db.decide_identity_candidate(conn, c["_row_id"], "merge")
+        else:
+            db.decide_identity_candidate(conn, c["_row_id"], "reject")
+    db.append_log(conn, [_identity_log_entry(
+        faculty_id, faculty["_stable_key"], chosen,
+        method="identity_llm_rule",
+        confidence=verdict["confidence"], rule_info=rule_info)])
+    conn.commit()
+    return True
+
+
+def _promote_annotated_accept(conn, faculty, candidates, eligible, group,
+                              stats, accept_confidence, model):
+    """Commit a stored accept annotation (typically left by a dry run)
+    without new LLM calls. Accept annotations are only ever written after
+    the two-pass verdict passed guardrails; re-run the deterministic
+    guardrails against the stored evidence and commit on pass. Returns True
+    when promoted."""
+    accept_row = next(
+        (row for row in group
+         if row.get("llm_verdict") == "accept"
+         and row.get("source") == "openalex"
+         and _stamp_is_fresh(row.get("llm_evaluated_at"))),
+        None)
+    if accept_row is None:
+        return False
+    verdict = {
+        "decision": "accept",
+        "candidate_external_id": accept_row["external_id"],
+        "confidence": accept_row.get("llm_confidence") or 0.0,
+        "reasoning": accept_row.get("llm_reasoning") or "",
+    }
+    presented, cluster_ids = _collapse_for_prompt(eligible)
+    ok, reason = acceptance_guardrails(verdict, presented, accept_confidence)
+    if not ok:
+        logger.info("Annotation promotion blocked for faculty id %s: %s",
+                    faculty["_db_id"], reason)
+        return False
+    rule_info = {"rule": "llm_annotation_promoted",
+                 "prompt_version": PROMPT_VERSION,
+                 "model": model,
+                 "annotated_at": accept_row.get("llm_evaluated_at"),
+                 "cluster": cluster_ids or None}
+    if _commit_accept(conn, faculty, candidates, verdict, cluster_ids,
+                      rule_info):
+        stats["promoted"] += 1
+        return True
+    return False
+
+
 def _adjudicate_group(conn, faculty, candidates, eligible, openalex_source,
                       llm_call, stats, max_dossier_fetches, self_consistency,
                       accept_confidence, model, dry_run):
     """Run the two-pass adjudication for one faculty group. Returns True
     when a candidate was accepted (and committed)."""
-    faculty_id = faculty["_db_id"]
     presented, cluster_ids = _collapse_for_prompt(eligible)
     dossiers = build_dossiers(presented, openalex_source, stats,
                               max_dossier_fetches)
 
     stats["llm_calls"] += 1
-    first = adjudicate(faculty, presented, dossiers, llm_call)
+    first = adjudicate(faculty, presented, dossiers, llm_call, stats=stats)
     second = None
     if first["decision"] == "accept" and self_consistency:
         stats["llm_calls"] += 1
         second = adjudicate(faculty, presented, dossiers, llm_call,
-                            shuffle_seed=faculty_id)
+                            shuffle_seed=faculty["_db_id"], stats=stats)
     verdict = merge_verdicts(first, second)
 
     ok = blocked = False
@@ -549,35 +724,16 @@ def _adjudicate_group(conn, faculty, candidates, eligible, openalex_source,
             verdict = dict(verdict, decision="abstain", guardrail=reason)
 
     if ok and not dry_run:
-        chosen = next(c for c in candidates
-                      if c["external_id"] == verdict["candidate_external_id"])
-        decided = db.decide_identity_candidate(conn, chosen["_row_id"],
-                                               accept=True)
-        if decided:
-            sibling_orcid = None
-            if not (chosen.get("evidence") or {}).get("orcid"):
-                for c in candidates:
-                    if (c["external_id"] in cluster_ids
-                            and (c.get("evidence") or {}).get("orcid")):
-                        sibling_orcid = c["evidence"]["orcid"]
-                        break
-            if sibling_orcid:
-                conn.execute(
-                    "UPDATE faculty SET orcid = COALESCE(orcid, ?)"
-                    " WHERE id = ?", (sibling_orcid, faculty_id))
-            rule_info = {"rule": "llm_adjudication",
-                         "prompt_version": PROMPT_VERSION,
-                         "model": model,
-                         "verdict_1": first,
-                         "verdict_2": second,
-                         "dossier_ids": sorted(dossiers),
-                         "cluster": cluster_ids or None}
-            db.append_log(conn, [_identity_log_entry(
-                faculty_id, faculty["_stable_key"], chosen,
-                method="identity_llm_rule",
-                confidence=verdict["confidence"], rule_info=rule_info)])
+        rule_info = {"rule": "llm_adjudication",
+                     "prompt_version": PROMPT_VERSION,
+                     "model": model,
+                     "verdict_1": first,
+                     "verdict_2": second,
+                     "dossier_ids": sorted(dossiers),
+                     "cluster": cluster_ids or None}
+        if _commit_accept(conn, faculty, candidates, verdict, cluster_ids,
+                          rule_info):
             stats["accepted_llm"] += 1
-            conn.commit()
             return True
         return False
 

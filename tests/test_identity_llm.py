@@ -351,16 +351,168 @@ class LLMSweepTests(_TempDBTestCase):
                            (fid,)).fetchone()
         self.assertEqual(row["openalex_id"], "A1")
         self.assertEqual(row["orcid"], "0000-0001-1111-2222")
+        # The duplicate profile is merged as an alternate, not dropped.
+        self.assertEqual(json.loads(row["openalex_id_alt"]), ["A2"])
+        statuses = {r["external_id"]: r["status"] for r in conn.execute(
+            "SELECT external_id, status FROM identity_candidates")}
+        self.assertEqual(statuses, {"A1": "accepted", "A2": "merged"})
         conn.close()
 
-    def test_unparseable_response_abstains(self):
+    def test_unparseable_response_is_an_error_not_an_abstain(self):
+        # An unparseable response (after one retry) says nothing about the
+        # candidates: it must count as an error and leave the rows
+        # un-stamped so a later sweep retries them.
         conn, fid = self._seed(CANDS)
         stats = self._sweep("I think it's probably the first one?")
         self.assertEqual(stats["accepted_llm"], 0)
-        self.assertEqual(stats["abstained"], 1)
+        self.assertEqual(stats["abstained"], 0)
+        self.assertEqual(stats["errors"], 1)
+        self.assertEqual(stats["llm_calls"], 2)  # first call + parse retry
+        for r in conn.execute("SELECT * FROM identity_candidates"):
+            self.assertIsNone(r["llm_verdict"])
+            self.assertIsNone(r["llm_evaluated_at"])
         row = conn.execute("SELECT * FROM faculty WHERE id=?",
                            (fid,)).fetchone()
         self.assertEqual(row["identity_status"], "ambiguous")
+        conn.close()
+
+    def test_parse_retry_recovers_valid_verdict(self):
+        conn, fid = self._seed(CANDS)
+        llm = _llm_returning("Sure! Here is my verdict",
+                             json.dumps(_verdict()))
+        stats = self._sweep(None, llm_call=llm)
+        self.assertEqual(stats["errors"], 0)
+        self.assertEqual(stats["accepted_llm"], 1)
+        # pass 1 + parse retry + self-consistency pass 2
+        self.assertEqual(stats["llm_calls"], 3)
+        row = conn.execute("SELECT * FROM faculty WHERE id=?",
+                           (fid,)).fetchone()
+        self.assertEqual(row["openalex_id"], "A1")
+        conn.close()
+
+    def _seed_many(self, n):
+        conn = db.connect(readonly=False)
+        db.init_schema(conn)
+        for i in range(n):
+            fid = db.upsert_faculty(conn, "som", {
+                "first_name": f"F{i}", "last_name": "Smith",
+                "email": f"f{i}@ucsd.edu"})
+            db.insert_identity_candidates(conn, fid, [
+                _candidate(f"A{i}", score=0.85, ucsd_current=True,
+                           name_similarity=1.0)])
+            db.set_identity_status(conn, fid, "ambiguous")
+        conn.commit()
+        return conn
+
+    def test_budget_error_aborts_sweep_immediately(self):
+        conn = self._seed_many(3)
+
+        calls = []
+
+        def llm(system_prompt, user_prompt):
+            calls.append(1)
+            raise RuntimeError("Budget has been exceeded! Current cost: 200")
+
+        stats = self._sweep(None, llm_call=llm)
+        self.assertEqual(stats["errors"], 1)
+        self.assertEqual(stats["budget_errors"], 1)
+        self.assertEqual(stats["aborted"], "llm_budget_exhausted")
+        # Aborted on the first group: one call attempt, no parse retry
+        # (the call itself failed), later groups untouched.
+        self.assertEqual(len(calls), 1)
+        for r in conn.execute("SELECT * FROM identity_candidates"):
+            self.assertIsNone(r["llm_evaluated_at"])
+        conn.close()
+
+    def test_consecutive_errors_abort_sweep(self):
+        conn = self._seed_many(5)
+
+        def llm(system_prompt, user_prompt):
+            raise RuntimeError("connection reset")
+
+        stats = self._sweep(None, llm_call=llm)
+        self.assertEqual(stats["errors"], 3)
+        self.assertEqual(stats["aborted"], "consecutive_errors")
+        for r in conn.execute("SELECT * FROM identity_candidates"):
+            self.assertIsNone(r["llm_evaluated_at"])
+        conn.close()
+
+    def test_real_sweep_promotes_dry_run_accept_without_llm_calls(self):
+        conn, fid = self._seed(CANDS)
+        dry = self._sweep(json.dumps(_verdict()), dry_run=True)
+        self.assertEqual(dry["accepted_llm"], 1)
+
+        def llm(system_prompt, user_prompt):
+            raise AssertionError("promotion must not re-bill the LLM")
+
+        stats = self._sweep(None, llm_call=llm)
+        self.assertEqual(stats["promoted"], 1)
+        self.assertEqual(stats["llm_calls"], 0)
+        self.assertEqual(stats["errors"], 0)
+        self.assertEqual(stats["left_pending"], 0)
+        row = conn.execute("SELECT * FROM faculty WHERE id=?",
+                           (fid,)).fetchone()
+        self.assertEqual(row["openalex_id"], "A1")
+        self.assertEqual(row["identity_status"], "confirmed")
+        statuses = {r["external_id"]: r["status"] for r in conn.execute(
+            "SELECT external_id, status FROM identity_candidates")}
+        self.assertEqual(statuses, {"A1": "accepted", "A2": "rejected"})
+        logs = [dict(r) for r in conn.execute(
+            "SELECT * FROM enrichment_log WHERE field_updated='identity'")]
+        self.assertEqual(len(logs), 1)
+        raw = json.loads(logs[0]["raw_response"])
+        self.assertEqual(raw["rule"], "llm_annotation_promoted")
+        conn.close()
+
+    def test_promotion_re_runs_guardrails(self):
+        # A stored accept annotation that no longer passes guardrails (here:
+        # sub-threshold confidence, crafted directly) must not be promoted;
+        # the group stays parked under the recency stamp.
+        conn, fid = self._seed(CANDS)
+        conn.execute(
+            "UPDATE identity_candidates SET llm_verdict='accept',"
+            " llm_confidence=0.5, llm_reasoning='weak',"
+            " llm_evaluated_at=datetime('now') WHERE external_id='A1'")
+        conn.execute(
+            "UPDATE identity_candidates SET llm_verdict='abstain',"
+            " llm_confidence=0.5, llm_evaluated_at=datetime('now')"
+            " WHERE external_id='A2'")
+        conn.commit()
+
+        def llm(system_prompt, user_prompt):
+            raise AssertionError("should be skipped as recently evaluated")
+
+        stats = self._sweep(None, llm_call=llm)
+        self.assertEqual(stats["promoted"], 0)
+        self.assertEqual(stats["skipped_recent"], 1)
+        row = conn.execute("SELECT * FROM faculty WHERE id=?",
+                           (fid,)).fetchone()
+        self.assertEqual(row["identity_status"], "ambiguous")
+        self.assertIsNone(row["openalex_id"])
+        conn.close()
+
+
+class FacultySchemaMigrationTests(_TempDBTestCase):
+    def test_old_faculty_table_gains_openalex_id_alt(self):
+        conn = db.connect(readonly=False)
+        # Minimal pre-merge faculty table: no openalex_id_alt column (but
+        # everything schema.sql's indexes reference and that the column
+        # migrations don't add).
+        conn.execute("""
+            CREATE TABLE faculty (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                stable_key TEXT NOT NULL UNIQUE,
+                department TEXT NOT NULL,
+                department_label TEXT NOT NULL,
+                first_name TEXT, last_name TEXT,
+                pi_eligible INTEGER,
+                has_profile INTEGER NOT NULL DEFAULT 0,
+                updated_at TEXT NOT NULL
+            )""")
+        conn.commit()
+        db.init_schema(conn)
+        cols = {row[1] for row in conn.execute("PRAGMA table_info(faculty)")}
+        self.assertIn("openalex_id_alt", cols)
         conn.close()
 
 

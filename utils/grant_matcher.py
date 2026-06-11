@@ -4,8 +4,6 @@ import os
 import re
 import time
 
-from litellm import completion
-
 logger = logging.getLogger(__name__)
 
 MAX_INTERESTS_LENGTH = 300
@@ -19,9 +17,26 @@ def _get_model():
     return model
 
 
+def _is_unretryable_llm_error(exc):
+    """Errors where retrying without JSON mode just doubles the failure:
+    budget/rate limits and auth problems are about the account, not the
+    response format."""
+    try:
+        import litellm
+        if isinstance(exc, (litellm.RateLimitError,
+                            litellm.AuthenticationError,
+                            litellm.BudgetExceededError)):
+            return True
+    except (ImportError, AttributeError):
+        pass
+    return "budget" in str(exc).lower()
+
+
 def _call_llm(system_prompt, user_prompt, max_tokens=2000, temperature=0.1,
                json_mode=False):
     """Make a LiteLLM completion call and return the content string."""
+    from litellm import completion
+
     kwargs = dict(
         model=_get_model(),
         messages=[
@@ -38,8 +53,8 @@ def _call_llm(system_prompt, user_prompt, max_tokens=2000, temperature=0.1,
 
     try:
         response = completion(**kwargs)
-    except Exception:
-        if json_mode:
+    except Exception as e:
+        if json_mode and not _is_unretryable_llm_error(e):
             # Model may not support JSON mode — retry without it
             logger.info("JSON mode not supported by model, retrying without it")
             kwargs.pop("response_format", None)

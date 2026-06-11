@@ -3,6 +3,7 @@
 Run with:  python -m unittest discover tests -v
 """
 
+import json
 import os
 import sys
 import tempfile
@@ -352,7 +353,8 @@ class IdentityCandidateFlowTests(_TempDBTestCase):
         self.assertEqual(len(pending), 2)
         best = next(c for c in pending if c["external_id"] == "A5111")
 
-        db.decide_identity_candidate(conn, best["id"], accept=True)
+        db.decide_identity_candidate(conn, best["id"], "accept",
+                                     reject_siblings=True)
         conn.commit()
 
         row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
@@ -364,6 +366,125 @@ class IdentityCandidateFlowTests(_TempDBTestCase):
         statuses = {r["external_id"]: r["status"] for r in conn.execute(
             "SELECT external_id, status FROM identity_candidates")}
         self.assertEqual(statuses, {"A5111": "accepted", "A5222": "rejected"})
+        conn.close()
+
+    def _seed_patel(self, candidates):
+        conn = db.connect(readonly=False)
+        db.init_schema(conn)
+        fid = db.upsert_faculty(conn, "som", {
+            "first_name": "Ravi", "last_name": "Patel",
+            "email": "rpatel@health.ucsd.edu",
+        })
+        db.insert_identity_candidates(conn, fid, candidates)
+        conn.commit()
+        return conn, fid
+
+    def test_accept_without_reject_siblings_leaves_them_pending(self):
+        conn, fid = self._seed_patel([
+            {"source": "openalex", "external_id": "A5111", "score": 0.85,
+             "display_name": "Ravi Patel", "evidence": {}},
+            {"source": "openalex", "external_id": "A5222", "score": 0.82,
+             "display_name": "R. Patel", "evidence": {}},
+        ])
+        best = next(c for c in db.list_identity_candidates(conn)
+                    if c["external_id"] == "A5111")
+        db.decide_identity_candidate(conn, best["id"], "accept")
+        conn.commit()
+
+        statuses = {r["external_id"]: r["status"] for r in conn.execute(
+            "SELECT external_id, status FROM identity_candidates")}
+        self.assertEqual(statuses, {"A5111": "accepted", "A5222": "pending"})
+        conn.close()
+
+    def test_merge_records_alternate_id_and_adopts_orcid(self):
+        conn, fid = self._seed_patel([
+            {"source": "openalex", "external_id": "A5111", "score": 0.85,
+             "display_name": "Ravi Patel", "evidence": {}},
+            {"source": "openalex", "external_id": "A5222", "score": 0.82,
+             "display_name": "R. Patel",
+             "evidence": {"orcid": "0000-0002-1111-2222"}},
+        ])
+        by_id = {c["external_id"]: c
+                 for c in db.list_identity_candidates(conn)}
+
+        # No primary yet: merge falls back to accept.
+        db.decide_identity_candidate(conn, by_id["A5111"]["id"], "merge")
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertEqual(row["openalex_id"], "A5111")
+        self.assertEqual(row["identity_status"], "confirmed")
+
+        # With a primary, merge records an alternate and adopts the ORCID.
+        db.decide_identity_candidate(conn, by_id["A5222"]["id"], "merge")
+        conn.commit()
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertEqual(row["openalex_id"], "A5111")
+        self.assertEqual(json.loads(row["openalex_id_alt"]), ["A5222"])
+        self.assertEqual(row["orcid"], "0000-0002-1111-2222")
+        statuses = {r["external_id"]: r["status"] for r in conn.execute(
+            "SELECT external_id, status FROM identity_candidates")}
+        self.assertEqual(statuses, {"A5111": "accepted", "A5222": "merged"})
+
+        # Idempotent: re-adding the alternate or the primary is a no-op.
+        db.add_openalex_alt(conn, fid, "A5222")
+        db.add_openalex_alt(conn, fid, "A5111")
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertEqual(json.loads(row["openalex_id_alt"]), ["A5222"])
+        conn.close()
+
+    def test_reopen_restores_only_auto_rejected_batch(self):
+        conn, fid = self._seed_patel([
+            {"source": "openalex", "external_id": "A1", "score": 0.9,
+             "display_name": "Ravi Patel", "evidence": {}},
+            {"source": "openalex", "external_id": "A2", "score": 0.8,
+             "display_name": "R. Patel", "evidence": {}},
+            {"source": "openalex", "external_id": "A3", "score": 0.7,
+             "display_name": "Ravi P.", "evidence": {}},
+        ])
+        by_id = {c["external_id"]: c
+                 for c in db.list_identity_candidates(conn)}
+        # Manually rejected first (its own decided_at) — must stay rejected.
+        db.decide_identity_candidate(conn, by_id["A3"]["id"], "reject")
+        # Accept auto-rejects the remaining pending sibling.
+        db.decide_identity_candidate(conn, by_id["A1"]["id"], "accept",
+                                     reject_siblings=True)
+        conn.commit()
+
+        n = db.reopen_identity_candidates(conn, fid)
+        conn.commit()
+        self.assertEqual(n, 1)
+        statuses = {r["external_id"]: r["status"] for r in conn.execute(
+            "SELECT external_id, status FROM identity_candidates")}
+        self.assertEqual(statuses,
+                         {"A1": "accepted", "A2": "pending", "A3": "rejected"})
+        conn.close()
+
+    def test_data_migration_reopens_auto_rejected_siblings(self):
+        conn, fid = self._seed_patel([
+            {"source": "openalex", "external_id": "A1", "score": 0.9,
+             "display_name": "Ravi Patel", "evidence": {}},
+            {"source": "openalex", "external_id": "A2", "score": 0.8,
+             "display_name": "R. Patel", "evidence": {}},
+        ])
+        # Simulate the legacy accept that auto-rejected the sibling at the
+        # same instant.
+        conn.execute("UPDATE identity_candidates SET status='accepted',"
+                     " decided_at='2026-01-01T00:00:00+00:00'"
+                     " WHERE external_id='A1'")
+        conn.execute("UPDATE identity_candidates SET status='rejected',"
+                     " decided_at='2026-01-01T00:00:00+00:00'"
+                     " WHERE external_id='A2'")
+        # Re-arm the one-time migration and re-run init_schema.
+        conn.execute("DELETE FROM meta WHERE key ="
+                     " 'data_migration:reopen_auto_rejected_siblings'")
+        conn.commit()
+        db.init_schema(conn)
+
+        statuses = {r["external_id"]: r["status"] for r in conn.execute(
+            "SELECT external_id, status FROM identity_candidates")}
+        self.assertEqual(statuses, {"A1": "accepted", "A2": "pending"})
+        # Guarded: the meta key persists so it won't re-run.
+        self.assertIsNotNone(db.get_meta(
+            conn, "data_migration:reopen_auto_rejected_siblings"))
         conn.close()
 
     def test_backfill_selection_requires_resolved_identity(self):

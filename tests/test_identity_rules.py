@@ -3,6 +3,7 @@
 Run with:  python -m unittest discover tests -v
 """
 
+import json
 import os
 import sys
 import unittest
@@ -492,11 +493,12 @@ class IdentityResweepTests(_ResolverTestBase):
         self.assertEqual(row["openalex_id"], "A2")
         self.assertEqual(row["orcid"], "0000-0001-1111-2222")
         self.assertEqual(row["identity_status"], "confirmed")
-        # Cluster sibling rejected, canonical accepted.
+        # Cluster sibling merged as an alternate id, canonical accepted.
         statuses = {r["external_id"]: r["status"] for r in conn.execute(
             "SELECT external_id, status FROM identity_candidates"
             " WHERE faculty_id=?", (f1,))}
-        self.assertEqual(statuses, {"A1": "rejected", "A2": "accepted"})
+        self.assertEqual(statuses, {"A1": "merged", "A2": "accepted"})
+        self.assertEqual(json.loads(row["openalex_id_alt"]), ["A1"])
 
         row = conn.execute("SELECT * FROM faculty WHERE id=?", (f2,)).fetchone()
         self.assertEqual(row["openalex_id"], "A3")
@@ -531,8 +533,10 @@ class IdentityResweepTests(_ResolverTestBase):
         statuses = {r["external_id"]: r["status"] for r in conn.execute(
             "SELECT external_id, status FROM identity_candidates"
             " WHERE faculty_id=?", (fid,))}
-        self.assertEqual(statuses, {"A1": "accepted", "A2": "rejected",
-                                    "A3": "rejected"})
+        self.assertEqual(statuses, {"A1": "accepted", "A2": "merged",
+                                    "A3": "merged"})
+        self.assertEqual(sorted(json.loads(row["openalex_id_alt"])),
+                         ["A2", "A3"])
         conn.close()
 
     def test_resweep_is_idempotent(self):

@@ -11,11 +11,14 @@ being merged in by the caller.
 """
 
 import json
+import logging
 import os
 import re
 import sqlite3
 import threading
 from datetime import datetime, timedelta, timezone
+
+logger = logging.getLogger(__name__)
 
 DB_PATH = os.environ.get(
     "FACULTY_DB_PATH",
@@ -42,6 +45,7 @@ _JSON_FIELDS = [
     "degrees", "expertise_keywords", "methodologies", "disease_areas",
     "populations", "committee_service", "integrity_flags",
     "funded_grants", "recent_publications", "awards", "patents",
+    "openalex_id_alt",
 ]
 # Every column written from a faculty record (excludes id/stable_key/department/
 # department_label and the derived has_profile/grants_count/pubs_count/updated_at).
@@ -97,6 +101,7 @@ def get_write_conn():
 # pick them up via ALTER TABLE (schema.sql only creates missing *tables*).
 _FACULTY_COLUMN_MIGRATIONS = [
     ("openalex_id", "TEXT"),
+    ("openalex_id_alt", "TEXT"),
     ("identity_status", "TEXT NOT NULL DEFAULT 'unresolved'"),
     ("citation_count", "INTEGER"),
     ("works_count", "INTEGER"),
@@ -129,11 +134,36 @@ def _apply_migrations(conn):
                    _IDENTITY_CANDIDATE_COLUMN_MIGRATIONS)
 
 
+def _apply_data_migrations(conn):
+    """One-time data fixes, each guarded by a meta key (idempotent)."""
+    key = "data_migration:reopen_auto_rejected_siblings"
+    if get_meta(conn, key) is None:
+        # Accepting a candidate used to auto-reject every pending sibling in
+        # the same statement (sharing the accepted row's decided_at) — which
+        # silently dropped duplicate profiles of the same person. Restore
+        # those batches to pending so they can be merged or re-reviewed;
+        # individually rejected rows (their own decided_at, or no accepted
+        # sibling) stay rejected.
+        cur = conn.execute(
+            "UPDATE identity_candidates SET status = 'pending',"
+            " decided_at = NULL WHERE status = 'rejected' AND EXISTS ("
+            "   SELECT 1 FROM identity_candidates a"
+            "   WHERE a.faculty_id = identity_candidates.faculty_id"
+            "     AND a.status = 'accepted'"
+            "     AND a.decided_at = identity_candidates.decided_at"
+            "     AND a.id != identity_candidates.id)")
+        if cur.rowcount:
+            logger.info("Data migration: reopened %d auto-rejected identity "
+                        "candidates for re-review", cur.rowcount)
+        set_meta(conn, key, _now_iso())
+
+
 def init_schema(conn):
-    """Apply schema.sql plus column migrations (idempotent)."""
+    """Apply schema.sql plus column and data migrations (idempotent)."""
     _apply_migrations(conn)
     with open(SCHEMA_PATH) as f:
         conn.executescript(f.read())
+    _apply_data_migrations(conn)
     conn.commit()
 
 
@@ -209,7 +239,8 @@ def _record_values(record):
         values.append(val)
     for field in _JSON_FIELDS:
         val = record.get(field)
-        values.append(json.dumps(val, ensure_ascii=False) if val else None)
+        values.append(json.dumps(val, ensure_ascii=False)
+                      if val is not None else None)
     return values
 
 
@@ -790,7 +821,7 @@ def list_identity_candidates(conn, status="pending", department=None, limit=200)
         " f.title AS f_title, f.department AS f_department,"
         " f.division_school AS f_division_school, f.email AS f_email,"
         " f.research_interests AS f_research_interests,"
-        " f.stable_key AS f_stable_key"
+        " f.stable_key AS f_stable_key, f.openalex_id AS f_openalex_id"
         " FROM identity_candidates c JOIN faculty f ON f.id = c.faculty_id"
         " WHERE c.status = ?" + dept_sql +
         " ORDER BY c.faculty_id, c.score DESC")
@@ -824,28 +855,40 @@ def get_identity_candidate(conn, candidate_id):
     return dict(row) if row else None
 
 
-def decide_identity_candidate(conn, candidate_id, accept):
-    """Accept/reject one candidate. Accepting writes the external id onto the
-    faculty row (orcid only if currently empty), marks the faculty 'confirmed',
-    and rejects sibling candidates."""
-    cand = get_identity_candidate(conn, candidate_id)
-    if not cand or cand["status"] != "pending":
-        return None
-    now = _now_iso()
-    new_status = "accepted" if accept else "rejected"
+def add_openalex_alt(conn, faculty_id, external_id):
+    """Record an alternate OpenAlex author id (a duplicate profile of the
+    same person) on the faculty row. No-op when it equals the primary or is
+    already recorded."""
+    row = conn.execute(
+        "SELECT openalex_id, openalex_id_alt FROM faculty WHERE id = ?",
+        (faculty_id,),
+    ).fetchone()
+    if row is None or not external_id or external_id == row["openalex_id"]:
+        return
+    try:
+        alts = json.loads(row["openalex_id_alt"] or "[]")
+    except ValueError:
+        alts = []
+    if external_id in alts:
+        return
+    alts.append(external_id)
     conn.execute(
-        "UPDATE identity_candidates SET status = ?, decided_at = ? WHERE id = ?",
-        (new_status, now, candidate_id),
+        "UPDATE faculty SET openalex_id_alt = ? WHERE id = ?",
+        (json.dumps(alts, ensure_ascii=False), faculty_id),
     )
-    if not accept:
-        return cand
 
+
+def _adopt_candidate_ids(conn, cand, *, as_primary):
+    """Write a candidate's external ids onto its faculty row. Primary ids
+    are write-once (COALESCE); alternates append to openalex_id_alt."""
     fid = cand["faculty_id"]
     if cand["source"] == "openalex":
-        conn.execute(
-            "UPDATE faculty SET openalex_id = COALESCE(openalex_id, ?) WHERE id = ?",
-            (cand["external_id"], fid),
-        )
+        if as_primary:
+            conn.execute(
+                "UPDATE faculty SET openalex_id = COALESCE(openalex_id, ?)"
+                " WHERE id = ?", (cand["external_id"], fid))
+        else:
+            add_openalex_alt(conn, fid, cand["external_id"])
         evidence = json.loads(cand["evidence"] or "{}")
         if evidence.get("orcid"):
             conn.execute(
@@ -857,13 +900,90 @@ def decide_identity_candidate(conn, candidate_id, accept):
             "UPDATE faculty SET orcid = COALESCE(orcid, ?) WHERE id = ?",
             (cand["external_id"], fid),
         )
-    set_identity_status(conn, fid, "confirmed")
+
+
+def decide_identity_candidate(conn, candidate_id, decision, *,
+                              reject_siblings=False):
+    """Decide one pending candidate: 'accept' | 'merge' | 'reject'.
+
+    accept: writes the external id onto the faculty row as the primary
+    (orcid only if currently empty) and marks the faculty 'confirmed'.
+    Remaining pending siblings are only auto-rejected when reject_siblings
+    is set — callers that know the verdict was exclusive.
+
+    merge: records an openalex candidate as an alternate profile of the
+    same person (faculty.openalex_id_alt) so enrichment reads its works
+    too. When the faculty has no primary openalex_id yet, the merge
+    becomes the accept.
+    """
+    assert decision in ("accept", "merge", "reject"), decision
+    cand = get_identity_candidate(conn, candidate_id)
+    if not cand or cand["status"] != "pending":
+        return None
+    fid = cand["faculty_id"]
+    now = _now_iso()
+
+    if decision == "merge":
+        if cand["source"] != "orcid":
+            primary = conn.execute(
+                "SELECT openalex_id FROM faculty WHERE id = ?", (fid,)
+            ).fetchone()
+            if primary is None or not primary["openalex_id"]:
+                decision = "accept"   # first accepted profile is the primary
+        else:
+            decision = "accept"   # orcid rows have no alternate slot
+
+    if decision == "reject":
+        conn.execute(
+            "UPDATE identity_candidates SET status = 'rejected',"
+            " decided_at = ? WHERE id = ?", (now, candidate_id))
+        return cand
+
+    if decision == "merge":
+        conn.execute(
+            "UPDATE identity_candidates SET status = 'merged',"
+            " decided_at = ? WHERE id = ?", (now, candidate_id))
+        _adopt_candidate_ids(conn, cand, as_primary=False)
+        return cand
+
     conn.execute(
-        "UPDATE identity_candidates SET status = 'rejected', decided_at = ?"
-        " WHERE faculty_id = ? AND status = 'pending' AND id != ?",
-        (now, fid, candidate_id),
-    )
+        "UPDATE identity_candidates SET status = 'accepted', decided_at = ?"
+        " WHERE id = ?", (now, candidate_id))
+    _adopt_candidate_ids(conn, cand, as_primary=True)
+    set_identity_status(conn, fid, "confirmed")
+    if reject_siblings:
+        conn.execute(
+            "UPDATE identity_candidates SET status = 'rejected', decided_at = ?"
+            " WHERE faculty_id = ? AND status = 'pending' AND id != ?",
+            (now, fid, candidate_id),
+        )
     return cand
+
+
+def reopen_identity_candidates(conn, faculty_id):
+    """Restore a faculty's auto-rejected candidates to pending so they can
+    be re-reviewed (accept-time sibling rejects share the accepted row's
+    decided_at). Falls back to restoring all rejected rows when no accepted
+    row exists. Returns the number of rows reopened."""
+    accepted = conn.execute(
+        "SELECT decided_at FROM identity_candidates"
+        " WHERE faculty_id = ? AND status = 'accepted'"
+        " ORDER BY decided_at DESC", (faculty_id,)).fetchall()
+    if accepted:
+        stamps = [r["decided_at"] for r in accepted if r["decided_at"]]
+        if not stamps:
+            return 0
+        marks = ",".join("?" * len(stamps))
+        cur = conn.execute(
+            "UPDATE identity_candidates SET status = 'pending',"
+            f" decided_at = NULL WHERE faculty_id = ? AND status = 'rejected'"
+            f" AND decided_at IN ({marks})", [faculty_id] + stamps)
+    else:
+        cur = conn.execute(
+            "UPDATE identity_candidates SET status = 'pending',"
+            " decided_at = NULL WHERE faculty_id = ? AND status = 'rejected'",
+            (faculty_id,))
+    return cur.rowcount
 
 
 def reject_faculty_identity(conn, faculty_id):

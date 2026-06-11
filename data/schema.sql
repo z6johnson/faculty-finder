@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS faculty (
     research_interests_enriched TEXT,
     profile_url                 TEXT,
     orcid                       TEXT,
-    openalex_id                 TEXT,
+    openalex_id                 TEXT,    -- primary OpenAlex author id
+    openalex_id_alt             TEXT,    -- JSON array: merged alternate author ids
     identity_status             TEXT NOT NULL DEFAULT 'unresolved',
         -- 'unresolved' | 'auto' | 'confirmed' | 'ambiguous' | 'not_found' | 'rejected'
     h_index                     INTEGER,
@@ -81,13 +82,15 @@ CREATE TABLE IF NOT EXISTS identity_candidates (
     affiliation  TEXT,
     score        REAL NOT NULL,
     evidence     TEXT,                     -- JSON: name similarity, topics, counts
-    status       TEXT NOT NULL DEFAULT 'pending',  -- pending | accepted | rejected
+    -- 'merged': accepted as an alternate profile of the same person
+    -- (faculty.openalex_id_alt) alongside an 'accepted' primary.
+    status       TEXT NOT NULL DEFAULT 'pending',  -- pending | accepted | merged | rejected
     created_at   TEXT NOT NULL,
     decided_at   TEXT,
 
     -- LLM adjudication annotations (enrichment/identity_llm.py). Advisory
     -- only: 'accept' marks the row the LLM would pick; 'reject'/'abstain'
-    -- pre-triage the manual queue. Never auto-rejects anything.
+    -- pre-triage the manual queue. Whole groups are never auto-rejected.
     llm_verdict      TEXT,                 -- 'accept' | 'reject' | 'abstain'
     llm_confidence   REAL,
     llm_reasoning    TEXT,

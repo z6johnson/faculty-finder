@@ -14,6 +14,10 @@ LLM normalizer, then refresh the live database.</p>
       <option value="{{ key }}">{{ label }}</option>
       {% endfor %}
     </select>
+    <label class="muted" style="white-space:nowrap;">
+      <input type="checkbox" name="profile_scrape_only" value="1">
+      profile scrape only (identity context backfill)
+    </label>
     <button class="btn btn-primary">Enrich division</button>
   </form>
   <div class="btn-row">
@@ -40,6 +44,10 @@ LLM normalizer, then refresh the live database.</p>
     </form>
     <form method="post" action="{{ url_for('admin.identity_run') }}">
       <button class="btn btn-secondary">Resolve identities (everyone)</button>
+    </form>
+    <form method="post" action="{{ url_for('admin.identity_run') }}">
+      <input type="hidden" name="include_not_found" value="1">
+      <button class="btn btn-secondary">Resolve identities (retry not-found)</button>
     </form>
     <form method="post" action="{{ url_for('admin.backfill_run') }}">
       <input type="hidden" name="pi_only" value="1">

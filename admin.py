@@ -174,8 +174,16 @@ def enrich_run():
     if dept not in valid:
         flash("Unknown department.", "error")
         return redirect(url_for("admin.enrichment"))
-    job_id = jobs.submit("enrich", {"department": dept}, trigger="manual")
-    flash(f"Enrichment queued for {dept} (job #{job_id}).", "success")
+    params = {"department": dept}
+    if request.form.get("profile_scrape_only"):
+        # Context backfill: institutional profile scrape + normalizer only,
+        # so identity-pending faculty gain topical evidence before an LLM
+        # identity sweep (see the campaign runbook in the README).
+        params["sources"] = ["ucsd_profile"]
+    job_id = jobs.submit("enrich", params, trigger="manual")
+    flash(f"Enrichment queued for {dept} (job #{job_id}"
+          + (", ucsd_profile only" if params.get("sources") else "")
+          + ").", "success")
     return redirect(url_for("admin.enrichment"))
 
 
@@ -183,7 +191,8 @@ def enrich_run():
 @login_required
 def identity_run():
     import jobs
-    params = {"pi_only": bool(request.form.get("pi_only"))}
+    params = {"pi_only": bool(request.form.get("pi_only")),
+              "include_not_found": bool(request.form.get("include_not_found"))}
     dept = (request.form.get("department") or "").strip().lower()
     if dept and dept in {d for d, _ in DEPTS}:
         params["department"] = dept

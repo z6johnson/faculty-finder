@@ -198,6 +198,35 @@ class ORCIDSource(BaseSource):
         return False
 
     @staticmethod
+    def employment_affiliations(record):
+        """Org names (with year span when available) from the record's
+        *employment* section — the affiliation history shown to the identity
+        adjudication LLM. Education is intentionally excluded (a degree is not
+        employment), mirroring _has_ucsd_employment.
+        """
+        activities = record.get("activities-summary", {})
+        out = []
+        for group in activities.get("employments", {}).get(
+                "affiliation-group", []):
+            for summary in group.get("summaries", []):
+                emp = summary.get("employment-summary", {})
+                org = (emp.get("organization", {}).get("name") or "").strip()
+                if not org:
+                    continue
+                label = org
+                role = (emp.get("role-title") or "").strip()
+                if role:
+                    label = f"{role}, {org}"
+                start = emp.get("start-date") or {}
+                end = emp.get("end-date") or {}
+                sy = (start.get("year") or {}).get("value") if start else None
+                ey = (end.get("year") or {}).get("value") if end else None
+                if sy or ey:
+                    label += f" ({sy or '?'}–{ey or 'present'})"
+                out.append(label)
+        return out
+
+    @staticmethod
     def _record_name(record):
         """(given, family) from the record's own person.name section."""
         name = (record.get("person") or {}).get("name") or {}

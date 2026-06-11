@@ -29,11 +29,17 @@ faculty unmatched.</p>
   <label class="muted" style="margin-left:8px;">
     <input type="checkbox" name="dry_run" value="1"> dry run (annotate only)
   </label>
+  <label class="muted" style="margin-left:8px;">
+    <input type="checkbox" name="force" value="1"> force (re-evaluate
+    recently-checked groups)
+  </label>
   <span class="muted">Compares each candidate's recent publications and
-  affiliation history against the faculty record. Accepts only two-pass
+  affiliation history against the faculty record — including ORCID-only
+  groups (verified against the ORCID record). Accepts only two-pass
   high-confidence matches (duplicate profiles of the accepted person are
   merged as alternates); everything else is annotated and re-sorted here
-  for faster review. Never rejects a whole group.</span>
+  for faster review. Never rejects a whole group. <em>Force</em> bypasses the
+  30-day skip cache so groups already evaluated are judged again.</span>
 </form>
 
 {% if groups %}

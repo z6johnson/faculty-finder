@@ -33,12 +33,17 @@ def _is_unretryable_llm_error(exc):
 
 
 def _call_llm(system_prompt, user_prompt, max_tokens=2000, temperature=0.1,
-               json_mode=False):
-    """Make a LiteLLM completion call and return the content string."""
+               json_mode=False, model=None):
+    """Make a LiteLLM completion call and return the content string.
+
+    model overrides the global LITELLM_MODEL for this call only (the identity
+    sweep uses it to run a cheaper/faster model than grant matching); None
+    keeps the configured default.
+    """
     from litellm import completion
 
     kwargs = dict(
-        model=_get_model(),
+        model=model or _get_model(),
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},

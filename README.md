@@ -117,6 +117,17 @@ matchable profile:
      annotated to pre-sort the review queue — never auto-rejected. Backtest
      accept precision with `scripts/calibrate_identity_llm.py` before
      enabling the weekly run (`ENABLE_IDENTITY_LLM_SWEEP=true`).
+     *ORCID-only groups* (no OpenAlex candidate) are adjudicated too, as a
+     binary confirm/abstain of the single ORCID profile: the LLM reads the
+     ORCID record's works and employment history, and accepts are gated
+     harder — a network-verified UCSD *employment* fact, a near-exact record
+     name, and confidence ≥ `IDENTITY_LLM_ORCID_ACCEPT_CONFIDENCE`
+     (default 0.95); weaker cases are only annotated for human review.
+     The sweep can run a scoped, cheaper/faster model via `IDENTITY_LLM_MODEL`
+     (e.g. `openai/api-deepseek-v4-flash`) without changing the global
+     `LITELLM_MODEL` used by grant matching and the normalizer. The admin
+     sweep form exposes a *force* checkbox to bypass the 30-day re-check
+     cache and re-evaluate recently-checked groups.
 2. **Enrichment** (`enrichment/pipeline.py`) — fetches from the division's
    source bundle, merges fields, and LLM-normalizes the profile.
 3. **Backfill** (job kind `backfill`) — nightly batches enrich
@@ -411,6 +422,8 @@ a persistent `/data` volume. For the data-layer / alternative-host details, see
 | `LITELLM_API_KEY` | Yes | LLM API key |
 | `LITELLM_API_BASE` | Yes | LLM API endpoint URL |
 | `LITELLM_MODEL` | No | Model identifier (default: `openai/api-gpt-oss-120b`) |
+| `IDENTITY_LLM_MODEL` | No | Scoped model override for the identity sweep only (default: falls back to `LITELLM_MODEL`); e.g. `openai/api-deepseek-v4-flash` for cheaper, higher-throughput adjudication |
+| `IDENTITY_LLM_ORCID_ACCEPT_CONFIDENCE` | No | Confidence floor for auto-accepting ORCID-only matches (default: `0.95`) |
 | `OPENALEX_MAILTO` | Strongly recommended | Contact email for the OpenAlex polite pool — without it, OpenAlex requests are heavily rate-limited (429s) |
 | `NCBI_API_KEY` | No | PubMed API key (increases rate limit from 3 to 10 req/s) |
 | `S2_API_KEY` | No | Semantic Scholar API key (increases quota) |

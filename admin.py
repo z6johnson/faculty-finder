@@ -354,11 +354,15 @@ def identity_llm_sweep():
               "unavailable.", "error")
         return redirect(url_for("admin.identity_queue"))
     dry_run = request.form.get("dry_run") == "1"
-    job_id = jobs.submit("identity_llm_sweep", {"dry_run": dry_run},
+    force = request.form.get("force") == "1"
+    job_id = jobs.submit("identity_llm_sweep",
+                         {"dry_run": dry_run, "force": force},
                          trigger="manual")
     flash(f"LLM adjudication queued (job #{job_id}"
-          + (", dry run — annotations only" if dry_run else "") + ").",
-          "success")
+          + (", dry run — annotations only" if dry_run else "")
+          + (", forced — re-evaluating recently-checked groups"
+             if force else "")
+          + ").", "success")
     return redirect(url_for("admin.identity_queue"))
 
 

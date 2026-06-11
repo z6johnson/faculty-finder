@@ -115,6 +115,7 @@ _IDENTITY_CANDIDATE_COLUMN_MIGRATIONS = [
     ("llm_confidence", "REAL"),
     ("llm_reasoning", "TEXT"),
     ("llm_evaluated_at", "TEXT"),
+    ("llm_model", "TEXT"),
 ]
 
 
@@ -821,6 +822,7 @@ def list_identity_candidates(conn, status="pending", department=None, limit=200)
         " f.title AS f_title, f.department AS f_department,"
         " f.division_school AS f_division_school, f.email AS f_email,"
         " f.research_interests AS f_research_interests,"
+        " f.research_interests_enriched AS f_research_interests_enriched,"
         " f.stable_key AS f_stable_key, f.openalex_id AS f_openalex_id"
         " FROM identity_candidates c JOIN faculty f ON f.id = c.faculty_id"
         " WHERE c.status = ?" + dept_sql +
@@ -833,17 +835,20 @@ def list_identity_candidates(conn, status="pending", department=None, limit=200)
     return [dict(r) for r in rows]
 
 
-def annotate_identity_candidates_llm(conn, annotations):
+def annotate_identity_candidates_llm(conn, annotations, model=None):
     """Write LLM adjudication annotations onto pending candidate rows.
 
     annotations: {row_id: (verdict, confidence, reasoning)}. Advisory only —
     rows stay 'pending'; the review queue uses these to sort and badge.
+    model gates the sweep's recheck cooldown: a stamp only suppresses
+    re-evaluation by the same model, so switching models re-opens the group.
     """
     now = _now_iso()
     conn.executemany(
         "UPDATE identity_candidates SET llm_verdict = ?, llm_confidence = ?,"
-        " llm_reasoning = ?, llm_evaluated_at = ? WHERE id = ? AND status = 'pending'",
-        [(verdict, confidence, reasoning, now, row_id)
+        " llm_reasoning = ?, llm_evaluated_at = ?, llm_model = ?"
+        " WHERE id = ? AND status = 'pending'",
+        [(verdict, confidence, reasoning, now, model, row_id)
          for row_id, (verdict, confidence, reasoning) in annotations.items()],
     )
 
@@ -1030,6 +1035,7 @@ def load_status_by_division(conn):
         " SUM(CASE WHEN identity_status IN ('auto','confirmed') THEN 1 ELSE 0 END) AS resolved,"
         " SUM(CASE WHEN identity_status = 'ambiguous' THEN 1 ELSE 0 END) AS ambiguous,"
         " SUM(CASE WHEN identity_status = 'not_found' THEN 1 ELSE 0 END) AS not_found,"
+        " SUM(CASE WHEN identity_status = 'no_footprint' THEN 1 ELSE 0 END) AS no_footprint,"
         " SUM(has_profile) AS with_profile,"
         " SUM(CASE WHEN last_enriched IS NOT NULL THEN 1 ELSE 0 END) AS enriched,"
         " SUM(CASE WHEN pi_eligible = 1 THEN 1 ELSE 0 END) AS pi_eligible"

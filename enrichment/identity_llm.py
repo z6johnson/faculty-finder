@@ -46,6 +46,8 @@ PROMPT_VERSION = "identity-llm-v1"
 NAME_SIMILARITY_FLOOR = 0.75
 # Don't re-bill the LLM for groups it already abstained on until this many
 # days pass (new evidence accrues slowly; the weekly resolve adds candidates).
+# The stamp is per-model (_recently_evaluated): a different model's abstain
+# never suppresses the configured model, so a model switch re-opens the queue.
 RECHECK_DAYS = 30
 # Dossiers are fetched for the top N candidates by deterministic score;
 # trailing low scorers are shown with stored evidence only.
@@ -443,10 +445,15 @@ def _stamp_is_fresh(stamp, now=None):
     return seen >= now - timedelta(days=RECHECK_DAYS)
 
 
-def _recently_evaluated(group, now=None):
+def _recently_evaluated(group, model=None, now=None):
     """True when every pending row in the group carries an llm_evaluated_at
-    newer than RECHECK_DAYS — the LLM already abstained; don't re-bill."""
+    newer than RECHECK_DAYS *from the same model* — that model already
+    abstained; don't re-bill it. Stamps from other models (or legacy rows
+    with no llm_model) don't count: a verdict says nothing about what a
+    different model would decide, so switching IDENTITY_LLM_MODEL re-opens
+    previously abstained groups without a force flag."""
     return all(_stamp_is_fresh(row.get("llm_evaluated_at"), now)
+               and (model is None or row.get("llm_model") == model)
                for row in group)
 
 
@@ -763,7 +770,12 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
             "department": group[0].get("f_department"),
             "division_school": group[0].get("f_division_school"),
             "email": group[0].get("f_email"),
-            "research_interests": group[0].get("f_research_interests"),
+            # EAH-seeded rows have no HR interests; the institutional
+            # profile scrape (ucsd_profile source) fills the enriched field,
+            # giving the adjudicator topical evidence to corroborate.
+            "research_interests": (
+                group[0].get("f_research_interests")
+                or group[0].get("f_research_interests_enriched")),
         }
         candidates = []
         for row in group:
@@ -800,7 +812,7 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
                 logger.exception("Annotation promotion failed for faculty "
                                  "id %s", faculty_id)
 
-        if not force and _recently_evaluated(group):
+        if not force and _recently_evaluated(group, model):
             stats["skipped_recent"] += 1
             stats["left_pending"] += 1
             continue
@@ -1008,7 +1020,7 @@ def _adjudicate_group(conn, faculty, candidates, eligible, openalex_source,
             row_verdict = "abstain"
         annotations[c["_row_id"]] = (row_verdict, verdict["confidence"],
                                      verdict["reasoning"])
-    db.annotate_identity_candidates_llm(conn, annotations)
+    db.annotate_identity_candidates_llm(conn, annotations, model=model)
     conn.commit()
     return False
 
@@ -1113,6 +1125,6 @@ def _adjudicate_orcid_group(conn, faculty, candidates, orcid_eligible,
             row_verdict = "abstain"
         annotations[c["_row_id"]] = (row_verdict, verdict["confidence"],
                                      verdict["reasoning"])
-    db.annotate_identity_candidates_llm(conn, annotations)
+    db.annotate_identity_candidates_llm(conn, annotations, model=model)
     conn.commit()
     return False

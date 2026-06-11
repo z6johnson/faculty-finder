@@ -36,6 +36,7 @@ from data import db
 from . import identity_rules
 from .identity import TIE_MARGIN, _identity_log_entry
 from .sources.openalex import OpenAlexSource, AUTHORS_URL, WORKS_URL
+from .sources.orcid import ORCIDSource
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +51,11 @@ RECHECK_DAYS = 30
 # trailing low scorers are shown with stored evidence only.
 DOSSIER_CANDIDATES = 3
 WORKS_PER_CANDIDATE = 10
+# ORCID-only groups are a single uncorroborated profile (no second source to
+# cross-check), so accepts are gated harder than the OpenAlex path: a higher
+# confidence floor and a near-exact record-name match on top of a
+# network-verified UCSD *employment* fact (acceptance_guardrails_orcid).
+ORCID_NAME_SIMILARITY_FLOOR = 0.9
 
 SYSTEM_PROMPT = """\
 You are an author-disambiguation adjudicator for UC San Diego faculty
@@ -82,6 +88,62 @@ person. Use "reject_all" only when every candidate is clearly someone else.
 You may only pick external ids that appear in the candidate list."""
 
 
+ORCID_SYSTEM_PROMPT = """\
+You are an author-disambiguation adjudicator for UC San Diego faculty
+records. You will receive one faculty member (HR data) and ONE ORCID profile
+that a name+affiliation search proposed as them. Decide whether this ORCID
+profile certainly belongs to the same person as the faculty member.
+
+This decision feeds an automated pipeline: a WRONG match attributes another
+person's publications and grants to this faculty member. A missed match
+merely waits for human review. There is no second candidate to fall back on,
+so the bar is high — when in doubt, abstain.
+
+Confirm only when the profile's employment history, research works, and name
+all line up with the faculty member's department, title, and interests.
+Watch out for:
+- common-name homonyms (the name + "University of California San Diego"
+  search can return a different UCSD person who shares the name);
+- profiles whose UCSD affiliation is education-only or historical, not the
+  current employment of an active faculty member;
+- research topics inconsistent with the faculty member's department/title.
+
+Respond with ONLY a JSON object:
+{"decision": "accept" | "reject_all" | "abstain",
+ "candidate_external_id": "<the ORCID iD, or null>",
+ "confidence": <0.0-1.0>,
+ "reasoning": "<2-4 sentences citing the specific evidence>"}
+
+Output the raw JSON object only — no markdown fences, no text before or
+after it. Use "accept" only when it is decisive that this ORCID profile is
+this faculty member; otherwise "abstain" (or "reject_all" if the profile is
+clearly a different person)."""
+
+
+# Paraphrased second pass for single-candidate self-consistency: order-shuffle
+# (the OpenAlex trick) is a no-op for one candidate, so we re-ask the question
+# from an adversarial angle. A brittle accept that survives only one phrasing
+# disagrees here and collapses to abstain via merge_verdicts.
+ORCID_SYSTEM_PROMPT_RECHECK = """\
+You are verifying a proposed identity match for UC San Diego faculty. You
+will receive one faculty member (HR data) and ONE ORCID profile. Your job is
+to actively look for reasons this match could be WRONG — a same-name UCSD
+homonym, an education-only or outdated affiliation, or research that does not
+fit the faculty member's department and title.
+
+Only confirm the match if, after trying to disprove it, the employment,
+works, and name still decisively point to the same person. A wrong match
+poisons downstream enrichment; when any doubt remains, abstain.
+
+Respond with ONLY a JSON object:
+{"decision": "accept" | "reject_all" | "abstain",
+ "candidate_external_id": "<the ORCID iD, or null>",
+ "confidence": <0.0-1.0>,
+ "reasoning": "<2-4 sentences citing the specific evidence>"}
+
+Output the raw JSON object only — no markdown fences, no text around it."""
+
+
 class AdjudicationError(Exception):
     """Infrastructure failure during one adjudication (LLM call or response
     parsing) — distinct from a genuine abstain so the sweep never stamps
@@ -96,6 +158,23 @@ def _accept_confidence():
     return float(os.environ.get("IDENTITY_LLM_ACCEPT_CONFIDENCE", "0.9"))
 
 
+def _orcid_accept_confidence():
+    return float(os.environ.get("IDENTITY_LLM_ORCID_ACCEPT_CONFIDENCE", "0.95"))
+
+
+def _identity_model():
+    """Scoped model override for the identity sweep, so it can run a cheaper,
+    higher-throughput model (e.g. deepseek-v4-flash) than grant matching or
+    the normalizer without changing the global LITELLM_MODEL. Returns None
+    when unset (the sweep then uses the global default)."""
+    model = os.environ.get("IDENTITY_LLM_MODEL")
+    if not model:
+        return None
+    if "/" not in model:
+        model = f"openai/{model}"
+    return model
+
+
 def _self_consistency():
     return (os.environ.get("IDENTITY_LLM_SELF_CONSISTENCY", "true").lower()
             not in ("false", "0", "no"))
@@ -106,10 +185,16 @@ def _self_consistency():
 # ---------------------------------------------------------------------------
 
 def eligible_candidates(candidates):
-    """Only openalex-source rows are adjudicated: the LLM's edge is reading
-    works/affiliations, which orcid-fallback rows don't expose. Those stay
-    in the human queue."""
+    """OpenAlex-source rows, adjudicated with the OpenAlex dossier path."""
     return [c for c in candidates if c.get("source") == "openalex"]
+
+
+def orcid_eligible_candidates(candidates):
+    """ORCID-source rows. Adjudicated by the ORCID path (build_orcid_dossier
+    + ORCID_SYSTEM_PROMPT) only when no OpenAlex row is eligible — the
+    OpenAlex path has richer evidence, so mixed groups stay OpenAlex-only.
+    These are usually a single _orcid_fallback row."""
+    return [c for c in candidates if c.get("source") == "orcid"]
 
 
 def _format_faculty_block(faculty):
@@ -263,6 +348,87 @@ def acceptance_guardrails(verdict, candidates, accept_confidence=None):
     return True, "ok"
 
 
+def _format_orcid_candidate_block(candidate, dossier):
+    evidence = candidate.get("evidence") or {}
+    d = dossier or {}
+
+    def _fact(key):
+        return d.get(key, evidence.get(key))
+
+    lines = ["ORCID PROFILE (proposed match — the only candidate):"]
+    lines.append(f"ORCID iD: {candidate['external_id']}")
+    name = (d.get("record_name") or candidate.get("display_name")
+            or evidence.get("display_name") or "?")
+    lines.append(f"Profile name: {name}")
+    facts = []
+    sim = _fact("record_name_similarity")
+    if sim is not None:
+        facts.append(f"record_name_similarity={sim}")
+    facts.append(f"ucsd_employment_verified={bool(_fact('employment_verified'))}")
+    facts.append(f"unique_name_hit={bool(_fact('unique_hit'))}")
+    facts.append(f"faculty_email_on_record={bool(_fact('record_email_match'))}")
+    lines.append("Verification facts: " + ", ".join(facts))
+    affiliations = d.get("affiliations") or []
+    if affiliations:
+        lines.append("Employment history: " + "; ".join(affiliations[:8]))
+    works = d.get("recent_works") or []
+    if works:
+        lines.append("Recent works:")
+        for w in works[:WORKS_PER_CANDIDATE]:
+            entry = f"- {w.get('title', '?')}"
+            if w.get("year"):
+                entry += f" ({w['year']}"
+                entry += f", {w['journal']})" if w.get("journal") else ")"
+            lines.append(entry)
+    fundings = d.get("fundings") or []
+    if fundings:
+        lines.append("Funding/grants:")
+        for g in fundings[:5]:
+            entry = f"- {g.get('title', '?')}"
+            if g.get("agency"):
+                entry += f" — {g['agency']}"
+            lines.append(entry)
+    return "\n".join(lines)
+
+
+def build_orcid_user_prompt(faculty, candidate, dossier):
+    """Render the single-profile ORCID verification prompt."""
+    blocks = [_format_faculty_block(faculty),
+              _format_orcid_candidate_block(candidate, dossier),
+              "Is this ORCID profile certainly the same person as the faculty "
+              "member? Respond with the JSON verdict only — use the ORCID iD as "
+              "candidate_external_id when accepting."]
+    return "\n\n".join(blocks)
+
+
+def acceptance_guardrails_orcid(verdict, candidate, dossier=None,
+                                accept_confidence=None):
+    """Deterministic post-checks on an ORCID accept. Stricter than the
+    OpenAlex path: a single uncorroborated profile must carry a
+    network-verified UCSD *employment* fact, a near-exact record-name match,
+    and clear a higher confidence floor. Reads fresh dossier facts when
+    present, else the stored evidence. Returns (ok, reason)."""
+    if accept_confidence is None:
+        accept_confidence = _orcid_accept_confidence()
+    if verdict["decision"] != "accept":
+        return False, "not_an_accept"
+    if verdict["candidate_external_id"] != candidate["external_id"]:
+        return False, "candidate_not_listed"
+    d = dossier or {}
+    evidence = candidate.get("evidence") or {}
+
+    def _fact(key):
+        return d.get(key, evidence.get(key))
+
+    if not _fact("employment_verified"):
+        return False, "employment_not_verified"
+    if (_fact("record_name_similarity") or 0.0) < ORCID_NAME_SIMILARITY_FLOOR:
+        return False, "name_similarity_below_floor"
+    if verdict["confidence"] < accept_confidence:
+        return False, "confidence_below_threshold"
+    return True, "ok"
+
+
 def _stamp_is_fresh(stamp, now=None):
     """True when an llm_evaluated_at ISO timestamp is newer than RECHECK_DAYS."""
     if not stamp:
@@ -306,10 +472,13 @@ def _collapse_for_prompt(candidates):
 def _default_llm_call(system_prompt, user_prompt):
     from utils.grant_matcher import _call_llm
     return _call_llm(system_prompt, user_prompt, max_tokens=1500,
-                     temperature=0, json_mode=True)
+                     temperature=0, json_mode=True, model=_identity_model())
 
 
 def _model_name():
+    override = _identity_model()
+    if override:
+        return override
     try:
         from utils.grant_matcher import _get_model
         return _get_model()
@@ -406,6 +575,58 @@ def build_dossiers(candidates, openalex, stats, max_fetches):
     return dossiers
 
 
+def build_orcid_dossier(candidate, faculty, orcid_source, stats, max_fetches):
+    """Fetch the ORCID record and distill the evidence the LLM judges:
+    recent works, employment history, and fresh network-verified facts
+    (employment_verified, record_name_similarity). Degrades to the stored
+    evidence on fetch failure or budget exhaustion so the prompt is always
+    renderable. Mirrors build_dossiers' graceful degradation."""
+    evidence = candidate.get("evidence") or {}
+    dossier = {
+        "employment_verified": bool(evidence.get("employment_verified")),
+        "record_name_similarity": evidence.get("record_name_similarity"),
+        "record_email_match": bool(evidence.get("record_email_match")),
+        "unique_hit": bool(evidence.get("unique_hit")),
+    }
+    if max_fetches is not None and stats["orcid_fetches"] + 1 > max_fetches:
+        return dossier
+    try:
+        stats["orcid_fetches"] += 1
+        record = orcid_source._fetch_full_record(candidate["external_id"])
+    except Exception:
+        logger.exception("ORCID dossier fetch failed for %s",
+                         candidate["external_id"])
+        return dossier
+    if not record:
+        return dossier
+    # Fresh, network-verified facts override the stored evidence the guardrail
+    # would otherwise trust.
+    try:
+        verification = orcid_source._verify_record(
+            record, candidate["external_id"],
+            faculty.get("first_name", ""), faculty.get("last_name", ""),
+            email=faculty.get("email"))
+    except Exception:
+        logger.exception("ORCID re-verification failed for %s",
+                         candidate["external_id"])
+        verification = None
+    if verification:
+        dossier["employment_verified"] = verification["employment_verified"]
+        dossier["record_name_similarity"] = \
+            verification["record_name_similarity"]
+        dossier["record_email_match"] = verification["record_email_match"]
+    works = orcid_source._extract_works(record)
+    if works:
+        dossier["recent_works"] = works[:WORKS_PER_CANDIDATE]
+    affiliations = orcid_source.employment_affiliations(record)
+    if affiliations:
+        dossier["affiliations"] = affiliations
+    fundings = orcid_source._extract_fundings(record)
+    if fundings:
+        dossier["fundings"] = fundings[:5]
+    return dossier
+
+
 def _is_budget_error(exc):
     try:
         import litellm
@@ -465,9 +686,10 @@ def adjudicate(faculty, candidates, dossiers, llm_call, shuffle_seed=None,
 # ---------------------------------------------------------------------------
 
 def llm_sweep_pending(department=None, max_llm_calls=None,
-                      max_dossier_fetches=None, progress_callback=None,
-                      time_budget_seconds=None, dry_run=False, force=False,
-                      openalex_source=None, llm_call=None):
+                      max_dossier_fetches=None, max_orcid_fetches=None,
+                      progress_callback=None, time_budget_seconds=None,
+                      dry_run=False, force=False, openalex_source=None,
+                      orcid_source=None, llm_call=None):
     """Adjudicate the pending identity review queue with an LLM.
 
     Accepts go through db.decide_identity_candidate — the same path as a
@@ -491,10 +713,15 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
     if max_dossier_fetches is None:
         max_dossier_fetches = int(os.environ.get("IDENTITY_LLM_MAX_FETCHES",
                                                  "6000"))
+    if max_orcid_fetches is None:
+        max_orcid_fetches = int(os.environ.get("IDENTITY_LLM_MAX_ORCID_FETCHES",
+                                               "3000"))
     openalex_source = openalex_source or OpenAlexSource()
+    orcid_source = orcid_source or ORCIDSource()
     llm_call = llm_call or _default_llm_call
     self_consistency = _self_consistency()
     accept_confidence = _accept_confidence()
+    orcid_accept_confidence = _orcid_accept_confidence()
     model = _model_name()
 
     conn = db.get_write_conn()
@@ -506,8 +733,10 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
                 "(dept=%s, dry_run=%s)", len(groups), department or "all",
                 dry_run)
 
-    stats = {"faculty_seen": len(groups), "eligible": 0, "skipped_recent": 0,
-             "llm_calls": 0, "dossier_fetches": 0, "accepted_llm": 0,
+    stats = {"faculty_seen": len(groups), "eligible": 0, "orcid_eligible": 0,
+             "skipped_recent": 0, "llm_calls": 0, "dossier_fetches": 0,
+             "orcid_fetches": 0, "accepted_llm": 0, "orcid_accepted": 0,
+             "orcid_annotated": 0, "orcid_guardrail_blocked": 0,
              "promoted": 0, "abstained": 0, "reject_all_flagged": 0,
              "guardrail_blocked": 0, "errors": 0, "budget_errors": 0,
              "left_pending": 0}
@@ -552,14 +781,18 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
             })
         candidates.sort(key=lambda c: -(c["score"] or 0))
         eligible = eligible_candidates(candidates)
+        # Mixed groups stay OpenAlex-only (richer evidence); the ORCID path
+        # runs only when no OpenAlex row is eligible.
+        orcid_eligible = (orcid_eligible_candidates(candidates)
+                          if not eligible else [])
 
         # Promote a stored accept annotation (e.g. from a dry run) before
         # spending anything: the verdict was already paid for and vetted.
-        if not dry_run and eligible:
+        if not dry_run and (eligible or orcid_eligible):
             try:
                 if _promote_annotated_accept(conn, faculty, candidates,
-                                             eligible, group, stats,
-                                             accept_confidence, model):
+                                             eligible or orcid_eligible, group,
+                                             stats, accept_confidence, model):
                     if progress_callback:
                         progress_callback(i + 1, len(groups))
                     continue
@@ -572,16 +805,23 @@ def llm_sweep_pending(department=None, max_llm_calls=None,
             stats["left_pending"] += 1
             continue
 
-        if not eligible:
+        if not eligible and not orcid_eligible:
             stats["left_pending"] += 1
             continue
-        stats["eligible"] += 1
 
         try:
-            accepted = _adjudicate_group(
-                conn, faculty, candidates, eligible, openalex_source,
-                llm_call, stats, max_dossier_fetches, self_consistency,
-                accept_confidence, model, dry_run)
+            if eligible:
+                stats["eligible"] += 1
+                accepted = _adjudicate_group(
+                    conn, faculty, candidates, eligible, openalex_source,
+                    llm_call, stats, max_dossier_fetches, self_consistency,
+                    accept_confidence, model, dry_run)
+            else:
+                stats["orcid_eligible"] += 1
+                accepted = _adjudicate_orcid_group(
+                    conn, faculty, candidates, orcid_eligible, orcid_source,
+                    llm_call, stats, max_orcid_fetches, self_consistency,
+                    orcid_accept_confidence, model, dry_run)
             consecutive_errors = 0
         except AdjudicationError as e:
             logger.warning("Identity LLM sweep: %s failure for faculty id "
@@ -667,7 +907,6 @@ def _promote_annotated_accept(conn, faculty, candidates, eligible, group,
     accept_row = next(
         (row for row in group
          if row.get("llm_verdict") == "accept"
-         and row.get("source") == "openalex"
          and _stamp_is_fresh(row.get("llm_evaluated_at"))),
         None)
     if accept_row is None:
@@ -678,13 +917,27 @@ def _promote_annotated_accept(conn, faculty, candidates, eligible, group,
         "confidence": accept_row.get("llm_confidence") or 0.0,
         "reasoning": accept_row.get("llm_reasoning") or "",
     }
-    presented, cluster_ids = _collapse_for_prompt(eligible)
-    ok, reason = acceptance_guardrails(verdict, presented, accept_confidence)
+    if accept_row.get("source") == "orcid":
+        # ORCID-only group: re-run the stricter ORCID guardrails against the
+        # stored evidence (no fresh fetch); no duplicate-profile cluster.
+        chosen = next((c for c in candidates
+                       if c["external_id"] == accept_row["external_id"]), None)
+        if chosen is None:
+            return False
+        cluster_ids = None
+        ok, reason = acceptance_guardrails_orcid(
+            verdict, chosen, None, _orcid_accept_confidence())
+        rule = "llm_orcid_annotation_promoted"
+    else:
+        presented, cluster_ids = _collapse_for_prompt(eligible)
+        ok, reason = acceptance_guardrails(verdict, presented,
+                                           accept_confidence)
+        rule = "llm_annotation_promoted"
     if not ok:
         logger.info("Annotation promotion blocked for faculty id %s: %s",
                     faculty["_db_id"], reason)
         return False
-    rule_info = {"rule": "llm_annotation_promoted",
+    rule_info = {"rule": rule,
                  "prompt_version": PROMPT_VERSION,
                  "model": model,
                  "annotated_at": accept_row.get("llm_evaluated_at"),
@@ -744,6 +997,111 @@ def _adjudicate_group(conn, faculty, candidates, eligible, openalex_source,
         stats["reject_all_flagged"] += 1
     elif not blocked:
         stats["abstained"] += 1   # guardrail-blocked accepts counted above
+    annotations = {}
+    for c in candidates:
+        if verdict["decision"] == "accept":   # dry-run accept
+            row_verdict = ("accept" if c["external_id"]
+                           == verdict["candidate_external_id"] else "abstain")
+        elif verdict["decision"] == "reject_all":
+            row_verdict = "reject"
+        else:
+            row_verdict = "abstain"
+        annotations[c["_row_id"]] = (row_verdict, verdict["confidence"],
+                                     verdict["reasoning"])
+    db.annotate_identity_candidates_llm(conn, annotations)
+    conn.commit()
+    return False
+
+
+def _adjudicate_orcid_once(faculty, user_prompt, system_prompt, candidate,
+                           llm_call, stats):
+    """One ORCID adjudication pass; returns a validated verdict. Mirrors
+    adjudicate()'s failure handling — AdjudicationError on infra failures,
+    one parse retry — but uses a prebuilt single-profile prompt and a
+    caller-chosen system prompt (the recheck pass paraphrases it)."""
+    from utils.grant_matcher import _parse_json_response
+
+    def _call():
+        try:
+            return llm_call(system_prompt, user_prompt)
+        except Exception as e:
+            kind = "budget" if _is_budget_error(e) else "llm_call"
+            raise AdjudicationError(
+                kind, f"LLM call failed for faculty id "
+                      f"{faculty.get('_db_id')}: {e}") from e
+
+    text = _call()
+    try:
+        raw = _parse_json_response(text)
+    except ValueError:
+        logger.warning("Unparseable ORCID LLM response for faculty id %s — "
+                       "retrying once", faculty.get("_db_id"))
+        if stats is not None:
+            stats["llm_calls"] += 1
+        text = _call()
+        try:
+            raw = _parse_json_response(text)
+        except ValueError as e:
+            raise AdjudicationError(
+                "parse", f"Unparseable ORCID LLM response for faculty id "
+                         f"{faculty.get('_db_id')} after retry") from e
+    return validate_verdict(raw, [candidate])
+
+
+def _adjudicate_orcid_group(conn, faculty, candidates, orcid_eligible,
+                            orcid_source, llm_call, stats, max_orcid_fetches,
+                            self_consistency, accept_confidence, model,
+                            dry_run):
+    """Adjudicate an ORCID-only group — a binary confirm/abstain of a single
+    uncorroborated ORCID profile. Self-consistency re-asks with a paraphrased
+    adversarial prompt (order-shuffle is meaningless for one candidate).
+    Accepts clear the stricter acceptance_guardrails_orcid. Returns True when
+    committed."""
+    candidate = orcid_eligible[0]
+    dossier = build_orcid_dossier(candidate, faculty, orcid_source, stats,
+                                  max_orcid_fetches)
+    prompt = build_orcid_user_prompt(faculty, candidate, dossier)
+
+    stats["llm_calls"] += 1
+    first = _adjudicate_orcid_once(faculty, prompt, ORCID_SYSTEM_PROMPT,
+                                   candidate, llm_call, stats)
+    second = None
+    if first["decision"] == "accept" and self_consistency:
+        stats["llm_calls"] += 1
+        second = _adjudicate_orcid_once(faculty, prompt,
+                                        ORCID_SYSTEM_PROMPT_RECHECK,
+                                        candidate, llm_call, stats)
+    verdict = merge_verdicts(first, second)
+
+    ok = blocked = False
+    if verdict["decision"] == "accept":
+        ok, reason = acceptance_guardrails_orcid(verdict, candidate, dossier,
+                                                 accept_confidence)
+        if not ok:
+            stats["orcid_guardrail_blocked"] += 1
+            blocked = True
+            verdict = dict(verdict, decision="abstain", guardrail=reason)
+
+    if ok and not dry_run:
+        rule_info = {"rule": "llm_orcid_adjudication",
+                     "prompt_version": PROMPT_VERSION,
+                     "model": model,
+                     "verdict_1": first,
+                     "verdict_2": second,
+                     "employment_verified": dossier.get("employment_verified"),
+                     "record_name_similarity":
+                         dossier.get("record_name_similarity")}
+        # No duplicate-profile cluster for ORCID; any other rows are rejected.
+        if _commit_accept(conn, faculty, candidates, verdict, None, rule_info):
+            stats["orcid_accepted"] += 1
+            return True
+        return False
+
+    # Abstain / reject_all / blocked / dry-run accept: annotate only.
+    if ok and dry_run:
+        stats["orcid_accepted"] += 1   # would have accepted
+    else:
+        stats["orcid_annotated"] += 1
     annotations = {}
     for c in candidates:
         if verdict["decision"] == "accept":   # dry-run accept

@@ -9,7 +9,7 @@
     <table>
       <thead><tr><th>Division</th><th>Faculty</th><th>PI-eligible</th>
         <th>Identity resolved</th><th>Awaiting review</th><th>Not found</th>
-        <th>Matchable</th><th>Enriched</th></tr></thead>
+        <th>No footprint</th><th>Matchable</th><th>Enriched</th></tr></thead>
       <tbody>
         {% for d in divisions %}
         <tr>
@@ -19,6 +19,7 @@
           <td>{{ d.resolved }} ({{ d.pct_resolved }}%)</td>
           <td>{% if d.ambiguous %}<a href="{{ url_for('admin.identity_queue', dept=d.department) }}">{{ d.ambiguous }}</a>{% else %}0{% endif %}</td>
           <td>{{ d.not_found }}</td>
+          <td>{{ d.no_footprint or 0 }}</td>
           <td>{{ d.with_profile }}</td>
           <td>{{ d.enriched }} ({{ d.pct_enriched }}%)</td>
         </tr>

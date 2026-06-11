@@ -176,6 +176,21 @@ def orcid_corroboration_confirms(verification):
             >= MIN_RECORD_NAME_SIMILARITY)
 
 
+def no_research_footprint(faculty):
+    """True when a not-findable faculty row's HR data says there is no
+    research footprint worth retrying for: not PI-eligible, or an emeritus
+    title. Pure / HR-only — callers must already have established that the
+    external searches found nothing (identity_status 'not_found'). The
+    resulting 'no_footprint' status is terminal for the pending metrics but
+    reversible: include_not_found resolves keep re-searching those rows and
+    any candidate hit promotes them back into the normal flow."""
+    if faculty.get("pi_eligible") == 0:
+        return True
+    text = " ".join(filter(None, (faculty.get("title"),
+                                  faculty.get("job_code_description")))).lower()
+    return "emeritus" in text
+
+
 def orcid_fallback_qualifies(evidence):
     """An orcid-source candidate auto-accepts only when its record exposed
     the faculty's exact email, or the affiliation search hit was unique AND

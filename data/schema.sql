@@ -23,7 +23,9 @@ CREATE TABLE IF NOT EXISTS faculty (
     openalex_id                 TEXT,    -- primary OpenAlex author id
     openalex_id_alt             TEXT,    -- JSON array: merged alternate author ids
     identity_status             TEXT NOT NULL DEFAULT 'unresolved',
-        -- 'unresolved' | 'auto' | 'confirmed' | 'ambiguous' | 'not_found' | 'rejected'
+        -- 'unresolved' | 'auto' | 'confirmed' | 'ambiguous' | 'not_found'
+        -- | 'no_footprint' (not findable + no research-bearing role; terminal
+        --   but re-searched by include_not_found resolves) | 'rejected'
     h_index                     INTEGER,
     citation_count              INTEGER,
     works_count                 INTEGER,
@@ -94,7 +96,8 @@ CREATE TABLE IF NOT EXISTS identity_candidates (
     llm_verdict      TEXT,                 -- 'accept' | 'reject' | 'abstain'
     llm_confidence   REAL,
     llm_reasoning    TEXT,
-    llm_evaluated_at TEXT
+    llm_evaluated_at TEXT,
+    llm_model        TEXT                  -- model that wrote the verdict
 );
 
 CREATE INDEX IF NOT EXISTS idx_idcand_status ON identity_candidates(status, faculty_id);

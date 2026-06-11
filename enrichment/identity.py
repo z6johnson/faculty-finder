@@ -23,7 +23,7 @@ import json
 import logging
 
 from data import db
-from utils.names import name_similarity
+from utils.names import name_similarity, search_name_variants
 
 from . import identity_rules
 from .sources.openalex import OpenAlexSource, UCSD_INSTITUTION_ID, AUTHORS_URL
@@ -35,6 +35,9 @@ AUTO_ACCEPT_SCORE = 0.9
 CANDIDATE_SCORE = 0.6
 # A rival within this margin of the best score makes the match ambiguous.
 TIE_MARGIN = 0.05
+# Cap on the extra author-search requests the recall fallbacks may spend
+# per faculty when the primary "first last" query returns nothing.
+MAX_VARIANT_SEARCHES = 4
 
 # OpenAlex topic domains -> division slugs they are consistent with.
 # Used as a weak positive signal; absence is only a mild penalty because
@@ -156,29 +159,33 @@ class IdentityResolver:
         self._openalex = OpenAlexSource()
         self._orcid = ORCIDSource()
 
-    def _openalex_candidates(self, faculty):
-        """Search OpenAlex authors at UCSD by name; return scored candidates."""
-        first = faculty.get("first_name", "")
-        last = faculty.get("last_name", "")
-        if not first or not last:
-            return []
-        resp = self._openalex._get(AUTHORS_URL, params=self._openalex._params({
-            "search": f"{first} {last}",
-            "filter": f"affiliations.institution.id:{UCSD_INSTITUTION_ID}",
-            "per-page": 10,
-        }))
+    def _openalex_author_search(self, search, ucsd_filter=True):
+        """One OpenAlex author search; returns raw author results."""
+        params = {"search": search, "per-page": 10}
+        if ucsd_filter:
+            params["filter"] = f"affiliations.institution.id:{UCSD_INSTITUTION_ID}"
+        resp = self._openalex._get(AUTHORS_URL,
+                                   params=self._openalex._params(params))
         if not resp:
             return []
         try:
-            results = resp.json().get("results") or []
+            return resp.json().get("results") or []
         except ValueError:
             return []
 
+    def _score_authors(self, results, faculty, via=None,
+                       require_ucsd_evidence=False):
+        """Score raw author hits against the faculty record; keep qualifiers."""
         candidates = []
         for author in results:
             score, evidence = _score_openalex_author(author, faculty)
             if score < CANDIDATE_SCORE:
                 continue
+            if require_ucsd_evidence and not (evidence.get("ucsd_current")
+                                              or evidence.get("ucsd_listed")):
+                continue
+            if via:
+                evidence["via_search"] = via
             openalex_id = (author.get("id") or "").rsplit("/", 1)[-1]
             inst_names = [i.get("display_name") for i in
                           (author.get("last_known_institutions") or [])
@@ -192,6 +199,47 @@ class IdentityResolver:
                 "evidence": evidence,
             })
         candidates.sort(key=lambda c: -c["score"])
+        return candidates
+
+    def _openalex_candidates(self, faculty):
+        """Search OpenAlex authors at UCSD by name; return scored candidates.
+
+        When the exact "first last" query at UCSD misses, two recall
+        fallbacks run (scoring against the true name is unchanged, so
+        precision still comes from _score_openalex_author + downstream
+        guardrails):
+          1. name-variant queries (initials, dropped middles, compound last
+             names) still filtered to UCSD;
+          2. the exact name *without* the institution filter — for new hires
+             whose last_known_institution isn't UCSD yet — keeping only hits
+             whose own affiliation history shows UCSD.
+        """
+        first = faculty.get("first_name", "")
+        last = faculty.get("last_name", "")
+        if not first or not last:
+            return []
+        candidates = self._score_authors(
+            self._openalex_author_search(f"{first} {last}"), faculty)
+        if candidates:
+            return candidates
+
+        seen_ids = set()
+        for vf, vl in search_name_variants(first, last)[:MAX_VARIANT_SEARCHES]:
+            results = self._openalex_author_search(f"{vf} {vl}")
+            for c in self._score_authors(results, faculty,
+                                         via=f"name_variant:{vf} {vl}"):
+                if c["external_id"] not in seen_ids:
+                    seen_ids.add(c["external_id"])
+                    candidates.append(c)
+        if candidates:
+            candidates.sort(key=lambda c: -c["score"])
+            return candidates
+
+        results = self._openalex_author_search(f"{first} {last}",
+                                               ucsd_filter=False)
+        candidates = self._score_authors(results, faculty,
+                                         via="no_institution_filter",
+                                         require_ucsd_evidence=True)
         return candidates
 
     def _orcid_fallback(self, faculty):
@@ -265,7 +313,10 @@ class IdentityResolver:
                 candidates = [fallback]
 
         if not candidates:
-            db.set_identity_status(conn, faculty_id, "not_found")
+            # A still-empty re-search must not demote a terminal
+            # no_footprint back to the retried-weekly pool.
+            if faculty.get("identity_status") != "no_footprint":
+                db.set_identity_status(conn, faculty_id, "not_found")
             return "not_found"
 
         collapse = identity_rules.collapse_duplicate_ties(candidates, TIE_MARGIN)
@@ -326,7 +377,10 @@ def resolve_batch(department=None, pi_only=False, limit=None,
     import time as _time
 
     conn = db.get_write_conn()
-    statuses = ("unresolved", "not_found") if include_not_found else ("unresolved",)
+    # no_footprint is terminal only until a search hits: include_not_found
+    # re-searches those rows too, and any candidate promotes them back.
+    statuses = (("unresolved", "not_found", "no_footprint")
+                if include_not_found else ("unresolved",))
     queue = db.fetch_identity_queue(conn, department=department,
                                     pi_only=pi_only, statuses=statuses,
                                     limit=limit)
@@ -360,9 +414,42 @@ def resolve_batch(department=None, pi_only=False, limit=None,
     return stats
 
 
+def mark_no_footprint(conn, department=None):
+    """Terminal disposition for the not-findable: move 'not_found' faculty
+    whose HR data shows no research-bearing role (identity_rules.
+    no_research_footprint) to 'no_footprint' so they stop counting as
+    pending. Logged per faculty; reversible via include_not_found resolves.
+    Returns the number of rows marked."""
+    queue = db.fetch_identity_queue(conn, department=department,
+                                    statuses=("not_found",))
+    marked = 0
+    for faculty in queue:
+        if not identity_rules.no_research_footprint(faculty):
+            continue
+        db.set_identity_status(conn, faculty["_db_id"], "no_footprint")
+        db.append_log(conn, [{
+            "faculty_id": faculty["_db_id"],
+            "stable_key": faculty.get("_stable_key"),
+            "source_name": "identity",
+            "field_updated": "identity_status",
+            "old_value": "not_found",
+            "new_value": "no_footprint",
+            "method": "identity_no_footprint_rule",
+            "raw_response": json.dumps(
+                {"pi_eligible": faculty.get("pi_eligible"),
+                 "title": faculty.get("title"),
+                 "job_code_description": faculty.get("job_code_description")},
+                ensure_ascii=False),
+            "retrieved_at": db._now_iso(),
+        }])
+        marked += 1
+    conn.commit()
+    return marked
+
+
 def resweep_pending(department=None, max_orcid_lookups=None,
                     progress_callback=None, time_budget_seconds=None,
-                    orcid_source=None):
+                    orcid_source=None, mark_terminal=True):
     """Apply the conservative auto-accept rules to the pending review queue.
 
     Works from the stored identity_candidates rows (tie collapse needs no
@@ -371,7 +458,9 @@ def resweep_pending(department=None, max_orcid_lookups=None,
     accept — and are logged with method 'identity_auto_rule'. Whole groups
     are never auto-rejected; non-qualifying faculty stay queued for humans.
     An accepted verdict merges its duplicate-profile cluster as alternate
-    ids and retires the remaining candidates. Returns a stats dict.
+    ids and retires the remaining candidates. When mark_terminal is set,
+    'not_found' faculty with no research-bearing role move to the terminal
+    'no_footprint' status (mark_no_footprint). Returns a stats dict.
     """
     import time as _time
 
@@ -386,7 +475,7 @@ def resweep_pending(department=None, max_orcid_lookups=None,
     orcid_source = orcid_source or ORCIDSource()
     stats = {"faculty_seen": len(groups), "accepted_tie_collapse": 0,
              "accepted_orcid_corroboration": 0, "accepted_orcid_fallback": 0,
-             "orcid_lookups": 0, "left_pending": 0}
+             "orcid_lookups": 0, "left_pending": 0, "no_footprint_marked": 0}
     start = _time.monotonic()
 
     def _lookup_budget_left():
@@ -462,6 +551,10 @@ def resweep_pending(department=None, max_orcid_lookups=None,
             stats["left_pending"] += 1
         if progress_callback:
             progress_callback(i + 1, len(groups))
+
+    if mark_terminal:
+        stats["no_footprint_marked"] = mark_no_footprint(conn,
+                                                         department=department)
 
     conn.commit()
     logger.info("Identity re-sweep done: %s", stats)

@@ -100,14 +100,19 @@ def _run_enrich(job_id, params):
     from enrichment.pipeline import enrich_all
 
     department = params.get("department") or "hwsph"
-    results = enrich_all(department=department,
-                         progress_callback=_progress_writer(job_id))
+    # Optional source restriction, e.g. ["ucsd_profile"] for the
+    # institutional-context backfill before an identity LLM sweep.
+    sources = params.get("sources") or None
+    results = enrich_all(department=department, sources=sources,
+                         progress_callback=_progress_writer(job_id),
+                         time_budget_seconds=params.get("time_budget_seconds"))
     enriched = sum(
         1 for r in results
         if any(s.get("status") == "data_found" for s in r.get("sources", {}).values())
     )
     return {
         "department": department,
+        "sources": sources,
         "processed": len(results),
         "data_found": enriched,
     }
@@ -148,6 +153,7 @@ def _run_identity_resweep(job_id, params):
         max_orcid_lookups=params.get("max_orcid_lookups", 200),
         progress_callback=_progress_writer(job_id, every=10),
         time_budget_seconds=params.get("time_budget_seconds"),
+        mark_terminal=bool(params.get("mark_terminal", True)),
     )
 
 

@@ -48,6 +48,45 @@ def names_compatible(our_first, our_last, their_first, their_last):
     return True
 
 
+def search_name_variants(first, last):
+    """Alternate (first, last) spellings to *query* author indexes with.
+
+    Used when the exact "first last" search returns nothing: profiles are
+    often indexed under a first initial, without middle names, or with a
+    hyphenated/compound last name joined or split differently. Only the
+    query varies — callers still score every hit against the true name —
+    so a variant can recall a differently-indexed profile but never
+    relaxes the match itself.
+
+    Returns an ordered, deduped list of (first, last) tuples excluding the
+    original pair.
+    """
+    first = (first or "").strip()
+    last = (last or "").strip()
+    variants = []
+
+    def _add(f, l):
+        f, l = f.strip(), l.strip()
+        if f and l and (f, l) != (first, last) and (f, l) not in variants:
+            variants.append((f, l))
+
+    first_tokens = re.split(r"[-\s]+", first)
+    # Drop middle names / second given names: "Mary Anne" -> "Mary".
+    if len(first_tokens) > 1:
+        _add(first_tokens[0], last)
+    # First initial: catches initial-only indexing ("M Lastname").
+    if first_tokens and first_tokens[0]:
+        _add(first_tokens[0][0], last)
+    # Compound last names: joined, and each half on its own (maiden /
+    # married halves are often indexed separately).
+    last_parts = [p for p in re.split(r"[-\s]+", last) if p]
+    if len(last_parts) > 1:
+        _add(first, "".join(last_parts))
+        _add(first, last_parts[-1])
+        _add(first, last_parts[0])
+    return variants
+
+
 def name_similarity(our_first, our_last, their_first, their_last):
     """Score how well two names match, in [0, 1].
 

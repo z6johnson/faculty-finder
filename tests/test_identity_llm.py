@@ -527,6 +527,59 @@ class LLMSweepTests(_TempDBTestCase):
         self.assertEqual(third["llm_calls"], 1)
         conn.close()
 
+    def _with_model(self, model):
+        old = os.environ.get("IDENTITY_LLM_MODEL")
+        os.environ["IDENTITY_LLM_MODEL"] = model
+        self.addCleanup(
+            lambda: (os.environ.__setitem__("IDENTITY_LLM_MODEL", old)
+                     if old is not None
+                     else os.environ.pop("IDENTITY_LLM_MODEL", None)))
+
+    def test_abstain_stamps_the_evaluating_model(self):
+        self._with_model("model-a")
+        conn, fid = self._seed(CANDS)
+        self._sweep(json.dumps(_verdict("abstain", None, 0.4)))
+        rows = [dict(r) for r in conn.execute(
+            "SELECT * FROM identity_candidates")]
+        for r in rows:
+            self.assertEqual(r["llm_model"], "openai/model-a")
+        conn.close()
+
+    def test_model_switch_reopens_recent_abstain(self):
+        # A weak model's abstain must not suppress a different model's
+        # retry: switching IDENTITY_LLM_MODEL re-opens the group without
+        # force, and the new verdict re-stamps the new model.
+        self._with_model("model-a")
+        conn, fid = self._seed(CANDS)
+        first = self._sweep(json.dumps(_verdict("abstain", None, 0.4)))
+        self.assertEqual(first["llm_calls"], 1)
+
+        self._with_model("model-b")
+        second = self._sweep(json.dumps(_verdict("abstain", None, 0.4)))
+        self.assertEqual(second["skipped_recent"], 0)
+        self.assertEqual(second["llm_calls"], 1)
+        row = conn.execute("SELECT llm_model FROM identity_candidates"
+                           " LIMIT 1").fetchone()
+        self.assertEqual(row["llm_model"], "openai/model-b")
+
+        third = self._sweep(json.dumps(_verdict("abstain", None, 0.4)))
+        self.assertEqual(third["skipped_recent"], 1)
+        self.assertEqual(third["llm_calls"], 0)
+        conn.close()
+
+    def test_legacy_stamp_without_model_reopens(self):
+        # Rows annotated before llm_model existed say nothing about what
+        # the configured model would decide — they don't suppress.
+        self._with_model("model-a")
+        conn, fid = self._seed(CANDS)
+        self._sweep(json.dumps(_verdict("abstain", None, 0.4)))
+        conn.execute("UPDATE identity_candidates SET llm_model = NULL")
+        conn.commit()
+        second = self._sweep(json.dumps(_verdict("abstain", None, 0.4)))
+        self.assertEqual(second["skipped_recent"], 0)
+        self.assertEqual(second["llm_calls"], 1)
+        conn.close()
+
     def test_call_budget_stops_sweep(self):
         conn, f1 = self._seed(CANDS)
         f2_cands = [_candidate("A3", score=0.85, ucsd_current=True,
@@ -685,14 +738,16 @@ class LLMSweepTests(_TempDBTestCase):
         # sub-threshold confidence, crafted directly) must not be promoted;
         # the group stays parked under the recency stamp.
         conn, fid = self._seed(CANDS)
+        model = identity_llm._model_name()
         conn.execute(
             "UPDATE identity_candidates SET llm_verdict='accept',"
             " llm_confidence=0.5, llm_reasoning='weak',"
-            " llm_evaluated_at=datetime('now') WHERE external_id='A1'")
+            " llm_evaluated_at=datetime('now'), llm_model=?"
+            " WHERE external_id='A1'", (model,))
         conn.execute(
             "UPDATE identity_candidates SET llm_verdict='abstain',"
-            " llm_confidence=0.5, llm_evaluated_at=datetime('now')"
-            " WHERE external_id='A2'")
+            " llm_confidence=0.5, llm_evaluated_at=datetime('now'),"
+            " llm_model=? WHERE external_id='A2'", (model,))
         conn.commit()
 
         def llm(system_prompt, user_prompt):

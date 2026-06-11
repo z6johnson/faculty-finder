@@ -265,6 +265,46 @@ All of these can also be triggered from the admin **Enrichment** page; eScholars
 5. **Backfill enrichment (PI-eligible)** — or wait for the nightly job.
 6. Repeat 4–5 without the PI filter for the remaining academics.
 
+### Identity backlog campaign runbook
+
+One-shot sequence to drain a stuck identity backlog (`left_pending` /
+`not_found` faculty that repeated sweeps don't move). Why backlogs stick:
+the sweep's 30-day recheck stamp used to be model-agnostic, so re-running
+with a different model adjudicated nothing; EAH-seeded rows carry no
+research interests for the adjudicator to corroborate; and the author
+search missed name variants and too-new UCSD affiliations. Each step below
+removes one of those ceilings — keep the order.
+
+1. **Baseline triage**: `python scripts/identity_triage.py --csv before.csv`
+   buckets every pending/not-found faculty by cause (cooldown vs abstain vs
+   guardrail ceiling vs recall miss vs likely-terminal).
+2. **Context backfill** — give the adjudicator topical evidence: enqueue an
+   `enrich` job per stuck division with `{"sources": ["ucsd_profile"]}`
+   (institutional scrape + normalizer only; no identity required). The
+   sweep's faculty block falls back to `research_interests_enriched`.
+3. **Recall pass**: enqueue `identity_resolve` with
+   `{"include_not_found": true}`. The resolver now retries misses with
+   name-variant queries and an institution-unfiltered search (hits must
+   still carry UCSD affiliation evidence), repopulating the candidate queue.
+4. **Adjudication**: set `IDENTITY_LLM_MODEL=openai/api-gpt-oss-120b` (the
+   empirically calibrated model) and enqueue `identity_llm_sweep`. The
+   recheck stamp is per-model, so groups another model abstained on are
+   re-opened automatically — `{"force": true}` is only needed to re-ask the
+   *same* model within 30 days. Budget: ~2–4 calls per group; raise
+   `IDENTITY_LLM_MAX_CALLS` (default 2400) if the backlog × 4 exceeds it.
+5. **Rule re-sweep**: enqueue `identity_resweep` — promotes
+   ORCID-corroborated accepts and applies the terminal disposition:
+   `not_found` faculty with no research-bearing role (non-PI-eligible or
+   emeritus) move to `no_footprint` and stop counting as pending
+   (still re-searched by step-3 style resolves; any hit promotes them back).
+   Pass `{"mark_terminal": false}` to skip the disposition.
+6. **Re-triage**: `python scripts/identity_triage.py --csv after.csv` and
+   diff. What remains should be genuinely ambiguous (small human queue) plus
+   `below_name_floor` groups that only a human may accept.
+7. Before trusting accepts after any future model change, backtest with
+   `python scripts/calibrate_identity_llm.py` — accept precision must hold
+   ~0.99.
+
 ## Data Backend
 
 **SQLite is the source of truth** (`/data/app.db` on the persistent volume;

@@ -4,6 +4,46 @@
 <h1>Status &amp; audit</h1>
 
 <div class="card">
+  <h3>Coverage ledger &mdash; PI-eligible faculty</h3>
+  <p class="muted">
+    Every PI-eligible faculty member (EAH roster) lands in exactly one funnel
+    stage. The denominator is the real population, so the headline coverage is
+    honest &mdash; and each non-terminal bucket routes to a different action.
+  </p>
+  {% set t = ledger_total %}
+  <p>
+    <strong>{{ t.buckets.enriched }}/{{ t.total }}</strong> enriched with research
+    interests (<strong>{{ t.coverage_enriched }}%</strong>)
+    {% if t.unknown_eligibility %}
+      &middot; <span class="muted">{{ t.unknown_eligibility }} with unknown PI-eligibility (excluded)</span>
+    {% endif %}
+  </p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Division</th><th>PI-eligible</th><th>Enriched</th>
+        {% for s in ledger_stages %}{% if s != 'enriched' %}<th>{{ ledger_labels[s] }}</th>{% endif %}{% endfor %}
+      </tr></thead>
+      <tbody>
+        {% for d in ledger %}
+        <tr>
+          <td>{{ d.department_label or d.department }}</td>
+          <td>{{ d.total }}</td>
+          <td>{{ d.buckets.enriched }} ({{ d.coverage_enriched }}%)</td>
+          {% for s in ledger_stages %}{% if s != 'enriched' %}
+          <td>
+            {% if d.buckets[s] and s == 'stuck_in_identity_review' %}
+              <a href="{{ url_for('admin.identity_queue', dept=d.department) }}">{{ d.buckets[s] }}</a>
+            {% else %}{{ d.buckets[s] }}{% endif %}
+          </td>
+          {% endif %}{% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
   <h3>Coverage by division</h3>
   <div class="table-scroll">
     <table>

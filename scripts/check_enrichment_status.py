@@ -1,202 +1,132 @@
 #!/usr/bin/env python3
-"""Check enrichment status across all 3 faculties.
+"""Report enrichment coverage for the PI-eligible faculty roster.
 
-Reports per-school field coverage, identifies never-enriched faculty,
-flags data-quality issues, and evaluates overall completeness.
+Reads the live SQLite DB (the source of truth) and renders the coverage ledger
+across ALL divisions, measured against the EAH PI-eligible population — not the
+three legacy JSON snapshots. Each faculty member lands in exactly one funnel
+stage (data/db.py::LEDGER_STAGES), so "X% missing" breaks into actionable
+buckets instead of one opaque number.
 """
 
-import json
 import os
+import sys
 from collections import Counter
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-FACULTIES = {
-    "HWSPH (Public Health)": ("hwsph", os.path.join(DATA_DIR, "faculty.json")),
-    "SIO (Scripps Oceanography)": ("sio", os.path.join(DATA_DIR, "sio_faculty.json")),
-    "Jacobs (Engineering)": ("jacobs", os.path.join(DATA_DIR, "jacobs_faculty.json")),
-}
+from data import db
 
-FIELDS = [
-    ("research_interests_enriched", "Enriched Interests"),
-    ("expertise_keywords", "Expertise Keywords"),
-    ("methodologies", "Methodologies"),
-    ("disease_areas", "Disease Areas"),
-    ("populations", "Populations"),
-    ("funded_grants", "Funded Grants"),
-    ("recent_publications", "Recent Publications"),
-    ("orcid", "ORCID"),
-    ("h_index", "H-Index"),
-    ("profile_url", "Profile URL"),
-    ("email", "Email"),
-]
+SEP = "=" * 72
 
-SEP = "=" * 60
-grand_total = 0
-grand_enriched = 0
-grand_never_enriched = 0
-all_issues = []
 
-for name, (school_key, path) in FACULTIES.items():
-    with open(path) as f:
-        data = json.load(f)
-    fac = data["faculty"]
-    total = len(fac)
+def _bar(pct, width=40):
+    filled = int(pct / 100 * width)
+    return "#" * filled + "." * (width - filled)
 
-    with_enriched_interests = sum(1 for f in fac if f.get("research_interests_enriched"))
-    grand_total += total
-    grand_enriched += with_enriched_interests
 
-    timestamps = [f["last_enriched"] for f in fac if f.get("last_enriched")]
-    latest = max(timestamps) if timestamps else "N/A"
-    never_enriched = total - len(timestamps)
-    grand_never_enriched += never_enriched
+def main():
+    conn = db.connect(readonly=True)
 
-    print(f"\n{SEP}")
-    print(f"{name} -- {total} faculty")
+    by_div = db.load_ledger_by_division(conn, pi_only=True)
+    overall = db.load_ledger(conn, pi_only=True)
+    stages = db.LEDGER_STAGES
+
     print(SEP)
-    print(f"  Last enrichment run:  {latest}")
-    print(f"  Never enriched:       {never_enriched}")
-    print()
+    print("COVERAGE LEDGER — PI-eligible faculty (EAH roster)")
+    print(SEP)
 
-    for field, label in FIELDS:
-        count = sum(1 for f in fac if f.get(field))
-        pct = count / total * 100 if total else 0
-        filled = int(pct / 2)
-        bar = "#" * filled + "." * (50 - filled)
-        print(f"  {label:25s} {count:4d}/{total:4d} ({pct:5.1f}%) |{bar}|")
+    for d in by_div:
+        total = d["total"]
+        if not total:
+            continue
+        pct = d["coverage_enriched"]
+        print(f"\n{d['department_label'] or d['department']} — {total} PI-eligible")
+        print(f"  Enriched: {d['buckets']['enriched']:4d}/{total:<4d} "
+              f"({pct:5.1f}%) |{_bar(pct)}|")
+        for s in stages:
+            if s == "enriched":
+                continue
+            n = d["buckets"][s]
+            if n:
+                print(f"    {s:28s} {n:4d}")
 
-    incomplete = sum(1 for f in fac
-                     if f.get("last_enriched") and not f.get("research_interests_enriched"))
-    print(f"\n  Processed but missing enriched interests: {incomplete}")
+    # Overall summary
+    print(f"\n{SEP}")
+    print("OVERALL")
+    print(SEP)
+    total = overall["total"]
+    print(f"  PI-eligible faculty (all divisions): {total}")
+    print(f"  Enriched with research interests:    {overall['buckets']['enriched']} "
+          f"({overall['coverage_enriched']}%)")
+    if overall["unknown_eligibility"]:
+        print(f"  Unknown PI-eligibility (excluded):   {overall['unknown_eligibility']}")
+    print("\n  Funnel buckets:")
+    for s in stages:
+        print(f"    {s:28s} {overall['buckets'][s]:5d}")
 
-    # --- Detailed audit checks ---
-
-    # Never-enriched faculty listing
-    if never_enriched > 0:
-        print(f"\n  Never-enriched faculty ({never_enriched}):")
-        never_list = [(i, f) for i, f in enumerate(fac) if not f.get("last_enriched")]
-        for i, f in never_list[:15]:
-            dept = f.get("department_eah") or f.get("department") or ""
-            print(f"    [{i:3d}] {f.get('first_name', '?'):15s} {f.get('last_name', '?'):20s} | {dept}")
-        if len(never_list) > 15:
-            print(f"    ... and {len(never_list) - 15} more")
-
-        # Detect time-budget cutoff pattern
-        enriched_indices = set(i for i, f in enumerate(fac) if f.get("last_enriched"))
-        missing_indices = sorted(set(range(total)) - enriched_indices)
-        if missing_indices:
-            # Find the longest contiguous tail of missing indices ending at the last index
-            contiguous_from = max(missing_indices)
-            for idx in reversed(missing_indices):
-                if idx == contiguous_from or idx == contiguous_from - 1:
-                    contiguous_from = idx
-            tail_len = max(missing_indices) - contiguous_from + 1
-            if tail_len > never_enriched * 0.5:
-                all_issues.append(
-                    f"{name}: Time-budget cutoff likely -- {tail_len} faculty "
-                    f"from index {contiguous_from} onward never processed"
-                )
-
-    # Faculty enriched but with zero enriched interests (normalizer failure)
-    zero_interests = [(i, f) for i, f in enumerate(fac)
-                      if f.get("last_enriched")
-                      and not f.get("research_interests_enriched")
-                      and not f.get("research_interests")]
-    if zero_interests:
-        all_issues.append(
-            f"{name}: {len(zero_interests)} faculty enriched but have NO interests "
-            f"(original or enriched) -- LLM normalizer had no input to synthesize from"
-        )
-
-    # Duplicate names
-    names = [f"{f.get('first_name', '')} {f.get('last_name', '')}" for f in fac]
-    name_counts = Counter(names)
-    dupes = {n: c for n, c in name_counts.items() if c > 1}
-    if dupes:
-        for dup_name, count in dupes.items():
-            all_issues.append(f"{name}: Duplicate name \"{dup_name}\" appears {count} times")
-
-    # Missing names
-    nameless = [(i, f) for i, f in enumerate(fac)
-                if not f.get("first_name") or not f.get("last_name")]
-    if nameless:
-        all_issues.append(f"{name}: {len(nameless)} faculty missing first or last name")
-
-    # Low h-index coverage (Semantic Scholar may be underperforming)
-    h_count = sum(1 for f in fac if f.get("h_index"))
-    if h_count < total * 0.2:
-        all_issues.append(
-            f"{name}: H-index only populated for {h_count}/{total} "
-            f"({h_count/total*100:.0f}%) -- Semantic Scholar source may be rate-limited"
-        )
-
-    # Low profile_url coverage
-    url_count = sum(1 for f in fac if f.get("profile_url"))
-    if url_count < total * 0.5:
-        all_issues.append(
-            f"{name}: Profile URL only populated for {url_count}/{total} "
-            f"({url_count/total*100:.0f}%)"
-        )
-
-# Log analysis
-print(f"\n{SEP}")
-print("ENRICHMENT LOG ANALYSIS")
-print(SEP)
-log_path = os.path.join(DATA_DIR, "enrichment_log.jsonl")
-if os.path.exists(log_path):
-    log = []
-    with open(log_path) as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                try:
-                    log.append(json.loads(line))
-                except json.JSONDecodeError:
-                    continue
-    print(f"  Total log entries: {len(log)}")
-
-    if log:
-        dates = [e.get("retrieved_at", "")[:10] for e in log if e.get("retrieved_at")]
-        date_counts = Counter(dates)
-        print("  Entries by date:")
-        for d in sorted(date_counts.keys()):
-            print(f"    {d}: {date_counts[d]} entries")
-
-        sources = Counter(e.get("source_name", "unknown") for e in log)
-        print("  Entries by source:")
-        for s, c in sources.most_common():
-            print(f"    {s:25s} {c}")
-else:
-    print("  Log file not found (enrichment_log.jsonl) -- will be created on next enrichment run")
-
-print(f"\n{SEP}")
-print("OVERALL SUMMARY")
-print(SEP)
-missing = grand_total - grand_enriched
-print(f"  Total faculty across 3 schools:  {grand_total}")
-print(f"  With enriched interests:         {grand_enriched} ({grand_enriched/grand_total*100:.1f}%)")
-print(f"  Without enriched interests:      {missing} ({missing/grand_total*100:.1f}%)")
-print(f"  Never enriched (no timestamp):   {grand_never_enriched}")
-
-# Audit issues
-if all_issues:
+    # Audit issues, computed from DB columns (not JSON keys).
     print(f"\n{SEP}")
     print("AUDIT ISSUES")
     print(SEP)
-    for i, issue in enumerate(all_issues, 1):
-        print(f"  {i}. {issue}")
+    issues = []
 
-# Completion evaluation
-print(f"\n{SEP}")
-print("COMPLETION EVALUATION")
-print(SEP)
-pct = grand_enriched / grand_total
-if pct >= 0.90:
-    print("  STATUS: COMPLETE -- enrichment coverage >= 90%")
-elif pct >= 0.70:
-    print("  STATUS: MOSTLY COMPLETE -- enrichment coverage >= 70%")
-elif pct >= 0.50:
-    print("  STATUS: PARTIAL -- enrichment coverage >= 50%")
-else:
-    print("  STATUS: INCOMPLETE -- enrichment coverage < 50%")
+    # Resolved + enrichment ran but no usable interests — split by cause.
+    sources_dry = overall["buckets"]["sources_dry"]
+    no_input = overall["buckets"]["normalizer_no_input"]
+    if sources_dry:
+        issues.append(f"{sources_dry} resolved+enriched faculty have material but no "
+                      f"enriched interests — likely wrong identity match (recheck identity).")
+    if no_input:
+        issues.append(f"{no_input} resolved+enriched faculty had no input to synthesize "
+                      f"from — needs sources/identity work, not re-running the LLM.")
+
+    # Duplicate / missing names.
+    dupes = conn.execute(
+        "SELECT lower(first_name || '|' || last_name) AS k, COUNT(*) AS n"
+        " FROM faculty WHERE pi_eligible = 1 GROUP BY k HAVING n > 1"
+    ).fetchall()
+    if dupes:
+        issues.append(f"{len(dupes)} duplicate name(s) among PI-eligible faculty.")
+    nameless = conn.execute(
+        "SELECT COUNT(*) FROM faculty WHERE pi_eligible = 1 AND"
+        " (first_name IS NULL OR first_name = '' OR last_name IS NULL OR last_name = '')"
+    ).fetchone()[0]
+    if nameless:
+        issues.append(f"{nameless} PI-eligible faculty missing a first or last name.")
+
+    if issues:
+        for i, issue in enumerate(issues, 1):
+            print(f"  {i}. {issue}")
+    else:
+        print("  None.")
+
+    # Enrichment log analysis (from the enrichment_log table).
+    print(f"\n{SEP}")
+    print("ENRICHMENT LOG (by method / source)")
+    print(SEP)
+    methods = conn.execute(
+        "SELECT method, COUNT(*) AS n FROM enrichment_log GROUP BY method"
+        " ORDER BY n DESC"
+    ).fetchall()
+    if methods:
+        for r in methods:
+            print(f"  {r['method'] or 'unknown':20s} {r['n']}")
+    else:
+        print("  No enrichment log entries yet.")
+
+    # Completion evaluation.
+    print(f"\n{SEP}")
+    pct = overall["coverage_enriched"]
+    if pct >= 80:
+        print(f"  STATUS: TARGET MET — {pct}% of PI-eligible faculty enriched (>= 80%)")
+    elif pct >= 60:
+        print(f"  STATUS: APPROACHING — {pct}% enriched (target 80%)")
+    else:
+        print(f"  STATUS: BELOW TARGET — {pct}% enriched (target 80%)")
+
+    conn.close()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

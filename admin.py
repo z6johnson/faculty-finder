@@ -15,8 +15,8 @@ import logging
 import os
 import tempfile
 
-from flask import (Blueprint, flash, redirect, render_template, request,
-                   session, url_for)
+from flask import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, session, url_for)
 
 from data import db
 from data import divisions
@@ -236,6 +236,21 @@ def eah_reconcile_run():
 # Status & audit dashboard
 # ---------------------------------------------------------------------------
 
+# Coverage ledger buckets that an operator can act on, mapped to a short label
+# and (where one exists) the queue that works them down. Stages absent here
+# (enriched, no_footprint_or_rejected) are terminal — no action to route to.
+LEDGER_BUCKET_LABELS = {
+    "enriched": "Enriched",
+    "sources_dry": "Sources dry (recheck identity)",
+    "normalizer_no_input": "No input to synthesize",
+    "resolved_not_enriched": "Awaiting enrichment",
+    "stuck_in_identity_review": "Awaiting identity review",
+    "identity_not_found": "Identity not found",
+    "no_footprint_or_rejected": "No footprint / rejected",
+    "unresolved": "Identity not yet attempted",
+}
+
+
 @admin_bp.route("/status")
 @login_required
 def status():
@@ -243,9 +258,25 @@ def status():
     return render_template(
         "admin/status.html",
         divisions=db.load_status_by_division(conn),
+        ledger=db.load_ledger_by_division(conn, pi_only=True),
+        ledger_total=db.load_ledger(conn, pi_only=True),
+        ledger_stages=db.LEDGER_STAGES,
+        ledger_labels=LEDGER_BUCKET_LABELS,
         recent_jobs=db.list_jobs(conn, limit=10),
         audit=db.recent_enrichment_log(conn, limit=40),
     )
+
+
+@admin_bp.route("/ledger.json")
+@login_required
+def ledger_json():
+    """Live coverage funnel (PI-eligible roster) for dashboards/monitoring."""
+    conn = db.get_read_conn()
+    return jsonify({
+        "overall": db.load_ledger(conn, pi_only=True),
+        "by_division": db.load_ledger_by_division(conn, pi_only=True),
+        "stages": db.LEDGER_STAGES,
+    })
 
 
 # ---------------------------------------------------------------------------

@@ -289,7 +289,19 @@ def main():
                         default="all", help="Discovery strategy to use")
     parser.add_argument("--dry-run", action="store_true",
                         help="Show results without writing to file")
+    parser.add_argument("--force", action="store_true",
+                        help="Override the EAH-authority deprecation guard.")
     args = parser.parse_args()
+
+    # DEPRECATED as a roster source. EAH (scripts/eah_enrichment.py) now defines
+    # who exists; this scraper writes a JSON roster that would compete with that
+    # authority. Jacobs profile pages still feed enrichment via the ucsd_profile
+    # source — that path is unaffected.
+    if not args.force:
+        print("This Jacobs seeder is retired: the roster is now EAH-authoritative. "
+              "Profile pages still feed enrichment via the ucsd_profile source. "
+              "Re-run with --force only for an explicit ad-hoc rebuild.")
+        return 1
 
     directory_faculty = []
     catalog_faculty = []

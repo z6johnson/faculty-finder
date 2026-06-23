@@ -398,6 +398,13 @@ def run_eah_reconcile():
         })
         print(f"  {slug:12s} EAH people: {len(deduped):5d}  new rows: {new_count}")
 
+    # Mark EAH as the roster authority. Once this key is set the EAH PI-eligible
+    # set defines who exists, so the JSON bootstrap (migrate_json_to_sqlite)
+    # stops re-importing the legacy three-school rosters and can never resurrect
+    # stale rows or re-flip EAH-owned fields on a container restart.
+    db.set_meta(conn, "eah_reconciled_at", db._now_iso())
+    conn.commit()
+
     # Summary
     print(f"\n{'='*60}")
     print("SUMMARY")

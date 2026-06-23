@@ -393,6 +393,7 @@ def run_eah_reconcile():
         total_new += new_count
         results.append({
             "division": slug,
+            "label": labels[slug],
             "eah_count": len(deduped),
             "new_added": new_count,
         })

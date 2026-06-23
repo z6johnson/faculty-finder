@@ -30,19 +30,23 @@
 {% if last_result %}
 <div class="card">
   <h3>Last reconcile</h3>
-  <p class="muted">{{ last_result.eah_rows }} EAH rows · {{ last_result.total_matched }} matched ·
-     {{ last_result.total_removed_inactive }} removed (inactive) ·
-     {{ last_result.total_new_added }} added · {{ last_result.total_now }} active now.</p>
+  <p class="muted">{{ last_result.eah_rows }} EAH rows ·
+     {{ last_result.total_matched }} matched ·
+     {{ last_result.total_moved }} moved divisions ·
+     {{ last_result.total_removed_inactive }} flagged inactive ·
+     {{ last_result.total_new_added }} added.</p>
+  <p class="muted">Matched/moved/flagged counts are reconciled across all
+     divisions at once, so the per-division breakdown below reports the EAH
+     headcount and the rows newly added in each division.</p>
   <div class="table-scroll">
     <table>
-      <thead><tr><th>School</th><th>In data</th><th>EAH people</th><th>Matched</th>
-        <th>Removed</th><th>Added</th><th>Now</th></tr></thead>
+      <thead><tr><th>Division</th><th>EAH people</th><th>New added</th></tr></thead>
       <tbody>
-        {% for s in last_result.schools %}
+        {% for s in last_result.divisions %}
         <tr>
-          <td>{{ s.school }}</td><td>{{ s.original_count }}</td><td>{{ s.eah_count }}</td>
-          <td>{{ s.matched }}</td><td>{{ s.removed_inactive }}</td>
-          <td>{{ s.new_added }}</td><td>{{ s.total_now }}</td>
+          <td>{{ s.label or s.division }}</td>
+          <td>{{ s.eah_count }}</td>
+          <td>{{ s.new_added }}</td>
         </tr>
         {% endfor %}
       </tbody>

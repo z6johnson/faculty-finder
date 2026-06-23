@@ -1,4 +1,11 @@
-name: Seed Faculty Roster
+name: Seed Faculty Roster (DEPRECATED)
+
+# DEPRECATED: the roster is now EAH-authoritative (scripts/eah_enrichment.py).
+# These scrapers no longer define who exists — they survive only as enrichment
+# sources (profile pages -> ucsd_profile / scripps_profile). The seeder scripts
+# now refuse to run without --force, so dispatching this workflow fails safe at
+# the "Seed faculty roster" step before anything is committed. Kept for rare,
+# deliberate ad-hoc rebuilds only; do not use it to populate the roster.
 
 on:
   workflow_dispatch:

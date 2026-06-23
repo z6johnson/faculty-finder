@@ -185,7 +185,8 @@ class MarkNoFootprintTests(_TempDBTestCase):
                   "email": "jsmith@ucsd.edu", "title": "Professor Emeritus",
                   "pi_eligible": 0}
         fields.update(overrides)
-        fid = db.upsert_faculty(conn, "som", fields)
+        # Use an active division — som is excluded from the identity queue.
+        fid = db.upsert_faculty(conn, "bio-sci", fields)
         db.set_identity_status(conn, fid, status)
         conn.commit()
         return conn, fid

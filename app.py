@@ -68,8 +68,10 @@ ALLOWED_EXTENSIONS = {"pdf", "txt"}
 # Division slugs accepted by the API. "all" spans every division and "other"
 # is the registry's fallback bucket. The db layer treats "all"/None as no
 # department filter.
-from data.divisions import DIVISIONS, known_slugs
+from data.divisions import active_divisions, known_slugs
 
+# VALID_DEPTS keeps the full slug set so a stale ?dept=som query returns empty
+# (via the db-layer division filter) rather than a 400.
 VALID_DEPTS = set(known_slugs()) | {"all", "other"}
 
 
@@ -113,9 +115,13 @@ def index():
 
 @app.route("/api/divisions")
 def divisions_list():
-    """Return all divisions/schools for populating the frontend filter."""
+    """Return active divisions/schools for populating the frontend filter.
+
+    Excluded divisions (e.g. School of Medicine) are omitted from the public
+    dropdown and filtered out of search/match results by the db layer.
+    """
     return jsonify({
-        "divisions": [{"slug": d.slug, "label": d.label} for d in DIVISIONS]
+        "divisions": [{"slug": d.slug, "label": d.label} for d in active_divisions()]
     })
 
 

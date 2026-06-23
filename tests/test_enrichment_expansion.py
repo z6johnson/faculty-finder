@@ -490,17 +490,147 @@ class IdentityCandidateFlowTests(_TempDBTestCase):
     def test_backfill_selection_requires_resolved_identity(self):
         conn = db.connect(readonly=False)
         db.init_schema(conn)
-        resolved = db.upsert_faculty(conn, "som", {
+        # Use an active division — som is now excluded from backfill (see
+        # ExcludedDivisionTests).
+        resolved = db.upsert_faculty(conn, "bio-sci", {
             "first_name": "A", "last_name": "Resolved", "email": "a@ucsd.edu",
             "pi_eligible": True, "identity_status": "auto",
         })
-        db.upsert_faculty(conn, "som", {
+        db.upsert_faculty(conn, "bio-sci", {
             "first_name": "B", "last_name": "Unresolved", "email": "b@ucsd.edu",
             "pi_eligible": True,
         })
         conn.commit()
         candidates = db.fetch_backfill_candidates(conn, pi_only=True)
         self.assertEqual([c["_db_id"] for c in candidates], [resolved])
+        conn.close()
+
+
+class ExcludedDivisionTests(_TempDBTestCase):
+    """School of Medicine (som) stays in the DB but is excluded from seeding,
+    enrichment, and the public read paths; admin/status views still see it."""
+
+    def test_registry_flags_som_inactive(self):
+        from data import divisions
+        self.assertEqual(divisions.excluded_slugs(), ["som"])
+        self.assertNotIn("som", {d.slug for d in divisions.active_divisions()})
+        # som stays resolvable so existing rows keep label/bundle/routing.
+        self.assertIn("som", divisions.known_slugs())
+        self.assertEqual(divisions.division_for("School of Medicine")[0], "som")
+        self.assertEqual(divisions.label_for("som"), "School of Medicine")
+        self.assertEqual(divisions.bundle_for("som"), "health")
+
+    def _seed_som_and_active(self):
+        conn = db.connect(readonly=False)
+        db.init_schema(conn)
+        som = db.upsert_faculty(conn, "som", {
+            "first_name": "Sam", "last_name": "Medicine", "email": "sam@ucsd.edu",
+            "pi_eligible": True, "identity_status": "auto",
+            "research_interests_enriched": "Cardiology.",
+        })
+        active = db.upsert_faculty(conn, "bio-sci", {
+            "first_name": "Bea", "last_name": "Biology", "email": "bea@ucsd.edu",
+            "pi_eligible": True, "identity_status": "auto",
+            "research_interests_enriched": "Genomics.",
+        })
+        conn.commit()
+        return conn, som, active
+
+    def test_backfill_excludes_som(self):
+        conn, som, active = self._seed_som_and_active()
+        ids = [c["_db_id"] for c in db.fetch_backfill_candidates(conn, pi_only=True)]
+        self.assertEqual(ids, [active])
+        conn.close()
+
+    def test_public_search_and_match_pool_exclude_som(self):
+        conn, som, active = self._seed_som_and_active()
+        results, total = db.search_faculty(conn, "all")
+        names = {(r["first_name"], r["last_name"]) for r in results}
+        self.assertIn(("Bea", "Biology"), names)
+        self.assertNotIn(("Sam", "Medicine"), names)
+        self.assertEqual(total, 1)
+        with_profile, _ = db.count_match_pool(conn, None)
+        self.assertEqual(with_profile, 1)  # only the bio-sci row
+        conn.close()
+
+    def test_identity_queue_excludes_som(self):
+        conn = db.connect(readonly=False)
+        db.init_schema(conn)
+        db.upsert_faculty(conn, "som", {  # defaults to identity_status unresolved
+            "first_name": "Sam", "last_name": "Medicine", "email": "sam@ucsd.edu",
+            "pi_eligible": True})
+        keep = db.upsert_faculty(conn, "bio-sci", {
+            "first_name": "Bea", "last_name": "Biology", "email": "bea@ucsd.edu",
+            "pi_eligible": True})
+        conn.commit()
+        queue = db.fetch_identity_queue(conn, department=None, statuses=("unresolved",))
+        self.assertEqual([f["_db_id"] for f in queue], [keep])
+        conn.close()
+
+    def test_admin_views_still_see_som(self):
+        conn, som, active = self._seed_som_and_active()
+        # Admin list (no exclusion) and the DB-driven ledger still include som.
+        rows, total = db.admin_list_faculty(conn, department="som")
+        self.assertEqual([r["id"] for r in rows], [som])
+        ledger = {d["department"]: d for d in db.load_ledger_by_division(conn)}
+        self.assertIn("som", ledger)
+        conn.close()
+
+
+class ExcludedDivisionSeedingTests(_TempDBTestCase):
+    """EAH reconcile must not seed into excluded divisions, and must leave
+    pre-existing excluded rows frozen."""
+
+    def _write_csv(self, rows):
+        fd, path = tempfile.mkstemp(suffix=".csv")
+        with os.fdopen(fd, "w") as f:
+            f.write(EAH_CSV_HEADER)
+            f.write("\n".join(rows) + "\n")
+        return path
+
+    def test_new_som_person_not_seeded_existing_som_frozen(self):
+        from scripts import eah_enrichment
+
+        conn = db.connect(readonly=False)
+        db.init_schema(conn)
+        # A pre-existing som row that will NOT appear in the EAH extract.
+        frozen = db.upsert_faculty(conn, "som", {
+            "first_name": "Old", "last_name": "Doc", "email": "olddoc@ucsd.edu",
+            "title": "Professor", "research_interests_enriched": "Frozen.",
+        })
+        conn.commit()
+        conn.close()
+
+        rows = [
+            # A brand-new som person in EAH — must NOT be inserted.
+            '"New, Doctor",newdoc@ucsd.edu,Academic,001,PROF-AY,Y,VC Health,'
+            'School of Medicine,Med,L2,L3,L4,L5,Med,123,Active',
+            # An active-division new hire — must be inserted as usual.
+            '"Bio, Bea",bea@ucsd.edu,Academic,002,PROF-AY,Y,VC Acad,'
+            'Division of Biological Sciences,Bio,L2,L3,L4,L5,Bio,456,Active',
+        ]
+        csv_path = self._write_csv(rows)
+        old_path = eah_enrichment.EAH_PATH
+        eah_enrichment.EAH_PATH = csv_path
+        try:
+            result = eah_enrichment.run_eah_reconcile()
+        finally:
+            eah_enrichment.EAH_PATH = old_path
+            os.unlink(csv_path)
+
+        conn = db.connect(readonly=False)
+        # The new som person was not inserted.
+        self.assertIsNone(conn.execute(
+            "SELECT 1 FROM faculty WHERE email='newdoc@ucsd.edu'").fetchone())
+        # The active-division hire was inserted.
+        self.assertIsNotNone(conn.execute(
+            "SELECT 1 FROM faculty WHERE email='bea@ucsd.edu'").fetchone())
+        # The pre-existing som row is frozen — kept, not flagged Inactive.
+        old = conn.execute(
+            "SELECT * FROM faculty WHERE id=?", (frozen,)).fetchone()
+        self.assertIsNotNone(old)
+        self.assertNotEqual(old["eah_status"], "Inactive")
+        self.assertEqual(old["department"], "som")
         conn.close()
 
 

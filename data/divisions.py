@@ -18,11 +18,15 @@ def _slug(value):
 
 
 class Division:
-    def __init__(self, slug, label, matcher, bundle="default"):
+    def __init__(self, slug, label, matcher, bundle="default", active=True):
         self.slug = slug
         self.label = label
         self.matcher = matcher          # callable(division_school_str) -> bool
         self.bundle = bundle            # key into enrichment/routing.py BUNDLES
+        # Inactive divisions stay in the registry (so existing rows keep their
+        # label/bundle and stay manageable in admin) but are dropped from
+        # seeding, enrichment, and the public UI. See excluded_slugs().
+        self.active = active
 
 
 def _eq(expected):
@@ -47,8 +51,10 @@ DIVISIONS = [
              lambda v: "SIO" in (v or "") or (v or "").strip() == "VC-SIO Other",
              bundle="sio"),
 
+    # School of Medicine is kept in the DB but excluded from seeding,
+    # enrichment, and the public UI (active=False).
     Division("som", "School of Medicine",
-             _contains("school of medicine"), bundle="health"),
+             _contains("school of medicine"), bundle="health", active=False),
     Division("skaggs", "Skaggs School of Pharmacy and Pharmaceutical Sciences",
              _contains("pharmacy"), bundle="health"),
     Division("bio-sci", "Division of Biological Sciences",
@@ -97,3 +103,15 @@ def bundle_for(slug):
 
 def known_slugs():
     return [d.slug for d in DIVISIONS]
+
+
+def active_divisions():
+    """Divisions shown in UI dropdowns and operated on by seeding/enrichment."""
+    return [d for d in DIVISIONS if d.active]
+
+
+def excluded_slugs():
+    """Slugs of divisions kept in the DB but excluded from seeding, enrichment,
+    and the public UI (e.g. 'som'). Used by data.db's _active_division_filter
+    and the EAH reconcile."""
+    return [d.slug for d in DIVISIONS if not d.active]

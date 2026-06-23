@@ -23,7 +23,7 @@ from collections import defaultdict
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from data import db
-from data.divisions import division_for
+from data.divisions import division_for, excluded_slugs
 from utils.names import (email_local, names_compatible, normalize_name,
                          parse_eah_name)
 
@@ -326,6 +326,11 @@ def run_eah_reconcile():
     eah_rows = load_eah()
     print(f"Loaded {len(eah_rows)} EAH rows")
 
+    # Divisions kept in the DB but excluded from seeding (e.g. School of
+    # Medicine): never seed new rows into them and never update existing rows
+    # toward them. Existing rows are left frozen.
+    excluded = set(excluded_slugs())
+
     # Group EAH rows by division slug.
     rows_by_division = defaultdict(list)
     labels = {}
@@ -356,6 +361,9 @@ def run_eah_reconcile():
         eah_row = match_faculty_to_eah(faculty, g_email, g_local, g_name)
         fid = faculty["_db_id"]
         if not eah_row:
+            # Leave excluded-division rows (e.g. som) frozen — never flag them.
+            if faculty.get("department") in excluded:
+                continue
             if (faculty.get("eah_status") or "") not in ("Inactive", "Duplicate"):
                 db.mark_eah_status(conn, fid, "Inactive")
             flagged += 1
@@ -367,10 +375,17 @@ def run_eah_reconcile():
             db.mark_eah_status(conn, fid, "Duplicate")
             continue
         matched_person_keys.add(person_key)
+
+        slug, label, _ = division_for(eah_row.get("Division / School", ""))
+        if slug in excluded:
+            # EAH places this person in an excluded division: don't pull them in
+            # or update toward it. Leave the existing row untouched. (Someone
+            # moving OUT of an excluded division into an active one is handled
+            # by the active-target branch below.)
+            continue
         matched += 1
 
         apply_eah_fields(faculty, eah_row, updates_tracker)
-        slug, label, _ = division_for(eah_row.get("Division / School", ""))
         if slug != faculty.get("department"):
             db.update_faculty_division(conn, fid, slug, label)
             moved += 1
@@ -380,6 +395,9 @@ def run_eah_reconcile():
     # Pass 2: insert EAH people with no existing row, division by division.
     total_new = 0
     for slug in sorted(rows_by_division):
+        if slug in excluded:
+            # Don't seed new faculty into excluded divisions (e.g. som).
+            continue
         deduped = deduplicate_people(rows_by_division[slug])
         new_count = 0
         for person_key, row in deduped.items():

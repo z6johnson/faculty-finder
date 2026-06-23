@@ -342,7 +342,8 @@ def search_faculty(conn, department=None, query=None, limit=20, offset=0,
 
     if match:
         base = (" FROM faculty_fts JOIN faculty ON faculty.id = faculty_fts.rowid"
-                " WHERE faculty_fts MATCH ?" + dept_sql + name_guard)
+                " WHERE faculty_fts MATCH ?" + dept_sql + name_guard
+                + _ACTIVE_DIVISION_SQL)
         params = [match] + dept_params
         total = conn.execute("SELECT COUNT(*)" + base, params).fetchone()[0]
         rows = conn.execute(
@@ -350,7 +351,7 @@ def search_faculty(conn, department=None, query=None, limit=20, offset=0,
             params + [limit, offset],
         ).fetchall()
     else:
-        base = " FROM faculty WHERE 1=1" + dept_sql + name_guard
+        base = " FROM faculty WHERE 1=1" + dept_sql + name_guard + _ACTIVE_DIVISION_SQL
         total = conn.execute("SELECT COUNT(*)" + base, dept_params).fetchone()[0]
         rows = conn.execute(
             "SELECT *" + base + " ORDER BY last_name, first_name LIMIT ? OFFSET ?",
@@ -373,12 +374,30 @@ _ACTIVE_SQL = (" AND (faculty.eah_status IS NULL OR faculty.eah_status NOT IN "
                + "(" + ",".join(f"'{s}'" for s in _INACTIVE_STATUSES) + "))")
 
 
+# Divisions kept in the DB but excluded from seeding, enrichment, and the public
+# UI (Division.active=False — e.g. School of Medicine). Built once from the
+# registry; slugs are code constants (matched by [a-z0-9-]) so embedding them as
+# literals is injection-safe and avoids param-ordering churn. Applied only to
+# public read + background-processing queries — NOT to admin/status views, so
+# excluded rows stay manageable and keep showing in the coverage tables.
+def _build_excluded_division_sql():
+    excluded = divisions.excluded_slugs()
+    if not excluded:
+        return ""
+    quoted = ",".join("'" + s.replace("'", "''") + "'" for s in excluded)
+    return f" AND faculty.department NOT IN ({quoted})"
+
+
+_ACTIVE_DIVISION_SQL = _build_excluded_division_sql()
+
+
 def count_match_pool(conn, department=None):
     """Return (with_profile, without_profile) counts for a department."""
     dept_sql, dept_params = _dept_clause(department)
     row = conn.execute(
         "SELECT COALESCE(SUM(has_profile), 0), COUNT(*) "
-        "FROM faculty WHERE 1=1" + dept_sql + _ACTIVE_SQL, dept_params,
+        "FROM faculty WHERE 1=1" + dept_sql + _ACTIVE_SQL + _ACTIVE_DIVISION_SQL,
+        dept_params,
     ).fetchone()
     with_profile, total = row[0], row[1]
     return with_profile, total - with_profile
@@ -414,6 +433,7 @@ def fetch_match_candidates(conn, department, keywords, pool_with_profile=None,
     if pool_with_profile <= limit or not match:
         rows = conn.execute(
             "SELECT id FROM faculty WHERE has_profile = 1" + dept_sql + _ACTIVE_SQL
+            + _ACTIVE_DIVISION_SQL
             + " ORDER BY last_name, first_name", dept_params,
         ).fetchall()
         return _load_records(conn, [r["id"] for r in rows])
@@ -421,6 +441,7 @@ def fetch_match_candidates(conn, department, keywords, pool_with_profile=None,
     ranked = conn.execute(
         "SELECT faculty.id FROM faculty_fts JOIN faculty ON faculty.id = faculty_fts.rowid"
         " WHERE faculty_fts MATCH ? AND faculty.has_profile = 1" + dept_sql + _ACTIVE_SQL
+        + _ACTIVE_DIVISION_SQL
         + " ORDER BY bm25(faculty_fts) LIMIT ?",
         [match] + dept_params + [limit],
     ).fetchall()
@@ -430,6 +451,7 @@ def fetch_match_candidates(conn, department, keywords, pool_with_profile=None,
         placeholders = ",".join("?" * len(ids)) if ids else "0"
         pad = conn.execute(
             "SELECT id FROM faculty WHERE has_profile = 1" + dept_sql + _ACTIVE_SQL
+            + _ACTIVE_DIVISION_SQL
             + f" AND id NOT IN ({placeholders})"
             " ORDER BY h_index DESC, last_name, first_name LIMIT ?",
             dept_params + ids + [limit - len(ids)],
@@ -786,7 +808,7 @@ def fetch_identity_queue(conn, department=None, pi_only=False, statuses=("unreso
     dept_sql, params = _dept_clause(department)
     status_sql = ",".join("?" * len(statuses))
     sql = (f"SELECT * FROM faculty WHERE identity_status IN ({status_sql})"
-           + dept_sql)
+           + dept_sql + _ACTIVE_DIVISION_SQL)
     params = list(statuses) + params
     if pi_only:
         sql += " AND pi_eligible = 1"
@@ -1029,7 +1051,8 @@ def fetch_backfill_candidates(conn, pi_only=False, limit=None):
     """Identity-resolved, never-enriched faculty in priority order."""
     sql = ("SELECT * FROM faculty"
            " WHERE last_enriched IS NULL"
-           " AND identity_status IN ('auto', 'confirmed')")
+           " AND identity_status IN ('auto', 'confirmed')"
+           + _ACTIVE_DIVISION_SQL)
     params = []
     if pi_only:
         sql += " AND pi_eligible = 1"

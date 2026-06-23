@@ -25,8 +25,13 @@ logger = logging.getLogger(__name__)
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
-# Division slugs -> human labels for the admin UI (from the registry).
-DEPTS = [(d.slug, d.label) for d in divisions.DIVISIONS]
+# Active divisions for UI dropdowns and enrich/identity-run validation:
+# excluded divisions (e.g. School of Medicine) are hidden and not runnable.
+DEPTS = [(d.slug, d.label) for d in divisions.active_divisions()]
+# Full set including excluded divisions — used to validate view/filter params so
+# existing rows in an excluded division stay reachable in the admin (faculty
+# review list and identity queue).
+DEPTS_ALL = [(d.slug, d.label) for d in divisions.DIVISIONS]
 
 # Fields an operator may curate by hand (the rest come from enrichment/EAH).
 _TEXT_EDIT_FIELDS = ["title", "research_interests_enriched", "eah_status"]
@@ -338,7 +343,7 @@ def _cluster_identity_candidates(candidates):
 def identity_queue():
     conn = db.get_read_conn()
     dept = (request.args.get("dept") or "").strip().lower() or None
-    if dept and dept not in {d for d, _ in DEPTS}:
+    if dept and dept not in {d for d, _ in DEPTS_ALL}:
         dept = None
     candidates = db.list_identity_candidates(conn, department=dept)
     # Group by faculty for display.
@@ -491,7 +496,7 @@ def identity_not_findable(faculty_id):
 def faculty_list():
     conn = db.get_read_conn()
     dept = (request.args.get("dept") or "").strip().lower() or None
-    if dept and dept not in {d for d, _ in DEPTS}:
+    if dept and dept not in {d for d, _ in DEPTS_ALL}:
         dept = None
     query = (request.args.get("q") or "").strip() or None
     rows, total = db.admin_list_faculty(conn, department=dept, query=query, limit=50)

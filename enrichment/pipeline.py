@@ -76,6 +76,15 @@ def _load_faculty(department=None):
 def _make_log_entry(faculty_dict, source_name, field, old_value, new_value,
                     confidence, method, source_url=None, raw_response=None):
     """Create an enrichment_log entry dict (column-name keyed)."""
+    # The LLM normalizer's context is stored verbatim and IN FULL (no JSON
+    # wrapping, no 5000-char truncation) so any enriched value is traceable to
+    # exactly what the model saw. These rows are also exempt from log rotation
+    # (see db.rotate_log) so provenance for the current enriched value survives.
+    if method in ("llm_extraction", "no_context"):
+        raw = raw_response if (raw_response is None or isinstance(raw_response, str)) \
+            else json.dumps(raw_response)
+    else:
+        raw = (json.dumps(raw_response)[:5000]) if raw_response else None
     return {
         "faculty_id": faculty_dict.get("_db_id"),
         "stable_key": faculty_dict.get("_stable_key"),
@@ -86,7 +95,7 @@ def _make_log_entry(faculty_dict, source_name, field, old_value, new_value,
         "new_value": json.dumps(new_value) if isinstance(new_value, (list, dict)) else str(new_value),
         "confidence": confidence,
         "method": method,
-        "raw_response": (json.dumps(raw_response)[:5000]) if raw_response else None,
+        "raw_response": raw,
         "retrieved_at": datetime.now(timezone.utc).isoformat(),
     }
 
@@ -310,6 +319,7 @@ def enrich_faculty(faculty_index, sources=None, dry_run=False, department=None,
         else:
             normalized = normalize_from_context(name, context)
             if normalized:
+                logged_context = False
                 for field in ("research_interests_enriched", "expertise_keywords",
                                "methodologies", "disease_areas", "populations"):
                     value = normalized.get(field)
@@ -317,6 +327,9 @@ def enrich_faculty(faculty_index, sources=None, dry_run=False, department=None,
                         old_value = faculty_dict.get(field)
                         faculty_dict[field] = value
 
+                        # Persist the full context the model saw on the first
+                        # logged field (the enriched blurb, normally) so every
+                        # enriched value is traceable; its hash equals raw_hash.
                         log_entries.append(_make_log_entry(
                             faculty_dict,
                             source_name="llm_normalizer",
@@ -325,12 +338,27 @@ def enrich_faculty(faculty_index, sources=None, dry_run=False, department=None,
                             new_value=value,
                             confidence=0.85,
                             method="llm_extraction",
+                            raw_response=None if logged_context else context,
                         ))
+                        logged_context = True
                 faculty_dict["raw_hash"] = fingerprint
                 summary["normalization"] = "success"
             else:
                 summary["normalization"] = "skipped_or_failed"
     else:
+        # No context means build_context had only the name to work with — this
+        # is the exact signal behind the ledger's normalizer_no_input bucket.
+        # Record it (empty context) so the cause is auditable, not inferred.
+        log_entries.append(_make_log_entry(
+            faculty_dict,
+            source_name="llm_normalizer",
+            field="research_interests_enriched",
+            old_value=faculty_dict.get("research_interests_enriched"),
+            new_value=None,
+            confidence=0.0,
+            method="no_context",
+            raw_response=None,
+        ))
         summary["normalization"] = "no_context"
 
     # Mark when this faculty was last enriched

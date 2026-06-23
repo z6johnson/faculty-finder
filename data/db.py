@@ -569,21 +569,35 @@ def append_log(conn, entries):
 
 
 def rotate_log(conn, max_age_days=30):
-    """Delete log entries older than max_age_days."""
+    """Delete log entries older than max_age_days.
+
+    LLM normalizer rows ('llm_extraction'/'no_context') are exempt: they carry
+    the verbatim context the model saw, which is the provenance for the current
+    enriched value and must survive rotation.
+    """
     cutoff = (datetime.now(timezone.utc) - timedelta(days=max_age_days)).isoformat()
-    conn.execute("DELETE FROM enrichment_log WHERE retrieved_at < ?", (cutoff,))
+    conn.execute(
+        "DELETE FROM enrichment_log WHERE retrieved_at < ?"
+        " AND method NOT IN ('llm_extraction', 'no_context')",
+        (cutoff,),
+    )
 
 
-def load_status(conn, department=None):
-    """Enrichment coverage summary (replaces get_enrichment_status)."""
+def load_status(conn, department=None, pi_only=False):
+    """Enrichment coverage summary (replaces get_enrichment_status).
+
+    ``pi_only`` measures against the EAH PI-eligible roster (the honest
+    denominator) instead of every faculty row.
+    """
     dept_sql, dept_params = _dept_clause(department)
+    pi_sql = " AND pi_eligible = 1" if pi_only else ""
     row = conn.execute(
         "SELECT COUNT(*) AS total,"
         " SUM(CASE WHEN research_interests IS NOT NULL AND research_interests != '' THEN 1 ELSE 0 END) AS orig,"
         " SUM(CASE WHEN research_interests_enriched IS NOT NULL AND research_interests_enriched != '' THEN 1 ELSE 0 END) AS enriched,"
         " SUM(CASE WHEN grants_count > 0 THEN 1 ELSE 0 END) AS grants,"
         " SUM(CASE WHEN pubs_count > 0 THEN 1 ELSE 0 END) AS pubs"
-        " FROM faculty WHERE 1=1" + dept_sql,
+        " FROM faculty WHERE 1=1" + dept_sql + pi_sql,
         dept_params,
     ).fetchone()
     total = row["total"] or 0
@@ -1030,6 +1044,118 @@ def fetch_backfill_candidates(conn, pi_only=False, limit=None):
         rec["_db_id"] = row["id"]
         rec["_stable_key"] = row["stable_key"]
         out.append(rec)
+    return out
+
+
+# Per-faculty coverage funnel stage, derived entirely from columns already on
+# the faculty row. Branches are evaluated top-down (first match wins) so the
+# stages are mutually exclusive. Defined once here and shared by the aggregate
+# ledger and any per-faculty drill-down, so the taxonomy can never drift.
+#
+#   enriched                  terminal success (has a research-interest blurb)
+#   sources_dry               resolved + enrichment ran, but no enriched blurb
+#                             despite having some material -> likely a WRONG
+#                             identity match; route back to identity review
+#   normalizer_no_input       resolved + enrichment ran, but nothing to
+#                             synthesize from -> source/identity work, not LLM
+#   resolved_not_enriched     resolved, waiting for a backfill enrichment pass
+#   stuck_in_identity_review  ambiguous candidates in the human review queue
+#   identity_not_found        searched, no candidate yet (re-swept weekly)
+#   no_footprint_or_rejected  terminal: not findable / admin-rejected
+#   unresolved                EAH-inserted, identity not yet attempted
+_LEDGER_STAGE_CASE = """
+  CASE
+    WHEN research_interests_enriched IS NOT NULL AND research_interests_enriched != ''
+         THEN 'enriched'
+    WHEN identity_status IN ('auto','confirmed') AND last_enriched IS NOT NULL
+         AND (has_profile = 1 OR grants_count > 0 OR pubs_count > 0
+              OR (research_interests IS NOT NULL AND research_interests != ''))
+         THEN 'sources_dry'
+    WHEN identity_status IN ('auto','confirmed') AND last_enriched IS NOT NULL
+         THEN 'normalizer_no_input'
+    WHEN identity_status IN ('auto','confirmed') AND last_enriched IS NULL
+         THEN 'resolved_not_enriched'
+    WHEN identity_status = 'ambiguous' THEN 'stuck_in_identity_review'
+    WHEN identity_status = 'not_found' THEN 'identity_not_found'
+    WHEN identity_status IN ('no_footprint','rejected') THEN 'no_footprint_or_rejected'
+    ELSE 'unresolved'
+  END
+"""
+
+# Ordered for display; also the canonical bucket set (every stage present, 0 if
+# empty). "Actionable" buckets are the ones an operator can move the needle on.
+LEDGER_STAGES = [
+    "enriched",
+    "sources_dry",
+    "normalizer_no_input",
+    "resolved_not_enriched",
+    "stuck_in_identity_review",
+    "identity_not_found",
+    "no_footprint_or_rejected",
+    "unresolved",
+]
+
+
+def load_ledger(conn, department=None, pi_only=True):
+    """Coverage funnel as a derived join over existing faculty columns.
+
+    Returns the denominator plus a count per funnel stage (see LEDGER_STAGES).
+    ``pi_only`` scopes the population to the EAH PI-eligible roster — the honest
+    denominator the >80% target is measured against; set False to include every
+    faculty row. ``unknown_eligibility`` counts rows whose EAH PI-eligible flag
+    is blank (neither in nor out of the denominator).
+    """
+    dept_sql, params = _dept_clause(department)
+    pi_sql = " AND pi_eligible = 1" if pi_only else ""
+    rows = conn.execute(
+        f"SELECT {_LEDGER_STAGE_CASE} AS stage, COUNT(*) AS n"
+        " FROM faculty WHERE 1=1" + dept_sql + pi_sql + " GROUP BY stage",
+        params,
+    ).fetchall()
+    buckets = {s: 0 for s in LEDGER_STAGES}
+    for r in rows:
+        buckets[r["stage"]] = r["n"]
+    total = sum(buckets.values())
+    unknown = conn.execute(
+        "SELECT COUNT(*) FROM faculty WHERE pi_eligible IS NULL" + dept_sql,
+        params,
+    ).fetchone()[0]
+    return {
+        "total": total,
+        "buckets": buckets,
+        "unknown_eligibility": unknown,
+        "coverage_enriched": round(buckets["enriched"] / total * 100, 1) if total else 0,
+    }
+
+
+def load_ledger_by_division(conn, pi_only=True):
+    """Per-division coverage funnel across ALL divisions (PI-eligible roster).
+
+    One row per division with the full bucket taxonomy; the same derivation as
+    load_ledger so the aggregate and per-division views never disagree.
+    """
+    pi_sql = " AND pi_eligible = 1" if pi_only else ""
+    rows = conn.execute(
+        f"SELECT department, department_label, {_LEDGER_STAGE_CASE} AS stage,"
+        " COUNT(*) AS n FROM faculty WHERE 1=1" + pi_sql
+        + " GROUP BY department, stage"
+    ).fetchall()
+    by_div = {}
+    for r in rows:
+        d = by_div.setdefault(r["department"], {
+            "department": r["department"],
+            "department_label": r["department_label"],
+            "buckets": {s: 0 for s in LEDGER_STAGES},
+        })
+        d["buckets"][r["stage"]] = r["n"]
+    out = []
+    for d in by_div.values():
+        total = sum(d["buckets"].values())
+        d["total"] = total
+        d["coverage_enriched"] = (
+            round(d["buckets"]["enriched"] / total * 100, 1) if total else 0)
+        out.append(d)
+    out.sort(key=lambda d: d["total"], reverse=True)
     return out
 
 

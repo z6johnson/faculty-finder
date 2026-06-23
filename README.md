@@ -313,11 +313,25 @@ resolution, and admin edits all write straight to the DB through the single
 data-access module `data/db.py`; the web app reads it through read-only
 connections and never writes at request time.
 
+**The EAH extract is the roster authority.** Who counts as PI-eligible faculty
+is defined by the EAH reconcile (`scripts/eah_enrichment.py`) across all
+divisions, not by any scraper or JSON file. Once an EAH extract has been
+reconciled it sets `meta['eah_reconciled_at']`, after which the JSON bootstrap
+is inert (see below). Coverage is therefore measured against the real
+PI-eligible population — `scripts/check_enrichment_status.py` and the admin
+status page render the coverage **ledger** (one funnel stage per faculty:
+enriched → resolved → in-review → not-found → no-footprint) from the live DB.
+
 The git-tracked JSON files (`data/*.json`) are the historical seeds for the
 original three schools: they bootstrap a brand-new volume once
-(`scripts/migrate_json_to_sqlite.py`, guarded by the entrypoint) and are no
-longer written by the pipeline. Weekly per-division snapshots land in
-`/data/backups` for provenance.
+(`scripts/migrate_json_to_sqlite.py`, guarded by the entrypoint) so the app is
+non-empty before the first EAH upload. After the first EAH reconcile the
+importer becomes a no-op (it would otherwise resurrect departed faculty). The
+per-school scrapers (`enrichment/seed_sio.py`, `enrichment/seed_jacobs.py`) are
+**retired as roster sources** — they remain only as enrichment *sources*
+(profile pages contribute a research blurb + email via `ucsd_profile` /
+`scripps_profile`). Weekly per-division snapshots land in `/data/backups` for
+provenance.
 
 ```bash
 python scripts/migrate_json_to_sqlite.py        # bootstrap only: JSON -> app.db
@@ -369,8 +383,8 @@ research-alignment/
 │   ├── pipeline.py           # Enrichment orchestrator (HWSPH, SIO, Jacobs)
 │   ├── normalizer.py         # LLM-based data normalization
 │   ├── run.py                # GitHub Actions runner
-│   ├── seed_sio.py           # SIO faculty seeding script
-│   ├── seed_jacobs.py        # Jacobs faculty seeding script
+│   ├── seed_sio.py           # SIO profile scraper (retired as roster; enrichment source only)
+│   ├── seed_jacobs.py        # Jacobs profile scraper (retired as roster; enrichment source only)
 │   └── sources/              # Data source adapters (NIH, NSF, PubMed, ORCID, UCSD, Scripps)
 └── docs/
     ├── responsible-ai-seed-principles.md

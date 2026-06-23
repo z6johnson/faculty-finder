@@ -1,11 +1,19 @@
-"""One-off, idempotent migration of the faculty JSON files into SQLite.
+"""First-boot bootstrap of the three legacy faculty JSON files into SQLite.
 
 Usage:
     python scripts/migrate_json_to_sqlite.py [--db PATH] [--rebuild]
 
 Reads data/faculty.json, data/sio_faculty.json, data/jacobs_faculty.json and
-populates the SQLite database (schema in data/schema.sql). Re-running is safe:
-records UPSERT on their stable_key. ``--rebuild`` drops and recreates tables.
+populates the SQLite database (schema in data/schema.sql) so the app is
+non-empty before the first EAH extract is uploaded. Re-running is safe: records
+UPSERT on their stable_key.
+
+ROSTER AUTHORITY: once an EAH extract has been reconciled
+(scripts/eah_enrichment.py sets meta['eah_reconciled_at']), the EAH PI-eligible
+set is the roster — who exists is defined by EAH, not these JSON snapshots. From
+that point this importer becomes a no-op (it would otherwise resurrect departed
+faculty or re-flip EAH-owned fields on a container restart). Use ``--rebuild``
+to force a clean re-import from JSON (drops all tables, including the guard key).
 
 The per-department source-file headers (university, source_url, date_retrieved,
 etc.) are preserved in the ``meta`` table so the data can be exported back to
@@ -57,6 +65,24 @@ def run_migration(rebuild=False, db_path=None):
     if rebuild:
         _drop_all(conn)
     db.init_schema(conn)
+
+    # Once EAH has reconciled, it owns the roster: skip the JSON import so we
+    # never resurrect departed faculty or overwrite EAH-owned fields. --rebuild
+    # drops the meta table (clearing the key) when a clean re-import is wanted.
+    reconciled_at = db.get_meta(conn, "eah_reconciled_at")
+    if reconciled_at:
+        total_rows = conn.execute("SELECT COUNT(*) FROM faculty").fetchone()[0]
+        print(f"EAH is roster authority (reconciled {reconciled_at}); "
+              f"skipping JSON seed. {total_rows} faculty rows in db.")
+        conn.close()
+        return {
+            "processed": 0,
+            "faculty_rows": total_rows,
+            "fts_rows": total_rows,
+            "per_dept": {},
+            "fts_consistent": True,
+            "skipped_eah_authority": True,
+        }
 
     grand_total = 0
     per_dept = {}

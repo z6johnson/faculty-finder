@@ -27,15 +27,18 @@
             <button class="tab-btn" role="tab" aria-selected="false" data-tab="directory">Expert Directory</button>
         </nav>
 
-        <!-- Department Selector -->
+        <!-- Department Selector (shared across all tabs) -->
         <div class="dept-selector">
-            <label class="dept-label" for="dept-select">Search across</label>
-            <select id="dept-select" class="dept-select">
-                <option value="all" selected>All Divisions/Schools</option>
-                <option value="jacobs">Jacobs School of Engineering</option>
-                <option value="hwsph">School of Public Health</option>
-                <option value="sio">Scripps Institution of Oceanography</option>
-            </select>
+            <span class="dept-label" id="dept-label">Search across</span>
+            <div class="dept-multiselect" id="dept-multiselect">
+                <button type="button" class="dept-trigger" id="dept-trigger"
+                        aria-haspopup="true" aria-expanded="false"
+                        aria-labelledby="dept-label dept-trigger">
+                    <span id="dept-trigger-text">All Divisions/Schools</span>
+                    <svg class="dept-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dept-menu" id="dept-menu" role="group" aria-labelledby="dept-label" hidden></div>
+            </div>
         </div>
 
         <!-- Tab 1: Upload Funding Opportunity -->

@@ -68,9 +68,25 @@ ALLOWED_EXTENSIONS = {"pdf", "txt"}
 # Division slugs accepted by the API. "all" spans every division and "other"
 # is the registry's fallback bucket. The db layer treats "all"/None as no
 # department filter.
-from data.divisions import known_slugs
+from data.divisions import DIVISIONS, known_slugs
 
 VALID_DEPTS = set(known_slugs()) | {"all", "other"}
+
+
+def _parse_depts(raw):
+    """Parse a comma-separated ``dept`` value into a filter for the db layer.
+
+    Returns ``(value, error)``. ``value`` is the string ``"all"`` (no filter)
+    or a list of validated division slugs; ``error`` is a message string when
+    an unknown slug is present, else None.
+    """
+    slugs = [s.strip().lower() for s in (raw or "").split(",") if s.strip()]
+    if not slugs or "all" in slugs:
+        return "all", None
+    bad = [s for s in slugs if s not in VALID_DEPTS]
+    if bad:
+        return None, f"Unknown department(s): {', '.join(bad)}"
+    return slugs, None
 
 
 def allowed_file(filename):
@@ -95,6 +111,14 @@ def index():
     return send_from_directory(".", "index.html")
 
 
+@app.route("/api/divisions")
+def divisions_list():
+    """Return all divisions/schools for populating the frontend filter."""
+    return jsonify({
+        "divisions": [{"slug": d.slug, "label": d.label} for d in DIVISIONS]
+    })
+
+
 @app.route("/api/faculty")
 def faculty_directory():
     """Return faculty data for the expert directory (browsing/filtering).
@@ -104,10 +128,10 @@ def faculty_directory():
         q:     full-text search query.
         limit/offset: pagination (limit capped at 50).
     """
-    dept = request.args.get("dept", "").strip().lower() or "all"
-    if dept not in VALID_DEPTS:
-        return jsonify({"error": f"Unknown department: {dept}. Use a division "
-                                 f"slug ({', '.join(sorted(VALID_DEPTS))})."}), 400
+    dept, err = _parse_depts(request.args.get("dept", ""))
+    if err:
+        return jsonify({"error": f"{err}. Use division slugs "
+                                 f"({', '.join(sorted(VALID_DEPTS))})."}), 400
 
     query = request.args.get("q", "").strip()
     limit = min(int(request.args.get("limit", 20)), 50)
@@ -138,9 +162,9 @@ def match():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
-    dept = request.form.get("dept", "").strip().lower() or "all"
-    if dept not in VALID_DEPTS:
-        return jsonify({"error": f"Unknown department: {dept}"}), 400
+    dept, err = _parse_depts(request.form.get("dept", ""))
+    if err:
+        return jsonify({"error": err}), 400
 
     try:
         results = process_grant(text, department=dept, conn=db.get_read_conn())
@@ -165,9 +189,9 @@ def match_text():
     if len(text) > 60000:
         return jsonify({"error": "Text is too long. Maximum 60,000 characters."}), 400
 
-    dept = data.get("dept", "").strip().lower() or "all"
-    if dept not in VALID_DEPTS:
-        return jsonify({"error": f"Unknown department: {dept}"}), 400
+    dept, err = _parse_depts(data.get("dept", ""))
+    if err:
+        return jsonify({"error": err}), 400
 
     try:
         results = process_text(text, department=dept, conn=db.get_read_conn())

@@ -175,7 +175,15 @@ header {
     white-space: nowrap;
 }
 
-.dept-select {
+/* Custom multi-select dropdown */
+.dept-multiselect {
+    position: relative;
+}
+
+.dept-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-family: var(--font-sans);
     font-size: var(--text-small);
     padding: 4px 8px;
@@ -186,9 +194,72 @@ header {
     cursor: pointer;
 }
 
-.dept-select:focus {
+.dept-trigger:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
+}
+
+.dept-caret {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    transition: transform var(--transition);
+}
+
+.dept-multiselect.open .dept-caret {
+    transform: rotate(180deg);
+}
+
+.dept-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 20;
+    min-width: 240px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 4px;
+    background: var(--white);
+    border: var(--border-hairline);
+    border-radius: 3px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.dept-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    font-size: var(--text-small);
+    color: var(--gray-700);
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.dept-option:hover {
+    background: var(--accent-muted);
+}
+
+.dept-option input[type="checkbox"] {
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: var(--accent);
+}
+
+.dept-option-all {
+    font-weight: 600;
+}
+
+.dept-option-divider {
+    height: 1px;
+    margin: 4px 0;
+    background: var(--gray-200);
+}
+
+.dept-menu-error {
+    padding: 8px;
+    font-size: var(--text-small);
+    color: var(--gray-500);
 }
 
 /* Department badge on expert cards */

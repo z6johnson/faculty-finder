@@ -250,22 +250,27 @@ def _record_values(record):
 # ---------------------------------------------------------------------------
 
 def _norm_dept(department):
-    """None/'all'/'' -> None (no filter); else the division slug.
+    """None/'all'/'' -> None (no filter); else a list of division slugs.
 
-    Historically None meant 'hwsph'; callers now pass explicit slugs, and an
-    absent department means "every division" so new-division rows are never
-    silently scoped to public health.
+    Accepts a single slug string or a list of slugs. Historically None meant
+    'hwsph'; callers now pass explicit slugs, and an absent department means
+    "every division" so new-division rows are never silently scoped to public
+    health.
     """
     if department in (None, "", "all"):
         return None
-    return department
+    if isinstance(department, str):
+        return [department]
+    depts = [d for d in department if d and d != "all"]
+    return depts or None
 
 
 def _dept_clause(department, alias="faculty"):
-    dept = _norm_dept(department)
-    if dept is None:
+    depts = _norm_dept(department)
+    if not depts:
         return "", []
-    return f" AND {alias}.department = ?", [dept]
+    placeholders = ",".join("?" for _ in depts)
+    return f" AND {alias}.department IN ({placeholders})", list(depts)
 
 
 # ---------------------------------------------------------------------------

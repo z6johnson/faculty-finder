@@ -20,8 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const expertiseInput = document.getElementById("expertise-input");
     const manualSubmitBtn = document.getElementById("manual-submit-btn");
 
-    // Department selector (shared across all tabs)
-    const deptSelect = document.getElementById("dept-select");
+    // Department selector (shared across all tabs) — custom checkbox dropdown
+    const deptMultiselect = document.getElementById("dept-multiselect");
+    const deptTrigger = document.getElementById("dept-trigger");
+    const deptTriggerText = document.getElementById("dept-trigger-text");
+    const deptMenu = document.getElementById("dept-menu");
 
     // Directory mode
     const expertSearch = document.getElementById("expert-search");
@@ -206,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const formData = new FormData();
         formData.append("file", selectedFile);
-        formData.append("dept", deptSelect.value);
+        formData.append("dept", selectedDepts());
 
         try {
             const response = await fetch(API_BASE + "/api/match", {
@@ -251,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(API_BASE + "/api/match-text", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text: text, dept: deptSelect.value })
+                body: JSON.stringify({ text: text, dept: selectedDepts() })
             });
 
             clearInterval(interval);
@@ -307,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 q: query,
                 limit: DIRECTORY_PAGE_SIZE,
                 offset: directoryOffset,
-                dept: deptSelect.value
+                dept: selectedDepts()
             });
             const response = await fetch(API_BASE + "/api/faculty?" + params);
             if (!response.ok) throw new Error("Search failed");
@@ -524,7 +527,11 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function updateSuggestedChips() {
-        const chips = SUGGESTED_CHIPS[deptSelect.value] || SUGGESTED_CHIPS.all;
+        // Use a division's curated chips only when exactly one is selected;
+        // otherwise (All, or multiple) fall back to the general set.
+        const sel = selectedDepts();
+        const key = (sel && sel !== "all" && !sel.includes(",")) ? sel : "all";
+        const chips = SUGGESTED_CHIPS[key] || SUGGESTED_CHIPS.all;
         const container = document.querySelector(".suggested-searches");
         if (!container) return;
         // Keep the label, rebuild chips
@@ -546,13 +553,116 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Department change: update chips and re-search if there's an active query
-    deptSelect.addEventListener("change", () => {
+    // ===========================================
+    // DEPARTMENT MULTI-SELECT (shared across tabs)
+    // ===========================================
+
+    // Returns the selected divisions as a comma-joined slug string, or "all"
+    // when the "All Divisions/Schools" option is active (backend treats "all"
+    // and "" the same — no filter).
+    function selectedDepts() {
+        if (deptMenu.querySelector('input[value="all"]')?.checked) return "all";
+        const slugs = Array.from(
+            deptMenu.querySelectorAll('input[type="checkbox"]:checked')
+        ).map(cb => cb.value);
+        return slugs.length ? slugs.join(",") : "all";
+    }
+
+    function updateDeptTriggerText() {
+        const allBox = deptMenu.querySelector('input[value="all"]');
+        const checked = Array.from(
+            deptMenu.querySelectorAll('input[type="checkbox"]:checked')
+        ).filter(cb => cb.value !== "all");
+        if (!allBox || allBox.checked || checked.length === 0) {
+            deptTriggerText.textContent = "All Divisions/Schools";
+        } else if (checked.length === 1) {
+            deptTriggerText.textContent = checked[0].dataset.label || checked[0].value;
+        } else {
+            deptTriggerText.textContent = `${checked.length} divisions selected`;
+        }
+    }
+
+    function onDeptSelectionChange() {
+        updateDeptTriggerText();
         updateSuggestedChips();
-        if (buildSearchQuery()) {
-            searchFaculty(false);
+        if (buildSearchQuery()) searchFaculty(false);
+    }
+
+    function buildDeptMenu(divisions) {
+        // "All" toggle first, then one checkbox per division.
+        let html = `
+            <label class="dept-option dept-option-all">
+                <input type="checkbox" value="all" checked>
+                <span>All Divisions/Schools</span>
+            </label>
+            <div class="dept-option-divider"></div>`;
+        html += divisions.map(d => `
+            <label class="dept-option">
+                <input type="checkbox" value="${escapeHtml(d.slug)}" data-label="${escapeHtml(d.label)}">
+                <span>${escapeHtml(d.label)}</span>
+            </label>`).join("");
+        deptMenu.innerHTML = html;
+
+        const allBox = deptMenu.querySelector('input[value="all"]');
+        const specificBoxes = Array.from(
+            deptMenu.querySelectorAll('input[type="checkbox"]')
+        ).filter(cb => cb.value !== "all");
+
+        allBox.addEventListener("change", () => {
+            // Checking "All" clears the specific selections; it can't be
+            // unchecked directly (re-check it to stay in a valid state).
+            if (allBox.checked) {
+                specificBoxes.forEach(cb => { cb.checked = false; });
+            } else {
+                allBox.checked = true;
+            }
+            onDeptSelectionChange();
+        });
+
+        specificBoxes.forEach(cb => {
+            cb.addEventListener("change", () => {
+                if (cb.checked) allBox.checked = false;
+                // If nothing specific remains, revert to "All".
+                if (!specificBoxes.some(b => b.checked)) allBox.checked = true;
+                onDeptSelectionChange();
+            });
+        });
+    }
+
+    // Open/close behaviour
+    function setDeptMenuOpen(open) {
+        deptMenu.hidden = !open;
+        deptTrigger.setAttribute("aria-expanded", open ? "true" : "false");
+        deptMultiselect.classList.toggle("open", open);
+    }
+
+    deptTrigger.addEventListener("click", () => {
+        setDeptMenuOpen(deptMenu.hidden);
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!deptMultiselect.contains(e.target)) setDeptMenuOpen(false);
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !deptMenu.hidden) {
+            setDeptMenuOpen(false);
+            deptTrigger.focus();
         }
     });
+
+    // Populate the menu from the division registry on load.
+    fetch(API_BASE + "/api/divisions")
+        .then(r => r.ok ? r.json() : Promise.reject(new Error("divisions fetch failed")))
+        .then(data => {
+            buildDeptMenu(data.divisions || []);
+            updateDeptTriggerText();
+        })
+        .catch(() => {
+            // Fail soft: leave the trigger on "All Divisions/Schools" so the app
+            // still works (backend defaults to no filter).
+            deptMenu.innerHTML = '<p class="dept-menu-error">Could not load divisions.</p>';
+        });
 
     // Active filters
     function renderActiveFilters() {

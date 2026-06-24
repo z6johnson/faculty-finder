@@ -207,6 +207,16 @@ class MarkNoFootprintTests(_TempDBTestCase):
         self.assertEqual(logs[0]["new_value"], "no_footprint")
         conn.close()
 
+    def test_dry_run_counts_without_writing(self):
+        conn, fid = self._seed()
+        marked = identity.mark_no_footprint(conn, dry_run=True)
+        self.assertEqual(marked, 1)  # would mark
+        self.assertEqual(self._status(conn, fid), "not_found")  # but didn't
+        logs = [dict(r) for r in conn.execute(
+            "SELECT * FROM enrichment_log WHERE faculty_id=?", (fid,))]
+        self.assertEqual(logs, [])
+        conn.close()
+
     def test_research_bearing_not_found_stays(self):
         conn, fid = self._seed(title="Professor", pi_eligible=1)
         self.assertEqual(identity.mark_no_footprint(conn), 0)

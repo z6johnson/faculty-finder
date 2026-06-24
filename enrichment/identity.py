@@ -35,6 +35,10 @@ AUTO_ACCEPT_SCORE = 0.9
 CANDIDATE_SCORE = 0.6
 # A rival within this margin of the best score makes the match ambiguous.
 TIE_MARGIN = 0.05
+# Auto-merge only the perfect-score backlog, and only when a unique
+# identifier corroborates it (auto_merge_corroborated). The score alone is a
+# name/affiliation heuristic and never triggers a merge on its own.
+AUTO_MERGE_SCORE = 1.0
 # Cap on the extra author-search requests the recall fallbacks may spend
 # per faculty when the primary "first last" query returns nothing.
 MAX_VARIANT_SEARCHES = 4
@@ -414,17 +418,23 @@ def resolve_batch(department=None, pi_only=False, limit=None,
     return stats
 
 
-def mark_no_footprint(conn, department=None):
+def mark_no_footprint(conn, department=None, dry_run=False):
     """Terminal disposition for the not-findable: move 'not_found' faculty
     whose HR data shows no research-bearing role (identity_rules.
     no_research_footprint) to 'no_footprint' so they stop counting as
     pending. Logged per faculty; reversible via include_not_found resolves.
-    Returns the number of rows marked."""
+
+    When dry_run is set, nothing is written: returns the count it *would*
+    mark so an operator can preview the sweep before committing. Otherwise
+    returns the number of rows marked."""
     queue = db.fetch_identity_queue(conn, department=department,
                                     statuses=("not_found",))
     marked = 0
     for faculty in queue:
         if not identity_rules.no_research_footprint(faculty):
+            continue
+        if dry_run:
+            marked += 1
             continue
         db.set_identity_status(conn, faculty["_db_id"], "no_footprint")
         db.append_log(conn, [{
@@ -443,7 +453,8 @@ def mark_no_footprint(conn, department=None):
             "retrieved_at": db._now_iso(),
         }])
         marked += 1
-    conn.commit()
+    if not dry_run:
+        conn.commit()
     return marked
 
 
@@ -558,6 +569,127 @@ def resweep_pending(department=None, max_orcid_lookups=None,
 
     conn.commit()
     logger.info("Identity re-sweep done: %s", stats)
+    return stats
+
+
+def _normalize_orcid(value):
+    """Bare, upper-cased ORCID iD (strips any https://orcid.org/ prefix)."""
+    if not value:
+        return None
+    return value.rsplit("/", 1)[-1].strip().upper() or None
+
+
+def _corroborating_id(evidence, faculty_orcid, faculty_email):
+    """The unique identifier that corroborates a candidate->faculty match, or
+    None. ORCID equality is the primary gate; an exact email match (when the
+    evidence exposes one) also qualifies. The OpenAlex score never counts
+    here -- it is the name/affiliation heuristic this gate exists to backstop."""
+    cand_orcid = _normalize_orcid(evidence.get("orcid"))
+    fac_orcid = _normalize_orcid(faculty_orcid)
+    if cand_orcid and fac_orcid and cand_orcid == fac_orcid:
+        return "orcid"
+    cand_email = (evidence.get("email") or "").strip().lower()
+    fac_email = (faculty_email or "").strip().lower()
+    if cand_email and fac_email and cand_email == fac_email:
+        return "email"
+    return None
+
+
+def auto_merge_corroborated(department=None, dry_run=True,
+                            progress_callback=None, job_id=None):
+    """Auto-merge the perfect-score backlog, gated on a corroborating unique id.
+
+    Merges a pending OpenAlex candidate as an alternate profile
+    (faculty.openalex_id_alt) only when ALL hold:
+      * the faculty already has a confirmed primary openalex_id (so
+        decide_identity_candidate stays a merge, not a promotion to primary),
+      * the candidate's deterministic score is 1.00,
+      * the candidate profile's ORCID matches the faculty's confirmed ORCID
+        (or its evidence email matches the faculty email),
+      * the advisory LLM verdict is not 'reject'.
+
+    Uncorroborated perfect scores stay pending for human review. Each merge
+    goes through db.decide_identity_candidate (the manual-merge path) and is
+    recorded in enrichment_log (method 'identity_auto_merge') so it can be
+    listed and reversed. dry_run reports the eligible count/sample without
+    writing. Returns a stats dict (with a 'sample' list)."""
+    conn = db.get_write_conn()
+    rows = db.list_identity_candidates(conn, department=department, limit=None)
+    stats = {"eligible": 0, "merged": 0, "skipped_no_orcid_match": 0,
+             "skipped_no_primary": 0, "skipped_llm_reject": 0,
+             "faculty_touched": 0}
+    sample = []
+    touched = set()
+    total = len(rows)
+    logger.info("Auto-merge scan: %d pending candidates (dept=%s, dry_run=%s)",
+                total, department or "all", dry_run)
+
+    for i, row in enumerate(rows):
+        if row["source"] != "openalex" or (row["score"] or 0) < AUTO_MERGE_SCORE:
+            continue
+        if not row.get("f_openalex_id"):
+            stats["skipped_no_primary"] += 1
+            continue
+        if row.get("llm_verdict") == "reject":
+            stats["skipped_llm_reject"] += 1
+            continue
+        try:
+            evidence = json.loads(row["evidence"] or "{}")
+        except ValueError:
+            evidence = {}
+        matched_on = _corroborating_id(evidence, row.get("f_orcid"),
+                                       row.get("f_email"))
+        if not matched_on:
+            stats["skipped_no_orcid_match"] += 1
+            continue
+
+        stats["eligible"] += 1
+        if len(sample) < 20:
+            sample.append({
+                "faculty_id": row["faculty_id"],
+                "faculty": f"{row['f_first']} {row['f_last']}",
+                "external_id": row["external_id"],
+                "display_name": row.get("display_name"),
+                "matched_on": matched_on,
+            })
+        if dry_run:
+            continue
+
+        old_alt = conn.execute(
+            "SELECT openalex_id_alt FROM faculty WHERE id = ?",
+            (row["faculty_id"],)).fetchone()
+        decided = db.decide_identity_candidate(conn, row["id"], "merge")
+        if not decided:
+            continue
+        db.append_log(conn, [{
+            "faculty_id": row["faculty_id"],
+            "stable_key": row.get("f_stable_key"),
+            "source_name": "openalex",
+            "source_url": f"https://openalex.org/{row['external_id']}",
+            "field_updated": "openalex_id_alt",
+            "old_value": old_alt["openalex_id_alt"] if old_alt else None,
+            "new_value": row["external_id"],
+            "confidence": row["score"],
+            "method": "identity_auto_merge",
+            "raw_response": json.dumps(
+                {"score": row["score"], "job_id": job_id,
+                 "reason": "score_1.0_corroborated", "matched_on": matched_on,
+                 "evidence_orcid": evidence.get("orcid")},
+                ensure_ascii=False),
+            "retrieved_at": db._now_iso(),
+        }])
+        stats["merged"] += 1
+        touched.add(row["faculty_id"])
+        conn.commit()
+        if progress_callback:
+            progress_callback(i + 1, total)
+
+    stats["faculty_touched"] = len(touched)
+    stats["sample"] = sample
+    if not dry_run:
+        conn.commit()
+    logger.info("Auto-merge (corroborated) done: %s",
+                {k: v for k, v in stats.items() if k != "sample"})
     return stats
 
 

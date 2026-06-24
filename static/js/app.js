@@ -870,7 +870,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!lastResults) return;
 
         const summary = lastResults.grant_summary || {};
-        let text = "Research Alignment Results — UC San Diego\n";
+        let text = "Faculty Finder Results — UC San Diego\n";
         text += "==========================================\n\n";
         if (summary.grant_title) text += `Opportunity: ${summary.grant_title}\n`;
         if (summary.funding_agency) text += `Agency: ${summary.funding_agency}\n`;

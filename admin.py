@@ -375,8 +375,9 @@ def identity_queue():
         -(g["llm_pick"]["llm_confidence"] or 0) if g["llm_pick"] else 0,
         g["name"],
     ))
+    auto_merges = db.list_auto_merges(conn)
     return render_template("admin/identity_queue.html", groups=grouped,
-                           depts=DEPTS, dept=dept)
+                           depts=DEPTS, dept=dept, auto_merges=auto_merges)
 
 
 @admin_bp.route("/identity/resweep", methods=["POST"])
@@ -385,6 +386,35 @@ def identity_resweep():
     import jobs
     job_id = jobs.submit("identity_resweep", {}, trigger="manual")
     flash(f"Auto-accept re-sweep queued (job #{job_id}).", "success")
+    return redirect(url_for("admin.identity_queue"))
+
+
+@admin_bp.route("/identity/auto-merge", methods=["POST"])
+@login_required
+def identity_auto_merge():
+    """Auto-merge perfect-score (1.00) duplicates corroborated by a matching
+    ORCID/email onto faculty that already have a confirmed profile. Defaults
+    to a dry-run preview; pass commit=1 to write."""
+    import jobs
+    dry_run = request.form.get("commit") != "1"
+    job_id = jobs.submit("identity_auto_merge", {"dry_run": dry_run},
+                         trigger="manual")
+    flash(f"Corroborated auto-merge queued (job #{job_id}"
+          + (", dry run — preview only" if dry_run else "") + ").", "success")
+    return redirect(url_for("admin.identity_queue"))
+
+
+@admin_bp.route("/identity/no-footprint-sweep", methods=["POST"])
+@login_required
+def identity_no_footprint_sweep():
+    """Retire not-findable faculty with no research-bearing HR role to the
+    terminal 'no_footprint' status. Defaults to a dry-run preview."""
+    import jobs
+    dry_run = request.form.get("commit") != "1"
+    job_id = jobs.submit("identity_no_footprint", {"dry_run": dry_run},
+                         trigger="manual")
+    flash(f"No-footprint sweep queued (job #{job_id}"
+          + (", dry run — preview only" if dry_run else "") + ").", "success")
     return redirect(url_for("admin.identity_queue"))
 
 
@@ -470,6 +500,27 @@ def identity_reopen(faculty_id):
     else:
         flash(f"No auto-rejected candidates to reopen for faculty "
               f"#{faculty_id}.", "error")
+    return redirect(url_for("admin.identity_queue"))
+
+
+@admin_bp.route("/identity/<int:candidate_id>/unmerge", methods=["POST"])
+@login_required
+def identity_unmerge(candidate_id):
+    """Reverse an auto-merge: drop the alternate OpenAlex profile and return
+    the candidate to the review queue."""
+    conn = db.connect(readonly=False)
+    try:
+        cand = db.unmerge_identity_candidate(conn, candidate_id)
+        conn.commit()
+    finally:
+        conn.close()
+    if cand:
+        flash(f"Unmerged {cand['external_id']} from faculty "
+              f"#{cand['faculty_id']} and returned it to the queue. Cached "
+              f"metrics refresh on the next enrichment run.", "success")
+    else:
+        flash("Nothing to unmerge (candidate not found or not a merged "
+              "OpenAlex profile).", "error")
     return redirect(url_for("admin.identity_queue"))
 
 

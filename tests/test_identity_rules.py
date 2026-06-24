@@ -617,5 +617,153 @@ class IdentityResweepTests(_ResolverTestBase):
         conn.close()
 
 
+class AutoMergeCorroboratedTests(_ResolverTestBase):
+    """Corroborated auto-merge of perfect-score (1.00) duplicates."""
+
+    def _confirmed(self, conn, fid, *, openalex_id="A0",
+                   orcid="0000-0001-1111-2222"):
+        conn.execute(
+            "UPDATE faculty SET openalex_id = ?, orcid = ?,"
+            " identity_status = 'confirmed' WHERE id = ?",
+            (openalex_id, orcid, fid))
+        conn.commit()
+
+    def _queue(self, conn, fid, candidates):
+        db.insert_identity_candidates(conn, fid, candidates)
+        db.set_identity_status(conn, fid, "ambiguous")
+        conn.commit()
+
+    def _merge_logs(self, conn):
+        return [dict(r) for r in conn.execute(
+            "SELECT * FROM enrichment_log WHERE method='identity_auto_merge'")]
+
+    def test_merges_orcid_corroborated_perfect_score(self):
+        from enrichment.identity import auto_merge_corroborated
+        conn, fid, _ = self._seed_faculty()
+        self._confirmed(conn, fid)
+        self._queue(conn, fid, [
+            _candidate("A1", score=1.0, orcid="0000-0001-1111-2222"),
+        ])
+        stats = auto_merge_corroborated(dry_run=False)
+        self.assertEqual(stats["eligible"], 1)
+        self.assertEqual(stats["merged"], 1)
+        self.assertEqual(stats["faculty_touched"], 1)
+
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertEqual(json.loads(row["openalex_id_alt"]), ["A1"])
+        self.assertEqual(row["openalex_id"], "A0")  # primary untouched
+        statuses = {r["external_id"]: r["status"] for r in conn.execute(
+            "SELECT external_id, status FROM identity_candidates"
+            " WHERE faculty_id=?", (fid,))}
+        self.assertEqual(statuses, {"A1": "merged"})
+        logs = self._merge_logs(conn)
+        self.assertEqual(len(logs), 1)
+        self.assertEqual(logs[0]["new_value"], "A1")
+        self.assertEqual(logs[0]["field_updated"], "openalex_id_alt")
+        conn.close()
+
+    def test_uncorroborated_perfect_score_stays_pending(self):
+        from enrichment.identity import auto_merge_corroborated
+        conn, fid, _ = self._seed_faculty()
+        self._confirmed(conn, fid, orcid="0000-0001-1111-2222")
+        # Same perfect score, but a DIFFERENT ORCID -> no unique-id agreement.
+        self._queue(conn, fid, [
+            _candidate("A1", score=1.0, orcid="0000-0002-3333-4444"),
+        ])
+        stats = auto_merge_corroborated(dry_run=False)
+        self.assertEqual(stats["eligible"], 0)
+        self.assertEqual(stats["skipped_no_orcid_match"], 1)
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertIsNone(row["openalex_id_alt"])
+        self.assertEqual(len(db.list_identity_candidates(conn)), 1)
+        self.assertEqual(self._merge_logs(conn), [])
+        conn.close()
+
+    def test_skips_faculty_without_primary(self):
+        from enrichment.identity import auto_merge_corroborated
+        conn, fid, _ = self._seed_faculty(orcid="0000-0001-1111-2222")
+        # ORCID set but NO primary openalex_id -> a merge would silently
+        # become an accept, so it must be skipped.
+        self._queue(conn, fid, [
+            _candidate("A1", score=1.0, orcid="0000-0001-1111-2222"),
+        ])
+        stats = auto_merge_corroborated(dry_run=False)
+        self.assertEqual(stats["merged"], 0)
+        self.assertEqual(stats["skipped_no_primary"], 1)
+        self.assertEqual(len(db.list_identity_candidates(conn)), 1)
+        conn.close()
+
+    def test_skips_below_perfect_score_and_orcid_source(self):
+        from enrichment.identity import auto_merge_corroborated
+        conn, fid, _ = self._seed_faculty()
+        self._confirmed(conn, fid)
+        self._queue(conn, fid, [
+            _candidate("A1", score=0.99, orcid="0000-0001-1111-2222"),
+            {"source": "orcid", "external_id": "0000-0001-1111-2222",
+             "score": 1.0, "display_name": "Jane Smith",
+             "evidence": {"orcid": "0000-0001-1111-2222"}},
+        ])
+        stats = auto_merge_corroborated(dry_run=False)
+        self.assertEqual(stats["eligible"], 0)
+        self.assertEqual(stats["merged"], 0)
+        self.assertEqual(len(db.list_identity_candidates(conn)), 2)
+        conn.close()
+
+    def test_skips_llm_rejected(self):
+        from enrichment.identity import auto_merge_corroborated
+        conn, fid, _ = self._seed_faculty()
+        self._confirmed(conn, fid)
+        self._queue(conn, fid, [
+            _candidate("A1", score=1.0, orcid="0000-0001-1111-2222"),
+        ])
+        conn.execute("UPDATE identity_candidates SET llm_verdict='reject'"
+                     " WHERE faculty_id=?", (fid,))
+        conn.commit()
+        stats = auto_merge_corroborated(dry_run=False)
+        self.assertEqual(stats["merged"], 0)
+        self.assertEqual(stats["skipped_llm_reject"], 1)
+        conn.close()
+
+    def test_dry_run_writes_nothing(self):
+        from enrichment.identity import auto_merge_corroborated
+        conn, fid, _ = self._seed_faculty()
+        self._confirmed(conn, fid)
+        self._queue(conn, fid, [
+            _candidate("A1", score=1.0, orcid="0000-0001-1111-2222"),
+        ])
+        stats = auto_merge_corroborated(dry_run=True)
+        self.assertEqual(stats["eligible"], 1)
+        self.assertEqual(stats["merged"], 0)
+        self.assertEqual(len(stats["sample"]), 1)
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertIsNone(row["openalex_id_alt"])
+        self.assertEqual(db.list_identity_candidates(conn)[0]["status"], "pending")
+        self.assertEqual(self._merge_logs(conn), [])
+        conn.close()
+
+    def test_unmerge_restores_pending_and_drops_alt(self):
+        from enrichment.identity import auto_merge_corroborated
+        conn, fid, _ = self._seed_faculty()
+        self._confirmed(conn, fid)
+        self._queue(conn, fid, [
+            _candidate("A1", score=1.0, orcid="0000-0001-1111-2222"),
+        ])
+        auto_merge_corroborated(dry_run=False)
+        cand_id = db.list_auto_merges(conn)[0]["candidate_id"]
+
+        cand = db.unmerge_identity_candidate(conn, cand_id)
+        conn.commit()
+        self.assertIsNotNone(cand)
+        row = conn.execute("SELECT * FROM faculty WHERE id=?", (fid,)).fetchone()
+        self.assertIsNone(row["openalex_id_alt"])
+        self.assertEqual(db.list_identity_candidates(conn)[0]["status"], "pending")
+        unmerge_logs = [dict(r) for r in conn.execute(
+            "SELECT * FROM enrichment_log WHERE method='identity_unmerge'")]
+        self.assertEqual(len(unmerge_logs), 1)
+        # Idempotent: a now-pending row has nothing to unmerge.
+        self.assertIsNone(db.unmerge_identity_candidate(conn, cand_id))
+        conn.close()
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -22,7 +22,8 @@ _worker_lock = threading.Lock()
 
 VALID_KINDS = {"enrich", "eah_reconcile", "identity_resolve",
                "identity_resweep", "identity_llm_sweep", "backfill",
-               "escholarship_harvest"}
+               "escholarship_harvest", "identity_auto_merge",
+               "identity_no_footprint"}
 
 
 def _ensure_worker():
@@ -72,6 +73,10 @@ def _execute(job_id):
         result = _run_identity(job_id, params)
     elif job["kind"] == "identity_resweep":
         result = _run_identity_resweep(job_id, params)
+    elif job["kind"] == "identity_auto_merge":
+        result = _run_identity_auto_merge(job_id, params)
+    elif job["kind"] == "identity_no_footprint":
+        result = _run_identity_no_footprint(job_id, params)
     elif job["kind"] == "identity_llm_sweep":
         result = _run_identity_llm(job_id, params)
     elif job["kind"] == "backfill":
@@ -155,6 +160,28 @@ def _run_identity_resweep(job_id, params):
         time_budget_seconds=params.get("time_budget_seconds"),
         mark_terminal=bool(params.get("mark_terminal", True)),
     )
+
+
+def _run_identity_auto_merge(job_id, params):
+    from enrichment.identity import auto_merge_corroborated
+
+    return auto_merge_corroborated(
+        department=params.get("department") or None,
+        dry_run=bool(params.get("dry_run", True)),
+        progress_callback=_progress_writer(job_id, every=10),
+        job_id=job_id,
+    )
+
+
+def _run_identity_no_footprint(job_id, params):
+    from data import db
+    from enrichment.identity import mark_no_footprint
+
+    conn = db.get_write_conn()
+    marked = mark_no_footprint(conn, department=params.get("department") or None,
+                               dry_run=bool(params.get("dry_run", True)))
+    return {"department": params.get("department") or None,
+            "dry_run": bool(params.get("dry_run", True)), "marked": marked}
 
 
 def _run_identity_llm(job_id, params):

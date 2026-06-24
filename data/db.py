@@ -864,7 +864,8 @@ def list_identity_candidates(conn, status="pending", department=None, limit=200)
         " f.division_school AS f_division_school, f.email AS f_email,"
         " f.research_interests AS f_research_interests,"
         " f.research_interests_enriched AS f_research_interests_enriched,"
-        " f.stable_key AS f_stable_key, f.openalex_id AS f_openalex_id"
+        " f.stable_key AS f_stable_key, f.openalex_id AS f_openalex_id,"
+        " f.orcid AS f_orcid"
         " FROM identity_candidates c JOIN faculty f ON f.id = c.faculty_id"
         " WHERE c.status = ?" + dept_sql +
         " ORDER BY c.faculty_id, c.score DESC")
@@ -922,6 +923,29 @@ def add_openalex_alt(conn, faculty_id, external_id):
         "UPDATE faculty SET openalex_id_alt = ? WHERE id = ?",
         (json.dumps(alts, ensure_ascii=False), faculty_id),
     )
+
+
+def remove_openalex_alt(conn, faculty_id, external_id):
+    """Drop an alternate OpenAlex author id from the faculty row. Inverse of
+    add_openalex_alt. No-op when the id is not present. Returns True when a
+    row was rewritten."""
+    row = conn.execute(
+        "SELECT openalex_id_alt FROM faculty WHERE id = ?", (faculty_id,)
+    ).fetchone()
+    if row is None or not external_id:
+        return False
+    try:
+        alts = json.loads(row["openalex_id_alt"] or "[]")
+    except ValueError:
+        alts = []
+    if external_id not in alts:
+        return False
+    alts = [a for a in alts if a != external_id]
+    conn.execute(
+        "UPDATE faculty SET openalex_id_alt = ? WHERE id = ?",
+        (json.dumps(alts, ensure_ascii=False) if alts else None, faculty_id),
+    )
+    return True
 
 
 def _adopt_candidate_ids(conn, cand, *, as_primary):
@@ -1030,6 +1054,59 @@ def reopen_identity_candidates(conn, faculty_id):
             " decided_at = NULL WHERE faculty_id = ? AND status = 'rejected'",
             (faculty_id,))
     return cur.rowcount
+
+
+def unmerge_identity_candidate(conn, candidate_id):
+    """Reverse a merge: drop the candidate's OpenAlex id from the faculty's
+    alternate-profile list and return the row to the review queue.
+
+    Only acts on a 'merged' openalex row. Writes an enrichment_log entry
+    (method 'identity_unmerge') so the reversal is itself auditable. Returns
+    the candidate row, or None when there is nothing to undo."""
+    cand = get_identity_candidate(conn, candidate_id)
+    if not cand or cand["status"] != "merged" or cand["source"] != "openalex":
+        return None
+    fid = cand["faculty_id"]
+    row = conn.execute(
+        "SELECT openalex_id_alt FROM faculty WHERE id = ?", (fid,)
+    ).fetchone()
+    old_alt = row["openalex_id_alt"] if row else None
+    remove_openalex_alt(conn, fid, cand["external_id"])
+    conn.execute(
+        "UPDATE identity_candidates SET status = 'pending', decided_at = NULL"
+        " WHERE id = ?", (candidate_id,))
+    append_log(conn, [{
+        "faculty_id": fid,
+        "stable_key": None,
+        "source_name": "openalex",
+        "source_url": f"https://openalex.org/{cand['external_id']}",
+        "field_updated": "openalex_id_alt",
+        "old_value": old_alt,
+        "new_value": None,
+        "method": "identity_unmerge",
+        "raw_response": None,
+        "retrieved_at": _now_iso(),
+    }])
+    return cand
+
+
+def list_auto_merges(conn, limit=200):
+    """Auto-merge audit rows (newest first) for the admin unmerge view: each
+    is a faculty row whose candidate was attached as an alternate profile by
+    the corroborated auto-merge job. Joins back to the still-'merged'
+    candidate so the UI can offer an Unmerge action."""
+    rows = conn.execute(
+        "SELECT l.faculty_id, l.new_value AS external_id, l.confidence,"
+        " l.raw_response, l.retrieved_at,"
+        " f.first_name AS f_first, f.last_name AS f_last,"
+        " c.id AS candidate_id, c.display_name, c.score, c.status"
+        " FROM enrichment_log l"
+        " JOIN faculty f ON f.id = l.faculty_id"
+        " LEFT JOIN identity_candidates c"
+        "   ON c.faculty_id = l.faculty_id AND c.external_id = l.new_value"
+        " WHERE l.method = 'identity_auto_merge'"
+        " ORDER BY l.retrieved_at DESC LIMIT ?", (limit,)).fetchall()
+    return [dict(r) for r in rows]
 
 
 def reject_faculty_identity(conn, faculty_id):

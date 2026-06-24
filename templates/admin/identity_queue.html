@@ -24,6 +24,28 @@ faculty unmatched.</p>
   ORCID-verified employment); everything else stays here for review.</span>
 </form>
 
+<form method="post" action="{{ url_for('admin.identity_auto_merge') }}" class="toolbar">
+  <button class="btn btn-primary">Auto-merge corroborated duplicates (1.00)</button>
+  <label class="muted" style="margin-left:8px;">
+    <input type="checkbox" name="commit" value="1"> commit (default is a dry-run preview)
+  </label>
+  <span class="muted">Merges a perfect-score (1.00) pending OpenAlex profile as
+  an alternate id — but only for faculty who already have a confirmed primary
+  and only when the candidate's ORCID (or email) matches theirs. The score
+  alone never triggers a merge. Uncorroborated 1.00s stay here. Every merge is
+  logged below and can be unmerged.</span>
+</form>
+
+<form method="post" action="{{ url_for('admin.identity_no_footprint_sweep') }}" class="toolbar">
+  <button class="btn btn-primary">Retire no-footprint (not-findable) faculty</button>
+  <label class="muted" style="margin-left:8px;">
+    <input type="checkbox" name="commit" value="1"> commit (default is a dry-run preview)
+  </label>
+  <span class="muted">Moves searched-but-not-found faculty whose HR role shows
+  no research footprint (not PI-eligible, or emeritus) to the terminal
+  no-footprint status. Reversible — a future resolve re-searches them.</span>
+</form>
+
 <form method="post" action="{{ url_for('admin.identity_llm_sweep') }}" class="toolbar">
   <button class="btn btn-primary">Run LLM adjudication on pending queue</button>
   <label class="muted" style="margin-left:8px;">
@@ -140,5 +162,42 @@ faculty unmatched.</p>
 {% endfor %}
 {% else %}
 <div class="card"><p class="muted">No pending identity reviews.</p></div>
+{% endif %}
+
+{% if auto_merges %}
+<h2 style="margin-top:24px;">Auto-merged alternates</h2>
+<p class="muted">Perfect-score profiles merged automatically because a unique
+identifier (ORCID/email) corroborated the match. Unmerge to drop the alternate
+profile and return the candidate to the review queue; cached metrics refresh on
+the next enrichment run.</p>
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Faculty</th><th>Merged profile</th><th>Score</th><th>When</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for m in auto_merges %}
+      <tr>
+        <td>{{ m.f_first }} {{ m.f_last }} <span class="muted">#{{ m.faculty_id }}</span></td>
+        <td>
+          <a href="https://openalex.org/{{ m.external_id }}" target="_blank" rel="noopener">{{ m.external_id }}</a>
+          {% if m.display_name %}<span class="muted">— {{ m.display_name }}</span>{% endif %}
+        </td>
+        <td>{{ "%.2f"|format(m.score) if m.score is not none else "—" }}</td>
+        <td class="muted">{{ m.retrieved_at }}</td>
+        <td>
+          {% if m.candidate_id and m.status == 'merged' %}
+          <form method="post" action="{{ url_for('admin.identity_unmerge', candidate_id=m.candidate_id) }}" style="display:inline;">
+            <button class="btn secondary">Unmerge</button>
+          </form>
+          {% else %}
+          <span class="muted">already reverted</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endif %}
 {% endblock %}

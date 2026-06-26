@@ -1,6 +1,13 @@
-# Research Alignment
+# Faculty Finder
 
-AI-powered faculty expertise discovery tool for UC San Diego. Covers three schools — Herbert Wertheim School of Public Health (HWSPH), Scripps Institution of Oceanography (SIO), and Jacobs School of Engineering. Identify faculty whose research expertise aligns with funding opportunity requirements through three interaction modes.
+AI-powered faculty expertise discovery tool for UC San Diego. Seeded from the
+Employee Activity Hub (EAH) HR extract, it covers **every active UCSD division**
+— the three legacy schools (Herbert Wertheim School of Public Health (HWSPH),
+Scripps Institution of Oceanography (SIO), Jacobs School of Engineering) plus the
+rest of campus. The School of Medicine (`som`) is kept in the database but
+excluded from seeding, enrichment, and the public UI (see [Data Backend](#data-backend)).
+Identify faculty whose research expertise aligns with funding opportunity
+requirements through three interaction modes.
 
 ## How It Works
 
@@ -93,9 +100,12 @@ Both LLM calls use the same model via LiteLLM (default: `openai/api-gpt-oss-120b
 ## Enrichment Pipeline
 
 Faculty records are seeded from the Employee Activity Hub (EAH) HR extract for
-**every UCSD division** (~5,500 active academics) and enriched from free/open
-academic data sources. Three stages take a row from bare HR data to a
-matchable profile:
+**every active UCSD division** (~5,500 active academics) and enriched from
+free/open academic data sources. The School of Medicine (`som`) is the one
+division held out of active operation via the `Division.active` registry flag
+in `data/divisions.py`: its rows stay in the DB but are excluded from seeding,
+enrichment, and every public read path. Three stages take a row from bare HR
+data to a matchable profile:
 
 1. **Identity resolution** (`enrichment/identity.py`, job kind
    `identity_resolve`) — resolves each person to an OpenAlex author id (and
@@ -103,10 +113,23 @@ matchable profile:
    (ROR `0168r3w48`), scored on name similarity, affiliation currency, and
    topic↔division consistency. Confident matches are auto-accepted; ambiguous
    ones land in the admin **Identity review** queue; misses are marked
-   `not_found` and retried weekly. Two follow-up sweeps shrink the review
-   queue without sacrificing precision:
+   `not_found` and retried weekly. Four follow-up sweeps shrink the review
+   queue from both ends without sacrificing precision:
    - *Rule re-sweep* (`identity_resweep`) — conservative deterministic
      auto-accepts (duplicate-profile collapse, ORCID-verified employment).
+   - *Corroborated auto-merge* (`identity_auto_merge`) — merges a pending
+     OpenAlex candidate as an **alternate** profile only when the faculty
+     already has a confirmed primary, the name/affiliation score is a perfect
+     1.00, **and** a unique identifier (matching ORCID or email) corroborates
+     it. The score alone never triggers a merge, so homonyms and contaminated
+     profiles stay in the manual queue. Logged with method
+     `identity_auto_merge`, reversible via the admin unmerge path, and
+     defaults to a dry-run preview.
+   - *No-footprint sweep* (`identity_no_footprint`) — a deliberate, preview-able
+     run of the `mark_no_footprint` disposition (also a weekly side effect):
+     `not_found` faculty with no research-bearing role move to `no_footprint`
+     and stop counting as pending. Already logged and reversible; `dry_run`
+     previews the set before committing.
    - *LLM adjudication* (`identity_llm_sweep`, `enrichment/identity_llm.py`)
      — for the leftovers, an LLM compares each candidate's recent
      publications, affiliation history, and name variants against the
@@ -160,13 +183,16 @@ EAH `Division / School` value via `data/divisions.py`).
 | hwsph | PubMed, NIH RePORTER, Semantic Scholar, ClinicalTrials.gov |
 | sio | Scripps Profiles, NSF Awards, NIH RePORTER, PubMed, Semantic Scholar |
 | jacobs | NSF, NIH, PubMed, Semantic Scholar, DBLP, arXiv, PatentsView |
-| som, skaggs | PubMed, NIH RePORTER, ClinicalTrials.gov, PatentsView |
+| som*, skaggs | PubMed, NIH RePORTER, ClinicalTrials.gov, PatentsView |
 | bio-sci | PubMed, NIH, NSF, PatentsView |
 | phys-sci | NSF, arXiv, NASA ADS, PatentsView, Crossref |
 | soc-sci | NSF, NIH, RePEc, Crossref |
 | arts-hum | Crossref, eScholarship |
 | rady, gps | RePEc, NSF, Crossref |
 | (anything else) | Crossref, NSF |
+
+\* `som` (School of Medicine) keeps its routing entry so existing rows stay
+resolvable, but is held out of active seeding/enrichment via `Division.active`.
 
 | Source | Confidence | Auth | Notes |
 |--------|-----------|------|-------|
@@ -250,7 +276,11 @@ Every field change from enrichment and every auto-accepted identity is recorded 
 | JSON provenance snapshot to `/data/backups` | Sun 10:00 |
 | Backfill (never-enriched, identity-resolved; PI-eligible first) | Mon–Sat 02:00 (`BACKFILL_HOUR`), budget `BACKFILL_TIME_BUDGET` (default 4h) |
 
-All of these can also be triggered from the admin **Enrichment** page; eScholarship harvests (`escholarship_harvest`) are manual-trigger only.
+All of these can also be triggered from the admin **Enrichment** page. The
+corroborated auto-merge (`identity_auto_merge`), the on-demand no-footprint
+sweep (`identity_no_footprint`), and eScholarship harvests
+(`escholarship_harvest`) are manual-trigger only; the two identity sweeps each
+default to a dry-run preview before they commit.
 
 ### New-division rollout runbook
 
@@ -345,47 +375,76 @@ GitHub Actions build-time path).
 
 ## Architecture
 
-| Component | Platform | What it does |
-|-----------|----------|--------------|
-| **Frontend** | Railway / Vercel | Serves `index.html`, CSS, and JS as static files |
-| **API** | Railway (gunicorn) | Runs the Flask app — `/api/match`, `/api/match-text`, `/api/faculty` |
-| **Data** | SQLite (`data/app.db`) | FTS5-indexed faculty store, read-only at request time |
-| **Enrichment** | Railway Cron / GitHub Actions | Weekly data enrichment from NIH, NSF, PubMed, ORCID, Semantic Scholar, UCSD/Scripps Profiles |
+Recommended deployment is a **single Railway container** that runs the web app,
+the admin area, and the in-process scheduler against one persistent `/data`
+volume.
+
+| Component | Where it runs | What it does |
+|-----------|---------------|--------------|
+| **Frontend** | Static files (Railway / Vercel) | Serves `index.html`, CSS, and JS |
+| **Public API** | Flask (`app.py`, gunicorn) | `/api/match`, `/api/match-text`, `/api/faculty`, `/api/divisions` |
+| **Admin** | Flask blueprint (`admin.py`) | Password-gated EAH sync, enrichment/identity controls, faculty curation, status ledger |
+| **Data** | SQLite (`data/app.db`) | FTS5-indexed faculty store; source of truth; read-only at request time |
+| **Jobs + Scheduler** | In-process (`jobs.py`, `scheduler.py`) | Queues and runs enrichment, identity resolution/sweeps, EAH reconcile, and backfill on a UTC schedule (no GitHub Actions required) |
 
 ## Project Structure
 
 ```
-research-alignment/
-├── app.py                    # Flask API
+faculty-finder/
+├── app.py                    # Flask app: public match/faculty API + admin blueprint
+├── admin.py                  # Authenticated admin area (EAH sync, enrichment, identity)
+├── jobs.py                   # Job queue dispatch (enrich, identity_*, backfill, harvest)
+├── scheduler.py              # In-process UTC scheduler (weekly/nightly jobs)
 ├── requirements.txt          # Python dependencies
 ├── Procfile                  # gunicorn web process (Railway/Render)
-├── DEPLOY.md                 # Deployment guide
+├── Dockerfile                # Single-container image (web + scheduler)
+├── docker-entrypoint.sh      # Bootstrap (JSON seed guard) + process launch
+├── RAILWAY.md                # Recommended single-container deploy guide
+├── DEPLOY.md                 # Data-layer / alternative-host details
+├── MIGRATION.md              # Legacy Vercel + GitHub Actions path
 ├── vercel.json               # Legacy Vercel deployment config
+├── render.yaml / railway.json # Host build/deploy configs
 ├── index.html                # Single-page frontend (three-tab interface)
 ├── .env.example              # Environment variable template
+├── api/
+│   └── index.py              # Vercel serverless entrypoint (legacy)
 ├── data/
 │   ├── db.py                 # SQLite data-access layer (all SQL)
+│   ├── divisions.py          # Division registry + active/excluded slugs
 │   ├── schema.sql            # SQLite schema (tables + FTS5)
 │   ├── app.db                # SQLite database (generated; git-ignored)
-│   ├── faculty.json          # HWSPH faculty directory (seed/snapshot)
-│   ├── sio_faculty.json      # SIO faculty directory (seed/snapshot)
-│   └── jacobs_faculty.json   # Jacobs faculty directory (seed/snapshot)
+│   ├── faculty.json          # HWSPH faculty directory (legacy bootstrap seed)
+│   ├── sio_faculty.json      # SIO faculty directory (legacy bootstrap seed)
+│   └── jacobs_faculty.json   # Jacobs faculty directory (legacy bootstrap seed)
 ├── scripts/
+│   ├── eah_enrichment.py          # EAH reconcile (roster authority, all divisions)
 │   ├── migrate_json_to_sqlite.py  # JSON -> SQLite (one-off / CI bootstrap)
-│   └── export_db_to_json.py       # SQLite -> JSON (diffable provenance)
+│   ├── export_db_to_json.py       # SQLite -> JSON (diffable provenance)
+│   ├── normalize_divisions.py     # Backfill division slugs on legacy rows
+│   ├── check_enrichment_status.py # Coverage ledger report
+│   ├── identity_triage.py         # Bucket the pending/not-found backlog by cause
+│   ├── calibrate_identity_llm.py  # Backtest LLM accept precision
+│   └── remove_inactive_faculty.py # Purge EAH-flagged Inactive rows
 ├── static/
-│   ├── css/style.css         # UCSD-branded styles (Seed Style Guide)
+│   ├── css/style.css         # UCSD-branded public styles (Seed Style Guide)
+│   ├── css/admin.css         # Admin styles (shared design system)
 │   └── js/app.js             # Frontend logic
+├── templates/admin/          # Jinja admin screens (home, EAH, enrichment, identity_queue, …)
 ├── utils/
 │   ├── document_parser.py    # PDF/TXT text extraction
 │   └── grant_matcher.py      # LLM matching engine + keyword pre-filter
 ├── enrichment/
-│   ├── pipeline.py           # Enrichment orchestrator (HWSPH, SIO, Jacobs)
+│   ├── pipeline.py           # Enrichment orchestrator (all active divisions)
+│   ├── routing.py            # Per-division source-bundle routing
 │   ├── normalizer.py         # LLM-based data normalization
+│   ├── identity.py           # OpenAlex/ORCID identity resolution + auto-merge
+│   ├── identity_rules.py     # Deterministic re-sweep rules
+│   ├── identity_llm.py       # LLM identity adjudication sweep
+│   ├── escholarship_harvest.py # OAI-PMH bulk harvest into a local lookup
 │   ├── run.py                # GitHub Actions runner
 │   ├── seed_sio.py           # SIO profile scraper (retired as roster; enrichment source only)
 │   ├── seed_jacobs.py        # Jacobs profile scraper (retired as roster; enrichment source only)
-│   └── sources/              # Data source adapters (NIH, NSF, PubMed, ORCID, UCSD, Scripps)
+│   └── sources/              # Data source adapters (OpenAlex, NIH, NSF, PubMed, ORCID, …)
 └── docs/
     ├── responsible-ai-seed-principles.md
     └── seed-style-guide.md
@@ -477,7 +536,17 @@ a persistent `/data` volume. For the data-layer / alternative-host details, see
 | `LITELLM_API_BASE` | Yes | LLM API endpoint URL |
 | `LITELLM_MODEL` | No | Model identifier (default: `openai/api-gpt-oss-120b`) |
 | `IDENTITY_LLM_MODEL` | No | Scoped model override for the identity sweep only (default: falls back to `LITELLM_MODEL`); e.g. `openai/api-deepseek-v4-flash` for cheaper, higher-throughput adjudication |
+| `ENABLE_IDENTITY_LLM_SWEEP` | No | Enable the weekly scheduled LLM adjudication sweep (default: `false`; turn on only after calibration) |
+| `IDENTITY_LLM_ACCEPT_CONFIDENCE` | No | Min LLM confidence to auto-accept an OpenAlex-candidate match (default: `0.9`) |
 | `IDENTITY_LLM_ORCID_ACCEPT_CONFIDENCE` | No | Confidence floor for auto-accepting ORCID-only matches (default: `0.95`) |
+| `IDENTITY_LLM_SELF_CONSISTENCY` | No | Require two agreeing passes per accept (default: `true`) |
+| `IDENTITY_LLM_MAX_CALLS` | No | LLM call budget per sweep (default: `2400`) |
+| `IDENTITY_LLM_MAX_FETCHES` | No | OpenAlex dossier request budget per sweep (default: `6000`) |
 | `OPENALEX_MAILTO` | Strongly recommended | Contact email for the OpenAlex polite pool — without it, OpenAlex requests are heavily rate-limited (429s) |
 | `NCBI_API_KEY` | No | PubMed API key (increases rate limit from 3 to 10 req/s) |
 | `S2_API_KEY` | No | Semantic Scholar API key (increases quota) |
+| `PATENTSVIEW_API_KEY` | No | USPTO PatentsView key (free registration) |
+| `ADS_API_KEY` | No | NASA ADS key (free; physics/astronomy literature) |
+| `REPEC_API_CODE` | No | RePEc/IDEAS code (free; economics/management) |
+| `EAH_RECONCILE_HOUR` / `BACKFILL_HOUR` / `BACKFILL_TIME_BUDGET` | No | Scheduler tuning (UTC hours; backfill budget in seconds) |
+| `ADMIN_PASSWORD` / `SECRET_KEY` | Yes (admin) | Admin login password and Flask session secret |

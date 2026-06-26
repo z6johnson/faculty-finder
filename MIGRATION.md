@@ -1,6 +1,6 @@
-# Research Alignment — Deployment & Operations Guide
+# Faculty Finder — Deployment & Operations Guide
 
-Complete guide for deploying Research Alignment on Vercel with GitHub Actions enrichment.
+Complete guide for deploying Faculty Finder on Vercel with GitHub Actions enrichment.
 
 ## Architecture
 
@@ -38,7 +38,7 @@ In the Vercel dashboard, go to your project → **Settings** → **Environment V
 
 ### Verify
 
-Visit your Vercel URL — you should see the Research Alignment UI. Upload a funding opportunity PDF to test matching.
+Visit your Vercel URL — you should see the Faculty Finder UI. Upload a funding opportunity PDF to test matching.
 
 ---
 
@@ -243,7 +243,7 @@ Add a section in `normalize_faculty_data()` to include the source's data in the 
 ### Frontend
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/` | Research Alignment web application |
+| GET | `/` | Faculty Finder web application |
 
 ### Matching
 | Method | Path | Description |

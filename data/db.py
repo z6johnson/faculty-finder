@@ -1,4 +1,4 @@
-"""SQLite data-access layer for the faculty research-alignment backend.
+"""SQLite data-access layer for the Faculty Finder backend.
 
 All SQL lives here. The Flask app opens a read-only connection; the enrichment
 pipeline opens a single writable (WAL) connection. Storing every faculty record

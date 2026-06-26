@@ -1,6 +1,6 @@
-# Deploying Research Alignment on Railway
+# Deploying Faculty Finder on Railway
 
-A step-by-step guide to running Research Alignment as a single container on
+A step-by-step guide to running Faculty Finder as a single container on
 [Railway](https://railway.app), with a persistent volume for the database and
 the sensitive EAH extract. Everything after the initial setup is operated from
 the browser — no CLI, no GitHub Actions.
@@ -47,7 +47,7 @@ You need:
 
 1. In the Railway dashboard, click **New Project → Deploy from GitHub repo**.
 2. Authorize Railway for your GitHub account/org if prompted, then pick
-   **`research-alignment`**.
+   **`faculty-finder`**.
 3. Railway detects the repo's **`Dockerfile`** and creates a service that builds
    from it. Let the first build start — it will not be healthy until you add the
    volume and env vars below, which is expected.
